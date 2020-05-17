@@ -1,4 +1,4 @@
-# Appwrite  SDK
+# Appwrite Flutter SDK
 
 [![pub package](https://img.shields.io/pub/v/appwrite.svg)](https://pub.dartlang.org/packages/appwrite)
 ![License](https://img.shields.io/github/license/appwrite/sdk-for-flutter.svg?v=1)
