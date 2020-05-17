@@ -305,7 +305,7 @@ class Account extends Service {
      /// first. Use the success and failure arguments to provide a redirect URL's
      /// back to your app when login is completed.
      ///
-    Future createOAuth2Session({@required String provider, String success = 'https://appwrite.io/auth/oauth2/success', String failure = 'https://appwrite.io/auth/oauth2/failure'}) {
+    Future createOAuth2Session({@required String provider, String success = 'https://192.168.1.102/auth/oauth2/success', String failure = 'https://192.168.1.102/auth/oauth2/failure'}) {
         final String path = '/account/sessions/oauth2/{provider}'.replaceAll(RegExp('{provider}'), provider);
 
         final Map<String, dynamic> params = {
@@ -324,7 +324,7 @@ class Account extends Service {
 
         return FlutterWebAuth.authenticate(
           url: url.toString(),
-          callbackUrlScheme: "appwrite-callback" + client.config['project']
+          callbackUrlScheme: "appwrite-callback-" + client.config['project']
           ).then((value) {
               Uri url = Uri.parse(value);
                 List<Cookie> cookies = [new Cookie(url.queryParameters['key'], url.queryParameters['secret'])];
