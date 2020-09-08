@@ -15,6 +15,7 @@ dependencies:
   cookie_jar: ^1.0.1
   dio_cookie_manager: ^1.0.0
   flutter_web_auth: ^0.2.4
+  universal_html: ^1.2.3
   flutter:
     sdk: flutter
 

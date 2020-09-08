@@ -101,7 +101,7 @@ class Client {
     }
 
     Future<Response> call(HttpMethod method, {String path = '', Map<String, String> headers = const {}, Map<String, dynamic> params = const {}}) async {
-        if(selfSigned) {
+        if(selfSigned && !kIsWeb) {
             // Allow self signed requests
             (http.httpClientAdapter as DefaultHttpClientAdapter).onHttpClientCreate = (HttpClient client) {
                 client.badCertificateCallback = (X509Certificate cert, String host, int port) => true;
