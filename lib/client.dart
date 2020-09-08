@@ -35,7 +35,7 @@ class Client {
         
         this.headers = {
             'content-type': 'application/json',
-            'x-sdk-version': 'appwrite:flutter:0.3.0-dev.1',
+            'x-sdk-version': 'appwrite:flutter:0.3.0-dev.2',
         };
 
         this.config = {};

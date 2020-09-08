@@ -305,12 +305,13 @@ class Account extends Service {
      /// first. Use the success and failure arguments to provide a redirect URL's
      /// back to your app when login is completed.
      ///
-    Future createOAuth2Session({@required String provider, String success = 'https://appwrite.io/auth/oauth2/success', String failure = 'https://appwrite.io/auth/oauth2/failure'}) {
+    Future createOAuth2Session({@required String provider, String success = 'https://appwrite.io/auth/oauth2/success', String failure = 'https://appwrite.io/auth/oauth2/failure', List scopes = const []}) {
         final String path = '/account/sessions/oauth2/{provider}'.replaceAll(RegExp('{provider}'), provider);
 
         final Map<String, dynamic> params = {
             'success': success,
             'failure': failure,
+            'scopes': scopes,
             'project': client.config['project'],
         };
 
@@ -375,16 +376,17 @@ class Account extends Service {
      /// Use this endpoint to send a verification message to your user email address
      /// to confirm they are the valid owners of that address. Both the **userId**
      /// and **secret** arguments will be passed as query parameters to the URL you
-     /// have provider to be attached to the verification email. The provided URL
-     /// should redirect the user back for your app and allow you to complete the
+     /// have provided to be attached to the verification email. The provided URL
+     /// should redirect the user back to your app and allow you to complete the
      /// verification process by verifying both the **userId** and **secret**
      /// parameters. Learn more about how to [complete the verification
      /// process](/docs/client/account#updateAccountVerification). 
      /// 
      /// Please note that in order to avoid a [Redirect
-     /// Attack](https://github.com/OWASP/CheatSheetSeries/blob/master/cheatsheets/Unvalidated_Redirects_and_Forwards_Cheat_Sheet.md)
+     /// Attack](https://github.com/OWASP/CheatSheetSeries/blob/master/cheatsheets/Unvalidated_Redirects_and_Forwards_Cheat_Sheet.md),
      /// the only valid redirect URLs are the ones from domains you have set when
      /// adding your platforms in the console interface.
+     /// 
      ///
     Future<Response> createVerification({@required String url}) {
         final String path = '/account/verification';
