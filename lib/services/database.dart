@@ -41,8 +41,12 @@ class Database extends Service {
       'content-type': 'application/json',
     };
 
-    return client.call(HttpMethod.get,
-        path: path, params: params, headers: headers);
+    return client.call(
+      HttpMethod.get,
+      path: path,
+      params: params,
+      headers: headers,
+    );
   }
 
   /// Create Document
@@ -52,14 +56,15 @@ class Database extends Service {
   /// integration](/docs/server/database?sdk=nodejs#createCollection) API or
   /// directly from your database console.
   ///
-  Future<Response> createDocument(
-      {@required String collectionId,
-      @required dynamic data,
-      @required List read,
-      @required List write,
-      String parentDocument = '',
-      String parentProperty = '',
-      String parentPropertyType = 'assign'}) {
+  Future<Response> createDocument({
+    @required String collectionId,
+    @required dynamic data,
+    @required List read,
+    @required List write,
+    String parentDocument = '',
+    String parentProperty = '',
+    String parentPropertyType = 'assign',
+  }) {
     final String path = '/database/collections/{collectionId}/documents'
         .replaceAll(RegExp('{collectionId}'), collectionId);
 
@@ -76,8 +81,12 @@ class Database extends Service {
       'content-type': 'application/json',
     };
 
-    return client.call(HttpMethod.post,
-        path: path, params: params, headers: headers);
+    return client.call(
+      HttpMethod.post,
+      path: path,
+      params: params,
+      headers: headers,
+    );
   }
 
   /// Get Document
@@ -85,8 +94,10 @@ class Database extends Service {
   /// Get document by its unique ID. This endpoint response returns a JSON object
   /// with the document data.
   ///
-  Future<Response> getDocument(
-      {@required String collectionId, @required String documentId}) {
+  Future<Response> getDocument({
+    @required String collectionId,
+    @required String documentId,
+  }) {
     final String path =
         '/database/collections/{collectionId}/documents/{documentId}'
             .replaceAll(RegExp('{collectionId}'), collectionId)
@@ -98,17 +109,22 @@ class Database extends Service {
       'content-type': 'application/json',
     };
 
-    return client.call(HttpMethod.get,
-        path: path, params: params, headers: headers);
+    return client.call(
+      HttpMethod.get,
+      path: path,
+      params: params,
+      headers: headers,
+    );
   }
 
   /// Update Document
-  Future<Response> updateDocument(
-      {@required String collectionId,
-      @required String documentId,
-      @required dynamic data,
-      @required List read,
-      @required List write}) {
+  Future<Response> updateDocument({
+    @required String collectionId,
+    @required String documentId,
+    @required dynamic data,
+    @required List read,
+    @required List write,
+  }) {
     final String path =
         '/database/collections/{collectionId}/documents/{documentId}'
             .replaceAll(RegExp('{collectionId}'), collectionId)
@@ -124,8 +140,12 @@ class Database extends Service {
       'content-type': 'application/json',
     };
 
-    return client.call(HttpMethod.patch,
-        path: path, params: params, headers: headers);
+    return client.call(
+      HttpMethod.patch,
+      path: path,
+      params: params,
+      headers: headers,
+    );
   }
 
   /// Delete Document
@@ -134,8 +154,10 @@ class Database extends Service {
   /// documents, his attributes and relations to other documents. Child documents
   /// **will not** be deleted.
   ///
-  Future<Response> deleteDocument(
-      {@required String collectionId, @required String documentId}) {
+  Future<Response> deleteDocument({
+    @required String collectionId,
+    @required String documentId,
+  }) {
     final String path =
         '/database/collections/{collectionId}/documents/{documentId}'
             .replaceAll(RegExp('{collectionId}'), collectionId)
@@ -147,7 +169,11 @@ class Database extends Service {
       'content-type': 'application/json',
     };
 
-    return client.call(HttpMethod.delete,
-        path: path, params: params, headers: headers);
+    return client.call(
+      HttpMethod.delete,
+      path: path,
+      params: params,
+      headers: headers,
+    );
   }
 }

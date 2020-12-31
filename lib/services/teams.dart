@@ -14,11 +14,12 @@ class Teams extends Service {
   /// filter your results. On admin mode, this endpoint will return a list of all
   /// of the project teams. [Learn more about different API modes](/docs/admin).
   ///
-  Future<Response> list(
-      {String search = '',
-      int limit = 25,
-      int offset = 0,
-      OrderType orderType = OrderType.asc}) {
+  Future<Response> list({
+    String search = '',
+    int limit = 25,
+    int offset = 0,
+    OrderType orderType = OrderType.asc,
+  }) {
     final String path = '/teams';
 
     final Map<String, dynamic> params = {
@@ -32,8 +33,12 @@ class Teams extends Service {
       'content-type': 'application/json',
     };
 
-    return client.call(HttpMethod.get,
-        path: path, params: params, headers: headers);
+    return client.call(
+      HttpMethod.get,
+      path: path,
+      params: params,
+      headers: headers,
+    );
   }
 
   /// Create Team
@@ -43,8 +48,10 @@ class Teams extends Service {
   /// who will be able add new owners and update or delete the team from your
   /// project.
   ///
-  Future<Response> create(
-      {@required String name, List roles = const ["owner"]}) {
+  Future<Response> create({
+    @required String name,
+    List roles = const ["owner"],
+  }) {
     final String path = '/teams';
 
     final Map<String, dynamic> params = {
@@ -56,8 +63,12 @@ class Teams extends Service {
       'content-type': 'application/json',
     };
 
-    return client.call(HttpMethod.post,
-        path: path, params: params, headers: headers);
+    return client.call(
+      HttpMethod.post,
+      path: path,
+      params: params,
+      headers: headers,
+    );
   }
 
   /// Get Team
@@ -65,7 +76,9 @@ class Teams extends Service {
   /// Get team by its unique ID. All team members have read access for this
   /// resource.
   ///
-  Future<Response> get({@required String teamId}) {
+  Future<Response> get({
+    @required String teamId,
+  }) {
     final String path =
         '/teams/{teamId}'.replaceAll(RegExp('{teamId}'), teamId);
 
@@ -75,8 +88,12 @@ class Teams extends Service {
       'content-type': 'application/json',
     };
 
-    return client.call(HttpMethod.get,
-        path: path, params: params, headers: headers);
+    return client.call(
+      HttpMethod.get,
+      path: path,
+      params: params,
+      headers: headers,
+    );
   }
 
   /// Update Team
@@ -84,7 +101,10 @@ class Teams extends Service {
   /// Update team by its unique ID. Only team owners have write access for this
   /// resource.
   ///
-  Future<Response> update({@required String teamId, @required String name}) {
+  Future<Response> update({
+    @required String teamId,
+    @required String name,
+  }) {
     final String path =
         '/teams/{teamId}'.replaceAll(RegExp('{teamId}'), teamId);
 
@@ -96,8 +116,12 @@ class Teams extends Service {
       'content-type': 'application/json',
     };
 
-    return client.call(HttpMethod.put,
-        path: path, params: params, headers: headers);
+    return client.call(
+      HttpMethod.put,
+      path: path,
+      params: params,
+      headers: headers,
+    );
   }
 
   /// Delete Team
@@ -105,7 +129,9 @@ class Teams extends Service {
   /// Delete team by its unique ID. Only team owners have write access for this
   /// resource.
   ///
-  Future<Response> delete({@required String teamId}) {
+  Future<Response> delete({
+    @required String teamId,
+  }) {
     final String path =
         '/teams/{teamId}'.replaceAll(RegExp('{teamId}'), teamId);
 
@@ -115,8 +141,12 @@ class Teams extends Service {
       'content-type': 'application/json',
     };
 
-    return client.call(HttpMethod.delete,
-        path: path, params: params, headers: headers);
+    return client.call(
+      HttpMethod.delete,
+      path: path,
+      params: params,
+      headers: headers,
+    );
   }
 
   /// Get Team Memberships
@@ -124,12 +154,13 @@ class Teams extends Service {
   /// Get team members by the team unique ID. All team members have read access
   /// for this list of resources.
   ///
-  Future<Response> getMemberships(
-      {@required String teamId,
-      String search = '',
-      int limit = 25,
-      int offset = 0,
-      OrderType orderType = OrderType.asc}) {
+  Future<Response> getMemberships({
+    @required String teamId,
+    String search = '',
+    int limit = 25,
+    int offset = 0,
+    OrderType orderType = OrderType.asc,
+  }) {
     final String path =
         '/teams/{teamId}/memberships'.replaceAll(RegExp('{teamId}'), teamId);
 
@@ -144,8 +175,12 @@ class Teams extends Service {
       'content-type': 'application/json',
     };
 
-    return client.call(HttpMethod.get,
-        path: path, params: params, headers: headers);
+    return client.call(
+      HttpMethod.get,
+      path: path,
+      params: params,
+      headers: headers,
+    );
   }
 
   /// Create Team Membership
@@ -164,12 +199,13 @@ class Teams extends Service {
   /// the only valid redirect URL's are the once from domains you have set when
   /// added your platforms in the console interface.
   ///
-  Future<Response> createMembership(
-      {@required String teamId,
-      @required String email,
-      @required List roles,
-      @required String url,
-      String name = ''}) {
+  Future<Response> createMembership({
+    @required String teamId,
+    @required String email,
+    @required List roles,
+    @required String url,
+    String name = '',
+  }) {
     final String path =
         '/teams/{teamId}/memberships'.replaceAll(RegExp('{teamId}'), teamId);
 
@@ -184,8 +220,12 @@ class Teams extends Service {
       'content-type': 'application/json',
     };
 
-    return client.call(HttpMethod.post,
-        path: path, params: params, headers: headers);
+    return client.call(
+      HttpMethod.post,
+      path: path,
+      params: params,
+      headers: headers,
+    );
   }
 
   /// Delete Team Membership
@@ -194,8 +234,10 @@ class Teams extends Service {
   /// the membership of any other team member. You can also use this endpoint to
   /// delete a user membership even if he didn't accept it.
   ///
-  Future<Response> deleteMembership(
-      {@required String teamId, @required String inviteId}) {
+  Future<Response> deleteMembership({
+    @required String teamId,
+    @required String inviteId,
+  }) {
     final String path = '/teams/{teamId}/memberships/{inviteId}'
         .replaceAll(RegExp('{teamId}'), teamId)
         .replaceAll(RegExp('{inviteId}'), inviteId);
@@ -206,8 +248,12 @@ class Teams extends Service {
       'content-type': 'application/json',
     };
 
-    return client.call(HttpMethod.delete,
-        path: path, params: params, headers: headers);
+    return client.call(
+      HttpMethod.delete,
+      path: path,
+      params: params,
+      headers: headers,
+    );
   }
 
   /// Update Team Membership Status
@@ -216,11 +262,12 @@ class Teams extends Service {
   /// after he is being redirected back to your app from the invitation email he
   /// was sent.
   ///
-  Future<Response> updateMembershipStatus(
-      {@required String teamId,
-      @required String inviteId,
-      @required String userId,
-      @required String secret}) {
+  Future<Response> updateMembershipStatus({
+    @required String teamId,
+    @required String inviteId,
+    @required String userId,
+    @required String secret,
+  }) {
     final String path = '/teams/{teamId}/memberships/{inviteId}/status'
         .replaceAll(RegExp('{teamId}'), teamId)
         .replaceAll(RegExp('{inviteId}'), inviteId);
@@ -234,7 +281,11 @@ class Teams extends Service {
       'content-type': 'application/json',
     };
 
-    return client.call(HttpMethod.patch,
-        path: path, params: params, headers: headers);
+    return client.call(
+      HttpMethod.patch,
+      path: path,
+      params: params,
+      headers: headers,
+    );
   }
 }

@@ -26,8 +26,12 @@ class Locale extends Service {
       'content-type': 'application/json',
     };
 
-    return client.call(HttpMethod.get,
-        path: path, params: params, headers: headers);
+    return client.call(
+      HttpMethod.get,
+      path: path,
+      params: params,
+      headers: headers,
+    );
   }
 
   /// List Continents
@@ -44,8 +48,12 @@ class Locale extends Service {
       'content-type': 'application/json',
     };
 
-    return client.call(HttpMethod.get,
-        path: path, params: params, headers: headers);
+    return client.call(
+      HttpMethod.get,
+      path: path,
+      params: params,
+      headers: headers,
+    );
   }
 
   /// List Countries
@@ -62,8 +70,12 @@ class Locale extends Service {
       'content-type': 'application/json',
     };
 
-    return client.call(HttpMethod.get,
-        path: path, params: params, headers: headers);
+    return client.call(
+      HttpMethod.get,
+      path: path,
+      params: params,
+      headers: headers,
+    );
   }
 
   /// List EU Countries
@@ -80,8 +92,12 @@ class Locale extends Service {
       'content-type': 'application/json',
     };
 
-    return client.call(HttpMethod.get,
-        path: path, params: params, headers: headers);
+    return client.call(
+      HttpMethod.get,
+      path: path,
+      params: params,
+      headers: headers,
+    );
   }
 
   /// List Countries Phone Codes
@@ -98,8 +114,12 @@ class Locale extends Service {
       'content-type': 'application/json',
     };
 
-    return client.call(HttpMethod.get,
-        path: path, params: params, headers: headers);
+    return client.call(
+      HttpMethod.get,
+      path: path,
+      params: params,
+      headers: headers,
+    );
   }
 
   /// List Currencies
@@ -117,8 +137,12 @@ class Locale extends Service {
       'content-type': 'application/json',
     };
 
-    return client.call(HttpMethod.get,
-        path: path, params: params, headers: headers);
+    return client.call(
+      HttpMethod.get,
+      path: path,
+      params: params,
+      headers: headers,
+    );
   }
 
   /// List Languages
@@ -135,7 +159,11 @@ class Locale extends Service {
       'content-type': 'application/json',
     };
 
-    return client.call(HttpMethod.get,
-        path: path, params: params, headers: headers);
+    return client.call(
+      HttpMethod.get,
+      path: path,
+      params: params,
+      headers: headers,
+    );
   }
 }

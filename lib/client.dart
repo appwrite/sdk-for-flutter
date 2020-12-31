@@ -20,11 +20,11 @@ class Client {
   Dio http;
   PersistCookieJar cookieJar;
 
-  Client(
-      {this.endPoint = 'https://appwrite.io/v1',
-      this.selfSigned = false,
-      Dio http})
-      : this.http = http ?? Dio() {
+  Client({
+    this.endPoint = 'https://appwrite.io/v1',
+    this.selfSigned = false,
+    Dio http,
+  }) : this.http = http ?? Dio() {
     // Platform is not supported in web so if web, set type to web automatically and skip Platform check
     if (kIsWeb) {
       type = 'web';
@@ -69,7 +69,9 @@ class Client {
     return this;
   }
 
-  Client setSelfSigned({bool status = true}) {
+  Client setSelfSigned({
+    bool status = true,
+  }) {
     selfSigned = status;
     return this;
   }
@@ -106,10 +108,12 @@ class Client {
     }
   }
 
-  Future<Response> call(HttpMethod method,
-      {String path = '',
-      Map<String, String> headers = const {},
-      Map<String, dynamic> params = const {}}) async {
+  Future<Response> call(
+    HttpMethod method, {
+    String path = '',
+    Map<String, String> headers = const {},
+    Map<String, dynamic> params = const {},
+  }) async {
     if (selfSigned && !kIsWeb) {
       // Allow self signed requests
       (http.httpClientAdapter as DefaultHttpClientAdapter).onHttpClientCreate =
