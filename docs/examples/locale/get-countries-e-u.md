@@ -9,7 +9,7 @@ void main() { // Init SDK
     .setProject('5df5acd0d48c2') // Your project ID
   ;
 
-  Future result = locale.getCountriesEU(  );
+  Future result = locale.getCountriesEU();
 
   result
     .then((response) {

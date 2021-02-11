@@ -44,10 +44,9 @@ class Avatars extends Service {
 
      /// Get Credit Card Icon
      ///
-     /// Need to display your users with your billing method or their payment
-     /// methods? The credit card endpoint will return you the icon of the credit
-     /// card provider you need. Use width, height and quality arguments to change
-     /// the output settings.
+     /// The credit card endpoint will return you the icon of the credit card
+     /// provider you need. Use width, height and quality arguments to change the
+     /// output settings.
      ///
     String getCreditCard({@required String code, int width = 100, int height = 100, int quality = 100}) {
         final String path = '/avatars/credit-cards/{code}'.replaceAll(RegExp('{code}'), code);
@@ -76,8 +75,9 @@ class Avatars extends Service {
 
      /// Get Favicon
      ///
-     /// Use this endpoint to fetch the favorite icon (AKA favicon) of a  any remote
+     /// Use this endpoint to fetch the favorite icon (AKA favicon) of any remote
      /// website URL.
+     /// 
      ///
     String getFavicon({@required String url}) {
         final String path = '/avatars/favicon';

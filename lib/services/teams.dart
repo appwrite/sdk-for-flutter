@@ -14,7 +14,8 @@ class Teams extends Service {
      ///
      /// Get a list of all the current user teams. You can use the query params to
      /// filter your results. On admin mode, this endpoint will return a list of all
-     /// of the project teams. [Learn more about different API modes](/docs/admin).
+     /// of the project's teams. [Learn more about different API
+     /// modes](/docs/admin).
      ///
     Future<Response> list({String search = '', int limit = 25, int offset = 0, OrderType orderType = OrderType.asc}) {
         final String path = '/teams';
@@ -57,7 +58,7 @@ class Teams extends Service {
 
      /// Get Team
      ///
-     /// Get team by its unique ID. All team members have read access for this
+     /// Get a team by its unique ID. All team members have read access for this
      /// resource.
      ///
     Future<Response> get({@required String teamId}) {
@@ -75,7 +76,7 @@ class Teams extends Service {
 
      /// Update Team
      ///
-     /// Update team by its unique ID. Only team owners have write access for this
+     /// Update a team by its unique ID. Only team owners have write access for this
      /// resource.
      ///
     Future<Response> update({@required String teamId, @required String name}) {
@@ -94,7 +95,7 @@ class Teams extends Service {
 
      /// Delete Team
      ///
-     /// Delete team by its unique ID. Only team owners have write access for this
+     /// Delete a team by its unique ID. Only team owners have write access for this
      /// resource.
      ///
     Future<Response> delete({@required String teamId}) {
@@ -112,7 +113,7 @@ class Teams extends Service {
 
      /// Get Team Memberships
      ///
-     /// Get team members by the team unique ID. All team members have read access
+     /// Get a team members by the team unique ID. All team members have read access
      /// for this list of resources.
      ///
     Future<Response> getMemberships({@required String teamId, String search = '', int limit = 25, int offset = 0, OrderType orderType = OrderType.asc}) {
@@ -140,8 +141,8 @@ class Teams extends Service {
      /// 
      /// Use the 'URL' parameter to redirect the user from the invitation email back
      /// to your app. When the user is redirected, use the [Update Team Membership
-     /// Status](/docs/client/teams#updateMembershipStatus) endpoint to allow the
-     /// user to accept the invitation to the team.
+     /// Status](/docs/client/teams#teamsUpdateMembershipStatus) endpoint to allow
+     /// the user to accept the invitation to the team.
      /// 
      /// Please note that in order to avoid a [Redirect
      /// Attacks](https://github.com/OWASP/CheatSheetSeries/blob/master/cheatsheets/Unvalidated_Redirects_and_Forwards_Cheat_Sheet.md)
@@ -169,7 +170,7 @@ class Teams extends Service {
      ///
      /// This endpoint allows a user to leave a team or for a team owner to delete
      /// the membership of any other team member. You can also use this endpoint to
-     /// delete a user membership even if he didn't accept it.
+     /// delete a user membership even if it is not accepted.
      ///
     Future<Response> deleteMembership({@required String teamId, @required String inviteId}) {
         final String path = '/teams/{teamId}/memberships/{inviteId}'.replaceAll(RegExp('{teamId}'), teamId).replaceAll(RegExp('{inviteId}'), inviteId);
@@ -187,8 +188,8 @@ class Teams extends Service {
      /// Update Team Membership Status
      ///
      /// Use this endpoint to allow a user to accept an invitation to join a team
-     /// after he is being redirected back to your app from the invitation email he
-     /// was sent.
+     /// after being redirected back to your app from the invitation email recieved
+     /// by the user.
      ///
     Future<Response> updateMembershipStatus({@required String teamId, @required String inviteId, @required String userId, @required String secret}) {
         final String path = '/teams/{teamId}/memberships/{inviteId}/status'.replaceAll(RegExp('{teamId}'), teamId).replaceAll(RegExp('{inviteId}'), inviteId);

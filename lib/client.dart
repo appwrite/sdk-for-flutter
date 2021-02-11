@@ -6,7 +6,7 @@ import 'package:dio/adapter.dart';
 import 'package:dio_cookie_manager/dio_cookie_manager.dart';
 import 'package:cookie_jar/cookie_jar.dart';
 import 'package:path_provider/path_provider.dart';
-import 'package:package_info/package_info.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 
 import 'enums.dart';
 
@@ -35,7 +35,7 @@ class Client {
         
         this.headers = {
             'content-type': 'application/json',
-            'x-sdk-version': 'appwrite:flutter:0.3.0-dev.2',
+            'x-sdk-version': 'appwrite:flutter:0.3.0',
         };
 
         this.config = {};
@@ -89,7 +89,7 @@ class Client {
             cookieJar = new PersistCookieJar(dir:cookieDir.path);
             this.http.interceptors.add(CookieManager(cookieJar));
             PackageInfo packageInfo = await PackageInfo.fromPlatform();
-            addHeader('Origin', 'appwrite-' + type + '://' + packageInfo.packageName);
+            addHeader('Origin', 'appwrite-$type://${packageInfo.packageName ?? packageInfo.appName}');
           }else{
             // if web set httpClientAdapter as BrowserHttpClientAdapter with withCredentials true to make cookies work
             this.http.options.extra['withCredentials'] = true;

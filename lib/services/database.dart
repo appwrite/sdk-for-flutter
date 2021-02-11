@@ -14,16 +14,16 @@ class Database extends Service {
      ///
      /// Get a list of all the user documents. You can use the query params to
      /// filter your results. On admin mode, this endpoint will return a list of all
-     /// of the project documents. [Learn more about different API
+     /// of the project's documents. [Learn more about different API
      /// modes](/docs/admin).
      ///
-    Future<Response> listDocuments({@required String collectionId, List filters = const [], int offset = 0, int limit = 50, String orderField = '\$id', OrderType orderType = OrderType.asc, String orderCast = 'string', String search = ''}) {
+    Future<Response> listDocuments({@required String collectionId, List filters = const [], int limit = 25, int offset = 0, String orderField = '', OrderType orderType = OrderType.asc, String orderCast = 'string', String search = ''}) {
         final String path = '/database/collections/{collectionId}/documents'.replaceAll(RegExp('{collectionId}'), collectionId);
 
         final Map<String, dynamic> params = {
             'filters': filters,
-            'offset': offset,
             'limit': limit,
+            'offset': offset,
             'orderField': orderField,
             'orderType': orderType.name(),
             'orderCast': orderCast,
@@ -41,10 +41,10 @@ class Database extends Service {
      ///
      /// Create a new Document. Before using this route, you should create a new
      /// collection resource using either a [server
-     /// integration](/docs/server/database?sdk=nodejs#createCollection) API or
+     /// integration](/docs/server/database#databaseCreateCollection) API or
      /// directly from your database console.
      ///
-    Future<Response> createDocument({@required String collectionId, @required dynamic data, @required List read, @required List write, String parentDocument = '', String parentProperty = '', String parentPropertyType = 'assign'}) {
+    Future<Response> createDocument({@required String collectionId, @required Map data, @required List read, @required List write, String parentDocument = '', String parentProperty = '', String parentPropertyType = 'assign'}) {
         final String path = '/database/collections/{collectionId}/documents'.replaceAll(RegExp('{collectionId}'), collectionId);
 
         final Map<String, dynamic> params = {
@@ -65,8 +65,8 @@ class Database extends Service {
 
      /// Get Document
      ///
-     /// Get document by its unique ID. This endpoint response returns a JSON object
-     /// with the document data.
+     /// Get a document by its unique ID. This endpoint response returns a JSON
+     /// object with the document data.
      ///
     Future<Response> getDocument({@required String collectionId, @required String documentId}) {
         final String path = '/database/collections/{collectionId}/documents/{documentId}'.replaceAll(RegExp('{collectionId}'), collectionId).replaceAll(RegExp('{documentId}'), documentId);
@@ -82,7 +82,11 @@ class Database extends Service {
     }
 
      /// Update Document
-    Future<Response> updateDocument({@required String collectionId, @required String documentId, @required dynamic data, @required List read, @required List write}) {
+     ///
+     /// Update a document by its unique ID. Using the patch method you can pass
+     /// only specific fields that will get updated.
+     ///
+    Future<Response> updateDocument({@required String collectionId, @required String documentId, @required Map data, @required List read, @required List write}) {
         final String path = '/database/collections/{collectionId}/documents/{documentId}'.replaceAll(RegExp('{collectionId}'), collectionId).replaceAll(RegExp('{documentId}'), documentId);
 
         final Map<String, dynamic> params = {
@@ -100,8 +104,8 @@ class Database extends Service {
 
      /// Delete Document
      ///
-     /// Delete document by its unique ID. This endpoint deletes only the parent
-     /// documents, his attributes and relations to other documents. Child documents
+     /// Delete a document by its unique ID. This endpoint deletes only the parent
+     /// documents, its attributes and relations to other documents. Child documents
      /// **will not** be deleted.
      ///
     Future<Response> deleteDocument({@required String collectionId, @required String documentId}) {
