@@ -1,11 +1,5 @@
+part of appwrite;
 
-
-import 'package:dio/dio.dart';
-import 'package:meta/meta.dart';
-
-import "../client.dart";
-import '../enums.dart';
-import "../service.dart";
 
 class Storage extends Service {
     Storage(Client client): super(client);
@@ -117,7 +111,7 @@ class Storage extends Service {
      /// 'Content-Disposition: attachment' header that tells the browser to start
      /// downloading the file to user downloads directory.
      ///
-    String getFileDownload({@required String fileId}) {
+    Future<Response> getFileDownload({@required String fileId}) {
         final String path = '/storage/files/{fileId}/download'.replaceAll(RegExp('{fileId}'), fileId);
 
         final Map<String, dynamic> params = {
@@ -127,16 +121,8 @@ class Storage extends Service {
         params.keys.forEach((key) {if (params[key] is int || params[key] is double) {
           params[key] = params[key].toString();
         }});
-        
-        Uri endpoint = Uri.parse(client.endPoint);
-        Uri location = new Uri(scheme: endpoint.scheme,
-          host: endpoint.host,
-          port: endpoint.port,
-          path: endpoint.path + path,
-          queryParameters:params,
-        );
 
-        return location.toString();
+        return client.call(HttpMethod.get, path: path, params: params, responseType: ResponseType.bytes);
     }
 
      /// Get File Preview
@@ -146,7 +132,7 @@ class Storage extends Service {
      /// and spreadsheets, will return the file icon image. You can also pass query
      /// string arguments for cutting and resizing your preview image.
      ///
-    String getFilePreview({@required String fileId, int width = 0, int height = 0, int quality = 100, String background = '', String output = ''}) {
+    Future<Response> getFilePreview({@required String fileId, int width = 0, int height = 0, int quality = 100, String background = '', String output = ''}) {
         final String path = '/storage/files/{fileId}/preview'.replaceAll(RegExp('{fileId}'), fileId);
 
         final Map<String, dynamic> params = {
@@ -161,16 +147,8 @@ class Storage extends Service {
         params.keys.forEach((key) {if (params[key] is int || params[key] is double) {
           params[key] = params[key].toString();
         }});
-        
-        Uri endpoint = Uri.parse(client.endPoint);
-        Uri location = new Uri(scheme: endpoint.scheme,
-          host: endpoint.host,
-          port: endpoint.port,
-          path: endpoint.path + path,
-          queryParameters:params,
-        );
 
-        return location.toString();
+        return client.call(HttpMethod.get, path: path, params: params, responseType: ResponseType.bytes);
     }
 
      /// Get File for View
@@ -179,7 +157,7 @@ class Storage extends Service {
      /// download method but returns with no  'Content-Disposition: attachment'
      /// header.
      ///
-    String getFileView({@required String fileId}) {
+    Future<Response> getFileView({@required String fileId}) {
         final String path = '/storage/files/{fileId}/view'.replaceAll(RegExp('{fileId}'), fileId);
 
         final Map<String, dynamic> params = {
@@ -189,15 +167,7 @@ class Storage extends Service {
         params.keys.forEach((key) {if (params[key] is int || params[key] is double) {
           params[key] = params[key].toString();
         }});
-        
-        Uri endpoint = Uri.parse(client.endPoint);
-        Uri location = new Uri(scheme: endpoint.scheme,
-          host: endpoint.host,
-          port: endpoint.port,
-          path: endpoint.path + path,
-          queryParameters:params,
-        );
 
-        return location.toString();
+        return client.call(HttpMethod.get, path: path, params: params, responseType: ResponseType.bytes);
     }
 }

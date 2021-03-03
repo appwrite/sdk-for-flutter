@@ -1,11 +1,5 @@
+part of appwrite;
 
-
-import 'package:dio/dio.dart';
-import 'package:meta/meta.dart';
-
-import "../client.dart";
-import '../enums.dart';
-import "../service.dart";
 
 class Database extends Service {
     Database(Client client): super(client);

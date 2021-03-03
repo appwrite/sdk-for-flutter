@@ -1,3 +1,5 @@
+part of appwrite;
+
 enum HttpMethod { get, post, put, delete, patch }
 
 extension HttpMethodString on HttpMethod {
