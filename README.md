@@ -20,7 +20,7 @@ Add this to your package's `pubspec.yaml` file:
 
 ```yml
 dependencies:
-  appwrite: ^0.4.0-dev.2
+  appwrite: ^0.4.0-dev.3
 ```
 
 You can install packages from the command line:
@@ -28,6 +28,7 @@ You can install packages from the command line:
 ```bash
 pub get appwrite
 ```
+
 
 ## Contribution
 

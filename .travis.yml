@@ -19,6 +19,6 @@ install:
 deploy:
   provider: script
   skip_cleanup: true
-  script: pub publish -f
+  script: dart format ./lib/ && pub publish -f
   on:
     tags: true
