@@ -4,7 +4,6 @@ import 'dart:io';
 import 'dart:convert';
 import 'package:universal_html/html.dart' as html;
 import 'package:dio/dio.dart';
-import 'package:meta/meta.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_web_auth/flutter_web_auth.dart';
 import 'package:dio/adapter.dart';
@@ -14,7 +13,7 @@ import 'package:path_provider/path_provider.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 
 
-export 'package:dio/dio.dart' show Response;
+export 'package:dio/dio.dart' show Response, MultipartFile;
 
 part 'client.dart';
 part 'enums.dart';

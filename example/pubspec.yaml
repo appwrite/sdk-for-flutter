@@ -1,0 +1,3 @@
+name: appwrite_example
+environment:
+  sdk: '>=2.6.0 <3.0.0'

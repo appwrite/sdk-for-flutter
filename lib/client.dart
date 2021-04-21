@@ -3,14 +3,14 @@ part of appwrite;
 class Client {
     String endPoint;
     String type = 'unknown';
-    Map<String, String> headers;
-    Map<String, String> config;
+    Map<String, String>? headers;
+    late Map<String, String> config;
     bool selfSigned;
     bool initialized = false;
     Dio http;
-    PersistCookieJar cookieJar;
+    late PersistCookieJar cookieJar;
 
-    Client({this.endPoint = 'https://appwrite.io/v1', this.selfSigned = false, Dio http}) : this.http = http ?? Dio() {
+    Client({this.endPoint = 'https://appwrite.io/v1', this.selfSigned = false, Dio? http}) : this.http = http ?? Dio() {
         // Platform is not supported in web so if web, set type to web automatically and skip Platform check
         if(kIsWeb) {
             type = 'web';
@@ -25,12 +25,13 @@ class Client {
         
         this.headers = {
             'content-type': 'application/json',
-            'x-sdk-version': 'appwrite:flutter:0.4.0',
+            'x-sdk-version': 'appwrite:flutter:0.5.0-dev.1',
         };
 
         this.config = {};
 
         assert(endPoint.startsWith(RegExp("http://|https://")), "endPoint $endPoint must start with 'http'");
+        init();
     }
     
     Future<Directory> _getCookiePath() async {
@@ -66,31 +67,29 @@ class Client {
     }
 
     Client addHeader(String key, String value) {
-        headers[key] = value;
+        headers![key] = value;
         
         return this;
     }
 
     Future init() async {
-        if(!initialized) {
-          // if web skip cookie implementation and origin header as those are automatically handled by browsers
-          if(!kIsWeb) {
+        // if web skip cookie implementation and origin header as those are automatically handled by browsers
+        if(!kIsWeb) {
             final Directory cookieDir = await _getCookiePath();
-            cookieJar = new PersistCookieJar(dir:cookieDir.path);
+            cookieJar = new PersistCookieJar(storage: FileStorage(cookieDir.path));
             this.http.interceptors.add(CookieManager(cookieJar));
             PackageInfo packageInfo = await PackageInfo.fromPlatform();
-            addHeader('Origin', 'appwrite-$type://${packageInfo.packageName ?? packageInfo.appName}');
-          }else{
-            // if web set httpClientAdapter as BrowserHttpClientAdapter with withCredentials true to make cookies work
+            addHeader('Origin', 'appwrite-$type://${packageInfo.packageName}');
+        } else {
+            // if web set withCredentials true to make cookies work
             this.http.options.extra['withCredentials'] = true;
-          }
-
-          this.http.options.baseUrl = this.endPoint;
-          this.http.options.validateStatus = (status) => status < 400;
         }
+
+        this.http.options.baseUrl = this.endPoint;
+        this.http.options.validateStatus = (status) => status! < 400;
     }
 
-    Future<Response> call(HttpMethod method, {String path = '', Map<String, String> headers = const {}, Map<String, dynamic> params = const {}, ResponseType responseType}) async {
+    Future<Response> call(HttpMethod method, {String path = '', Map<String, String> headers = const {}, Map<String, dynamic> params = const {}, ResponseType? responseType}) async {
         if(selfSigned && !kIsWeb) {
             // Allow self signed requests
             (http.httpClientAdapter as DefaultHttpClientAdapter).onHttpClientCreate = (HttpClient client) {
@@ -99,18 +98,21 @@ class Client {
             };
         }
 
-        await this.init();
+        if(!initialized) {
+            await this.init();
+        }
 
         // Origin is hardcoded for testing
         Options options = Options(
-            headers: {...this.headers, ...headers},
+            headers: {...this.headers!, ...headers},
             method: method.name(),
-            responseType: responseType
+            responseType: responseType,
+            listFormat: ListFormat.multiCompatible
         );
 
         try {
             if(headers['content-type'] == 'multipart/form-data') {
-                return await http.request(path, data: FormData.fromMap(params), options: options);
+                return await http.request(path, data: FormData.fromMap(params, ListFormat.multiCompatible), options: options);
             }
 
             if (method == HttpMethod.get) {
@@ -127,16 +129,16 @@ class Client {
             throw AppwriteException(e.message);
           }
           if(responseType == ResponseType.bytes) {
-            if(e.response.headers['content-type'].contains('application/json')) {
-              final res = json.decode(utf8.decode(e.response.data));
+            if(e.response!.headers['content-type']!.contains('application/json')) {
+              final res = json.decode(utf8.decode(e.response!.data));
               throw AppwriteException(res['message'],res['code'], e.response);
             } else {
               throw AppwriteException(e.message);
             }
           }
-          throw AppwriteException(e.response.data['message'],e.response.data['code'], e.response.data);
+          throw AppwriteException(e.response!.data['message'],e.response!.data['code'], e.response!.data);
         } catch(e) {
-          throw AppwriteException(e.message);
+          throw AppwriteException(e.toString());
         }
     }
 }
