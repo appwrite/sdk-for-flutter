@@ -2,11 +2,11 @@
 
 [![pub package](https://img.shields.io/pub/v/appwrite?style=flat-square.svg)](https://pub.dartlang.org/packages/appwrite)
 ![License](https://img.shields.io/github/license/appwrite/sdk-for-flutter.svg?style=flat-square)
-![Version](https://img.shields.io/badge/api%20version-0.7.0-blue.svg?style=flat-square)
+![Version](https://img.shields.io/badge/api%20version-0.8.0-blue.svg?style=flat-square)
 [![Twitter Account](https://img.shields.io/twitter/follow/appwrite_io?color=00acee&label=twitter&style=flat-square)](https://twitter.com/appwrite_io)
 [![Discord](https://img.shields.io/discord/564160730845151244?label=discord&style=flat-square)](https://appwrite.io/discord)
 
-**This SDK is compatible with Appwrite server version 0.7.x. For older versions, please check [previous releases](https://github.com/appwrite/sdk-for-flutter/releases).**
+**This SDK is compatible with Appwrite server version 0.8.x. For older versions, please check [previous releases](https://github.com/appwrite/sdk-for-flutter/releases).**
 
 Appwrite is an open-source backend as a service server that abstract and simplify complex and repetitive development tasks behind a very simple to use REST API. Appwrite aims to help you develop your apps faster and in a more secure way.
                         Use the Flutter SDK to integrate your app with the Appwrite server to easily start interacting with all of Appwrite backend APIs and tools.
@@ -22,7 +22,7 @@ Add this to your package's `pubspec.yaml` file:
 
 ```yml
 dependencies:
-  appwrite: ^0.5.0-dev.1
+  appwrite: ^0.6.0
 ```
 
 You can install packages from the command line:
@@ -92,7 +92,7 @@ Client client = Client();
 client
   .setEndpoint('https://localhost/v1') // Your Appwrite Endpoint
   .setProject('5e8cf4f46b5e8') // Your project ID
-  .setSelfSigned() // Remove in production
+  .setSelfSigned() // Use only on dev mode with a self-signed SSL cert
 ;
 ```
 
@@ -125,7 +125,7 @@ Client client = Client();
 client
   .setEndpoint('https://localhost/v1') // Your Appwrite Endpoint
   .setProject('5e8cf4f46b5e8') // Your project ID
-  .setSelfSigned() // Remove in production
+  .setSelfSigned() // Use only on dev mode with a self-signed SSL cert
   ;
 
 
@@ -138,6 +138,21 @@ Response user = await account
     password: 'password',
     name: 'My Name'
   );
+```
+
+### Error Handling
+The Appwrite Flutter SDK raises `AppwriteException` object with `message`, `code` and `response` properties. You can handle any errors by catching `AppwriteException` and present the `message` to the user or handle it yourself based on the provided error information. Below is an example.
+
+```dart
+Users users = Users(client);
+
+try {
+  final response = await users.create(email: ‘email@example.com’,password: ‘password’, name: ‘name’);
+  print(response.data);
+} on AppwriteException catch(e) {
+  //show message to user or do other operation based on error as required
+  print(e.message);
+}
 ```
 
 ### Learn more

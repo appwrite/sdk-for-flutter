@@ -19,6 +19,7 @@ class Avatars extends Service {
             'height': height,
             'quality': quality,
             'project': client.config['project'],
+            'jwt': client.config['jwt'],
         };
 
         params.keys.forEach((key) {if (params[key] is int || params[key] is double) {
@@ -42,6 +43,7 @@ class Avatars extends Service {
             'height': height,
             'quality': quality,
             'project': client.config['project'],
+            'jwt': client.config['jwt'],
         };
 
         params.keys.forEach((key) {if (params[key] is int || params[key] is double) {
@@ -63,6 +65,7 @@ class Avatars extends Service {
         final Map<String, dynamic> params = {
             'url': url,
             'project': client.config['project'],
+            'jwt': client.config['jwt'],
         };
 
         params.keys.forEach((key) {if (params[key] is int || params[key] is double) {
@@ -86,6 +89,7 @@ class Avatars extends Service {
             'height': height,
             'quality': quality,
             'project': client.config['project'],
+            'jwt': client.config['jwt'],
         };
 
         params.keys.forEach((key) {if (params[key] is int || params[key] is double) {
@@ -110,6 +114,7 @@ class Avatars extends Service {
             'width': width,
             'height': height,
             'project': client.config['project'],
+            'jwt': client.config['jwt'],
         };
 
         params.keys.forEach((key) {if (params[key] is int || params[key] is double) {
@@ -142,6 +147,7 @@ class Avatars extends Service {
             'color': color,
             'background': background,
             'project': client.config['project'],
+            'jwt': client.config['jwt'],
         };
 
         params.keys.forEach((key) {if (params[key] is int || params[key] is double) {
@@ -165,6 +171,7 @@ class Avatars extends Service {
             'margin': margin,
             'download': download,
             'project': client.config['project'],
+            'jwt': client.config['jwt'],
         };
 
         params.keys.forEach((key) {if (params[key] is int || params[key] is double) {

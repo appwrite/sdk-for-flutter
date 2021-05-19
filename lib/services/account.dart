@@ -73,6 +73,8 @@ class Account extends Service {
      /// address, user confirmation status is being reset and a new confirmation
      /// mail is sent. For security measures, user password is required to complete
      /// this request.
+     /// This endpoint can also be used to convert an anonymous account to a normal
+     /// one, by passing an email address and a new password.
      ///
     Future<Response> updateEmail({required String email, required String password}) {
         final String path = '/account/email';
@@ -87,6 +89,26 @@ class Account extends Service {
         };
 
         return client.call(HttpMethod.patch, path: path, params: params, headers: headers);
+    }
+
+     /// Create Account JWT
+     ///
+     /// Use this endpoint to create a JSON Web Token. You can use the resulting JWT
+     /// to authenticate on behalf of the current user when working with the
+     /// Appwrite server-side API and SDKs. The JWT secret is valid for 15 minutes
+     /// from its creation and will be invalid if the user will logout.
+     ///
+    Future<Response> createJWT() {
+        final String path = '/account/jwt';
+
+        final Map<String, dynamic> params = {
+        };
+
+        final Map<String, String> headers = {
+            'content-type': 'application/json',
+        };
+
+        return client.call(HttpMethod.post, path: path, params: params, headers: headers);
     }
 
      /// Get Account Logs
@@ -128,9 +150,10 @@ class Account extends Service {
      /// Update Account Password
      ///
      /// Update currently logged in user password. For validation, user is required
-     /// to pass the password twice.
+     /// to pass in the new password, and the old password. For users created with
+     /// OAuth and Team Invites, oldPassword is optional.
      ///
-    Future<Response> updatePassword({required String password, required String oldPassword}) {
+    Future<Response> updatePassword({required String password, String oldPassword = ''}) {
         final String path = '/account/password';
 
         final Map<String, dynamic> params = {
@@ -189,7 +212,8 @@ class Account extends Service {
      /// attached to the URL query string. Use the query string params to submit a
      /// request to the [PUT
      /// /account/recovery](/docs/client/account#accountUpdateRecovery) endpoint to
-     /// complete the process.
+     /// complete the process. The verification link sent to the user's email
+     /// address is valid for 1 hour.
      ///
     Future<Response> createRecovery({required String email, required String url}) {
         final String path = '/account/recovery';
@@ -291,6 +315,27 @@ class Account extends Service {
         return client.call(HttpMethod.delete, path: path, params: params, headers: headers);
     }
 
+     /// Create Anonymous Session
+     ///
+     /// Use this endpoint to allow a new user to register an anonymous account in
+     /// your project. This route will also create a new session for the user. To
+     /// allow the new user to convert an anonymous account to a normal account
+     /// account, you need to update its [email and
+     /// password](/docs/client/account#accountUpdateEmail).
+     ///
+    Future<Response> createAnonymousSession() {
+        final String path = '/account/sessions/anonymous';
+
+        final Map<String, dynamic> params = {
+        };
+
+        final Map<String, String> headers = {
+            'content-type': 'application/json',
+        };
+
+        return client.call(HttpMethod.post, path: path, params: params, headers: headers);
+    }
+
      /// Create Account Session with OAuth2
      ///
      /// Allow the user to login to their account using the OAuth2 provider of their
@@ -380,7 +425,8 @@ class Account extends Service {
      /// should redirect the user back to your app and allow you to complete the
      /// verification process by verifying both the **userId** and **secret**
      /// parameters. Learn more about how to [complete the verification
-     /// process](/docs/client/account#accountUpdateVerification). 
+     /// process](/docs/client/account#accountUpdateVerification). The verification
+     /// link sent to the user's email address is valid for 7 days.
      /// 
      /// Please note that in order to avoid a [Redirect
      /// Attack](https://github.com/OWASP/CheatSheetSeries/blob/master/cheatsheets/Unvalidated_Redirects_and_Forwards_Cheat_Sheet.md),

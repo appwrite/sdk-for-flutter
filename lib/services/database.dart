@@ -38,7 +38,7 @@ class Database extends Service {
      /// integration](/docs/server/database#databaseCreateCollection) API or
      /// directly from your database console.
      ///
-    Future<Response> createDocument({required String collectionId, required Map data, required List read, required List write, String parentDocument = '', String parentProperty = '', String parentPropertyType = 'assign'}) {
+    Future<Response> createDocument({required String collectionId, required Map data, List read = const [], List write = const [], String parentDocument = '', String parentProperty = '', String parentPropertyType = 'assign'}) {
         final String path = '/database/collections/{collectionId}/documents'.replaceAll(RegExp('{collectionId}'), collectionId);
 
         final Map<String, dynamic> params = {
@@ -80,7 +80,7 @@ class Database extends Service {
      /// Update a document by its unique ID. Using the patch method you can pass
      /// only specific fields that will get updated.
      ///
-    Future<Response> updateDocument({required String collectionId, required String documentId, required Map data, required List read, required List write}) {
+    Future<Response> updateDocument({required String collectionId, required String documentId, required Map data, List read = const [], List write = const []}) {
         final String path = '/database/collections/{collectionId}/documents/{documentId}'.replaceAll(RegExp('{collectionId}'), collectionId).replaceAll(RegExp('{documentId}'), documentId);
 
         final Map<String, dynamic> params = {

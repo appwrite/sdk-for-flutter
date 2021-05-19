@@ -33,7 +33,7 @@ class Storage extends Service {
      /// assigned to read and write access unless he has passed custom values for
      /// read and write arguments.
      ///
-    Future<Response> createFile({required MultipartFile file, required List read, required List write}) {
+    Future<Response> createFile({required MultipartFile file, List read = const [], List write = const []}) {
         final String path = '/storage/files';
 
         final Map<String, dynamic> params = {
@@ -116,6 +116,7 @@ class Storage extends Service {
 
         final Map<String, dynamic> params = {
             'project': client.config['project'],
+            'jwt': client.config['jwt'],
         };
 
         params.keys.forEach((key) {if (params[key] is int || params[key] is double) {
@@ -132,16 +133,22 @@ class Storage extends Service {
      /// and spreadsheets, will return the file icon image. You can also pass query
      /// string arguments for cutting and resizing your preview image.
      ///
-    Future<Response> getFilePreview({required String fileId, int width = 0, int height = 0, int quality = 100, String background = '', String output = ''}) {
+    Future<Response> getFilePreview({required String fileId, int width = 0, int height = 0, int quality = 100, int borderWidth = 0, String borderColor = '', int borderRadius = 0, int opacity = 1, int rotation = 0, String background = '', String output = ''}) {
         final String path = '/storage/files/{fileId}/preview'.replaceAll(RegExp('{fileId}'), fileId);
 
         final Map<String, dynamic> params = {
             'width': width,
             'height': height,
             'quality': quality,
+            'borderWidth': borderWidth,
+            'borderColor': borderColor,
+            'borderRadius': borderRadius,
+            'opacity': opacity,
+            'rotation': rotation,
             'background': background,
             'output': output,
             'project': client.config['project'],
+            'jwt': client.config['jwt'],
         };
 
         params.keys.forEach((key) {if (params[key] is int || params[key] is double) {
@@ -162,6 +169,7 @@ class Storage extends Service {
 
         final Map<String, dynamic> params = {
             'project': client.config['project'],
+            'jwt': client.config['jwt'],
         };
 
         params.keys.forEach((key) {if (params[key] is int || params[key] is double) {

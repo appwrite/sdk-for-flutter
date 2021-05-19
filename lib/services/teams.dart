@@ -160,14 +160,29 @@ class Teams extends Service {
         return client.call(HttpMethod.post, path: path, params: params, headers: headers);
     }
 
+     /// Update Membership Roles
+    Future<Response> updateMembershipRoles({required String teamId, required String membershipId, required List roles}) {
+        final String path = '/teams/{teamId}/memberships/{membershipId}'.replaceAll(RegExp('{teamId}'), teamId).replaceAll(RegExp('{membershipId}'), membershipId);
+
+        final Map<String, dynamic> params = {
+            'roles': roles,
+        };
+
+        final Map<String, String> headers = {
+            'content-type': 'application/json',
+        };
+
+        return client.call(HttpMethod.patch, path: path, params: params, headers: headers);
+    }
+
      /// Delete Team Membership
      ///
      /// This endpoint allows a user to leave a team or for a team owner to delete
      /// the membership of any other team member. You can also use this endpoint to
      /// delete a user membership even if it is not accepted.
      ///
-    Future<Response> deleteMembership({required String teamId, required String inviteId}) {
-        final String path = '/teams/{teamId}/memberships/{inviteId}'.replaceAll(RegExp('{teamId}'), teamId).replaceAll(RegExp('{inviteId}'), inviteId);
+    Future<Response> deleteMembership({required String teamId, required String membershipId}) {
+        final String path = '/teams/{teamId}/memberships/{membershipId}'.replaceAll(RegExp('{teamId}'), teamId).replaceAll(RegExp('{membershipId}'), membershipId);
 
         final Map<String, dynamic> params = {
         };
@@ -185,8 +200,8 @@ class Teams extends Service {
      /// after being redirected back to your app from the invitation email recieved
      /// by the user.
      ///
-    Future<Response> updateMembershipStatus({required String teamId, required String inviteId, required String userId, required String secret}) {
-        final String path = '/teams/{teamId}/memberships/{inviteId}/status'.replaceAll(RegExp('{teamId}'), teamId).replaceAll(RegExp('{inviteId}'), inviteId);
+    Future<Response> updateMembershipStatus({required String teamId, required String membershipId, required String userId, required String secret}) {
+        final String path = '/teams/{teamId}/memberships/{membershipId}/status'.replaceAll(RegExp('{teamId}'), teamId).replaceAll(RegExp('{membershipId}'), membershipId);
 
         final Map<String, dynamic> params = {
             'userId': userId,

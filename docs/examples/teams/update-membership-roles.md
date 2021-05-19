@@ -9,11 +9,10 @@ void main() { // Init SDK
     .setProject('5df5acd0d48c2') // Your project ID
     .setJWT('eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ...') // Your secret JSON Web Token
   ;
-  Future result = teams.createMembership(
+  Future result = teams.updateMembershipRoles(
     teamId: '[TEAM_ID]',
-    email: 'email@example.com',
+    membershipId: '[MEMBERSHIP_ID]',
     roles: [],
-    url: 'https://example.com',
   );
 
   result
