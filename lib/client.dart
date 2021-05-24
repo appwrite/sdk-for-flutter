@@ -42,7 +42,7 @@ class Client {
   }
 
   Future<Directory> _getCookiePath() async {
-    final directory = await getApplicationDocumentsDirectory();
+    final directory = await PathProvider.instance.getApplicationDocumentsDirectory();
     final path = directory.path;
     final Directory dir = new Directory('$path/cookies');
     await dir.create();
