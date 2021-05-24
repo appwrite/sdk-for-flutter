@@ -6,5 +6,4 @@ class AppwriteException implements Exception {
   final dynamic response;
 
   AppwriteException([this.message = "", this.code, this.response]);
-  
 }
