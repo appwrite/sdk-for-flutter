@@ -400,7 +400,7 @@ class Account extends Service {
       html.window.location.href = url.toString();
       return Future.value();
     } else {
-      return FlutterWebAuth.authenticate(
+      return FlutterWebAuth.instance.authenticate(
               url: url.toString(),
               callbackUrlScheme:
                   "appwrite-callback-" + client.config['project']!)
