@@ -9,7 +9,7 @@ class Client {
   bool initialized = false;
   Dio http;
   late PersistCookieJar cookieJar;
-  late SharedPreferences _prefs;
+  // late SharedPreferences _prefs;
 
   Client(
       {this.endPoint = 'https://appwrite.io/v1',
@@ -123,12 +123,13 @@ class Client {
       }
       addHeader('user-agent',
           '${packageInfo.appName}/${packageInfo.version} $device');
-    } else {
+    }
+    /* else {
       // if web set withCredentials true to make cookies work
       _prefs = await SharedPreferences.getInstance();
       addHeader('X-Fallback-Cookies', _prefs.getString('cookieFallback') ?? '');
       this.http.options.extra['withCredentials'] = true;
-    }
+    } */
 
     this.http.options.baseUrl = this.endPoint;
     this.http.options.validateStatus = (status) => status! < 400;
@@ -184,7 +185,7 @@ class Client {
           print(
               'Appwrite is using localStorage for session management. Increase your security by adding a custom domain as your API endpoint.');
           addHeader('X-Fallback-Cookies', cookieFallback);
-          _prefs.setString('cookieFallback', cookieFallback);
+          // _prefs.setString('cookieFallback', cookieFallback);
         }
       }
       return res;
