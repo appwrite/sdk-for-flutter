@@ -397,11 +397,11 @@ class Account extends Service {
         query: query.join('&'));
 
     if (kIsWeb) {
-      html.window.location.href = url.toString();
-      return Future.value();
+      return platform.oauthAuthenticate(
+          url: url.toString(), callbackUrlScheme: "");
     } else {
-      return FlutterWebAuth.instance
-          .authenticate(
+      return platform
+          .oauthAuthenticate(
               url: url.toString(),
               callbackUrlScheme:
                   "appwrite-callback-" + client.config['project']!)

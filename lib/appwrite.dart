@@ -2,10 +2,10 @@ library appwrite;
 
 import 'dart:io';
 import 'dart:convert';
-import 'package:appwrite/src/path_provider/path_provider.dart';
-import 'package:appwrite/src/web_auth/web_auth.dart';
+import 'src/_platform.dart'
+    if (dart.library.io) 'src/_io.dart'
+    if (dart.library.js) 'src/_html.dart' as platform;
 // import 'package:shared_preferences/shared_preferences.dart';
-import 'package:universal_html/html.dart' as html;
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
 // import 'package:flutter_web_auth/flutter_web_auth.dart';
