@@ -11,7 +11,7 @@ class Teams extends Service {
      /// of the project's teams. [Learn more about different API
      /// modes](/docs/admin).
      ///
-    Future<Response> list({String search = '', int limit = 25, int offset = 0, OrderType orderType = OrderType.asc}) {
+    Future<Response> list({String? search, int? limit, int? offset, OrderType orderType = OrderType.asc}) {
         final String path = '/teams';
 
         final Map<String, dynamic> params = {
@@ -35,7 +35,7 @@ class Teams extends Service {
      /// who will be able add new owners and update or delete the team from your
      /// project.
      ///
-    Future<Response> create({required String name, List roles = const ["owner"]}) {
+    Future<Response> create({required String name, List? roles}) {
         final String path = '/teams';
 
         final Map<String, dynamic> params = {
@@ -110,7 +110,7 @@ class Teams extends Service {
      /// Get a team members by the team unique ID. All team members have read access
      /// for this list of resources.
      ///
-    Future<Response> getMemberships({required String teamId, String search = '', int limit = 25, int offset = 0, OrderType orderType = OrderType.asc}) {
+    Future<Response> getMemberships({required String teamId, String? search, int? limit, int? offset, OrderType orderType = OrderType.asc}) {
         final String path = '/teams/{teamId}/memberships'.replaceAll(RegExp('{teamId}'), teamId);
 
         final Map<String, dynamic> params = {
@@ -143,7 +143,7 @@ class Teams extends Service {
      /// the only valid redirect URL's are the once from domains you have set when
      /// added your platforms in the console interface.
      ///
-    Future<Response> createMembership({required String teamId, required String email, required List roles, required String url, String name = ''}) {
+    Future<Response> createMembership({required String teamId, required String email, required List roles, required String url, String? name}) {
         final String path = '/teams/{teamId}/memberships'.replaceAll(RegExp('{teamId}'), teamId);
 
         final Map<String, dynamic> params = {

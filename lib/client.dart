@@ -26,7 +26,7 @@ class Client {
         
         this.headers = {
             'content-type': 'application/json',
-            'x-sdk-version': 'appwrite:flutter:0.6.2',
+            'x-sdk-version': 'appwrite:flutter:0.6.3',
             'X-Appwrite-Response-Format' : '0.8.0',
         };
 
@@ -140,6 +140,12 @@ class Client {
         if(!initialized) {
             await this.init();
         }
+
+        params.keys.forEach((key) {
+          if (params[key] == null) {
+            params.remove(key);
+          }
+        });
 
         // Origin is hardcoded for testing
         Options options = Options(
