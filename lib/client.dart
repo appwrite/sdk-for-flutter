@@ -141,11 +141,7 @@ class Client {
             await this.init();
         }
 
-        params.keys.forEach((key) {
-          if (params[key] == null) {
-            params.remove(key);
-          }
-        });
+        params.removeWhere((key,value) => value == null);
 
         // Origin is hardcoded for testing
         Options options = Options(
