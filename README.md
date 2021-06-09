@@ -1,6 +1,6 @@
 # Appwrite Flutter SDK
 
-[![pub package](https://img.shields.io/pub/v/appwrite?style=flat-square.svg)](https://pub.dartlang.org/packages/appwrite)
+[![pub package](https://img.shields.io/pub/v/appwrite?style=flat-square)](https://pub.dartlang.org/packages/appwrite)
 ![License](https://img.shields.io/github/license/appwrite/sdk-for-flutter.svg?style=flat-square)
 ![Version](https://img.shields.io/badge/api%20version-0.8.0-blue.svg?style=flat-square)
 [![Twitter Account](https://img.shields.io/twitter/follow/appwrite_io?color=00acee&label=twitter&style=flat-square)](https://twitter.com/appwrite_io)
