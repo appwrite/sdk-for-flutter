@@ -11,11 +11,7 @@ class Teams extends Service {
      /// of the project's teams. [Learn more about different API
      /// modes](/docs/admin).
      ///
-    Future<Response> list({String? search
-, int? limit
-, int? offset
-, String? orderType
-}) {
+    Future<Response> list({String? search, int? limit, int? offset, String? orderType}) {
         final String path = '/teams';
 
         final Map<String, dynamic> params = {
@@ -39,9 +35,7 @@ class Teams extends Service {
      /// who will be able add new owners and update or delete the team from your
      /// project.
      ///
-    Future<Response> create({required String name
-, List? roles
-}) {
+    Future<Response> create({required String name, List? roles}) {
         final String path = '/teams';
 
         final Map<String, dynamic> params = {
@@ -61,8 +55,7 @@ class Teams extends Service {
      /// Get a team by its unique ID. All team members have read access for this
      /// resource.
      ///
-    Future<Response> get({required String teamId
-}) {
+    Future<Response> get({required String teamId}) {
         final String path = '/teams/{teamId}'.replaceAll(RegExp('{teamId}'), teamId);
 
         final Map<String, dynamic> params = {
@@ -80,9 +73,7 @@ class Teams extends Service {
      /// Update a team by its unique ID. Only team owners have write access for this
      /// resource.
      ///
-    Future<Response> update({required String teamId
-, required String name
-}) {
+    Future<Response> update({required String teamId, required String name}) {
         final String path = '/teams/{teamId}'.replaceAll(RegExp('{teamId}'), teamId);
 
         final Map<String, dynamic> params = {
@@ -101,8 +92,7 @@ class Teams extends Service {
      /// Delete a team by its unique ID. Only team owners have write access for this
      /// resource.
      ///
-    Future<Response> delete({required String teamId
-}) {
+    Future<Response> delete({required String teamId}) {
         final String path = '/teams/{teamId}'.replaceAll(RegExp('{teamId}'), teamId);
 
         final Map<String, dynamic> params = {
@@ -120,12 +110,7 @@ class Teams extends Service {
      /// Get a team members by the team unique ID. All team members have read access
      /// for this list of resources.
      ///
-    Future<Response> getMemberships({required String teamId
-, String? search
-, int? limit
-, int? offset
-, String? orderType
-}) {
+    Future<Response> getMemberships({required String teamId, String? search, int? limit, int? offset, String? orderType}) {
         final String path = '/teams/{teamId}/memberships'.replaceAll(RegExp('{teamId}'), teamId);
 
         final Map<String, dynamic> params = {
@@ -158,12 +143,7 @@ class Teams extends Service {
      /// the only valid redirect URL's are the once from domains you have set when
      /// added your platforms in the console interface.
      ///
-    Future<Response> createMembership({required String teamId
-, required String email
-, required List roles
-, required String url
-, String? name
-}) {
+    Future<Response> createMembership({required String teamId, required String email, required List roles, required String url, String? name}) {
         final String path = '/teams/{teamId}/memberships'.replaceAll(RegExp('{teamId}'), teamId);
 
         final Map<String, dynamic> params = {
@@ -181,10 +161,7 @@ class Teams extends Service {
     }
 
      /// Update Membership Roles
-    Future<Response> updateMembershipRoles({required String teamId
-, required String membershipId
-, required List roles
-}) {
+    Future<Response> updateMembershipRoles({required String teamId, required String membershipId, required List roles}) {
         final String path = '/teams/{teamId}/memberships/{membershipId}'.replaceAll(RegExp('{teamId}'), teamId).replaceAll(RegExp('{membershipId}'), membershipId);
 
         final Map<String, dynamic> params = {
@@ -204,9 +181,7 @@ class Teams extends Service {
      /// the membership of any other team member. You can also use this endpoint to
      /// delete a user membership even if it is not accepted.
      ///
-    Future<Response> deleteMembership({required String teamId
-, required String membershipId
-}) {
+    Future<Response> deleteMembership({required String teamId, required String membershipId}) {
         final String path = '/teams/{teamId}/memberships/{membershipId}'.replaceAll(RegExp('{teamId}'), teamId).replaceAll(RegExp('{membershipId}'), membershipId);
 
         final Map<String, dynamic> params = {
@@ -225,11 +200,7 @@ class Teams extends Service {
      /// after being redirected back to your app from the invitation email recieved
      /// by the user.
      ///
-    Future<Response> updateMembershipStatus({required String teamId
-, required String membershipId
-, required String userId
-, required String secret
-}) {
+    Future<Response> updateMembershipStatus({required String teamId, required String membershipId, required String userId, required String secret}) {
         final String path = '/teams/{teamId}/memberships/{membershipId}/status'.replaceAll(RegExp('{teamId}'), teamId).replaceAll(RegExp('{membershipId}'), membershipId);
 
         final Map<String, dynamic> params = {
