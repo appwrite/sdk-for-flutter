@@ -10,7 +10,11 @@ class Storage extends Service {
      /// your results. On admin mode, this endpoint will return a list of all of the
      /// project's files. [Learn more about different API modes](/docs/admin).
      ///
-    Future<Response> listFiles({String? search, int? limit, int? offset, OrderType? orderType}) {
+    Future<Response> listFiles({String? search
+, int? limit
+, int? offset
+, String? orderType
+}) {
         final String path = '/storage/files';
 
         final Map<String, dynamic> params = {
@@ -33,7 +37,10 @@ class Storage extends Service {
      /// assigned to read and write access unless he has passed custom values for
      /// read and write arguments.
      ///
-    Future<Response> createFile({required MultipartFile file, List? read, List? write}) {
+    Future<Response> createFile({required MultipartFile file
+, List? read
+, List? write
+}) {
         final String path = '/storage/files';
 
         final Map<String, dynamic> params = {
@@ -54,7 +61,8 @@ class Storage extends Service {
      /// Get a file by its unique ID. This endpoint response returns a JSON object
      /// with the file metadata.
      ///
-    Future<Response> getFile({required String fileId}) {
+    Future<Response> getFile({required String fileId
+}) {
         final String path = '/storage/files/{fileId}'.replaceAll(RegExp('{fileId}'), fileId);
 
         final Map<String, dynamic> params = {
@@ -72,7 +80,10 @@ class Storage extends Service {
      /// Update a file by its unique ID. Only users with write permissions have
      /// access to update this resource.
      ///
-    Future<Response> updateFile({required String fileId, required List read, required List write}) {
+    Future<Response> updateFile({required String fileId
+, required List read
+, required List write
+}) {
         final String path = '/storage/files/{fileId}'.replaceAll(RegExp('{fileId}'), fileId);
 
         final Map<String, dynamic> params = {
@@ -92,7 +103,8 @@ class Storage extends Service {
      /// Delete a file by its unique ID. Only users with write permissions have
      /// access to delete this resource.
      ///
-    Future<Response> deleteFile({required String fileId}) {
+    Future<Response> deleteFile({required String fileId
+}) {
         final String path = '/storage/files/{fileId}'.replaceAll(RegExp('{fileId}'), fileId);
 
         final Map<String, dynamic> params = {
@@ -111,7 +123,8 @@ class Storage extends Service {
      /// 'Content-Disposition: attachment' header that tells the browser to start
      /// downloading the file to user downloads directory.
      ///
-    Future<Response> getFileDownload({required String fileId}) {
+    Future<Response> getFileDownload({required String fileId
+}) {
         final String path = '/storage/files/{fileId}/download'.replaceAll(RegExp('{fileId}'), fileId);
 
         final Map<String, dynamic> params = {
@@ -132,12 +145,25 @@ class Storage extends Service {
      /// and spreadsheets, will return the file icon image. You can also pass query
      /// string arguments for cutting and resizing your preview image.
      ///
-    Future<Response> getFilePreview({required String fileId, int? width, int? height, int? quality, int? borderWidth, String? borderColor, int? borderRadius, double? opacity, int? rotation, String? background, String? output}) {
+    Future<Response> getFilePreview({required String fileId
+, int? width
+, int? height
+, String? gravity
+, int? quality
+, int? borderWidth
+, String? borderColor
+, int? borderRadius
+, double? opacity
+, int? rotation
+, String? background
+, String? output
+}) {
         final String path = '/storage/files/{fileId}/preview'.replaceAll(RegExp('{fileId}'), fileId);
 
         final Map<String, dynamic> params = {
             'width': width,
             'height': height,
+            'gravity': gravity,
             'quality': quality,
             'borderWidth': borderWidth,
             'borderColor': borderColor,
@@ -162,7 +188,8 @@ class Storage extends Service {
      /// download method but returns with no  'Content-Disposition: attachment'
      /// header.
      ///
-    Future<Response> getFileView({required String fileId}) {
+    Future<Response> getFileView({required String fileId
+}) {
         final String path = '/storage/files/{fileId}/view'.replaceAll(RegExp('{fileId}'), fileId);
 
         final Map<String, dynamic> params = {

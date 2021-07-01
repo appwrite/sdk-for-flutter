@@ -26,8 +26,8 @@ class Client {
         
         this.headers = {
             'content-type': 'application/json',
-            'x-sdk-version': 'appwrite:flutter:0.6.4',
-            'X-Appwrite-Response-Format' : '0.8.0',
+            'x-sdk-version': 'appwrite:flutter:0.7.0',
+            'X-Appwrite-Response-Format' : '0.9.0',
         };
 
         this.config = {};
@@ -115,7 +115,7 @@ class Client {
                 final macinfo = await deviceInfoPlugin.macOsInfo;
                 device = '(Macintosh; ${macinfo.model})';
             }
-            addHeader('user-agent', '${packageInfo.appName}/${packageInfo.version} $device');
+            addHeader('user-agent', '${packageInfo.packageName}/${packageInfo.version} $device');
         } else {
             // if web set withCredentials true to make cookies work
             _prefs = await SharedPreferences.getInstance();
@@ -141,7 +141,9 @@ class Client {
             await this.init();
         }
 
-        params.removeWhere((key,value) => value == null);
+        if(params.isNotEmpty) {
+            params.removeWhere((key,value) => value == null);
+        }
 
         // Origin is hardcoded for testing
         Options options = Options(
