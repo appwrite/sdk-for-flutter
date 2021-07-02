@@ -18,7 +18,7 @@ class Teams extends Service {
             'search': search,
             'limit': limit,
             'offset': offset,
-            'orderType': orderType?.name(),
+            'orderType': orderType,
         };
 
         final Map<String, String> headers = {
@@ -117,7 +117,7 @@ class Teams extends Service {
             'search': search,
             'limit': limit,
             'offset': offset,
-            'orderType': orderType?.name(),
+            'orderType': orderType,
         };
 
         final Map<String, String> headers = {

@@ -19,7 +19,7 @@ class Database extends Service {
             'limit': limit,
             'offset': offset,
             'orderField': orderField,
-            'orderType': orderType?.name(),
+            'orderType': orderType,
             'orderCast': orderCast,
             'search': search,
         };
