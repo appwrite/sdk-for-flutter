@@ -7,11 +7,3 @@ extension HttpMethodString on HttpMethod {
     return this.toString().split('.').last.toUpperCase();
   }
 }
-
-enum OrderType { asc, desc }
-
-extension OrderTypeString on OrderType {
-  String name() {
-    return this.toString().split('.').last.toUpperCase();
-  }
-}

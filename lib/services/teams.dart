@@ -11,14 +11,14 @@ class Teams extends Service {
      /// of the project's teams. [Learn more about different API
      /// modes](/docs/admin).
      ///
-    Future<Response> list({String? search, int? limit, int? offset, OrderType? orderType}) {
+    Future<Response> list({String? search, int? limit, int? offset, String? orderType}) {
         final String path = '/teams';
 
         final Map<String, dynamic> params = {
             'search': search,
             'limit': limit,
             'offset': offset,
-            'orderType': orderType?.name(),
+            'orderType': orderType,
         };
 
         final Map<String, String> headers = {
@@ -110,14 +110,14 @@ class Teams extends Service {
      /// Get a team members by the team unique ID. All team members have read access
      /// for this list of resources.
      ///
-    Future<Response> getMemberships({required String teamId, String? search, int? limit, int? offset, OrderType? orderType}) {
+    Future<Response> getMemberships({required String teamId, String? search, int? limit, int? offset, String? orderType}) {
         final String path = '/teams/{teamId}/memberships'.replaceAll(RegExp('{teamId}'), teamId);
 
         final Map<String, dynamic> params = {
             'search': search,
             'limit': limit,
             'offset': offset,
-            'orderType': orderType?.name(),
+            'orderType': orderType,
         };
 
         final Map<String, String> headers = {

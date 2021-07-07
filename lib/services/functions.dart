@@ -11,14 +11,14 @@ class Functions extends Service {
      /// return a list of all of the project's executions. [Learn more about
      /// different API modes](/docs/admin).
      ///
-    Future<Response> listExecutions({required String functionId, String? search, int? limit, int? offset, OrderType? orderType}) {
+    Future<Response> listExecutions({required String functionId, String? search, int? limit, int? offset, String? orderType}) {
         final String path = '/functions/{functionId}/executions'.replaceAll(RegExp('{functionId}'), functionId);
 
         final Map<String, dynamic> params = {
             'search': search,
             'limit': limit,
             'offset': offset,
-            'orderType': orderType?.name(),
+            'orderType': orderType,
         };
 
         final Map<String, String> headers = {

@@ -11,7 +11,7 @@ class Database extends Service {
      /// of the project's documents. [Learn more about different API
      /// modes](/docs/admin).
      ///
-    Future<Response> listDocuments({required String collectionId, List? filters, int? limit, int? offset, String? orderField, OrderType? orderType, String? orderCast, String? search}) {
+    Future<Response> listDocuments({required String collectionId, List? filters, int? limit, int? offset, String? orderField, String? orderType, String? orderCast, String? search}) {
         final String path = '/database/collections/{collectionId}/documents'.replaceAll(RegExp('{collectionId}'), collectionId);
 
         final Map<String, dynamic> params = {
@@ -19,7 +19,7 @@ class Database extends Service {
             'limit': limit,
             'offset': offset,
             'orderField': orderField,
-            'orderType': orderType?.name(),
+            'orderType': orderType,
             'orderCast': orderCast,
             'search': search,
         };

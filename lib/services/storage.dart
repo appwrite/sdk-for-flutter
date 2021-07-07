@@ -10,14 +10,14 @@ class Storage extends Service {
      /// your results. On admin mode, this endpoint will return a list of all of the
      /// project's files. [Learn more about different API modes](/docs/admin).
      ///
-    Future<Response> listFiles({String? search, int? limit, int? offset, OrderType? orderType}) {
+    Future<Response> listFiles({String? search, int? limit, int? offset, String? orderType}) {
         final String path = '/storage/files';
 
         final Map<String, dynamic> params = {
             'search': search,
             'limit': limit,
             'offset': offset,
-            'orderType': orderType?.name(),
+            'orderType': orderType,
         };
 
         final Map<String, String> headers = {
@@ -132,12 +132,13 @@ class Storage extends Service {
      /// and spreadsheets, will return the file icon image. You can also pass query
      /// string arguments for cutting and resizing your preview image.
      ///
-    Future<Response> getFilePreview({required String fileId, int? width, int? height, int? quality, int? borderWidth, String? borderColor, int? borderRadius, double? opacity, int? rotation, String? background, String? output}) {
+    Future<Response> getFilePreview({required String fileId, int? width, int? height, String? gravity, int? quality, int? borderWidth, String? borderColor, int? borderRadius, double? opacity, int? rotation, String? background, String? output}) {
         final String path = '/storage/files/{fileId}/preview'.replaceAll(RegExp('{fileId}'), fileId);
 
         final Map<String, dynamic> params = {
             'width': width,
             'height': height,
+            'gravity': gravity,
             'quality': quality,
             'borderWidth': borderWidth,
             'borderColor': borderColor,
