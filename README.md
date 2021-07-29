@@ -21,7 +21,7 @@ Add this to your package's `pubspec.yaml` file:
 
 ```yml
 dependencies:
-  appwrite: ^0.7.0
+  appwrite: ^0.7.1
 ```
 
 You can install packages from the command line:
@@ -161,7 +161,7 @@ try {
 ```
 
 ### Learn more
-You can use following resources to learn more and get help
+You can use the following resources to learn more and get help
 - 🚀 [Getting Started Tutorial](https://appwrite.io/docs/getting-started-for-flutter)
 - 📜 [Appwrite Docs](https://appwrite.io/docs)
 - 💬 [Discord Community](https://appwrite.io/discord)

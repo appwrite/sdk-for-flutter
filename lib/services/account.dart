@@ -392,7 +392,7 @@ class Account extends Service {
                 cookie.path = '/';
                 List<Cookie> cookies = [cookie];
                 await client.init();
-                client.cookieJar.saveFromResponse(Uri.parse(client.endPoint), cookies);
+                await client.cookieJar.saveFromResponse(Uri.parse(client.endPoint), cookies);
             });
         }
 
