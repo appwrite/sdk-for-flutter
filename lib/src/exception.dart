@@ -1,5 +1,3 @@
-part of appwrite;
-
 class AppwriteException implements Exception {
   final String? message;
   final int? code;
@@ -7,4 +5,8 @@ class AppwriteException implements Exception {
 
   AppwriteException([this.message = "", this.code, this.response]);
   
+  String toString() {
+    if (message == null) return "AppwriteException";
+    return "AppwriteException: $message (${code ?? 0})";
+  }
 }

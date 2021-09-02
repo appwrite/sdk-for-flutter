@@ -33,7 +33,7 @@ class Storage extends Service {
      /// assigned to read and write access unless he has passed custom values for
      /// read and write arguments.
      ///
-    Future<Response> createFile({required MultipartFile file, List? read, List? write}) {
+    Future<Response> createFile({required http.MultipartFile file, List? read, List? write}) {
         final String path = '/storage/files';
 
         final Map<String, dynamic> params = {

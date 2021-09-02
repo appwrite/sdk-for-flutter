@@ -231,7 +231,7 @@ class Account extends Service {
         return client.call(HttpMethod.post, path: path, params: params, headers: headers);
     }
 
-     /// Complete Password Recovery
+     /// Create Password Recovery (confirmation)
      ///
      /// Use this endpoint to complete the user account password reset. Both the
      /// **userId** and **secret** arguments will be passed as query parameters to
@@ -338,12 +338,77 @@ class Account extends Service {
         return client.call(HttpMethod.post, path: path, params: params, headers: headers);
     }
 
+     /// Create Magic URL session
+     ///
+     /// Sends the user an email with a secret key for creating a session. When the
+     /// user clicks the link in the email, the user is redirected back to the URL
+     /// you provided with the secret key and userId values attached to the URL
+     /// query string. Use the query string parameters to submit a request to the
+     /// [PUT
+     /// /account/sessions/magic-url](/docs/client/account#accountUpdateMagicURLSession)
+     /// endpoint to complete the login process. The link sent to the user's email
+     /// address is valid for 1 hour. If you are on a mobile device you can leave
+     /// the URL parameter empty, so that the login completion will be handled by
+     /// your Appwrite instance by default.
+     ///
+    Future<Response> createMagicURLSession({required String email, String? url}) {
+        final String path = '/account/sessions/magic-url';
+
+        final Map<String, dynamic> params = {
+            'email': email,
+            'url': url,
+        };
+
+        final Map<String, String> headers = {
+            'content-type': 'application/json',
+        };
+
+        return client.call(HttpMethod.post, path: path, params: params, headers: headers);
+    }
+
+     /// Create Magic URL session (confirmation)
+     ///
+     /// Use this endpoint to complete creating the session with the Magic URL. Both
+     /// the **userId** and **secret** arguments will be passed as query parameters
+     /// to the redirect URL you have provided when sending your request to the
+     /// [POST
+     /// /account/sessions/magic-url](/docs/client/account#accountCreateMagicURLSession)
+     /// endpoint.
+     /// 
+     /// Please note that in order to avoid a [Redirect
+     /// Attack](https://github.com/OWASP/CheatSheetSeries/blob/master/cheatsheets/Unvalidated_Redirects_and_Forwards_Cheat_Sheet.md)
+     /// the only valid redirect URLs are the ones from domains you have set when
+     /// adding your platforms in the console interface.
+     ///
+    Future<Response> updateMagicURLSession({required String userId, required String secret}) {
+        final String path = '/account/sessions/magic-url';
+
+        final Map<String, dynamic> params = {
+            'userId': userId,
+            'secret': secret,
+        };
+
+        final Map<String, String> headers = {
+            'content-type': 'application/json',
+        };
+
+        return client.call(HttpMethod.put, path: path, params: params, headers: headers);
+    }
+
      /// Create Account Session with OAuth2
      ///
      /// Allow the user to login to their account using the OAuth2 provider of their
      /// choice. Each OAuth2 provider should be enabled from the Appwrite console
      /// first. Use the success and failure arguments to provide a redirect URL's
      /// back to your app when login is completed.
+     /// 
+     /// If there is already an active session, the new session will be attached to
+     /// the logged-in account. If there are no active sessions, the server will
+     /// attempt to look for a user with the same email address as the email
+     /// received from the OAuth2 provider and attach the new session to the
+     /// existing user. If no matching user is found - the server will create a new
+     /// user..
+     /// 
      ///
     Future createOAuth2Session({required String provider, String? success, String? failure, List? scopes}) {
         final String path = '/account/sessions/oauth2/{provider}'.replaceAll(RegExp('{provider}'), provider);
@@ -377,23 +442,10 @@ class Account extends Service {
         );
 
         if(kIsWeb) {
-          html.window.location.href = url.toString();
+          redirect(url.toString());
           return Future.value();
         }else{
-
-          return FlutterWebAuth.authenticate(
-            url: url.toString(),
-            callbackUrlScheme: "appwrite-callback-" + client.config['project']!
-            ).then((value) async {
-                Uri url = Uri.parse(value);
-                Cookie cookie = new Cookie(url.queryParameters['key']!, url.queryParameters['secret']!);
-                cookie.domain = Uri.parse(client.endPoint).host;
-                cookie.httpOnly = true;
-                cookie.path = '/';
-                List<Cookie> cookies = [cookie];
-                await client.init();
-                await client.cookieJar.saveFromResponse(Uri.parse(client.endPoint), cookies);
-            });
+          return client.webAuth(url);
         }
 
     }
@@ -467,7 +519,7 @@ class Account extends Service {
         return client.call(HttpMethod.post, path: path, params: params, headers: headers);
     }
 
-     /// Complete Email Verification
+     /// Create Email Verification (confirmation)
      ///
      /// Use this endpoint to complete the user email verification process. Use both
      /// the **userId** and **secret** parameters that were attached to your app URL
