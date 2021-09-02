@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'package:collection/collection.dart';
 import 'package:flutter/foundation.dart';
 
 class RealtimeMessage {
@@ -59,12 +58,11 @@ class RealtimeMessage {
   @override
   bool operator ==(Object other) {
     if (identical(this, other)) return true;
-    final collectionEquals = const DeepCollectionEquality().equals;
   
     return other is RealtimeMessage &&
       other.event == event &&
-      collectionEquals(other.payload, payload) &&
-      collectionEquals(other.channels, channels) &&
+      mapEquals(other.payload, payload) &&
+      listEquals(other.channels, channels) &&
       other.timestamp == timestamp;
   }
 
