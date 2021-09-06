@@ -5,7 +5,7 @@ class RealtimeMessage {
   final String event;
   final Map<String, dynamic> payload;
   final List<String> channels;
-  final DateTime timestamp;
+  final int timestamp;
   RealtimeMessage({
     required this.event,
     required this.payload,
@@ -17,7 +17,7 @@ class RealtimeMessage {
     String? event,
     Map<String, dynamic>? payload,
     List<String>? channels,
-    DateTime? timestamp,
+    int? timestamp,
   }) {
     return RealtimeMessage(
       event: event ?? this.event,
@@ -32,7 +32,7 @@ class RealtimeMessage {
       'event': event,
       'payload': payload,
       'channels': channels,
-      'timestamp': timestamp.millisecondsSinceEpoch,
+      'timestamp': timestamp,
     };
   }
 
@@ -41,7 +41,7 @@ class RealtimeMessage {
       event: map['event'],
       payload: Map<String, dynamic>.from(map['payload'] ?? <String, dynamic>{}),
       channels: List<String>.from(map['channels'] ?? []),
-      timestamp: DateTime.fromMillisecondsSinceEpoch(map['timestamp']),
+      timestamp: map['timestamp'],
     );
   }
 
