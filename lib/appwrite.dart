@@ -15,6 +15,7 @@ export 'src/client.dart';
 export 'src/exception.dart';
 export 'src/realtime.dart';
 export 'src/realtime_subscription.dart';
+export 'src/realtime_message.dart';
 export 'package:http/http.dart' show MultipartFile;
 
 part 'services/account.dart';

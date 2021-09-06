@@ -58,12 +58,12 @@ class RealtimeMessage {
   @override
   bool operator ==(Object other) {
     if (identical(this, other)) return true;
-  
+
     return other is RealtimeMessage &&
-      other.event == event &&
-      mapEquals(other.payload, payload) &&
-      listEquals(other.channels, channels) &&
-      other.timestamp == timestamp;
+        other.event == event &&
+        mapEquals(other.payload, payload) &&
+        listEquals(other.channels, channels) &&
+        other.timestamp == timestamp;
   }
 
   @override

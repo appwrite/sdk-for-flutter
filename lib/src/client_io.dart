@@ -52,7 +52,7 @@ class ClientIO extends ClientBase with ClientMixin {
         .replaceFirst('http://', 'ws://');
     this._headers = {
       'content-type': 'application/json',
-      'x-sdk-version': 'appwrite:flutter:1.0.0',
+      'x-sdk-version': 'appwrite:flutter:1.0.1',
       'X-Appwrite-Response-Format' : '0.10.0',
     };
 
@@ -192,11 +192,17 @@ class ClientIO extends ClientBase with ClientMixin {
 
   Future webAuth(Uri url) {
     return FlutterWebAuth.authenticate(
-            url: url.toString(),
-            callbackUrlScheme: "appwrite-callback-" + config['project']!)
-        .then((value) async {
-      Cookie cookie = new Cookie(
-          url.queryParameters['key']!, url.queryParameters['secret']!);
+      url: url.toString(),
+      callbackUrlScheme: "appwrite-callback-" + config['project']!,
+    ).then((value) async {
+      Uri url = Uri.parse(value);
+      final key = url.queryParameters['key'];
+      final secret = url.queryParameters['secret'];
+      if (key == null || secret == null) {
+        throw AppwriteException(
+            "Invalid OAuth2 Response. Key and Secret not available.", 500);
+      }
+      Cookie cookie = new Cookie(key, secret);
       cookie.domain = Uri.parse(_endPoint).host;
       cookie.httpOnly = true;
       cookie.path = '/';
