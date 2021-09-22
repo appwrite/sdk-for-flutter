@@ -1,5 +1,7 @@
-## 1.0.3
+## 1.0.4
 - Fix user agent by using `packageName` instead of `appName`
+
+## 1.0.3
 - Upgrade `flutter_web_auth` to `0.3.1`
 
 ## 1.0.2
