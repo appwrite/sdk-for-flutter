@@ -52,7 +52,7 @@ class ClientIO extends ClientBase with ClientMixin {
         .replaceFirst('http://', 'ws://');
     this._headers = {
       'content-type': 'application/json',
-      'x-sdk-version': 'appwrite:flutter:1.0.3',
+      'x-sdk-version': 'appwrite:flutter:1.0.4',
       'X-Appwrite-Response-Format' : '0.10.0',
     };
 
@@ -152,7 +152,7 @@ class ClientIO extends ClientBase with ClientMixin {
       device = '(Macintosh; ${macinfo.model})';
     }
     addHeader(
-        'user-agent', '${packageInfo.appName}/${packageInfo.version} $device');
+        'user-agent', '${packageInfo.packageName}/${packageInfo.version} $device');
 
     _initialized = true;
   }
