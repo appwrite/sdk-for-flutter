@@ -1,3 +1,7 @@
+## 1.0.3
+- Fix user agent by using `packageName` instead of `appName`
+- Upgrade `flutter_web_auth` to `0.3.1`
+
 ## 1.0.2
 - Fix timestamp in Realtime Response to Integer
 
