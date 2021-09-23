@@ -1,6 +1,5 @@
 part of appwrite;
 
-
 class Teams extends Service {
     Teams(Client client): super(client);
 
@@ -11,7 +10,7 @@ class Teams extends Service {
      /// of the project's teams. [Learn more about different API
      /// modes](/docs/admin).
      ///
-    Future<Response> list({String? search, int? limit, int? offset, String? orderType}) {
+     Future<models.TeamList> list({String? search, int? limit, int? offset, String? orderType}) async {
         final String path = '/teams';
 
         final Map<String, dynamic> params = {
@@ -25,7 +24,8 @@ class Teams extends Service {
             'content-type': 'application/json',
         };
 
-        return client.call(HttpMethod.get, path: path, params: params, headers: headers);
+        final res = await client.call(HttpMethod.get, path: path, params: params, headers: headers);
+        return models.TeamList.fromMap(res.data);
     }
 
      /// Create Team
@@ -35,7 +35,7 @@ class Teams extends Service {
      /// who will be able add new owners and update or delete the team from your
      /// project.
      ///
-    Future<Response> create({required String name, List? roles}) {
+     Future<models.Team> create({required String name, List? roles}) async {
         final String path = '/teams';
 
         final Map<String, dynamic> params = {
@@ -47,7 +47,8 @@ class Teams extends Service {
             'content-type': 'application/json',
         };
 
-        return client.call(HttpMethod.post, path: path, params: params, headers: headers);
+        final res = await client.call(HttpMethod.post, path: path, params: params, headers: headers);
+        return models.Team.fromMap(res.data);
     }
 
      /// Get Team
@@ -55,7 +56,7 @@ class Teams extends Service {
      /// Get a team by its unique ID. All team members have read access for this
      /// resource.
      ///
-    Future<Response> get({required String teamId}) {
+     Future<models.Team> get({required String teamId}) async {
         final String path = '/teams/{teamId}'.replaceAll(RegExp('{teamId}'), teamId);
 
         final Map<String, dynamic> params = {
@@ -65,7 +66,8 @@ class Teams extends Service {
             'content-type': 'application/json',
         };
 
-        return client.call(HttpMethod.get, path: path, params: params, headers: headers);
+        final res = await client.call(HttpMethod.get, path: path, params: params, headers: headers);
+        return models.Team.fromMap(res.data);
     }
 
      /// Update Team
@@ -73,7 +75,7 @@ class Teams extends Service {
      /// Update a team by its unique ID. Only team owners have write access for this
      /// resource.
      ///
-    Future<Response> update({required String teamId, required String name}) {
+     Future<models.Team> update({required String teamId, required String name}) async {
         final String path = '/teams/{teamId}'.replaceAll(RegExp('{teamId}'), teamId);
 
         final Map<String, dynamic> params = {
@@ -84,7 +86,8 @@ class Teams extends Service {
             'content-type': 'application/json',
         };
 
-        return client.call(HttpMethod.put, path: path, params: params, headers: headers);
+        final res = await client.call(HttpMethod.put, path: path, params: params, headers: headers);
+        return models.Team.fromMap(res.data);
     }
 
      /// Delete Team
@@ -92,7 +95,7 @@ class Teams extends Service {
      /// Delete a team by its unique ID. Only team owners have write access for this
      /// resource.
      ///
-    Future<Response> delete({required String teamId}) {
+     Future delete({required String teamId}) async {
         final String path = '/teams/{teamId}'.replaceAll(RegExp('{teamId}'), teamId);
 
         final Map<String, dynamic> params = {
@@ -102,7 +105,8 @@ class Teams extends Service {
             'content-type': 'application/json',
         };
 
-        return client.call(HttpMethod.delete, path: path, params: params, headers: headers);
+        final res = await client.call(HttpMethod.delete, path: path, params: params, headers: headers);
+        return  res.data;
     }
 
      /// Get Team Memberships
@@ -110,7 +114,7 @@ class Teams extends Service {
      /// Get a team members by the team unique ID. All team members have read access
      /// for this list of resources.
      ///
-    Future<Response> getMemberships({required String teamId, String? search, int? limit, int? offset, String? orderType}) {
+     Future<models.MembershipList> getMemberships({required String teamId, String? search, int? limit, int? offset, String? orderType}) async {
         final String path = '/teams/{teamId}/memberships'.replaceAll(RegExp('{teamId}'), teamId);
 
         final Map<String, dynamic> params = {
@@ -124,7 +128,8 @@ class Teams extends Service {
             'content-type': 'application/json',
         };
 
-        return client.call(HttpMethod.get, path: path, params: params, headers: headers);
+        final res = await client.call(HttpMethod.get, path: path, params: params, headers: headers);
+        return models.MembershipList.fromMap(res.data);
     }
 
      /// Create Team Membership
@@ -146,7 +151,7 @@ class Teams extends Service {
      /// the only valid redirect URL's are the once from domains you have set when
      /// added your platforms in the console interface.
      ///
-    Future<Response> createMembership({required String teamId, required String email, required List roles, required String url, String? name}) {
+     Future<models.Membership> createMembership({required String teamId, required String email, required List roles, required String url, String? name}) async {
         final String path = '/teams/{teamId}/memberships'.replaceAll(RegExp('{teamId}'), teamId);
 
         final Map<String, dynamic> params = {
@@ -160,11 +165,12 @@ class Teams extends Service {
             'content-type': 'application/json',
         };
 
-        return client.call(HttpMethod.post, path: path, params: params, headers: headers);
+        final res = await client.call(HttpMethod.post, path: path, params: params, headers: headers);
+        return models.Membership.fromMap(res.data);
     }
 
      /// Update Membership Roles
-    Future<Response> updateMembershipRoles({required String teamId, required String membershipId, required List roles}) {
+     Future<models.Membership> updateMembershipRoles({required String teamId, required String membershipId, required List roles}) async {
         final String path = '/teams/{teamId}/memberships/{membershipId}'.replaceAll(RegExp('{teamId}'), teamId).replaceAll(RegExp('{membershipId}'), membershipId);
 
         final Map<String, dynamic> params = {
@@ -175,7 +181,8 @@ class Teams extends Service {
             'content-type': 'application/json',
         };
 
-        return client.call(HttpMethod.patch, path: path, params: params, headers: headers);
+        final res = await client.call(HttpMethod.patch, path: path, params: params, headers: headers);
+        return models.Membership.fromMap(res.data);
     }
 
      /// Delete Team Membership
@@ -184,7 +191,7 @@ class Teams extends Service {
      /// the membership of any other team member. You can also use this endpoint to
      /// delete a user membership even if it is not accepted.
      ///
-    Future<Response> deleteMembership({required String teamId, required String membershipId}) {
+     Future deleteMembership({required String teamId, required String membershipId}) async {
         final String path = '/teams/{teamId}/memberships/{membershipId}'.replaceAll(RegExp('{teamId}'), teamId).replaceAll(RegExp('{membershipId}'), membershipId);
 
         final Map<String, dynamic> params = {
@@ -194,7 +201,8 @@ class Teams extends Service {
             'content-type': 'application/json',
         };
 
-        return client.call(HttpMethod.delete, path: path, params: params, headers: headers);
+        final res = await client.call(HttpMethod.delete, path: path, params: params, headers: headers);
+        return  res.data;
     }
 
      /// Update Team Membership Status
@@ -203,7 +211,7 @@ class Teams extends Service {
      /// after being redirected back to your app from the invitation email recieved
      /// by the user.
      ///
-    Future<Response> updateMembershipStatus({required String teamId, required String membershipId, required String userId, required String secret}) {
+     Future<models.Membership> updateMembershipStatus({required String teamId, required String membershipId, required String userId, required String secret}) async {
         final String path = '/teams/{teamId}/memberships/{membershipId}/status'.replaceAll(RegExp('{teamId}'), teamId).replaceAll(RegExp('{membershipId}'), membershipId);
 
         final Map<String, dynamic> params = {
@@ -215,6 +223,7 @@ class Teams extends Service {
             'content-type': 'application/json',
         };
 
-        return client.call(HttpMethod.patch, path: path, params: params, headers: headers);
+        final res = await client.call(HttpMethod.patch, path: path, params: params, headers: headers);
+        return models.Membership.fromMap(res.data);
     }
 }

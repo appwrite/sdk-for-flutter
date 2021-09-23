@@ -1,6 +1,7 @@
 library appwrite;
 
 import 'dart:async';
+import 'dart:typed_data';
 import 'package:http/http.dart' as http;
 import 'package:flutter/foundation.dart';
 import 'src/redirect_stub.dart'
@@ -9,6 +10,7 @@ import 'src/enums.dart';
 import 'src/client.dart';
 import 'src/response.dart';
 import 'src/service.dart';
+import 'models.dart' as models;
 
 export 'src/response.dart';
 export 'src/client.dart';

@@ -1,0 +1,35 @@
+part of appwrite.models;
+
+class Document {
+    final String $id;
+    final String $collection;
+    final Permissions $permissions;
+    final Map<String, dynamic> data;
+
+    Document({
+        required this.$id,
+        required this.$collection,
+        required this.$permissions,
+        required this.data,
+    });
+
+    factory Document.fromMap(Map<String, dynamic> map) {
+        return Document(
+            $id: map['\$id'],
+            $collection: map['\$collection'],
+            $permissions: Permissions.fromMap(map['\$permissions']),
+            data: map,
+        );
+    }
+
+    Map<String, dynamic> toMap() {
+        return {
+            "\$id": $id,
+            "\$collection": $collection,
+            "\$permissions": $permissions.toMap(),
+            "data": data,
+        };
+    }
+
+    T convertTo<T>(T Function(Map) fromJson) => fromJson(data);
+}
