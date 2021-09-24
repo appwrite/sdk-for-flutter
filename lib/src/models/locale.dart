@@ -1,12 +1,20 @@
 part of appwrite.models;
 
+/// Locale
 class Locale {
+    /// User IP address.
     final String ip;
+    /// Country code in [ISO 3166-1](http://en.wikipedia.org/wiki/ISO_3166-1) two-character format
     final String countryCode;
+    /// Country name. This field support localization.
     final String country;
+    /// Continent code. A two character continent code &quot;AF&quot; for Africa, &quot;AN&quot; for Antarctica, &quot;AS&quot; for Asia, &quot;EU&quot; for Europe, &quot;NA&quot; for North America, &quot;OC&quot; for Oceania, and &quot;SA&quot; for South America.
     final String continentCode;
+    /// Continent name. This field support localization.
     final String continent;
+    /// True if country is part of the Europian Union.
     final bool eu;
+    /// Currency code in [ISO 4217-1](http://en.wikipedia.org/wiki/ISO_4217) three-character format
     final String currency;
 
     Locale({

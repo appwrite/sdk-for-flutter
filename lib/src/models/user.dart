@@ -1,13 +1,22 @@
 part of appwrite.models;
 
+/// User
 class User {
+    /// User ID.
     final String $id;
+    /// User name.
     final String name;
+    /// User registration date in Unix timestamp.
     final int registration;
+    /// User status. 0 for Unactivated, 1 for active and 2 is blocked.
     final int status;
+    /// Unix timestamp of the most recent password update
     final int passwordUpdate;
+    /// User email address.
     final String email;
+    /// Email verification status.
     final bool emailVerification;
+    /// User preferences as a key-value object
     final Preferences prefs;
 
     User({

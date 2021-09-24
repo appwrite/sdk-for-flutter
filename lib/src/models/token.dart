@@ -1,9 +1,14 @@
 part of appwrite.models;
 
+/// Token
 class Token {
+    /// Token ID.
     final String $id;
+    /// User ID.
     final String userId;
+    /// Token secret key. This will return an empty string unless the response is returned using an API key or as part of a webhook payload.
     final String secret;
+    /// Token expiration date in Unix timestamp.
     final int expire;
 
     Token({

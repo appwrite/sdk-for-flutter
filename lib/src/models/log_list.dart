@@ -1,6 +1,8 @@
 part of appwrite.models;
 
+/// Logs List
 class LogList {
+    /// List of logs.
     final List<Log> logs;
 
     LogList({

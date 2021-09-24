@@ -1,7 +1,10 @@
 part of appwrite.models;
 
+/// Country
 class Country {
+    /// Country name.
     final String name;
+    /// Country two-character ISO 3166-1 alpha code.
     final String code;
 
     Country({

@@ -1,7 +1,10 @@
 part of appwrite.models;
 
+/// Phones List
 class PhoneList {
+    /// Total sum of items in the list.
     final int sum;
+    /// List of phones.
     final List<Phone> phones;
 
     PhoneList({

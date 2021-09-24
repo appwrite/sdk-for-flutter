@@ -1,8 +1,12 @@
 part of appwrite.models;
 
+/// Phone
 class Phone {
+    /// Phone code.
     final String code;
+    /// Country two-character ISO 3166-1 alpha code.
     final String countryCode;
+    /// Country name.
     final String countryName;
 
     Phone({

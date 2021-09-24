@@ -1,7 +1,10 @@
 part of appwrite.models;
 
+/// Permissions
 class Permissions {
+    /// Read permissions.
     final List read;
+    /// Write permissions.
     final List write;
 
     Permissions({

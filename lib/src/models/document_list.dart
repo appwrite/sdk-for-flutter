@@ -1,7 +1,10 @@
 part of appwrite.models;
 
+/// Documents List
 class DocumentList {
+    /// Total sum of items in the list.
     final int sum;
+    /// List of documents.
     final List<Document> documents;
 
     DocumentList({

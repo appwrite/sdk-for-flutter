@@ -1,27 +1,50 @@
 part of appwrite.models;
 
+/// Session
 class Session {
+    /// Session ID.
     final String $id;
+    /// User ID.
     final String userId;
+    /// Session expiration date in Unix timestamp.
     final int expire;
+    /// Session Provider.
     final String provider;
+    /// Session Provider User ID.
     final String providerUid;
+    /// Session Provider Token.
     final String providerToken;
+    /// IP in use when the session was created.
     final String ip;
+    /// Operating system code name. View list of [available options](https://github.com/appwrite/appwrite/blob/master/docs/lists/os.json).
     final String osCode;
+    /// Operating system name.
     final String osName;
+    /// Operating system version.
     final String osVersion;
+    /// Client type.
     final String clientType;
+    /// Client code name. View list of [available options](https://github.com/appwrite/appwrite/blob/master/docs/lists/clients.json).
     final String clientCode;
+    /// Client name.
     final String clientName;
+    /// Client version.
     final String clientVersion;
+    /// Client engine name.
     final String clientEngine;
+    /// Client engine name.
     final String clientEngineVersion;
+    /// Device name.
     final String deviceName;
+    /// Device brand name.
     final String deviceBrand;
+    /// Device model name.
     final String deviceModel;
+    /// Country two-character ISO 3166-1 alpha code.
     final String countryCode;
+    /// Country name.
     final String countryName;
+    /// Returns true if this the current user session.
     final bool current;
 
     Session({

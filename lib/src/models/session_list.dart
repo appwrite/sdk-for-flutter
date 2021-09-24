@@ -1,7 +1,10 @@
 part of appwrite.models;
 
+/// Sessions List
 class SessionList {
+    /// Total sum of items in the list.
     final int sum;
+    /// List of sessions.
     final List<Session> sessions;
 
     SessionList({

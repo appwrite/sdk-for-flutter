@@ -8,7 +8,6 @@ import 'src/redirect_stub.dart'
     if (dart.library.html) 'src/redirect_browser.dart';
 import 'src/enums.dart';
 import 'src/client.dart';
-import 'src/response.dart';
 import 'src/service.dart';
 import 'models.dart' as models;
 

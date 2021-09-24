@@ -1,7 +1,10 @@
 part of appwrite.models;
 
+/// Teams List
 class TeamList {
+    /// Total sum of items in the list.
     final int sum;
+    /// List of teams.
     final List<Team> teams;
 
     TeamList({

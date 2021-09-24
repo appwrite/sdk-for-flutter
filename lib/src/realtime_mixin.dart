@@ -20,8 +20,8 @@ mixin RealtimeMixin {
   late WebSocketFactory getWebSocket;
   GetFallbackCookie? getFallbackCookie;
 
-  _closeConnection() {
-    _websok?.sink.close(normalClosure);
+  Future<dynamic> _closeConnection() async {
+    return await _websok?.sink.close(normalClosure);
   }
 
   _createSocket() async {
@@ -32,7 +32,7 @@ mixin RealtimeMixin {
     if (_lastUrl == uri.toString() && _websok?.closeCode == null) {
       return;
     }
-    _closeConnection();
+    await _closeConnection();
     _lastUrl = uri.toString();
     print('subscription: $_lastUrl');
     _websok = await getWebSocket(uri);
@@ -112,7 +112,7 @@ mixin RealtimeMixin {
     Future.delayed(Duration.zero, () => _createSocket());
     RealtimeSubscription subscription = RealtimeSubscription(
         stream: controller.stream,
-        close: () {
+        close: () async {
           controller.close();
           channels.forEach((channel) {
             this._channels[channel]!.remove(controller);
@@ -121,9 +121,9 @@ mixin RealtimeMixin {
             }
           });
           if(this._channels.isNotEmpty) {
-            Future.delayed(Duration.zero, () => _createSocket());
+            await Future.delayed(Duration.zero, () => _createSocket());
           } else {
-            _closeConnection();
+            await _closeConnection();
           }
         });
     return subscription;

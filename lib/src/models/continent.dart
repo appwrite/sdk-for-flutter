@@ -1,7 +1,10 @@
 part of appwrite.models;
 
+/// Continent
 class Continent {
+    /// Continent name.
     final String name;
+    /// Continent two letter code.
     final String code;
 
     Continent({

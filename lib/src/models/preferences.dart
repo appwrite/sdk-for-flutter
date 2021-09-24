@@ -1,5 +1,6 @@
 part of appwrite.models;
 
+/// Preferences
 class Preferences {
     final Map<String, dynamic> data;
 

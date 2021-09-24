@@ -1,22 +1,40 @@
 part of appwrite.models;
 
+/// Log
 class Log {
+    /// Event name.
     final String event;
+    /// IP session in use when the session was created.
     final String ip;
+    /// Log creation time in Unix timestamp.
     final int time;
+    /// Operating system code name. View list of [available options](https://github.com/appwrite/appwrite/blob/master/docs/lists/os.json).
     final String osCode;
+    /// Operating system name.
     final String osName;
+    /// Operating system version.
     final String osVersion;
+    /// Client type.
     final String clientType;
+    /// Client code name. View list of [available options](https://github.com/appwrite/appwrite/blob/master/docs/lists/clients.json).
     final String clientCode;
+    /// Client name.
     final String clientName;
+    /// Client version.
     final String clientVersion;
+    /// Client engine name.
     final String clientEngine;
+    /// Client engine name.
     final String clientEngineVersion;
+    /// Device name.
     final String deviceName;
+    /// Device brand name.
     final String deviceBrand;
+    /// Device model name.
     final String deviceModel;
+    /// Country two-character ISO 3166-1 alpha code.
     final String countryCode;
+    /// Country name.
     final String countryName;
 
     Log({

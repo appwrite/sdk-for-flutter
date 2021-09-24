@@ -1,7 +1,10 @@
 part of appwrite.models;
 
+/// Memberships List
 class MembershipList {
+    /// Total sum of items in the list.
     final int sum;
+    /// List of memberships.
     final List<Membership> memberships;
 
     MembershipList({

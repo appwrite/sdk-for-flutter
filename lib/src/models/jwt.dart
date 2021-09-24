@@ -1,6 +1,8 @@
 part of appwrite.models;
 
+/// JWT
 class Jwt {
+    /// JWT encoded string.
     final String jwt;
 
     Jwt({

@@ -1,7 +1,10 @@
 part of appwrite.models;
 
+/// Countries List
 class CountryList {
+    /// Total sum of items in the list.
     final int sum;
+    /// List of countries.
     final List<Country> countries;
 
     CountryList({

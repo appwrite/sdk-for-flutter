@@ -1,8 +1,12 @@
 part of appwrite.models;
 
+/// Document
 class Document {
+    /// Document ID.
     final String $id;
+    /// Collection ID.
     final String $collection;
+    /// Document permissions.
     final Permissions $permissions;
     final Map<String, dynamic> data;
 

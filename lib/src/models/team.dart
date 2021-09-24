@@ -1,9 +1,14 @@
 part of appwrite.models;
 
+/// Team
 class Team {
+    /// Team ID.
     final String $id;
+    /// Team name.
     final String name;
+    /// Team creation date in Unix timestamp.
     final int dateCreated;
+    /// Total sum of team members.
     final int sum;
 
     Team({

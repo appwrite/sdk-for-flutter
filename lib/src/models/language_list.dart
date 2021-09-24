@@ -1,7 +1,10 @@
 part of appwrite.models;
 
+/// Languages List
 class LanguageList {
+    /// Total sum of items in the list.
     final int sum;
+    /// List of languages.
     final List<Language> languages;
 
     LanguageList({
