@@ -21,7 +21,8 @@ mixin RealtimeMixin {
   GetFallbackCookie? getFallbackCookie;
 
   Future<dynamic> _closeConnection() async {
-    return await _websok?.sink.close(normalClosure);
+    await _websok?.sink.close(normalClosure);
+    _lastUrl = null;
   }
 
   _createSocket() async {
