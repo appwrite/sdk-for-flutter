@@ -53,7 +53,7 @@ class ClientIO extends ClientBase with ClientMixin {
     this._headers = {
       'content-type': 'application/json',
       'x-sdk-version': 'appwrite:flutter:2.0.2',
-      'X-Appwrite-Response-Format' : '0.10.0',
+      'X-Appwrite-Response-Format' : '0.11.0',
     };
 
     this.config = {};
