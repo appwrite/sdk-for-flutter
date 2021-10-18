@@ -28,15 +28,17 @@ mixin RealtimeMixin {
   _createSocket() async {
     final uri = _prepareUri();
     if (_websok == null) {
-      await getWebSocket(uri);
+      _websok = await getWebSocket(uri);
+      _lastUrl = uri.toString();
+    } else {
+      if (_lastUrl == uri.toString() && _websok?.closeCode == null) {
+        return;
+      }
+      await _closeConnection();
+      _lastUrl = uri.toString();
+      _websok = await getWebSocket(uri);
     }
-    if (_lastUrl == uri.toString() && _websok?.closeCode == null) {
-      return;
-    }
-    await _closeConnection();
-    _lastUrl = uri.toString();
     print('subscription: $_lastUrl');
-    _websok = await getWebSocket(uri);
 
     try {
       _websok?.stream.listen((response) {
