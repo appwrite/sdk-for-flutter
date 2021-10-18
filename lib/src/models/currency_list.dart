@@ -2,7 +2,7 @@ part of appwrite.models;
 
 /// Currencies List
 class CurrencyList {
-    /// Total sum of items in the list.
+    /// Total number of items available on the server.
     final int sum;
     /// List of currencies.
     final List<Currency> currencies;

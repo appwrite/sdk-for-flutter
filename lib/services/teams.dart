@@ -156,9 +156,9 @@ class Teams extends Service {
 
         final Map<String, dynamic> params = {
             'email': email,
-            'name': name,
             'roles': roles,
             'url': url,
+            'name': name,
         };
 
         final Map<String, String> headers = {

@@ -2,7 +2,7 @@ part of appwrite.models;
 
 /// Languages List
 class LanguageList {
-    /// Total sum of items in the list.
+    /// Total number of items available on the server.
     final int sum;
     /// List of languages.
     final List<Language> languages;

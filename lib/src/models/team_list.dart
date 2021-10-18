@@ -2,7 +2,7 @@ part of appwrite.models;
 
 /// Teams List
 class TeamList {
-    /// Total sum of items in the list.
+    /// Total number of items available on the server.
     final int sum;
     /// List of teams.
     final List<Team> teams;

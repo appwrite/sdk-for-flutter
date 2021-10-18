@@ -2,7 +2,7 @@ part of appwrite.models;
 
 /// Phones List
 class PhoneList {
-    /// Total sum of items in the list.
+    /// Total number of items available on the server.
     final int sum;
     /// List of phones.
     final List<Phone> phones;

@@ -2,7 +2,7 @@ part of appwrite.models;
 
 /// Executions List
 class ExecutionList {
-    /// Total sum of items in the list.
+    /// Total number of items available on the server.
     final int sum;
     /// List of executions.
     final List<Execution> executions;
