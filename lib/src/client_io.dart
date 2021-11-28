@@ -34,7 +34,7 @@ class ClientIO extends ClientBase with ClientMixin {
   late http.Client _httpClient;
   late HttpClient _nativeClient;
   late CookieJar _cookieJar;
-  List<Interceptor> _interceptors = [];
+  final List<Interceptor> _interceptors = [];
 
   bool get initialized => _initialized;
   CookieJar get cookieJar => _cookieJar;

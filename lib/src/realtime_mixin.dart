@@ -14,7 +14,7 @@ typedef GetFallbackCookie = String? Function();
 
 mixin RealtimeMixin {
   late Client client;
-  Map<String, List<StreamController<RealtimeMessage>>> _channels = {};
+  final Map<String, List<StreamController<RealtimeMessage>>> _channels = {};
   WebSocketChannel? _websok;
   String? _lastUrl;
   late WebSocketFactory getWebSocket;
