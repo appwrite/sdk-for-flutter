@@ -1,1 +1,4 @@
 include: package:lints/recommended.yaml
+linter:
+  rules:
+    avoid_function_literals_in_foreach_calls: false
