@@ -39,7 +39,7 @@ class ClientBrowser extends ClientBase with ClientMixin {
       'X-Appwrite-Response-Format' : '0.11.0',
     };
 
-    this.config = {};
+    config = {};
 
     assert(_endPoint.startsWith(RegExp("http://|https://")),
         "endPoint $_endPoint must start with 'http'");
@@ -77,7 +77,7 @@ class ClientBrowser extends ClientBase with ClientMixin {
 
   @override
   ClientBrowser setEndpoint(String endPoint) {
-    this._endPoint = endPoint;
+    _endPoint = endPoint;
     _endPointRealtime = endPoint
         .replaceFirst('https://', 'wss://')
         .replaceFirst('http://', 'ws://');
@@ -113,13 +113,13 @@ class ClientBrowser extends ClientBase with ClientMixin {
     Map<String, dynamic> params = const {},
     ResponseType? responseType,
   }) async {
-    await this.init();
+    await init();
 
     late http.Response res;
-    http.BaseRequest request = this.prepareRequest(
+    http.BaseRequest request = prepareRequest(
       method,
       uri: Uri.parse(_endPoint + path),
-      headers: {...this._headers!, ...headers},
+      headers: {..._headers!, ...headers},
       params: params,
     );
     try {
@@ -133,7 +133,7 @@ class ClientBrowser extends ClientBase with ClientMixin {
         addHeader('X-Fallback-Cookies', cookieFallback);
         html.window.localStorage['cookieFallback'] = cookieFallback;
       }
-      return this.prepareResponse(res, responseType: responseType);
+      return prepareResponse(res, responseType: responseType);
     } catch (e) {
       if (e is AppwriteException) {
         rethrow;

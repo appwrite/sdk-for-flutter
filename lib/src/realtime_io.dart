@@ -17,7 +17,7 @@ class RealtimeIO extends RealtimeBase with RealtimeMixin {
 
   RealtimeIO(Client client) {
     this.client = client;
-    this.getWebSocket = _getWebSocket;
+    getWebSocket = _getWebSocket;
   }
 
   Future<WebSocketChannel> _getWebSocket(Uri uri) async {

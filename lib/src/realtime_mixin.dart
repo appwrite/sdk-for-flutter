@@ -64,8 +64,8 @@ mixin RealtimeMixin {
           case 'event':
             final message = RealtimeMessage.fromMap(data.data);
             message.channels.forEach((channel) {
-              if (this._channels[channel] != null) {
-                this._channels[channel]!.forEach((stream) {
+              if (_channels[channel] != null) {
+                _channels[channel]!.forEach((stream) {
                   stream.sink.add(message);
                 });
               }
@@ -105,10 +105,10 @@ mixin RealtimeMixin {
   RealtimeSubscription subscribeTo(List<String> channels) {
     StreamController<RealtimeMessage> controller = StreamController.broadcast();
     channels.forEach((channel) {
-      if (!this._channels.containsKey(channel)) {
-        this._channels[channel] = [];
+      if (!_channels.containsKey(channel)) {
+        _channels[channel] = [];
       }
-      this._channels[channel]!.add(controller);
+      _channels[channel]!.add(controller);
     });
     Future.delayed(Duration.zero, () => _createSocket());
     RealtimeSubscription subscription = RealtimeSubscription(
@@ -116,12 +116,12 @@ mixin RealtimeMixin {
         close: () async {
           controller.close();
           channels.forEach((channel) {
-            this._channels[channel]!.remove(controller);
-            if (this._channels[channel]!.isEmpty) {
-              this._channels.remove(channel);
+            _channels[channel]!.remove(controller);
+            if (_channels[channel]!.isEmpty) {
+              _channels.remove(channel);
             }
           });
-          if(this._channels.isNotEmpty) {
+          if(_channels.isNotEmpty) {
             await Future.delayed(Duration.zero, () => _createSocket());
           } else {
             await _closeConnection();
