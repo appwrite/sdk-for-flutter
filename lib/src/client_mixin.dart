@@ -67,9 +67,7 @@ class ClientMixin {
   }
 
   Response prepareResponse(http.Response res, {ResponseType? responseType}) {
-    if (responseType == null) {
-      responseType = ResponseType.json;
-    }
+    responseType ??= ResponseType.json;
     if (res.statusCode >= 400) {
       if ((res.headers['content-type'] ?? '').contains('application/json')) {
         final response = json.decode(res.body);
