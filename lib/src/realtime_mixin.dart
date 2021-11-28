@@ -9,8 +9,8 @@ import 'realtime_message.dart';
 import 'realtime_response.dart';
 import 'realtime_response_connected.dart';
 
-typedef Future<WebSocketChannel> WebSocketFactory(Uri uri);
-typedef String? GetFallbackCookie();
+typedef WebSocketFactory = Future<WebSocketChannel> Function(Uri uri);
+typedef GetFallbackCookie = String? Function();
 
 mixin RealtimeMixin {
   late Client client;
