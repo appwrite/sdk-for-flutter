@@ -103,7 +103,7 @@ class ClientMixin {
 
   Future<http.Response> toResponse(http.StreamedResponse streamedResponse) async {
     if(streamedResponse.statusCode == 204) {
-        return new http.Response('',
+        return http.Response('',
           streamedResponse.statusCode,
           headers: streamedResponse.headers.map((k,v) => k.toLowerCase()=='content-type' ? MapEntry(k, 'text/plain') : MapEntry(k,v)),
           request: streamedResponse.request,

@@ -247,7 +247,7 @@ class Account extends Service {
      /// **userId** and **secret** arguments will be passed as query parameters to
      /// the redirect URL you have provided when sending your request to the [POST
      /// /account/recovery](/docs/client/account#accountCreateRecovery) endpoint.
-     /// 
+     ///
      /// Please note that in order to avoid a [Redirect
      /// Attack](https://github.com/OWASP/CheatSheetSeries/blob/master/cheatsheets/Unvalidated_Redirects_and_Forwards_Cheat_Sheet.md)
      /// the only valid redirect URLs are the ones from domains you have set when
@@ -390,7 +390,7 @@ class Account extends Service {
      /// [POST
      /// /account/sessions/magic-url](/docs/client/account#accountCreateMagicURLSession)
      /// endpoint.
-     /// 
+     ///
      /// Please note that in order to avoid a [Redirect
      /// Attack](https://github.com/OWASP/CheatSheetSeries/blob/master/cheatsheets/Unvalidated_Redirects_and_Forwards_Cheat_Sheet.md)
      /// the only valid redirect URLs are the ones from domains you have set when
@@ -418,14 +418,14 @@ class Account extends Service {
      /// choice. Each OAuth2 provider should be enabled from the Appwrite console
      /// first. Use the success and failure arguments to provide a redirect URL's
      /// back to your app when login is completed.
-     /// 
+     ///
      /// If there is already an active session, the new session will be attached to
      /// the logged-in account. If there are no active sessions, the server will
      /// attempt to look for a user with the same email address as the email
      /// received from the OAuth2 provider and attach the new session to the
      /// existing user. If no matching user is found - the server will create a new
      /// user..
-     /// 
+     ///
      ///
     Future createOAuth2Session({required String provider, String? success, String? failure, List? scopes}) async {
         final String path = '/account/sessions/oauth2/{provider}'.replaceAll(RegExp('{provider}'), provider);
@@ -441,7 +441,7 @@ class Account extends Service {
         final List query = [];
 
         params.forEach((key, value) {
-          if (value is List) { 
+          if (value is List) {
             for (var item in value) {
               query.add(Uri.encodeComponent(key + '[]') + '=' + Uri.encodeComponent(item));
             }
@@ -451,7 +451,7 @@ class Account extends Service {
         });
 
         Uri endpoint = Uri.parse(client.endPoint);
-        Uri url = new Uri(scheme: endpoint.scheme,
+        Uri url = Uri(scheme: endpoint.scheme,
           host: endpoint.host,
           port: endpoint.port,
           path: endpoint.path + path,
@@ -517,12 +517,12 @@ class Account extends Service {
      /// parameters. Learn more about how to [complete the verification
      /// process](/docs/client/account#accountUpdateVerification). The verification
      /// link sent to the user's email address is valid for 7 days.
-     /// 
+     ///
      /// Please note that in order to avoid a [Redirect
      /// Attack](https://github.com/OWASP/CheatSheetSeries/blob/master/cheatsheets/Unvalidated_Redirects_and_Forwards_Cheat_Sheet.md),
      /// the only valid redirect URLs are the ones from domains you have set when
      /// adding your platforms in the console interface.
-     /// 
+     ///
      ///
      Future<models.Token> createVerification({required String url}) async {
         final String path = '/account/verification';

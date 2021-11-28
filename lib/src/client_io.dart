@@ -43,10 +43,10 @@ class ClientIO extends ClientBase with ClientMixin {
     String endPoint = 'https://appwrite.io/v1',
     this.selfSigned = false,
   }) : _endPoint = endPoint {
-    _nativeClient = new HttpClient()
+    _nativeClient = HttpClient()
       ..badCertificateCallback =
           ((X509Certificate cert, String host, int port) => selfSigned);
-    _httpClient = new IOClient(_nativeClient);
+    _httpClient = IOClient(_nativeClient);
     _endPointRealtime = endPoint
         .replaceFirst('https://', 'wss://')
         .replaceFirst('http://', 'ws://');
@@ -68,7 +68,7 @@ class ClientIO extends ClientBase with ClientMixin {
   Future<Directory> _getCookiePath() async {
     final directory = await getApplicationDocumentsDirectory();
     final path = directory.path;
-    final Directory dir = new Directory('$path/cookies');
+    final Directory dir = Directory('$path/cookies');
     await dir.create();
     return dir;
   }
@@ -120,7 +120,7 @@ class ClientIO extends ClientBase with ClientMixin {
   Future init() async {
     // if web skip cookie implementation and origin header as those are automatically handled by browsers
     final Directory cookieDir = await _getCookiePath();
-    _cookieJar = new PersistCookieJar(storage: FileStorage(cookieDir.path));
+    _cookieJar = PersistCookieJar(storage: FileStorage(cookieDir.path));
     this._interceptors.add(CookieManager(_cookieJar));
     PackageInfo packageInfo = await PackageInfo.fromPlatform();
     addHeader('Origin',
@@ -202,7 +202,7 @@ class ClientIO extends ClientBase with ClientMixin {
         throw AppwriteException(
             "Invalid OAuth2 Response. Key and Secret not available.", 500);
       }
-      Cookie cookie = new Cookie(key, secret);
+      Cookie cookie = Cookie(key, secret);
       cookie.domain = Uri.parse(_endPoint).host;
       cookie.httpOnly = true;
       cookie.path = '/';
