@@ -80,7 +80,7 @@ class ClientMixin {
         throw AppwriteException(res.body);
       }
     }
-    var data;
+    dynamic data;
     if ((res.headers['content-type'] ?? '').contains('application/json')) {
       if (responseType == ResponseType.json) {
         data = json.decode(res.body);
