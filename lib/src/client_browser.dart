@@ -17,10 +17,12 @@ ClientBase createClient({
 class ClientBrowser extends ClientBase with ClientMixin {
   String _endPoint;
   Map<String, String>? _headers;
+  @override
   late Map<String, String> config;
   late BrowserClient _httpClient;
   String? _endPointRealtime;
 
+  @override
   String? get endPointRealtime => _endPointRealtime;
 
   ClientBrowser({
@@ -44,30 +46,36 @@ class ClientBrowser extends ClientBase with ClientMixin {
     init();
   }
 
+  @override
   String get endPoint => _endPoint;
 
      /// Your project ID
+    @override
     ClientBrowser setProject(value) {
         config['project'] = value;
         addHeader('X-Appwrite-Project', value);
         return this;
     }
      /// Your secret JSON Web Token
+    @override
     ClientBrowser setJWT(value) {
         config['jWT'] = value;
         addHeader('X-Appwrite-JWT', value);
         return this;
     }
+    @override
     ClientBrowser setLocale(value) {
         config['locale'] = value;
         addHeader('X-Appwrite-Locale', value);
         return this;
     }
 
+  @override
   ClientBrowser setSelfSigned({bool status = true}) {
     return this;
   }
 
+  @override
   ClientBrowser setEndpoint(String endPoint) {
     this._endPoint = endPoint;
     _endPointRealtime = endPoint
@@ -76,11 +84,13 @@ class ClientBrowser extends ClientBase with ClientMixin {
     return this;
   }
 
+  @override
   ClientBrowser setEndPointRealtime(String endPoint) {
     _endPointRealtime = endPoint;
     return this;
   }
 
+  @override
   ClientBrowser addHeader(String key, String value) {
     _headers![key] = value;
 
@@ -95,6 +105,7 @@ class ClientBrowser extends ClientBase with ClientMixin {
     _httpClient.withCredentials = true;
   }
 
+  @override
   Future<Response> call(
     HttpMethod method, {
     String path = '',

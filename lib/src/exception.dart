@@ -5,6 +5,7 @@ class AppwriteException implements Exception {
 
   AppwriteException([this.message = "", this.code, this.response]);
   
+  @override
   String toString() {
     if (message == null) return "AppwriteException";
     return "AppwriteException: $message (${code ?? 0})";

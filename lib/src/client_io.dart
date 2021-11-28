@@ -26,6 +26,7 @@ ClientBase createClient({
 class ClientIO extends ClientBase with ClientMixin {
   String _endPoint;
   Map<String, String>? _headers;
+  @override
   late Map<String, String> config;
   bool selfSigned;
   bool _initialized = false;
@@ -37,6 +38,7 @@ class ClientIO extends ClientBase with ClientMixin {
 
   bool get initialized => _initialized;
   CookieJar get cookieJar => _cookieJar;
+  @override
   String? get endPointRealtime => _endPointRealtime;
 
   ClientIO({
@@ -63,6 +65,7 @@ class ClientIO extends ClientBase with ClientMixin {
     init();
   }
 
+  @override
   String get endPoint => _endPoint;
 
   Future<Directory> _getCookiePath() async {
@@ -74,23 +77,27 @@ class ClientIO extends ClientBase with ClientMixin {
   }
 
      /// Your project ID
+    @override
     ClientIO setProject(value) {
         config['project'] = value;
         addHeader('X-Appwrite-Project', value);
         return this;
     }
      /// Your secret JSON Web Token
+    @override
     ClientIO setJWT(value) {
         config['jWT'] = value;
         addHeader('X-Appwrite-JWT', value);
         return this;
     }
+    @override
     ClientIO setLocale(value) {
         config['locale'] = value;
         addHeader('X-Appwrite-Locale', value);
         return this;
     }
 
+  @override
   ClientIO setSelfSigned({bool status = true}) {
     this.selfSigned = status;
     _nativeClient.badCertificateCallback =
@@ -98,6 +105,7 @@ class ClientIO extends ClientBase with ClientMixin {
     return this;
   }
 
+  @override
   ClientIO setEndpoint(String endPoint) {
     this._endPoint = endPoint;
     _endPointRealtime = endPoint
@@ -106,11 +114,13 @@ class ClientIO extends ClientBase with ClientMixin {
     return this;
   }
 
+  @override
   ClientIO setEndPointRealtime(String endPoint) {
     _endPointRealtime = endPoint;
     return this;
   }
 
+  @override
   ClientIO addHeader(String key, String value) {
     _headers![key] = value;
 
@@ -190,6 +200,7 @@ class ClientIO extends ClientBase with ClientMixin {
     return response;
   }
 
+  @override
   Future webAuth(Uri url) {
     return FlutterWebAuth.authenticate(
       url: url.toString(),
@@ -212,6 +223,7 @@ class ClientIO extends ClientBase with ClientMixin {
     });
   }
 
+  @override
   Future<Response> call(
     HttpMethod method, {
     String path = '',
