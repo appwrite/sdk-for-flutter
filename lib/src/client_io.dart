@@ -55,7 +55,7 @@ class ClientIO extends ClientBase with ClientMixin {
         .replaceFirst('http://', 'ws://');
     this._headers = {
       'content-type': 'application/json',
-      'x-sdk-version': 'appwrite:flutter:2.0.3',
+      'x-sdk-version': 'appwrite:flutter:2.1.0',
       'X-Appwrite-Response-Format' : '0.11.0',
     };
 
