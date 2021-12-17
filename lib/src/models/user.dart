@@ -1,7 +1,7 @@
 part of appwrite.models;
 
 /// User
-class User {
+class User implements Model {
     /// User ID.
     final String $id;
     /// User name.
@@ -43,6 +43,7 @@ class User {
         );
     }
 
+    @override
     Map<String, dynamic> toMap() {
         return {
             "\$id": $id,

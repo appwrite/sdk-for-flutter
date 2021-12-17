@@ -1,4 +1,5 @@
 import 'dart:html' as html;
+import 'package:flutter_web_auth/flutter_web_auth.dart';
 import 'package:http/http.dart' as http;
 import 'package:http/browser_client.dart';
 import 'client_mixin.dart';
@@ -17,10 +18,12 @@ ClientBase createClient({
 class ClientBrowser extends ClientBase with ClientMixin {
   String _endPoint;
   Map<String, String>? _headers;
+  @override
   late Map<String, String> config;
   late BrowserClient _httpClient;
   String? _endPointRealtime;
 
+  @override
   String? get endPointRealtime => _endPointRealtime;
 
   ClientBrowser({
@@ -44,30 +47,36 @@ class ClientBrowser extends ClientBase with ClientMixin {
     init();
   }
 
+  @override
   String get endPoint => _endPoint;
 
      /// Your project ID
+    @override
     ClientBrowser setProject(value) {
         config['project'] = value;
         addHeader('X-Appwrite-Project', value);
         return this;
     }
      /// Your secret JSON Web Token
+    @override
     ClientBrowser setJWT(value) {
         config['jWT'] = value;
         addHeader('X-Appwrite-JWT', value);
         return this;
     }
+    @override
     ClientBrowser setLocale(value) {
         config['locale'] = value;
         addHeader('X-Appwrite-Locale', value);
         return this;
     }
 
+  @override
   ClientBrowser setSelfSigned({bool status = true}) {
     return this;
   }
 
+  @override
   ClientBrowser setEndpoint(String endPoint) {
     this._endPoint = endPoint;
     _endPointRealtime = endPoint
@@ -76,17 +85,20 @@ class ClientBrowser extends ClientBase with ClientMixin {
     return this;
   }
 
+  @override
   ClientBrowser setEndPointRealtime(String endPoint) {
     _endPointRealtime = endPoint;
     return this;
   }
 
+  @override
   ClientBrowser addHeader(String key, String value) {
     _headers![key] = value;
 
     return this;
   }
 
+  @override
   Future init() async {
     if (html.window.localStorage.keys.contains('cookieFallback')) {
       addHeader('x-fallback-cookies',
@@ -133,6 +145,16 @@ class ClientBrowser extends ClientBase with ClientMixin {
 
   @override
   Future webAuth(Uri url) {
-    throw UnimplementedError();
-  }
+  return FlutterWebAuth.authenticate(
+      url: url.toString(),
+      callbackUrlScheme: "appwrite-callback-" + config['project']!,
+    ).then((value) async {
+      Uri url = Uri.parse(value);
+      final key = url.queryParameters['key'];
+      final secret = url.queryParameters['secret'];
+      if (key == null || secret == null) {
+        throw AppwriteException(
+            "Invalid OAuth2 Response. Key and Secret not available.", 500);
+      }
+    });  }
 }

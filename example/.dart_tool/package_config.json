@@ -1,0 +1,14 @@
+{
+  "configVersion": 2,
+  "packages": [
+    {
+      "name": "appwrite_example",
+      "rootUri": "../",
+      "packageUri": "lib/",
+      "languageVersion": "2.6"
+    }
+  ],
+  "generated": "2021-12-17T06:39:50.946207Z",
+  "generator": "pub",
+  "generatorVersion": "2.15.0"
+}

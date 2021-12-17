@@ -1,7 +1,7 @@
 part of appwrite.models;
 
 /// Files List
-class FileList {
+class FileList implements Model {
     /// Total number of items available on the server.
     final int sum;
     /// List of files.
@@ -19,6 +19,7 @@ class FileList {
         );
     }
 
+    @override
     Map<String, dynamic> toMap() {
         return {
             "sum": sum,

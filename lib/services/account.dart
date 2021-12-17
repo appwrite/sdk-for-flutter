@@ -451,19 +451,14 @@ class Account extends Service {
         });
 
         Uri endpoint = Uri.parse(client.endPoint);
-        Uri url = new Uri(scheme: endpoint.scheme,
+        Uri url = Uri(scheme: endpoint.scheme,
           host: endpoint.host,
           port: endpoint.port,
           path: endpoint.path + path,
           query: query.join('&')
         );
 
-        if(kIsWeb) {
-          redirect(url.toString());
-          return Future.value();
-        }else{
-          return client.webAuth(url);
-        }
+      return client.webAuth(url);
 
     }
 

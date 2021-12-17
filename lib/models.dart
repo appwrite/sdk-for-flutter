@@ -1,5 +1,6 @@
 library appwrite.models;
 
+part 'src/models/model.dart';
 part 'src/models/document_list.dart';
 part 'src/models/session_list.dart';
 part 'src/models/log_list.dart';

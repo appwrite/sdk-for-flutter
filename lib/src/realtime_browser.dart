@@ -34,6 +34,7 @@ class RealtimeBrowser extends RealtimeBase with RealtimeMixin {
     return null;
   }
 
+  @override
   RealtimeSubscription subscribe(List<String> channels) {
     return subscribeTo(channels);
   }

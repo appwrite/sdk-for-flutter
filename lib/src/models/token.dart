@@ -1,7 +1,7 @@
 part of appwrite.models;
 
 /// Token
-class Token {
+class Token implements Model {
     /// Token ID.
     final String $id;
     /// User ID.
@@ -27,6 +27,7 @@ class Token {
         );
     }
 
+    @override
     Map<String, dynamic> toMap() {
         return {
             "\$id": $id,

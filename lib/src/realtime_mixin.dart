@@ -9,12 +9,12 @@ import 'realtime_message.dart';
 import 'realtime_response.dart';
 import 'realtime_response_connected.dart';
 
-typedef Future<WebSocketChannel> WebSocketFactory(Uri uri);
-typedef String? GetFallbackCookie();
+typedef WebSocketFactory = Future<WebSocketChannel> Function(Uri uri);
+typedef GetFallbackCookie = String? Function();
 
 mixin RealtimeMixin {
   late Client client;
-  Map<String, List<StreamController<RealtimeMessage>>> _channels = {};
+  final Map<String, List<StreamController<RealtimeMessage>>> _channels = {};
   WebSocketChannel? _websok;
   String? _lastUrl;
   late WebSocketFactory getWebSocket;
@@ -28,15 +28,17 @@ mixin RealtimeMixin {
   _createSocket() async {
     final uri = _prepareUri();
     if (_websok == null) {
-      await getWebSocket(uri);
+      _websok = await getWebSocket(uri);
+      _lastUrl = uri.toString();
+    } else {
+      if (_lastUrl == uri.toString() && _websok?.closeCode == null) {
+        return;
+      }
+      await _closeConnection();
+      _lastUrl = uri.toString();
+      _websok = await getWebSocket(uri);
     }
-    if (_lastUrl == uri.toString() && _websok?.closeCode == null) {
-      return;
-    }
-    await _closeConnection();
-    _lastUrl = uri.toString();
     print('subscription: $_lastUrl');
-    _websok = await getWebSocket(uri);
 
     try {
       _websok?.stream.listen((response) {
@@ -117,7 +119,7 @@ mixin RealtimeMixin {
           controller.close();
           channels.forEach((channel) {
             this._channels[channel]!.remove(controller);
-            if (this._channels[channel]!.length < 1) {
+            if (this._channels[channel]!.isEmpty) {
               this._channels.remove(channel);
             }
           });
@@ -135,7 +137,7 @@ mixin RealtimeMixin {
       throw AppwriteException(response.data["message"], response.data["code"]);
     } else {
       print("Reconnecting in one second.");
-      Future.delayed(Duration(seconds: 1), () {
+      Future.delayed(const Duration(seconds: 1), () {
         _createSocket();
       });
     }

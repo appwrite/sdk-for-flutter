@@ -1,7 +1,7 @@
 part of appwrite.models;
 
 /// Executions List
-class ExecutionList {
+class ExecutionList implements Model {
     /// Total number of items available on the server.
     final int sum;
     /// List of executions.
@@ -19,6 +19,7 @@ class ExecutionList {
         );
     }
 
+    @override
     Map<String, dynamic> toMap() {
         return {
             "sum": sum,

@@ -1,7 +1,7 @@
 part of appwrite.models;
 
 /// File
-class File {
+class File implements Model {
     /// File ID.
     final String $id;
     /// File permissions.
@@ -39,6 +39,7 @@ class File {
         );
     }
 
+    @override
     Map<String, dynamic> toMap() {
         return {
             "\$id": $id,

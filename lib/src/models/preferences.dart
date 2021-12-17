@@ -1,7 +1,7 @@
 part of appwrite.models;
 
 /// Preferences
-class Preferences {
+class Preferences implements Model {
     final Map<String, dynamic> data;
 
     Preferences({
@@ -14,6 +14,7 @@ class Preferences {
         );
     }
 
+    @override
     Map<String, dynamic> toMap() {
         return {
             "data": data,

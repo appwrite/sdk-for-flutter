@@ -1,7 +1,7 @@
 part of appwrite.models;
 
 /// Execution
-class Execution {
+class Execution implements Model {
     /// Execution ID.
     final String $id;
     /// Execution permissions.
@@ -51,6 +51,7 @@ class Execution {
         );
     }
 
+    @override
     Map<String, dynamic> toMap() {
         return {
             "\$id": $id,

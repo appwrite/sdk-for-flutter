@@ -1,7 +1,7 @@
 part of appwrite.models;
 
 /// Documents List
-class DocumentList {
+class DocumentList implements Model {
     /// Total number of items available on the server.
     final int sum;
     /// List of documents.
@@ -19,6 +19,7 @@ class DocumentList {
         );
     }
 
+    @override
     Map<String, dynamic> toMap() {
         return {
             "sum": sum,

@@ -1,7 +1,7 @@
 part of appwrite.models;
 
 /// Session
-class Session {
+class Session implements Model {
     /// Session ID.
     final String $id;
     /// User ID.
@@ -99,6 +99,7 @@ class Session {
         );
     }
 
+    @override
     Map<String, dynamic> toMap() {
         return {
             "\$id": $id,

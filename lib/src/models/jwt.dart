@@ -1,7 +1,7 @@
 part of appwrite.models;
 
 /// JWT
-class Jwt {
+class Jwt implements Model {
     /// JWT encoded string.
     final String jwt;
 
@@ -15,6 +15,7 @@ class Jwt {
         );
     }
 
+    @override
     Map<String, dynamic> toMap() {
         return {
             "jwt": jwt,

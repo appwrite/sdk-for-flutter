@@ -1,7 +1,7 @@
 part of appwrite.models;
 
 /// Languages List
-class LanguageList {
+class LanguageList implements Model {
     /// Total number of items available on the server.
     final int sum;
     /// List of languages.
@@ -19,6 +19,7 @@ class LanguageList {
         );
     }
 
+    @override
     Map<String, dynamic> toMap() {
         return {
             "sum": sum,

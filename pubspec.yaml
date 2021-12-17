@@ -6,18 +6,19 @@ repository: https://github.com/appwrite/sdk-for-flutter
 issue_tracker: https://github.com/appwrite/sdk-generator/issues
 documentation: https://appwrite.io/support
 environment:
-  sdk: '>=2.12.0 <3.0.0'
+  sdk: '>=2.14.0 <3.0.0'
 dependencies:
   flutter:
     sdk: flutter
   cookie_jar: ^3.0.1
-  device_info_plus: ^2.1.0
-  flutter_web_auth: ^0.3.1
-  http: ^0.13.3
-  package_info_plus: ^1.0.6
-  path_provider: ^2.0.3
+  device_info_plus: ^3.1.1
+  flutter_web_auth: ^0.4.0
+  http: ^0.13.4
+  package_info_plus: ^1.3.0
+  path_provider: ^2.0.8
   web_socket_channel: ^2.1.0
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
+  lints: ^1.0.1

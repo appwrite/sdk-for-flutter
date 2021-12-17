@@ -1,7 +1,7 @@
 part of appwrite.models;
 
 /// Country
-class Country {
+class Country implements Model {
     /// Country name.
     final String name;
     /// Country two-character ISO 3166-1 alpha code.
@@ -19,6 +19,7 @@ class Country {
         );
     }
 
+    @override
     Map<String, dynamic> toMap() {
         return {
             "name": name,

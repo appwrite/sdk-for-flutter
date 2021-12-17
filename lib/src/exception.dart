@@ -4,7 +4,8 @@ class AppwriteException implements Exception {
   final dynamic response;
 
   AppwriteException([this.message = "", this.code, this.response]);
-  
+
+  @override
   String toString() {
     if (message == null) return "AppwriteException";
     return "AppwriteException: $message (${code ?? 0})";

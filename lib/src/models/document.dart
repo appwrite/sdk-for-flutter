@@ -1,7 +1,7 @@
 part of appwrite.models;
 
 /// Document
-class Document {
+class Document implements Model {
     /// Document ID.
     final String $id;
     /// Collection ID.
@@ -26,6 +26,7 @@ class Document {
         );
     }
 
+    @override
     Map<String, dynamic> toMap() {
         return {
             "\$id": $id,

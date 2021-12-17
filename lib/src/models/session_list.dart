@@ -1,7 +1,7 @@
 part of appwrite.models;
 
 /// Sessions List
-class SessionList {
+class SessionList implements Model {
     /// Total number of items available on the server.
     final int sum;
     /// List of sessions.
@@ -19,6 +19,7 @@ class SessionList {
         );
     }
 
+    @override
     Map<String, dynamic> toMap() {
         return {
             "sum": sum,

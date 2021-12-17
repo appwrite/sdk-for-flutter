@@ -67,9 +67,7 @@ class ClientMixin {
   }
 
   Response prepareResponse(http.Response res, {ResponseType? responseType}) {
-    if (responseType == null) {
-      responseType = ResponseType.json;
-    }
+    responseType ??= ResponseType.json;
     if (res.statusCode >= 400) {
       if ((res.headers['content-type'] ?? '').contains('application/json')) {
         final response = json.decode(res.body);
@@ -82,7 +80,7 @@ class ClientMixin {
         throw AppwriteException(res.body);
       }
     }
-    var data;
+    dynamic data;
     if ((res.headers['content-type'] ?? '').contains('application/json')) {
       if (responseType == ResponseType.json) {
         data = json.decode(res.body);
@@ -103,7 +101,7 @@ class ClientMixin {
 
   Future<http.Response> toResponse(http.StreamedResponse streamedResponse) async {
     if(streamedResponse.statusCode == 204) {
-        return new http.Response('',
+        return http.Response('',
           streamedResponse.statusCode,
           headers: streamedResponse.headers.map((k,v) => k.toLowerCase()=='content-type' ? MapEntry(k, 'text/plain') : MapEntry(k,v)),
           request: streamedResponse.request,

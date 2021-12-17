@@ -1,7 +1,7 @@
 part of appwrite.models;
 
 /// Logs List
-class LogList {
+class LogList implements Model {
     /// List of logs.
     final List<Log> logs;
 
@@ -15,6 +15,7 @@ class LogList {
         );
     }
 
+    @override
     Map<String, dynamic> toMap() {
         return {
             "logs": logs.map((p) => p.toMap()),

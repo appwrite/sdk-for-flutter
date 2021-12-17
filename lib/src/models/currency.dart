@@ -1,7 +1,7 @@
 part of appwrite.models;
 
 /// Currency
-class Currency {
+class Currency implements Model {
     /// Currency symbol.
     final String symbol;
     /// Currency name.
@@ -39,6 +39,7 @@ class Currency {
         );
     }
 
+    @override
     Map<String, dynamic> toMap() {
         return {
             "symbol": symbol,

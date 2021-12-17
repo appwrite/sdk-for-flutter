@@ -19,7 +19,7 @@ class CookieManager extends Interceptor {
         .then((cookies) {
       var cookie = getCookies(cookies);
       if (cookie.isNotEmpty) {
-        request..headers.addAll({HttpHeaders.cookieHeader: cookie});
+        request.headers.addAll({HttpHeaders.cookieHeader: cookie});
       }
       return request;
     }).catchError((e, stackTrace) {

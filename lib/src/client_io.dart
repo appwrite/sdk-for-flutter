@@ -13,6 +13,7 @@ import 'enums.dart';
 import 'exception.dart';
 import 'interceptor.dart';
 import 'response.dart';
+import 'package:flutter/foundation.dart';
 
 ClientBase createClient({
   required String endPoint,
@@ -26,6 +27,7 @@ ClientBase createClient({
 class ClientIO extends ClientBase with ClientMixin {
   String _endPoint;
   Map<String, String>? _headers;
+  @override
   late Map<String, String> config;
   bool selfSigned;
   bool _initialized = false;
@@ -33,20 +35,21 @@ class ClientIO extends ClientBase with ClientMixin {
   late http.Client _httpClient;
   late HttpClient _nativeClient;
   late CookieJar _cookieJar;
-  List<Interceptor> _interceptors = [];
+  final List<Interceptor> _interceptors = [];
 
   bool get initialized => _initialized;
   CookieJar get cookieJar => _cookieJar;
+  @override
   String? get endPointRealtime => _endPointRealtime;
 
   ClientIO({
     String endPoint = 'https://appwrite.io/v1',
     this.selfSigned = false,
   }) : _endPoint = endPoint {
-    _nativeClient = new HttpClient()
+    _nativeClient = HttpClient()
       ..badCertificateCallback =
           ((X509Certificate cert, String host, int port) => selfSigned);
-    _httpClient = new IOClient(_nativeClient);
+    _httpClient = IOClient(_nativeClient);
     _endPointRealtime = endPoint
         .replaceFirst('https://', 'wss://')
         .replaceFirst('http://', 'ws://');
@@ -63,34 +66,39 @@ class ClientIO extends ClientBase with ClientMixin {
     init();
   }
 
+  @override
   String get endPoint => _endPoint;
 
   Future<Directory> _getCookiePath() async {
     final directory = await getApplicationDocumentsDirectory();
     final path = directory.path;
-    final Directory dir = new Directory('$path/cookies');
+    final Directory dir = Directory('$path/cookies');
     await dir.create();
     return dir;
   }
 
      /// Your project ID
+    @override
     ClientIO setProject(value) {
         config['project'] = value;
         addHeader('X-Appwrite-Project', value);
         return this;
     }
      /// Your secret JSON Web Token
+    @override
     ClientIO setJWT(value) {
         config['jWT'] = value;
         addHeader('X-Appwrite-JWT', value);
         return this;
     }
+    @override
     ClientIO setLocale(value) {
         config['locale'] = value;
         addHeader('X-Appwrite-Locale', value);
         return this;
     }
 
+  @override
   ClientIO setSelfSigned({bool status = true}) {
     this.selfSigned = status;
     _nativeClient.badCertificateCallback =
@@ -98,6 +106,7 @@ class ClientIO extends ClientBase with ClientMixin {
     return this;
   }
 
+  @override
   ClientIO setEndpoint(String endPoint) {
     this._endPoint = endPoint;
     _endPointRealtime = endPoint
@@ -106,11 +115,13 @@ class ClientIO extends ClientBase with ClientMixin {
     return this;
   }
 
+  @override
   ClientIO setEndPointRealtime(String endPoint) {
     _endPointRealtime = endPoint;
     return this;
   }
 
+  @override
   ClientIO addHeader(String key, String value) {
     _headers![key] = value;
 
@@ -120,7 +131,7 @@ class ClientIO extends ClientBase with ClientMixin {
   Future init() async {
     // if web skip cookie implementation and origin header as those are automatically handled by browsers
     final Directory cookieDir = await _getCookiePath();
-    _cookieJar = new PersistCookieJar(storage: FileStorage(cookieDir.path));
+    _cookieJar = PersistCookieJar(storage: FileStorage(cookieDir.path));
     this._interceptors.add(CookieManager(_cookieJar));
     PackageInfo packageInfo = await PackageInfo.fromPlatform();
     addHeader('Origin',
@@ -129,27 +140,32 @@ class ClientIO extends ClientBase with ClientMixin {
     //creating custom user agent
     DeviceInfoPlugin deviceInfoPlugin = DeviceInfoPlugin();
     var device = '';
-    if (Platform.isAndroid) {
-      final andinfo = await deviceInfoPlugin.androidInfo;
-      device =
-          '(Linux; U; Android ${andinfo.version.release}; ${andinfo.brand} ${andinfo.model})';
-    }
-    if (Platform.isIOS) {
-      final iosinfo = await deviceInfoPlugin.iosInfo;
-      device = '${iosinfo.utsname.machine} iOS/${iosinfo.systemVersion}';
-    }
-    if (Platform.isLinux) {
-      final lininfo = await deviceInfoPlugin.linuxInfo;
-      device = '(Linux; U; ${lininfo.id} ${lininfo.version})';
-    }
-    if (Platform.isWindows) {
-      final wininfo = await deviceInfoPlugin.windowsInfo;
-      device =
-          '(Windows NT; ${wininfo.computerName})'; //can't seem to get much info here
-    }
-    if (Platform.isMacOS) {
-      final macinfo = await deviceInfoPlugin.macOsInfo;
-      device = '(Macintosh; ${macinfo.model})';
+    try {
+      if (Platform.isAndroid) {
+        final andinfo = await deviceInfoPlugin.androidInfo;
+        device =
+            '(Linux; U; Android ${andinfo.version.release}; ${andinfo.brand} ${andinfo.model})';
+      }
+      if (Platform.isIOS) {
+        final iosinfo = await deviceInfoPlugin.iosInfo;
+        device = '${iosinfo.utsname.machine} iOS/${iosinfo.systemVersion}';
+      }
+      if (Platform.isLinux) {
+        final lininfo = await deviceInfoPlugin.linuxInfo;
+        device = '(Linux; U; ${lininfo.id} ${lininfo.version})';
+      }
+      if (Platform.isWindows) {
+        final wininfo = await deviceInfoPlugin.windowsInfo;
+        device =
+            '(Windows NT; ${wininfo.computerName})'; //can't seem to get much info here
+      }
+      if (Platform.isMacOS) {
+        final macinfo = await deviceInfoPlugin.macOsInfo;
+        device = '(Macintosh; ${macinfo.model})';
+      }
+    } catch (e) {
+      debugPrint('Error getting device info: $e');
+      device = Platform.operatingSystem;
     }
     addHeader(
         'user-agent', '${packageInfo.packageName}/${packageInfo.version} $device');
@@ -190,6 +206,7 @@ class ClientIO extends ClientBase with ClientMixin {
     return response;
   }
 
+  @override
   Future webAuth(Uri url) {
     return FlutterWebAuth.authenticate(
       url: url.toString(),
@@ -202,7 +219,7 @@ class ClientIO extends ClientBase with ClientMixin {
         throw AppwriteException(
             "Invalid OAuth2 Response. Key and Secret not available.", 500);
       }
-      Cookie cookie = new Cookie(key, secret);
+      Cookie cookie = Cookie(key, secret);
       cookie.domain = Uri.parse(_endPoint).host;
       cookie.httpOnly = true;
       cookie.path = '/';
@@ -212,6 +229,7 @@ class ClientIO extends ClientBase with ClientMixin {
     });
   }
 
+  @override
   Future<Response> call(
     HttpMethod method, {
     String path = '',

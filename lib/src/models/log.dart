@@ -1,7 +1,7 @@
 part of appwrite.models;
 
 /// Log
-class Log {
+class Log implements Model {
     /// Event name.
     final String event;
     /// IP session in use when the session was created.
@@ -79,6 +79,7 @@ class Log {
         );
     }
 
+    @override
     Map<String, dynamic> toMap() {
         return {
             "event": event,

@@ -1,7 +1,7 @@
 part of appwrite.models;
 
 /// Membership
-class Membership {
+class Membership implements Model {
     /// Membership ID.
     final String $id;
     /// User ID.
@@ -47,6 +47,7 @@ class Membership {
         );
     }
 
+    @override
     Map<String, dynamic> toMap() {
         return {
             "\$id": $id,

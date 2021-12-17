@@ -1,7 +1,7 @@
 part of appwrite.models;
 
 /// Currencies List
-class CurrencyList {
+class CurrencyList implements Model {
     /// Total number of items available on the server.
     final int sum;
     /// List of currencies.
@@ -19,6 +19,7 @@ class CurrencyList {
         );
     }
 
+    @override
     Map<String, dynamic> toMap() {
         return {
             "sum": sum,

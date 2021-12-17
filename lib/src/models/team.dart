@@ -1,7 +1,7 @@
 part of appwrite.models;
 
 /// Team
-class Team {
+class Team implements Model {
     /// Team ID.
     final String $id;
     /// Team name.
@@ -27,6 +27,7 @@ class Team {
         );
     }
 
+    @override
     Map<String, dynamic> toMap() {
         return {
             "\$id": $id,

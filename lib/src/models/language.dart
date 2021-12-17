@@ -1,7 +1,7 @@
 part of appwrite.models;
 
 /// Language
-class Language {
+class Language implements Model {
     /// Language name.
     final String name;
     /// Language two-character ISO 639-1 codes.
@@ -23,6 +23,7 @@ class Language {
         );
     }
 
+    @override
     Map<String, dynamic> toMap() {
         return {
             "name": name,

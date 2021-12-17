@@ -1,7 +1,7 @@
 part of appwrite.models;
 
 /// Permissions
-class Permissions {
+class Permissions implements Model {
     /// Read permissions.
     final List read;
     /// Write permissions.
@@ -19,6 +19,7 @@ class Permissions {
         );
     }
 
+    @override
     Map<String, dynamic> toMap() {
         return {
             "read": read,
