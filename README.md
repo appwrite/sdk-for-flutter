@@ -13,7 +13,7 @@ Appwrite is an open-source backend as a service server that abstract and simplif
 
 
 
-![Appwrite](https://appwrite.io/images/github.png)
+![Appwrite](https://appwrite.io/images/github.png?x=1)
 
 ## Installation
 
