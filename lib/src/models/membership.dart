@@ -35,11 +35,11 @@ class Membership implements Model {
 
     factory Membership.fromMap(Map<String, dynamic> map) {
         return Membership(
-            $id: map['\$id'],
-            userId: map['userId'],
-            teamId: map['teamId'],
-            name: map['name'],
-            email: map['email'],
+            $id: map['\$id'].toString(),
+            userId: map['userId'].toString(),
+            teamId: map['teamId'].toString(),
+            name: map['name'].toString(),
+            email: map['email'].toString(),
             invited: map['invited'],
             joined: map['joined'],
             confirm: map['confirm'],

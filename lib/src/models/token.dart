@@ -20,9 +20,9 @@ class Token implements Model {
 
     factory Token.fromMap(Map<String, dynamic> map) {
         return Token(
-            $id: map['\$id'],
-            userId: map['userId'],
-            secret: map['secret'],
+            $id: map['\$id'].toString(),
+            userId: map['userId'].toString(),
+            secret: map['secret'].toString(),
             expire: map['expire'],
         );
     }

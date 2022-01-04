@@ -27,7 +27,7 @@ class ClientBrowser extends ClientBase with ClientMixin {
   String? get endPointRealtime => _endPointRealtime;
 
   ClientBrowser({
-    String endPoint = 'https://appwrite.io/v1',
+    String endPoint = 'https://HOSTNAME/v1',
     bool selfSigned = false,
   }) : _endPoint = endPoint {
     _httpClient = BrowserClient();
@@ -37,7 +37,7 @@ class ClientBrowser extends ClientBase with ClientMixin {
     _headers = {
       'content-type': 'application/json',
       'x-sdk-version': 'appwrite:flutter:2.1.0',
-      'X-Appwrite-Response-Format' : '0.11.0',
+      'X-Appwrite-Response-Format' : '0.12.0',
     };
 
     this.config = {};
@@ -148,13 +148,6 @@ class ClientBrowser extends ClientBase with ClientMixin {
   return FlutterWebAuth.authenticate(
       url: url.toString(),
       callbackUrlScheme: "appwrite-callback-" + config['project']!,
-    ).then((value) async {
-      Uri url = Uri.parse(value);
-      final key = url.queryParameters['key'];
-      final secret = url.queryParameters['secret'];
-      if (key == null || secret == null) {
-        throw AppwriteException(
-            "Invalid OAuth2 Response. Key and Secret not available.", 500);
-      }
-    });  }
+    );
+  }
 }

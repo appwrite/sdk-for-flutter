@@ -10,14 +10,15 @@ class Functions extends Service {
      /// return a list of all of the project's executions. [Learn more about
      /// different API modes](/docs/admin).
      ///
-     Future<models.ExecutionList> listExecutions({required String functionId, String? search, int? limit, int? offset, String? orderType}) async {
-        final String path = '/functions/{functionId}/executions'.replaceAll(RegExp('{functionId}'), functionId);
+     Future<models.ExecutionList> listExecutions({required String functionId, int? limit, int? offset, String? search, String? cursor, String? cursorDirection}) async {
+        final String path = '/functions/{functionId}/executions'.replaceAll('{functionId}', functionId);
 
         final Map<String, dynamic> params = {
-            'search': search,
             'limit': limit,
             'offset': offset,
-            'orderType': orderType,
+            'search': search,
+            'cursor': cursor,
+            'cursorDirection': cursorDirection,
         };
 
         final Map<String, String> headers = {
@@ -36,7 +37,7 @@ class Functions extends Service {
      /// function execution process will start asynchronously.
      ///
      Future<models.Execution> createExecution({required String functionId, String? data}) async {
-        final String path = '/functions/{functionId}/executions'.replaceAll(RegExp('{functionId}'), functionId);
+        final String path = '/functions/{functionId}/executions'.replaceAll('{functionId}', functionId);
 
         final Map<String, dynamic> params = {
             'data': data,
@@ -55,7 +56,7 @@ class Functions extends Service {
      /// Get a function execution log by its unique ID.
      ///
      Future<models.Execution> getExecution({required String functionId, required String executionId}) async {
-        final String path = '/functions/{functionId}/executions/{executionId}'.replaceAll(RegExp('{functionId}'), functionId).replaceAll(RegExp('{executionId}'), executionId);
+        final String path = '/functions/{functionId}/executions/{executionId}'.replaceAll('{functionId}', functionId).replaceAll('{executionId}', executionId);
 
         final Map<String, dynamic> params = {
         };

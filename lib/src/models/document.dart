@@ -6,22 +6,26 @@ class Document implements Model {
     final String $id;
     /// Collection ID.
     final String $collection;
-    /// Document permissions.
-    final Permissions $permissions;
+    /// Document read permissions.
+    final List $read;
+    /// Document write permissions.
+    final List $write;
     final Map<String, dynamic> data;
 
     Document({
         required this.$id,
         required this.$collection,
-        required this.$permissions,
+        required this.$read,
+        required this.$write,
         required this.data,
     });
 
     factory Document.fromMap(Map<String, dynamic> map) {
         return Document(
-            $id: map['\$id'],
-            $collection: map['\$collection'],
-            $permissions: Permissions.fromMap(map['\$permissions']),
+            $id: map['\$id'].toString(),
+            $collection: map['\$collection'].toString(),
+            $read: map['\$read'],
+            $write: map['\$write'],
             data: map,
         );
     }
@@ -31,7 +35,8 @@ class Document implements Model {
         return {
             "\$id": $id,
             "\$collection": $collection,
-            "\$permissions": $permissions.toMap(),
+            "\$read": $read,
+            "\$write": $write,
             "data": data,
         };
     }

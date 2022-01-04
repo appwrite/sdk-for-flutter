@@ -8,8 +8,8 @@ class User implements Model {
     final String name;
     /// User registration date in Unix timestamp.
     final int registration;
-    /// User status. 0 for Unactivated, 1 for active and 2 is blocked.
-    final int status;
+    /// User status. Pass `true` for enabled and `false` for disabled.
+    final bool status;
     /// Unix timestamp of the most recent password update
     final int passwordUpdate;
     /// User email address.
@@ -32,12 +32,12 @@ class User implements Model {
 
     factory User.fromMap(Map<String, dynamic> map) {
         return User(
-            $id: map['\$id'],
-            name: map['name'],
+            $id: map['\$id'].toString(),
+            name: map['name'].toString(),
             registration: map['registration'],
             status: map['status'],
             passwordUpdate: map['passwordUpdate'],
-            email: map['email'],
+            email: map['email'].toString(),
             emailVerification: map['emailVerification'],
             prefs: Preferences.fromMap(map['prefs']),
         );

@@ -9,13 +9,15 @@ class Storage extends Service {
      /// your results. On admin mode, this endpoint will return a list of all of the
      /// project's files. [Learn more about different API modes](/docs/admin).
      ///
-     Future<models.FileList> listFiles({String? search, int? limit, int? offset, String? orderType}) async {
+     Future<models.FileList> listFiles({String? search, int? limit, int? offset, String? cursor, String? cursorDirection, String? orderType}) async {
         final String path = '/storage/files';
 
         final Map<String, dynamic> params = {
             'search': search,
             'limit': limit,
             'offset': offset,
+            'cursor': cursor,
+            'cursorDirection': cursorDirection,
             'orderType': orderType,
         };
 
@@ -33,10 +35,11 @@ class Storage extends Service {
      /// assigned to read and write access unless he has passed custom values for
      /// read and write arguments.
      ///
-     Future<models.File> createFile({required http.MultipartFile file, List? read, List? write}) async {
+     Future<models.File> createFile({required String fileId, required http.MultipartFile file, List? read, List? write}) async {
         final String path = '/storage/files';
 
         final Map<String, dynamic> params = {
+            'fileId': fileId,
             'file': file,
             'read': read,
             'write': write,
@@ -56,7 +59,7 @@ class Storage extends Service {
      /// with the file metadata.
      ///
      Future<models.File> getFile({required String fileId}) async {
-        final String path = '/storage/files/{fileId}'.replaceAll(RegExp('{fileId}'), fileId);
+        final String path = '/storage/files/{fileId}'.replaceAll('{fileId}', fileId);
 
         final Map<String, dynamic> params = {
         };
@@ -75,7 +78,7 @@ class Storage extends Service {
      /// access to update this resource.
      ///
      Future<models.File> updateFile({required String fileId, required List read, required List write}) async {
-        final String path = '/storage/files/{fileId}'.replaceAll(RegExp('{fileId}'), fileId);
+        final String path = '/storage/files/{fileId}'.replaceAll('{fileId}', fileId);
 
         final Map<String, dynamic> params = {
             'read': read,
@@ -96,7 +99,7 @@ class Storage extends Service {
      /// access to delete this resource.
      ///
      Future deleteFile({required String fileId}) async {
-        final String path = '/storage/files/{fileId}'.replaceAll(RegExp('{fileId}'), fileId);
+        final String path = '/storage/files/{fileId}'.replaceAll('{fileId}', fileId);
 
         final Map<String, dynamic> params = {
         };
@@ -116,7 +119,7 @@ class Storage extends Service {
      /// downloading the file to user downloads directory.
      ///
      Future<Uint8List>  getFileDownload({required String fileId}) async {
-        final String path = '/storage/files/{fileId}/download'.replaceAll(RegExp('{fileId}'), fileId);
+        final String path = '/storage/files/{fileId}/download'.replaceAll('{fileId}', fileId);
 
         final Map<String, dynamic> params = {
             'project': client.config['project'],
@@ -138,7 +141,7 @@ class Storage extends Service {
      /// string arguments for cutting and resizing your preview image.
      ///
      Future<Uint8List>  getFilePreview({required String fileId, int? width, int? height, String? gravity, int? quality, int? borderWidth, String? borderColor, int? borderRadius, double? opacity, int? rotation, String? background, String? output}) async {
-        final String path = '/storage/files/{fileId}/preview'.replaceAll(RegExp('{fileId}'), fileId);
+        final String path = '/storage/files/{fileId}/preview'.replaceAll('{fileId}', fileId);
 
         final Map<String, dynamic> params = {
             'width': width,
@@ -170,7 +173,7 @@ class Storage extends Service {
      /// header.
      ///
      Future<Uint8List>  getFileView({required String fileId}) async {
-        final String path = '/storage/files/{fileId}/view'.replaceAll(RegExp('{fileId}'), fileId);
+        final String path = '/storage/files/{fileId}/view'.replaceAll('{fileId}', fileId);
 
         final Map<String, dynamic> params = {
             'project': client.config['project'],

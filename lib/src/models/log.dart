@@ -4,6 +4,14 @@ part of appwrite.models;
 class Log implements Model {
     /// Event name.
     final String event;
+    /// User ID.
+    final String userId;
+    /// User Email.
+    final String userEmail;
+    /// User Name.
+    final String userName;
+    /// API mode when event triggered.
+    final String mode;
     /// IP session in use when the session was created.
     final String ip;
     /// Log creation time in Unix timestamp.
@@ -39,6 +47,10 @@ class Log implements Model {
 
     Log({
         required this.event,
+        required this.userId,
+        required this.userEmail,
+        required this.userName,
+        required this.mode,
         required this.ip,
         required this.time,
         required this.osCode,
@@ -59,23 +71,27 @@ class Log implements Model {
 
     factory Log.fromMap(Map<String, dynamic> map) {
         return Log(
-            event: map['event'],
-            ip: map['ip'],
+            event: map['event'].toString(),
+            userId: map['userId'].toString(),
+            userEmail: map['userEmail'].toString(),
+            userName: map['userName'].toString(),
+            mode: map['mode'].toString(),
+            ip: map['ip'].toString(),
             time: map['time'],
-            osCode: map['osCode'],
-            osName: map['osName'],
-            osVersion: map['osVersion'],
-            clientType: map['clientType'],
-            clientCode: map['clientCode'],
-            clientName: map['clientName'],
-            clientVersion: map['clientVersion'],
-            clientEngine: map['clientEngine'],
-            clientEngineVersion: map['clientEngineVersion'],
-            deviceName: map['deviceName'],
-            deviceBrand: map['deviceBrand'],
-            deviceModel: map['deviceModel'],
-            countryCode: map['countryCode'],
-            countryName: map['countryName'],
+            osCode: map['osCode'].toString(),
+            osName: map['osName'].toString(),
+            osVersion: map['osVersion'].toString(),
+            clientType: map['clientType'].toString(),
+            clientCode: map['clientCode'].toString(),
+            clientName: map['clientName'].toString(),
+            clientVersion: map['clientVersion'].toString(),
+            clientEngine: map['clientEngine'].toString(),
+            clientEngineVersion: map['clientEngineVersion'].toString(),
+            deviceName: map['deviceName'].toString(),
+            deviceBrand: map['deviceBrand'].toString(),
+            deviceModel: map['deviceModel'].toString(),
+            countryCode: map['countryCode'].toString(),
+            countryName: map['countryName'].toString(),
         );
     }
 
@@ -83,6 +99,10 @@ class Log implements Model {
     Map<String, dynamic> toMap() {
         return {
             "event": event,
+            "userId": userId,
+            "userEmail": userEmail,
+            "userName": userName,
+            "mode": mode,
             "ip": ip,
             "time": time,
             "osCode": osCode,
