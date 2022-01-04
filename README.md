@@ -133,6 +133,7 @@ When trying to connect to Appwrite from an emulator or a mobile device, localhos
 Account account = Account(client);
 Response user = await account
   .create(
+    userId: '[USER_ID]',
     email: 'me@appwrite.io',
     password: 'password',
     name: 'My Name'
@@ -160,6 +161,7 @@ void main() {
 
   Response user = await account
     .create(
+      userId: '[USER_ID]',
       email: 'me@appwrite.io',
       password: 'password',
       name: 'My Name'
@@ -174,7 +176,7 @@ The Appwrite Flutter SDK raises `AppwriteException` object with `message`, `code
 Users users = Users(client);
 
 try {
-  final response = await users.create(email: ‘email@example.com’,password: ‘password’, name: ‘name’);
+  final response = await users.create(userId: '[USER_ID]', email: ‘email@example.com’,password: ‘password’, name: ‘name’);
   print(response.data);
 } on AppwriteException catch(e) {
   //show message to user or do other operation based on error as required
