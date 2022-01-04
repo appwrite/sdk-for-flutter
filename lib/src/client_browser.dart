@@ -148,6 +148,13 @@ class ClientBrowser extends ClientBase with ClientMixin {
   return FlutterWebAuth.authenticate(
       url: url.toString(),
       callbackUrlScheme: "appwrite-callback-" + config['project']!,
-    );
-  }
+    ).then((value) async {
+      Uri url = Uri.parse(value);
+      final key = url.queryParameters['key'];
+      final secret = url.queryParameters['secret'];
+      if (key == null || secret == null) {
+        throw AppwriteException(
+            "Invalid OAuth2 Response. Key and Secret not available.", 500);
+      }
+    });  }
 }

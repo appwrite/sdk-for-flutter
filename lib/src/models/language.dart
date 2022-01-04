@@ -17,9 +17,9 @@ class Language implements Model {
 
     factory Language.fromMap(Map<String, dynamic> map) {
         return Language(
-            name: map['name'].toString(),
-            code: map['code'].toString(),
-            nativeName: map['nativeName'].toString(),
+            name: map['name'],
+            code: map['code'],
+            nativeName: map['nativeName'],
         );
     }
 

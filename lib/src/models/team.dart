@@ -20,8 +20,8 @@ class Team implements Model {
 
     factory Team.fromMap(Map<String, dynamic> map) {
         return Team(
-            $id: map['\$id'].toString(),
-            name: map['name'].toString(),
+            $id: map['\$id'],
+            name: map['name'],
             dateCreated: map['dateCreated'],
             sum: map['sum'],
         );

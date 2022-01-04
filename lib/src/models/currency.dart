@@ -29,13 +29,13 @@ class Currency implements Model {
 
     factory Currency.fromMap(Map<String, dynamic> map) {
         return Currency(
-            symbol: map['symbol'].toString(),
-            name: map['name'].toString(),
-            symbolNative: map['symbolNative'].toString(),
+            symbol: map['symbol'],
+            name: map['name'],
+            symbolNative: map['symbolNative'],
             decimalDigits: map['decimalDigits'],
             rounding: map['rounding'].toDouble(),
-            code: map['code'].toString(),
-            namePlural: map['namePlural'].toString(),
+            code: map['code'],
+            namePlural: map['namePlural'],
         );
     }
 

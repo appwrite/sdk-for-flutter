@@ -11,7 +11,7 @@ class Database extends Service {
      /// modes](/docs/admin).
      ///
      Future<models.DocumentList> listDocuments({required String collectionId, List? queries, int? limit, int? offset, String? cursor, String? cursorDirection, List? orderAttributes, List? orderTypes}) async {
-        final String path = '/database/collections/{collectionId}/documents'.replaceAll('{collectionId}', collectionId);
+        final String path = '/database/collections/{collectionId}/documents'.replaceAll(RegExp('{collectionId}'), collectionId);
 
         final Map<String, dynamic> params = {
             'queries': queries,
@@ -39,7 +39,7 @@ class Database extends Service {
      /// directly from your database console.
      ///
      Future<models.Document> createDocument({required String collectionId, required String documentId, required Map data, List? read, List? write}) async {
-        final String path = '/database/collections/{collectionId}/documents'.replaceAll('{collectionId}', collectionId);
+        final String path = '/database/collections/{collectionId}/documents'.replaceAll(RegExp('{collectionId}'), collectionId);
 
         final Map<String, dynamic> params = {
             'documentId': documentId,
@@ -62,7 +62,7 @@ class Database extends Service {
      /// object with the document data.
      ///
      Future<models.Document> getDocument({required String collectionId, required String documentId}) async {
-        final String path = '/database/collections/{collectionId}/documents/{documentId}'.replaceAll('{collectionId}', collectionId).replaceAll('{documentId}', documentId);
+        final String path = '/database/collections/{collectionId}/documents/{documentId}'.replaceAll(RegExp('{collectionId}'), collectionId).replaceAll(RegExp('{documentId}'), documentId);
 
         final Map<String, dynamic> params = {
         };
@@ -81,7 +81,7 @@ class Database extends Service {
      /// only specific fields that will get updated.
      ///
      Future<models.Document> updateDocument({required String collectionId, required String documentId, required Map data, List? read, List? write}) async {
-        final String path = '/database/collections/{collectionId}/documents/{documentId}'.replaceAll('{collectionId}', collectionId).replaceAll('{documentId}', documentId);
+        final String path = '/database/collections/{collectionId}/documents/{documentId}'.replaceAll(RegExp('{collectionId}'), collectionId).replaceAll(RegExp('{documentId}'), documentId);
 
         final Map<String, dynamic> params = {
             'data': data,
@@ -104,7 +104,7 @@ class Database extends Service {
      /// **will not** be deleted.
      ///
      Future deleteDocument({required String collectionId, required String documentId}) async {
-        final String path = '/database/collections/{collectionId}/documents/{documentId}'.replaceAll('{collectionId}', collectionId).replaceAll('{documentId}', documentId);
+        final String path = '/database/collections/{collectionId}/documents/{documentId}'.replaceAll(RegExp('{collectionId}'), collectionId).replaceAll(RegExp('{documentId}'), documentId);
 
         final Map<String, dynamic> params = {
         };

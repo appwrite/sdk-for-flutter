@@ -32,13 +32,13 @@ class File implements Model {
 
     factory File.fromMap(Map<String, dynamic> map) {
         return File(
-            $id: map['\$id'].toString(),
+            $id: map['\$id'],
             $read: map['\$read'],
             $write: map['\$write'],
-            name: map['name'].toString(),
+            name: map['name'],
             dateCreated: map['dateCreated'],
-            signature: map['signature'].toString(),
-            mimeType: map['mimeType'].toString(),
+            signature: map['signature'],
+            mimeType: map['mimeType'],
             sizeOriginal: map['sizeOriginal'],
         );
     }
