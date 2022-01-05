@@ -32,12 +32,12 @@ class User implements Model {
 
     factory User.fromMap(Map<String, dynamic> map) {
         return User(
-            $id: map['\$id'],
-            name: map['name'],
+            $id: map['\$id'].toString(),
+            name: map['name'].toString(),
             registration: map['registration'],
             status: map['status'],
             passwordUpdate: map['passwordUpdate'],
-            email: map['email'],
+            email: map['email'].toString(),
             emailVerification: map['emailVerification'],
             prefs: Preferences.fromMap(map['prefs']),
         );

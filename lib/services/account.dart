@@ -434,7 +434,7 @@ class Account extends Service {
      /// 
      ///
     Future createOAuth2Session({required String provider, String? success, String? failure, List? scopes}) async {
-        final String path = '/account/sessions/oauth2/{provider}'.replaceAll(RegExp('{provider}'), provider);
+        final String path = '/account/sessions/oauth2/{provider}'.replaceAll('{provider}', provider);
 
         final Map<String, dynamic> params = {
             'success': success,
@@ -474,7 +474,7 @@ class Account extends Service {
      /// Inputting 'current' will return the current session being used.
      ///
      Future<models.Session> getSession({required String sessionId}) async {
-        final String path = '/account/sessions/{sessionId}'.replaceAll(RegExp('{sessionId}'), sessionId);
+        final String path = '/account/sessions/{sessionId}'.replaceAll('{sessionId}', sessionId);
 
         final Map<String, dynamic> params = {
         };
@@ -494,7 +494,7 @@ class Account extends Service {
      /// option id argument, only the session unique ID provider will be deleted.
      ///
      Future deleteSession({required String sessionId}) async {
-        final String path = '/account/sessions/{sessionId}'.replaceAll(RegExp('{sessionId}'), sessionId);
+        final String path = '/account/sessions/{sessionId}'.replaceAll('{sessionId}', sessionId);
 
         final Map<String, dynamic> params = {
         };

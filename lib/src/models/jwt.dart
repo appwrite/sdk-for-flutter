@@ -11,7 +11,7 @@ class Jwt implements Model {
 
     factory Jwt.fromMap(Map<String, dynamic> map) {
         return Jwt(
-            jwt: map['jwt'],
+            jwt: map['jwt'].toString(),
         );
     }
 

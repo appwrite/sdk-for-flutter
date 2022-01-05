@@ -22,8 +22,8 @@ class Document implements Model {
 
     factory Document.fromMap(Map<String, dynamic> map) {
         return Document(
-            $id: map['\$id'],
-            $collection: map['\$collection'],
+            $id: map['\$id'].toString(),
+            $collection: map['\$collection'].toString(),
             $read: map['\$read'],
             $write: map['\$write'],
             data: map,

@@ -11,7 +11,7 @@ class Functions extends Service {
      /// different API modes](/docs/admin).
      ///
      Future<models.ExecutionList> listExecutions({required String functionId, int? limit, int? offset, String? search, String? cursor, String? cursorDirection}) async {
-        final String path = '/functions/{functionId}/executions'.replaceAll(RegExp('{functionId}'), functionId);
+        final String path = '/functions/{functionId}/executions'.replaceAll('{functionId}', functionId);
 
         final Map<String, dynamic> params = {
             'limit': limit,
@@ -37,7 +37,7 @@ class Functions extends Service {
      /// function execution process will start asynchronously.
      ///
      Future<models.Execution> createExecution({required String functionId, String? data}) async {
-        final String path = '/functions/{functionId}/executions'.replaceAll(RegExp('{functionId}'), functionId);
+        final String path = '/functions/{functionId}/executions'.replaceAll('{functionId}', functionId);
 
         final Map<String, dynamic> params = {
             'data': data,
@@ -56,7 +56,7 @@ class Functions extends Service {
      /// Get a function execution log by its unique ID.
      ///
      Future<models.Execution> getExecution({required String functionId, required String executionId}) async {
-        final String path = '/functions/{functionId}/executions/{executionId}'.replaceAll(RegExp('{functionId}'), functionId).replaceAll(RegExp('{executionId}'), executionId);
+        final String path = '/functions/{functionId}/executions/{executionId}'.replaceAll('{functionId}', functionId).replaceAll('{executionId}', executionId);
 
         final Map<String, dynamic> params = {
         };

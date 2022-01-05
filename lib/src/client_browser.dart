@@ -36,7 +36,7 @@ class ClientBrowser extends ClientBase with ClientMixin {
         .replaceFirst('http://', 'ws://');
     _headers = {
       'content-type': 'application/json',
-      'x-sdk-version': 'appwrite:flutter:3.0.0',
+      'x-sdk-version': 'appwrite:flutter:3.0.1',
       'X-Appwrite-Response-Format' : '0.12.0',
     };
 
@@ -148,13 +148,6 @@ class ClientBrowser extends ClientBase with ClientMixin {
   return FlutterWebAuth.authenticate(
       url: url.toString(),
       callbackUrlScheme: "appwrite-callback-" + config['project']!,
-    ).then((value) async {
-      Uri url = Uri.parse(value);
-      final key = url.queryParameters['key'];
-      final secret = url.queryParameters['secret'];
-      if (key == null || secret == null) {
-        throw AppwriteException(
-            "Invalid OAuth2 Response. Key and Secret not available.", 500);
-      }
-    });  }
+    );
+  }
 }

@@ -19,6 +19,7 @@ export 'src/realtime_subscription.dart';
 export 'src/realtime_message.dart';
 export 'package:http/http.dart' show MultipartFile;
 
+part 'query.dart';
 part 'services/account.dart';
 part 'services/avatars.dart';
 part 'services/database.dart';

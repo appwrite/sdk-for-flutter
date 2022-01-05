@@ -38,15 +38,15 @@ class Execution implements Model {
 
     factory Execution.fromMap(Map<String, dynamic> map) {
         return Execution(
-            $id: map['\$id'],
+            $id: map['\$id'].toString(),
             $read: map['\$read'],
-            functionId: map['functionId'],
+            functionId: map['functionId'].toString(),
             dateCreated: map['dateCreated'],
-            trigger: map['trigger'],
-            status: map['status'],
+            trigger: map['trigger'].toString(),
+            status: map['status'].toString(),
             exitCode: map['exitCode'],
-            stdout: map['stdout'],
-            stderr: map['stderr'],
+            stdout: map['stdout'].toString(),
+            stderr: map['stderr'].toString(),
             time: map['time'].toDouble(),
         );
     }

@@ -59,7 +59,7 @@ class Teams extends Service {
      /// Get a team by its ID. All team members have read access for this resource.
      ///
      Future<models.Team> get({required String teamId}) async {
-        final String path = '/teams/{teamId}'.replaceAll(RegExp('{teamId}'), teamId);
+        final String path = '/teams/{teamId}'.replaceAll('{teamId}', teamId);
 
         final Map<String, dynamic> params = {
         };
@@ -78,7 +78,7 @@ class Teams extends Service {
      /// team.
      ///
      Future<models.Team> update({required String teamId, required String name}) async {
-        final String path = '/teams/{teamId}'.replaceAll(RegExp('{teamId}'), teamId);
+        final String path = '/teams/{teamId}'.replaceAll('{teamId}', teamId);
 
         final Map<String, dynamic> params = {
             'name': name,
@@ -98,7 +98,7 @@ class Teams extends Service {
      /// delete the team.
      ///
      Future delete({required String teamId}) async {
-        final String path = '/teams/{teamId}'.replaceAll(RegExp('{teamId}'), teamId);
+        final String path = '/teams/{teamId}'.replaceAll('{teamId}', teamId);
 
         final Map<String, dynamic> params = {
         };
@@ -117,7 +117,7 @@ class Teams extends Service {
      /// members have read access to this endpoint.
      ///
      Future<models.MembershipList> getMemberships({required String teamId, String? search, int? limit, int? offset, String? cursor, String? cursorDirection, String? orderType}) async {
-        final String path = '/teams/{teamId}/memberships'.replaceAll(RegExp('{teamId}'), teamId);
+        final String path = '/teams/{teamId}/memberships'.replaceAll('{teamId}', teamId);
 
         final Map<String, dynamic> params = {
             'search': search,
@@ -155,7 +155,7 @@ class Teams extends Service {
      /// adding your platforms in the console interface.
      ///
      Future<models.Membership> createMembership({required String teamId, required String email, required List roles, required String url, String? name}) async {
-        final String path = '/teams/{teamId}/memberships'.replaceAll(RegExp('{teamId}'), teamId);
+        final String path = '/teams/{teamId}/memberships'.replaceAll('{teamId}', teamId);
 
         final Map<String, dynamic> params = {
             'email': email,
@@ -178,7 +178,7 @@ class Teams extends Service {
      /// access for this resource.
      ///
      Future<models.MembershipList> getMembership({required String teamId, required String membershipId}) async {
-        final String path = '/teams/{teamId}/memberships/{membershipId}'.replaceAll(RegExp('{teamId}'), teamId).replaceAll(RegExp('{membershipId}'), membershipId);
+        final String path = '/teams/{teamId}/memberships/{membershipId}'.replaceAll('{teamId}', teamId).replaceAll('{membershipId}', membershipId);
 
         final Map<String, dynamic> params = {
         };
@@ -198,7 +198,7 @@ class Teams extends Service {
      /// permissions](/docs/permissions).
      ///
      Future<models.Membership> updateMembershipRoles({required String teamId, required String membershipId, required List roles}) async {
-        final String path = '/teams/{teamId}/memberships/{membershipId}'.replaceAll(RegExp('{teamId}'), teamId).replaceAll(RegExp('{membershipId}'), membershipId);
+        final String path = '/teams/{teamId}/memberships/{membershipId}'.replaceAll('{teamId}', teamId).replaceAll('{membershipId}', membershipId);
 
         final Map<String, dynamic> params = {
             'roles': roles,
@@ -219,7 +219,7 @@ class Teams extends Service {
      /// delete a user membership even if it is not accepted.
      ///
      Future deleteMembership({required String teamId, required String membershipId}) async {
-        final String path = '/teams/{teamId}/memberships/{membershipId}'.replaceAll(RegExp('{teamId}'), teamId).replaceAll(RegExp('{membershipId}'), membershipId);
+        final String path = '/teams/{teamId}/memberships/{membershipId}'.replaceAll('{teamId}', teamId).replaceAll('{membershipId}', membershipId);
 
         final Map<String, dynamic> params = {
         };
@@ -239,7 +239,7 @@ class Teams extends Service {
      /// by the user.
      ///
      Future<models.Membership> updateMembershipStatus({required String teamId, required String membershipId, required String userId, required String secret}) async {
-        final String path = '/teams/{teamId}/memberships/{membershipId}/status'.replaceAll(RegExp('{teamId}'), teamId).replaceAll(RegExp('{membershipId}'), membershipId);
+        final String path = '/teams/{teamId}/memberships/{membershipId}/status'.replaceAll('{teamId}', teamId).replaceAll('{membershipId}', membershipId);
 
         final Map<String, dynamic> params = {
             'userId': userId,
