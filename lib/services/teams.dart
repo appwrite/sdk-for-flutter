@@ -11,7 +11,7 @@ class Teams extends Service {
      /// In admin mode, this endpoint returns a list of all the teams in the current
      /// project. [Learn more about different API modes](/docs/admin).
      ///
-     Future<models.TeamList> list({String? search, int? limit, int? offset, String? cursor, String? cursorDirection, String? orderType}) async {
+     Future<models.TeamList> list({String? search, int? limit, int? offset, String? cursor, String? cursorDirection, OrderType? orderType}) async {
         final String path = '/teams';
 
         final Map<String, dynamic> params = {
@@ -20,7 +20,7 @@ class Teams extends Service {
             'offset': offset,
             'cursor': cursor,
             'cursorDirection': cursorDirection,
-            'orderType': orderType,
+            'orderType': orderType != null ? orderType.name : null,
         };
 
         final Map<String, String> headers = {
@@ -116,7 +116,7 @@ class Teams extends Service {
      /// Use this endpoint to list a team's members using the team's ID. All team
      /// members have read access to this endpoint.
      ///
-     Future<models.MembershipList> getMemberships({required String teamId, String? search, int? limit, int? offset, String? cursor, String? cursorDirection, String? orderType}) async {
+     Future<models.MembershipList> getMemberships({required String teamId, String? search, int? limit, int? offset, String? cursor, String? cursorDirection, OrderType? orderType}) async {
         final String path = '/teams/{teamId}/memberships'.replaceAll('{teamId}', teamId);
 
         final Map<String, dynamic> params = {
@@ -125,7 +125,7 @@ class Teams extends Service {
             'offset': offset,
             'cursor': cursor,
             'cursorDirection': cursorDirection,
-            'orderType': orderType,
+            'orderType': orderType != null ? orderType.name : null,
         };
 
         final Map<String, String> headers = {

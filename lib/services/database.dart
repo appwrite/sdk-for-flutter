@@ -10,7 +10,7 @@ class Database extends Service {
      /// of the project's documents. [Learn more about different API
      /// modes](/docs/admin).
      ///
-     Future<models.DocumentList> listDocuments({required String collectionId, List? queries, int? limit, int? offset, String? cursor, String? cursorDirection, List? orderAttributes, List? orderTypes}) async {
+     Future<models.DocumentList> listDocuments({required String collectionId, List? queries, int? limit, int? offset, String? cursor, String? cursorDirection, List? orderAttributes, List<OrderType>? orderTypes}) async {
         final String path = '/database/collections/{collectionId}/documents'.replaceAll('{collectionId}', collectionId);
 
         final Map<String, dynamic> params = {
@@ -20,7 +20,7 @@ class Database extends Service {
             'cursor': cursor,
             'cursorDirection': cursorDirection,
             'orderAttributes': orderAttributes,
-            'orderTypes': orderTypes,
+            'orderTypes': orderTypes != null ? List.generate(orderTypes.length, (int index) => orderTypes[index].name) : null,
         };
 
         final Map<String, String> headers = {
