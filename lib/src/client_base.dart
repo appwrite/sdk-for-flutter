@@ -2,11 +2,12 @@ import 'response.dart';
 import 'client.dart';
 import 'enums.dart';
 
-abstract class ClientBase implements Client {  
-    /// Your project ID
+abstract class ClientBase implements Client {
+  /// Your project ID
   @override
   ClientBase setProject(value);
-    /// Your secret JSON Web Token
+
+  /// Your secret JSON Web Token
   @override
   ClientBase setJWT(value);
   @override

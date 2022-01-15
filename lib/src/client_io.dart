@@ -56,7 +56,7 @@ class ClientIO extends ClientBase with ClientMixin {
     this._headers = {
       'content-type': 'application/json',
       'x-sdk-version': 'appwrite:flutter:3.0.1',
-      'X-Appwrite-Response-Format' : '0.12.0',
+      'X-Appwrite-Response-Format': '0.12.0',
     };
 
     this.config = {};
@@ -77,26 +77,28 @@ class ClientIO extends ClientBase with ClientMixin {
     return dir;
   }
 
-     /// Your project ID
-    @override
-    ClientIO setProject(value) {
-        config['project'] = value;
-        addHeader('X-Appwrite-Project', value);
-        return this;
-    }
-     /// Your secret JSON Web Token
-    @override
-    ClientIO setJWT(value) {
-        config['jWT'] = value;
-        addHeader('X-Appwrite-JWT', value);
-        return this;
-    }
-    @override
-    ClientIO setLocale(value) {
-        config['locale'] = value;
-        addHeader('X-Appwrite-Locale', value);
-        return this;
-    }
+  /// Your project ID
+  @override
+  ClientIO setProject(value) {
+    config['project'] = value;
+    addHeader('X-Appwrite-Project', value);
+    return this;
+  }
+
+  /// Your secret JSON Web Token
+  @override
+  ClientIO setJWT(value) {
+    config['jWT'] = value;
+    addHeader('X-Appwrite-JWT', value);
+    return this;
+  }
+
+  @override
+  ClientIO setLocale(value) {
+    config['locale'] = value;
+    addHeader('X-Appwrite-Locale', value);
+    return this;
+  }
 
   @override
   ClientIO setSelfSigned({bool status = true}) {
@@ -167,8 +169,8 @@ class ClientIO extends ClientBase with ClientMixin {
       debugPrint('Error getting device info: $e');
       device = Platform.operatingSystem;
     }
-    addHeader(
-        'user-agent', '${packageInfo.packageName}/${packageInfo.version} $device');
+    addHeader('user-agent',
+        '${packageInfo.packageName}/${packageInfo.version} $device');
 
     _initialized = true;
   }

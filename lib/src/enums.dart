@@ -1127,5 +1127,5 @@ enum OrderType {
 }
 
 extension OrderTypeExtension on OrderType {
-  String get name => this == OrderType.ascending ? "ASC": "DESC";
+  String get name => this == OrderType.ascending ? "ASC" : "DESC";
 }

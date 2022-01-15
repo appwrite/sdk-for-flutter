@@ -16,7 +16,8 @@ class Account extends Service {
       'content-type': 'application/json',
     };
 
-    final res = await client.call(HttpMethod.get, path: path, params: params, headers: headers);
+    final res = await client.call(HttpMethod.get,
+        path: path, params: params, headers: headers);
     return models.User.fromMap(res.data);
   }
 
@@ -29,7 +30,11 @@ class Account extends Service {
   /// login to their new account, you need to create a new [account
   /// session](/docs/client/account#accountCreateSession).
   ///
-  Future<models.User> create({required String userId, required String email, required String password, String? name}) async {
+  Future<models.User> create(
+      {required String userId,
+      required String email,
+      required String password,
+      String? name}) async {
     final String path = '/account';
 
     final Map<String, dynamic> params = {
@@ -43,7 +48,8 @@ class Account extends Service {
       'content-type': 'application/json',
     };
 
-    final res = await client.call(HttpMethod.post, path: path, params: params, headers: headers);
+    final res = await client.call(HttpMethod.post,
+        path: path, params: params, headers: headers);
     return models.User.fromMap(res.data);
   }
 
@@ -64,7 +70,8 @@ class Account extends Service {
       'content-type': 'application/json',
     };
 
-    final res = await client.call(HttpMethod.delete, path: path, params: params, headers: headers);
+    final res = await client.call(HttpMethod.delete,
+        path: path, params: params, headers: headers);
     return res.data;
   }
 
@@ -79,7 +86,8 @@ class Account extends Service {
   /// one, by passing an email address and a new password.
   ///
   ///
-  Future<models.User> updateEmail({required String email, required String password}) async {
+  Future<models.User> updateEmail(
+      {required String email, required String password}) async {
     final String path = '/account/email';
 
     final Map<String, dynamic> params = {
@@ -91,7 +99,8 @@ class Account extends Service {
       'content-type': 'application/json',
     };
 
-    final res = await client.call(HttpMethod.patch, path: path, params: params, headers: headers);
+    final res = await client.call(HttpMethod.patch,
+        path: path, params: params, headers: headers);
     return models.User.fromMap(res.data);
   }
 
@@ -112,7 +121,8 @@ class Account extends Service {
       'content-type': 'application/json',
     };
 
-    final res = await client.call(HttpMethod.post, path: path, params: params, headers: headers);
+    final res = await client.call(HttpMethod.post,
+        path: path, params: params, headers: headers);
     return models.Jwt.fromMap(res.data);
   }
 
@@ -133,7 +143,8 @@ class Account extends Service {
       'content-type': 'application/json',
     };
 
-    final res = await client.call(HttpMethod.get, path: path, params: params, headers: headers);
+    final res = await client.call(HttpMethod.get,
+        path: path, params: params, headers: headers);
     return models.LogList.fromMap(res.data);
   }
 
@@ -152,7 +163,8 @@ class Account extends Service {
       'content-type': 'application/json',
     };
 
-    final res = await client.call(HttpMethod.patch, path: path, params: params, headers: headers);
+    final res = await client.call(HttpMethod.patch,
+        path: path, params: params, headers: headers);
     return models.User.fromMap(res.data);
   }
 
@@ -162,7 +174,8 @@ class Account extends Service {
   /// to pass in the new password, and the old password. For users created with
   /// OAuth and Team Invites, oldPassword is optional.
   ///
-  Future<models.User> updatePassword({required String password, String? oldPassword}) async {
+  Future<models.User> updatePassword(
+      {required String password, String? oldPassword}) async {
     final String path = '/account/password';
 
     final Map<String, dynamic> params = {
@@ -174,7 +187,8 @@ class Account extends Service {
       'content-type': 'application/json',
     };
 
-    final res = await client.call(HttpMethod.patch, path: path, params: params, headers: headers);
+    final res = await client.call(HttpMethod.patch,
+        path: path, params: params, headers: headers);
     return models.User.fromMap(res.data);
   }
 
@@ -191,7 +205,8 @@ class Account extends Service {
       'content-type': 'application/json',
     };
 
-    final res = await client.call(HttpMethod.get, path: path, params: params, headers: headers);
+    final res = await client.call(HttpMethod.get,
+        path: path, params: params, headers: headers);
     return models.Preferences.fromMap(res.data);
   }
 
@@ -211,7 +226,8 @@ class Account extends Service {
       'content-type': 'application/json',
     };
 
-    final res = await client.call(HttpMethod.patch, path: path, params: params, headers: headers);
+    final res = await client.call(HttpMethod.patch,
+        path: path, params: params, headers: headers);
     return models.User.fromMap(res.data);
   }
 
@@ -226,7 +242,8 @@ class Account extends Service {
   /// complete the process. The verification link sent to the user's email
   /// address is valid for 1 hour.
   ///
-  Future<models.Token> createRecovery({required String email, required String url}) async {
+  Future<models.Token> createRecovery(
+      {required String email, required String url}) async {
     final String path = '/account/recovery';
 
     final Map<String, dynamic> params = {
@@ -238,7 +255,8 @@ class Account extends Service {
       'content-type': 'application/json',
     };
 
-    final res = await client.call(HttpMethod.post, path: path, params: params, headers: headers);
+    final res = await client.call(HttpMethod.post,
+        path: path, params: params, headers: headers);
     return models.Token.fromMap(res.data);
   }
 
@@ -255,7 +273,10 @@ class Account extends Service {
   /// adding your platforms in the console interface.
   ///
   Future<models.Token> updateRecovery(
-      {required String userId, required String secret, required String password, required String passwordAgain}) async {
+      {required String userId,
+      required String secret,
+      required String password,
+      required String passwordAgain}) async {
     final String path = '/account/recovery';
 
     final Map<String, dynamic> params = {
@@ -269,7 +290,8 @@ class Account extends Service {
       'content-type': 'application/json',
     };
 
-    final res = await client.call(HttpMethod.put, path: path, params: params, headers: headers);
+    final res = await client.call(HttpMethod.put,
+        path: path, params: params, headers: headers);
     return models.Token.fromMap(res.data);
   }
 
@@ -287,7 +309,8 @@ class Account extends Service {
       'content-type': 'application/json',
     };
 
-    final res = await client.call(HttpMethod.get, path: path, params: params, headers: headers);
+    final res = await client.call(HttpMethod.get,
+        path: path, params: params, headers: headers);
     return models.SessionList.fromMap(res.data);
   }
 
@@ -296,7 +319,8 @@ class Account extends Service {
   /// Allow the user to login into their account by providing a valid email and
   /// password combination. This route will create a new session for the user.
   ///
-  Future<models.Session> createSession({required String email, required String password}) async {
+  Future<models.Session> createSession(
+      {required String email, required String password}) async {
     final String path = '/account/sessions';
 
     final Map<String, dynamic> params = {
@@ -308,7 +332,8 @@ class Account extends Service {
       'content-type': 'application/json',
     };
 
-    final res = await client.call(HttpMethod.post, path: path, params: params, headers: headers);
+    final res = await client.call(HttpMethod.post,
+        path: path, params: params, headers: headers);
     return models.Session.fromMap(res.data);
   }
 
@@ -326,7 +351,8 @@ class Account extends Service {
       'content-type': 'application/json',
     };
 
-    final res = await client.call(HttpMethod.delete, path: path, params: params, headers: headers);
+    final res = await client.call(HttpMethod.delete,
+        path: path, params: params, headers: headers);
     return res.data;
   }
 
@@ -348,7 +374,8 @@ class Account extends Service {
       'content-type': 'application/json',
     };
 
-    final res = await client.call(HttpMethod.post, path: path, params: params, headers: headers);
+    final res = await client.call(HttpMethod.post,
+        path: path, params: params, headers: headers);
     return models.Session.fromMap(res.data);
   }
 
@@ -365,7 +392,8 @@ class Account extends Service {
   /// the URL parameter empty, so that the login completion will be handled by
   /// your Appwrite instance by default.
   ///
-  Future<models.Token> createMagicURLSession({required String userId, required String email, String? url}) async {
+  Future<models.Token> createMagicURLSession(
+      {required String userId, required String email, String? url}) async {
     final String path = '/account/sessions/magic-url';
 
     final Map<String, dynamic> params = {
@@ -378,7 +406,8 @@ class Account extends Service {
       'content-type': 'application/json',
     };
 
-    final res = await client.call(HttpMethod.post, path: path, params: params, headers: headers);
+    final res = await client.call(HttpMethod.post,
+        path: path, params: params, headers: headers);
     return models.Token.fromMap(res.data);
   }
 
@@ -396,7 +425,8 @@ class Account extends Service {
   /// the only valid redirect URLs are the ones from domains you have set when
   /// adding your platforms in the console interface.
   ///
-  Future<models.Session> updateMagicURLSession({required String userId, required String secret}) async {
+  Future<models.Session> updateMagicURLSession(
+      {required String userId, required String secret}) async {
     final String path = '/account/sessions/magic-url';
 
     final Map<String, dynamic> params = {
@@ -408,7 +438,8 @@ class Account extends Service {
       'content-type': 'application/json',
     };
 
-    final res = await client.call(HttpMethod.put, path: path, params: params, headers: headers);
+    final res = await client.call(HttpMethod.put,
+        path: path, params: params, headers: headers);
     return models.Session.fromMap(res.data);
   }
 
@@ -427,8 +458,13 @@ class Account extends Service {
   /// user..
   ///
   ///
-  Future createOAuth2Session({required OAuth2Provider provider, String? success, String? failure, List? scopes}) async {
-    final String path = '/account/sessions/oauth2/{provider}'.replaceAll('{provider}', provider.name);
+  Future createOAuth2Session(
+      {required OAuth2Provider provider,
+      String? success,
+      String? failure,
+      List? scopes}) async {
+    final String path = '/account/sessions/oauth2/{provider}'
+        .replaceAll('{provider}', provider.name);
 
     final Map<String, dynamic> params = {
       'success': success,
@@ -442,7 +478,9 @@ class Account extends Service {
     params.forEach((key, value) {
       if (value is List) {
         for (var item in value) {
-          query.add(Uri.encodeComponent(key + '[]') + '=' + Uri.encodeComponent(item));
+          query.add(Uri.encodeComponent(key + '[]') +
+              '=' +
+              Uri.encodeComponent(item));
         }
       } else if (value != null) {
         query.add(Uri.encodeComponent(key) + '=' + Uri.encodeComponent(value));
@@ -450,7 +488,12 @@ class Account extends Service {
     });
 
     Uri endpoint = Uri.parse(client.endPoint);
-    Uri url = Uri(scheme: endpoint.scheme, host: endpoint.host, port: endpoint.port, path: endpoint.path + path, query: query.join('&'));
+    Uri url = Uri(
+        scheme: endpoint.scheme,
+        host: endpoint.host,
+        port: endpoint.port,
+        path: endpoint.path + path,
+        query: query.join('&'));
 
     return client.webAuth(url);
   }
@@ -461,7 +504,8 @@ class Account extends Service {
   /// Inputting 'current' will return the current session being used.
   ///
   Future<models.Session> getSession({required String sessionId}) async {
-    final String path = '/account/sessions/{sessionId}'.replaceAll('{sessionId}', sessionId);
+    final String path =
+        '/account/sessions/{sessionId}'.replaceAll('{sessionId}', sessionId);
 
     final Map<String, dynamic> params = {};
 
@@ -469,7 +513,8 @@ class Account extends Service {
       'content-type': 'application/json',
     };
 
-    final res = await client.call(HttpMethod.get, path: path, params: params, headers: headers);
+    final res = await client.call(HttpMethod.get,
+        path: path, params: params, headers: headers);
     return models.Session.fromMap(res.data);
   }
 
@@ -480,7 +525,8 @@ class Account extends Service {
   /// option id argument, only the session unique ID provider will be deleted.
   ///
   Future deleteSession({required String sessionId}) async {
-    final String path = '/account/sessions/{sessionId}'.replaceAll('{sessionId}', sessionId);
+    final String path =
+        '/account/sessions/{sessionId}'.replaceAll('{sessionId}', sessionId);
 
     final Map<String, dynamic> params = {};
 
@@ -488,7 +534,8 @@ class Account extends Service {
       'content-type': 'application/json',
     };
 
-    final res = await client.call(HttpMethod.delete, path: path, params: params, headers: headers);
+    final res = await client.call(HttpMethod.delete,
+        path: path, params: params, headers: headers);
     return res.data;
   }
 
@@ -521,7 +568,8 @@ class Account extends Service {
       'content-type': 'application/json',
     };
 
-    final res = await client.call(HttpMethod.post, path: path, params: params, headers: headers);
+    final res = await client.call(HttpMethod.post,
+        path: path, params: params, headers: headers);
     return models.Token.fromMap(res.data);
   }
 
@@ -532,7 +580,8 @@ class Account extends Service {
   /// to verify the user email ownership. If confirmed this route will return a
   /// 200 status code.
   ///
-  Future<models.Token> updateVerification({required String userId, required String secret}) async {
+  Future<models.Token> updateVerification(
+      {required String userId, required String secret}) async {
     final String path = '/account/verification';
 
     final Map<String, dynamic> params = {
@@ -544,7 +593,8 @@ class Account extends Service {
       'content-type': 'application/json',
     };
 
-    final res = await client.call(HttpMethod.put, path: path, params: params, headers: headers);
+    final res = await client.call(HttpMethod.put,
+        path: path, params: params, headers: headers);
     return models.Token.fromMap(res.data);
   }
 }

@@ -13,8 +13,7 @@ abstract class Client {
   String? get endPointRealtime => _endPointRealtime;
 
   factory Client(
-          {String endPoint = 'https://HOSTNAME/v1',
-          bool selfSigned = false}) =>
+          {String endPoint = 'https://HOSTNAME/v1', bool selfSigned = false}) =>
       createClient(endPoint: endPoint, selfSigned: selfSigned);
 
   Future webAuth(Uri url);
@@ -25,15 +24,17 @@ abstract class Client {
 
   Client setEndPointRealtime(String endPoint);
 
-    /// Your project ID
+  /// Your project ID
   Client setProject(value);
-    /// Your secret JSON Web Token
+
+  /// Your secret JSON Web Token
   Client setJWT(value);
   Client setLocale(value);
 
   Client addHeader(String key, String value);
 
-  Future<Response> call(HttpMethod method, {
+  Future<Response> call(
+    HttpMethod method, {
     String path = '',
     Map<String, String> headers = const {},
     Map<String, dynamic> params = const {},

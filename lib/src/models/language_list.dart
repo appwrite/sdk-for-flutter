@@ -2,28 +2,30 @@ part of appwrite.models;
 
 /// Languages List
 class LanguageList implements Model {
-    /// Total number of items available on the server.
-    final int sum;
-    /// List of languages.
-    final List<Language> languages;
+  /// Total number of items available on the server.
+  final int sum;
 
-    LanguageList({
-        required this.sum,
-        required this.languages,
-    });
+  /// List of languages.
+  final List<Language> languages;
 
-    factory LanguageList.fromMap(Map<String, dynamic> map) {
-        return LanguageList(
-            sum: map['sum'],
-            languages: List<Language>.from(map['languages'].map((p) => Language.fromMap(p))),
-        );
-    }
+  LanguageList({
+    required this.sum,
+    required this.languages,
+  });
 
-    @override
-    Map<String, dynamic> toMap() {
-        return {
-            "sum": sum,
-            "languages": languages.map((p) => p.toMap()),
-        };
-    }
+  factory LanguageList.fromMap(Map<String, dynamic> map) {
+    return LanguageList(
+      sum: map['sum'],
+      languages:
+          List<Language>.from(map['languages'].map((p) => Language.fromMap(p))),
+    );
+  }
+
+  @override
+  Map<String, dynamic> toMap() {
+    return {
+      "sum": sum,
+      "languages": languages.map((p) => p.toMap()),
+    };
+  }
 }

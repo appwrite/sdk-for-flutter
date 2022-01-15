@@ -123,7 +123,7 @@ mixin RealtimeMixin {
               this._channels.remove(channel);
             }
           });
-          if(this._channels.isNotEmpty) {
+          if (this._channels.isNotEmpty) {
             await Future.delayed(Duration.zero, () => _createSocket());
           } else {
             await _closeConnection();

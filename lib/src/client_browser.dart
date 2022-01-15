@@ -37,7 +37,7 @@ class ClientBrowser extends ClientBase with ClientMixin {
     _headers = {
       'content-type': 'application/json',
       'x-sdk-version': 'appwrite:flutter:3.0.1',
-      'X-Appwrite-Response-Format' : '0.12.0',
+      'X-Appwrite-Response-Format': '0.12.0',
     };
 
     this.config = {};
@@ -50,26 +50,28 @@ class ClientBrowser extends ClientBase with ClientMixin {
   @override
   String get endPoint => _endPoint;
 
-     /// Your project ID
-    @override
-    ClientBrowser setProject(value) {
-        config['project'] = value;
-        addHeader('X-Appwrite-Project', value);
-        return this;
-    }
-     /// Your secret JSON Web Token
-    @override
-    ClientBrowser setJWT(value) {
-        config['jWT'] = value;
-        addHeader('X-Appwrite-JWT', value);
-        return this;
-    }
-    @override
-    ClientBrowser setLocale(value) {
-        config['locale'] = value;
-        addHeader('X-Appwrite-Locale', value);
-        return this;
-    }
+  /// Your project ID
+  @override
+  ClientBrowser setProject(value) {
+    config['project'] = value;
+    addHeader('X-Appwrite-Project', value);
+    return this;
+  }
+
+  /// Your secret JSON Web Token
+  @override
+  ClientBrowser setJWT(value) {
+    config['jWT'] = value;
+    addHeader('X-Appwrite-JWT', value);
+    return this;
+  }
+
+  @override
+  ClientBrowser setLocale(value) {
+    config['locale'] = value;
+    addHeader('X-Appwrite-Locale', value);
+    return this;
+  }
 
   @override
   ClientBrowser setSelfSigned({bool status = true}) {
@@ -145,7 +147,7 @@ class ClientBrowser extends ClientBase with ClientMixin {
 
   @override
   Future webAuth(Uri url) {
-  return FlutterWebAuth.authenticate(
+    return FlutterWebAuth.authenticate(
       url: url.toString(),
       callbackUrlScheme: "appwrite-callback-" + config['project']!,
     );
