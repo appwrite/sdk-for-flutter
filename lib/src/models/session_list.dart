@@ -2,19 +2,19 @@ part of appwrite.models;
 
 /// Sessions List
 class SessionList implements Model {
-    /// Total number of items available on the server.
-    final int sum;
+    /// Total number of sessions documents that matched your query.
+    final int total;
     /// List of sessions.
     final List<Session> sessions;
 
     SessionList({
-        required this.sum,
+        required this.total,
         required this.sessions,
     });
 
     factory SessionList.fromMap(Map<String, dynamic> map) {
         return SessionList(
-            sum: map['sum'],
+            total: map['total'],
             sessions: List<Session>.from(map['sessions'].map((p) => Session.fromMap(p))),
         );
     }
@@ -22,7 +22,7 @@ class SessionList implements Model {
     @override
     Map<String, dynamic> toMap() {
         return {
-            "sum": sum,
+            "total": total,
             "sessions": sessions.map((p) => p.toMap()),
         };
     }

@@ -20,10 +20,6 @@ class Avatars extends Service {
             'project': client.config['project'],
         };
 
-        params.keys.forEach((key) {if (params[key] is int || params[key] is double) {
-          params[key] = params[key].toString();
-        }});
-
         final res = await client.call(HttpMethod.get, path: path, params: params, responseType: ResponseType.bytes);
         return res.data;
     }
@@ -44,10 +40,6 @@ class Avatars extends Service {
             'project': client.config['project'],
         };
 
-        params.keys.forEach((key) {if (params[key] is int || params[key] is double) {
-          params[key] = params[key].toString();
-        }});
-
         final res = await client.call(HttpMethod.get, path: path, params: params, responseType: ResponseType.bytes);
         return res.data;
     }
@@ -59,16 +51,12 @@ class Avatars extends Service {
      /// 
      ///
      Future<Uint8List>  getFavicon({required String url}) async {
-        final String path = '/avatars/favicon';
+        const String path = '/avatars/favicon';
 
         final Map<String, dynamic> params = {
             'url': url,
             'project': client.config['project'],
         };
-
-        params.keys.forEach((key) {if (params[key] is int || params[key] is double) {
-          params[key] = params[key].toString();
-        }});
 
         final res = await client.call(HttpMethod.get, path: path, params: params, responseType: ResponseType.bytes);
         return res.data;
@@ -90,10 +78,6 @@ class Avatars extends Service {
             'project': client.config['project'],
         };
 
-        params.keys.forEach((key) {if (params[key] is int || params[key] is double) {
-          params[key] = params[key].toString();
-        }});
-
         final res = await client.call(HttpMethod.get, path: path, params: params, responseType: ResponseType.bytes);
         return res.data;
     }
@@ -106,7 +90,7 @@ class Avatars extends Service {
      /// image is properly served using a TLS protocol.
      ///
      Future<Uint8List>  getImage({required String url, int? width, int? height}) async {
-        final String path = '/avatars/image';
+        const String path = '/avatars/image';
 
         final Map<String, dynamic> params = {
             'url': url,
@@ -114,10 +98,6 @@ class Avatars extends Service {
             'height': height,
             'project': client.config['project'],
         };
-
-        params.keys.forEach((key) {if (params[key] is int || params[key] is double) {
-          params[key] = params[key].toString();
-        }});
 
         final res = await client.call(HttpMethod.get, path: path, params: params, responseType: ResponseType.bytes);
         return res.data;
@@ -137,7 +117,7 @@ class Avatars extends Service {
      /// the same initials.
      ///
      Future<Uint8List>  getInitials({String? name, int? width, int? height, String? color, String? background}) async {
-        final String path = '/avatars/initials';
+        const String path = '/avatars/initials';
 
         final Map<String, dynamic> params = {
             'name': name,
@@ -147,10 +127,6 @@ class Avatars extends Service {
             'background': background,
             'project': client.config['project'],
         };
-
-        params.keys.forEach((key) {if (params[key] is int || params[key] is double) {
-          params[key] = params[key].toString();
-        }});
 
         final res = await client.call(HttpMethod.get, path: path, params: params, responseType: ResponseType.bytes);
         return res.data;
@@ -162,7 +138,7 @@ class Avatars extends Service {
      /// parameters to change the size and style of the resulting image.
      ///
      Future<Uint8List>  getQR({required String text, int? size, int? margin, bool? download}) async {
-        final String path = '/avatars/qr';
+        const String path = '/avatars/qr';
 
         final Map<String, dynamic> params = {
             'text': text,
@@ -171,10 +147,6 @@ class Avatars extends Service {
             'download': download,
             'project': client.config['project'],
         };
-
-        params.keys.forEach((key) {if (params[key] is int || params[key] is double) {
-          params[key] = params[key].toString();
-        }});
 
         final res = await client.call(HttpMethod.get, path: path, params: params, responseType: ResponseType.bytes);
         return res.data;

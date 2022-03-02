@@ -53,13 +53,13 @@ class ClientIO extends ClientBase with ClientMixin {
     _endPointRealtime = endPoint
         .replaceFirst('https://', 'wss://')
         .replaceFirst('http://', 'ws://');
-    this._headers = {
+    _headers = {
       'content-type': 'application/json',
       'x-sdk-version': 'appwrite:flutter:3.0.1',
-      'X-Appwrite-Response-Format' : '0.12.0',
+      'X-Appwrite-Response-Format' : '0.13.0',
     };
 
-    this.config = {};
+    config = {};
 
     assert(_endPoint.startsWith(RegExp("http://|https://")),
         "endPoint $_endPoint must start with 'http'");
@@ -100,7 +100,7 @@ class ClientIO extends ClientBase with ClientMixin {
 
   @override
   ClientIO setSelfSigned({bool status = true}) {
-    this.selfSigned = status;
+    selfSigned = status;
     _nativeClient.badCertificateCallback =
         ((X509Certificate cert, String host, int port) => status);
     return this;
@@ -108,7 +108,7 @@ class ClientIO extends ClientBase with ClientMixin {
 
   @override
   ClientIO setEndpoint(String endPoint) {
-    this._endPoint = endPoint;
+    _endPoint = endPoint;
     _endPointRealtime = endPoint
         .replaceFirst('https://', 'wss://')
         .replaceFirst('http://', 'ws://');
@@ -132,7 +132,7 @@ class ClientIO extends ClientBase with ClientMixin {
     // if web skip cookie implementation and origin header as those are automatically handled by browsers
     final Directory cookieDir = await _getCookiePath();
     _cookieJar = PersistCookieJar(storage: FileStorage(cookieDir.path));
-    this._interceptors.add(CookieManager(_cookieJar));
+    _interceptors.add(CookieManager(_cookieJar));
     PackageInfo packageInfo = await PackageInfo.fromPlatform();
     addHeader('Origin',
         'appwrite-${Platform.operatingSystem}://${packageInfo.packageName}');
@@ -176,9 +176,7 @@ class ClientIO extends ClientBase with ClientMixin {
   Future<http.BaseRequest> _interceptRequest(http.BaseRequest request) async {
     final body = (request is http.Request) ? request.body : '';
     for (final i in _interceptors) {
-      if (i is Interceptor) {
-        request = await i.onRequest(request);
-      }
+      request = await i.onRequest(request);
     }
 
     if (request is http.Request) {
@@ -194,9 +192,7 @@ class ClientIO extends ClientBase with ClientMixin {
   Future<http.Response> _interceptResponse(http.Response response) async {
     final body = response.body;
     for (final i in _interceptors) {
-      if (i is Interceptor) {
-        response = await i.onResponse(response);
-      }
+      response = await i.onResponse(response);
     }
 
     assert(
@@ -238,14 +234,14 @@ class ClientIO extends ClientBase with ClientMixin {
     ResponseType? responseType,
   }) async {
     if (!_initialized) {
-      await this.init();
+      await init();
     }
 
     late http.Response res;
-    http.BaseRequest request = this.prepareRequest(
+    http.BaseRequest request = prepareRequest(
       method,
       uri: Uri.parse(_endPoint + path),
-      headers: {...this._headers!, ...headers},
+      headers: {..._headers!, ...headers},
       params: params,
     );
 
@@ -255,7 +251,7 @@ class ClientIO extends ClientBase with ClientMixin {
       res = await toResponse(streamedResponse);
       res = await _interceptResponse(res);
 
-      return this.prepareResponse(
+      return prepareResponse(
         res,
         responseType: responseType,
       );

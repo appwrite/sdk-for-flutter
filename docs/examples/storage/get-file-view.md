@@ -13,6 +13,7 @@ void main() { // Init SDK
 //displaying image
 FutureBuilder(
   future: storage.getFileView(
+    bucketId: '[BUCKET_ID]',
     fileId: '[FILE_ID]',
   ), //works for both public file and private file, for private files you need to be logged in
   builder: (context, snapshot) {

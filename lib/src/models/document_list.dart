@@ -2,19 +2,19 @@ part of appwrite.models;
 
 /// Documents List
 class DocumentList implements Model {
-    /// Total number of items available on the server.
-    final int sum;
+    /// Total number of documents documents that matched your query.
+    final int total;
     /// List of documents.
     final List<Document> documents;
 
     DocumentList({
-        required this.sum,
+        required this.total,
         required this.documents,
     });
 
     factory DocumentList.fromMap(Map<String, dynamic> map) {
         return DocumentList(
-            sum: map['sum'],
+            total: map['total'],
             documents: List<Document>.from(map['documents'].map((p) => Document.fromMap(p))),
         );
     }
@@ -22,7 +22,7 @@ class DocumentList implements Model {
     @override
     Map<String, dynamic> toMap() {
         return {
-            "sum": sum,
+            "total": total,
             "documents": documents.map((p) => p.toMap()),
         };
     }

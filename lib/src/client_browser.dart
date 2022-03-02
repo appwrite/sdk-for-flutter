@@ -1,4 +1,5 @@
 import 'dart:html' as html;
+import 'package:flutter/foundation.dart';
 import 'package:flutter_web_auth/flutter_web_auth.dart';
 import 'package:http/http.dart' as http;
 import 'package:http/browser_client.dart';
@@ -37,10 +38,10 @@ class ClientBrowser extends ClientBase with ClientMixin {
     _headers = {
       'content-type': 'application/json',
       'x-sdk-version': 'appwrite:flutter:3.0.1',
-      'X-Appwrite-Response-Format' : '0.12.0',
+      'X-Appwrite-Response-Format' : '0.13.0',
     };
 
-    this.config = {};
+    config = {};
 
     assert(_endPoint.startsWith(RegExp("http://|https://")),
         "endPoint $_endPoint must start with 'http'");
@@ -78,7 +79,7 @@ class ClientBrowser extends ClientBase with ClientMixin {
 
   @override
   ClientBrowser setEndpoint(String endPoint) {
-    this._endPoint = endPoint;
+    _endPoint = endPoint;
     _endPointRealtime = endPoint
         .replaceFirst('https://', 'wss://')
         .replaceFirst('http://', 'ws://');
@@ -98,7 +99,6 @@ class ClientBrowser extends ClientBase with ClientMixin {
     return this;
   }
 
-  @override
   Future init() async {
     if (html.window.localStorage.keys.contains('cookieFallback')) {
       addHeader('x-fallback-cookies',
@@ -107,6 +107,7 @@ class ClientBrowser extends ClientBase with ClientMixin {
     _httpClient.withCredentials = true;
   }
 
+  @override
   Future<Response> call(
     HttpMethod method, {
     String path = '',
@@ -114,13 +115,13 @@ class ClientBrowser extends ClientBase with ClientMixin {
     Map<String, dynamic> params = const {},
     ResponseType? responseType,
   }) async {
-    await this.init();
+    await init();
 
     late http.Response res;
-    http.BaseRequest request = this.prepareRequest(
+    http.BaseRequest request = prepareRequest(
       method,
       uri: Uri.parse(_endPoint + path),
-      headers: {...this._headers!, ...headers},
+      headers: {..._headers!, ...headers},
       params: params,
     );
     try {
@@ -129,12 +130,12 @@ class ClientBrowser extends ClientBase with ClientMixin {
 
       final cookieFallback = res.headers['x-fallback-cookies'];
       if (cookieFallback != null) {
-        print(
+        debugPrint(
             'Appwrite is using localStorage for session management. Increase your security by adding a custom domain as your API endpoint.');
         addHeader('X-Fallback-Cookies', cookieFallback);
         html.window.localStorage['cookieFallback'] = cookieFallback;
       }
-      return this.prepareResponse(res, responseType: responseType);
+      return prepareResponse(res, responseType: responseType);
     } catch (e) {
       if (e is AppwriteException) {
         rethrow;

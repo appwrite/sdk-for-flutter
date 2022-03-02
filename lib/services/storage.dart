@@ -9,8 +9,8 @@ class Storage extends Service {
      /// your results. On admin mode, this endpoint will return a list of all of the
      /// project's files. [Learn more about different API modes](/docs/admin).
      ///
-     Future<models.FileList> listFiles({String? search, int? limit, int? offset, String? cursor, String? cursorDirection, String? orderType}) async {
-        final String path = '/storage/files';
+     Future<models.FileList> listFiles({required String bucketId, String? search, int? limit, int? offset, String? cursor, String? cursorDirection, String? orderType}) async {
+        final String path = '/storage/buckets/{bucketId}/files'.replaceAll('{bucketId}', bucketId);
 
         final Map<String, dynamic> params = {
             'search': search,
@@ -31,12 +31,27 @@ class Storage extends Service {
 
      /// Create File
      ///
-     /// Create a new file. The user who creates the file will automatically be
-     /// assigned to read and write access unless he has passed custom values for
-     /// read and write arguments.
+     /// Create a new file. Before using this route, you should create a new bucket
+     /// resource using either a [server
+     /// integration](/docs/server/database#storageCreateBucket) API or directly
+     /// from your Appwrite console.
+     /// 
+     /// Larger files should be uploaded using multiple requests with the
+     /// [content-range](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Range)
+     /// header to send a partial request with a maximum supported chunk of `5MB`.
+     /// The `content-range` header values should always be in bytes.
+     /// 
+     /// When the first request is sent, the server will return the **File** object,
+     /// and the subsequent part request must include the file's **id** in
+     /// `x-appwrite-id` header to allow the server to know that the partial upload
+     /// is for the existing file and not for a new one.
+     /// 
+     /// If you're creating a new file using one of the Appwrite SDKs, all the
+     /// chunking logic will be managed by the SDK internally.
+     /// 
      ///
-     Future<models.File> createFile({required String fileId, required http.MultipartFile file, List? read, List? write}) async {
-        final String path = '/storage/files';
+     Future<models.File> createFile({required String bucketId, required String fileId, required InputFile file, List? read, List? write, Function(UploadProgress)? onProgress}) async {
+        final String path = '/storage/buckets/{bucketId}/files'.replaceAll('{bucketId}', bucketId);
 
         final Map<String, dynamic> params = {
             'fileId': fileId,
@@ -49,7 +64,24 @@ class Storage extends Service {
             'content-type': 'multipart/form-data',
         };
 
-        final res = await client.call(HttpMethod.post, path: path, params: params, headers: headers);
+        dynamic res;
+        if(kIsWeb) {
+          params['file'] = file.file;
+          res = await client.call(HttpMethod.post, path: path, params: params, headers: headers);
+        } else {
+          String idParamName = '';
+          idParamName = 'fileId';
+          final paramName = 'file';
+          res = await chunkedUpload(
+            client: client,
+            path: path,
+            params: params,
+            paramName: paramName,
+            idParamName: idParamName,
+            headers: headers,
+            onProgress: onProgress,
+          );
+        }
         return models.File.fromMap(res.data);
     }
 
@@ -58,8 +90,8 @@ class Storage extends Service {
      /// Get a file by its unique ID. This endpoint response returns a JSON object
      /// with the file metadata.
      ///
-     Future<models.File> getFile({required String fileId}) async {
-        final String path = '/storage/files/{fileId}'.replaceAll('{fileId}', fileId);
+     Future<models.File> getFile({required String bucketId, required String fileId}) async {
+        final String path = '/storage/buckets/{bucketId}/files/{fileId}'.replaceAll('{bucketId}', bucketId).replaceAll('{fileId}', fileId);
 
         final Map<String, dynamic> params = {
         };
@@ -77,8 +109,8 @@ class Storage extends Service {
      /// Update a file by its unique ID. Only users with write permissions have
      /// access to update this resource.
      ///
-     Future<models.File> updateFile({required String fileId, required List read, required List write}) async {
-        final String path = '/storage/files/{fileId}'.replaceAll('{fileId}', fileId);
+     Future<models.File> updateFile({required String bucketId, required String fileId, List? read, List? write}) async {
+        final String path = '/storage/buckets/{bucketId}/files/{fileId}'.replaceAll('{bucketId}', bucketId).replaceAll('{fileId}', fileId);
 
         final Map<String, dynamic> params = {
             'read': read,
@@ -98,8 +130,8 @@ class Storage extends Service {
      /// Delete a file by its unique ID. Only users with write permissions have
      /// access to delete this resource.
      ///
-     Future deleteFile({required String fileId}) async {
-        final String path = '/storage/files/{fileId}'.replaceAll('{fileId}', fileId);
+     Future deleteFile({required String bucketId, required String fileId}) async {
+        final String path = '/storage/buckets/{bucketId}/files/{fileId}'.replaceAll('{bucketId}', bucketId).replaceAll('{fileId}', fileId);
 
         final Map<String, dynamic> params = {
         };
@@ -118,16 +150,12 @@ class Storage extends Service {
      /// 'Content-Disposition: attachment' header that tells the browser to start
      /// downloading the file to user downloads directory.
      ///
-     Future<Uint8List>  getFileDownload({required String fileId}) async {
-        final String path = '/storage/files/{fileId}/download'.replaceAll('{fileId}', fileId);
+     Future<Uint8List>  getFileDownload({required String bucketId, required String fileId}) async {
+        final String path = '/storage/buckets/{bucketId}/files/{fileId}/download'.replaceAll('{bucketId}', bucketId).replaceAll('{fileId}', fileId);
 
         final Map<String, dynamic> params = {
             'project': client.config['project'],
         };
-
-        params.keys.forEach((key) {if (params[key] is int || params[key] is double) {
-          params[key] = params[key].toString();
-        }});
 
         final res = await client.call(HttpMethod.get, path: path, params: params, responseType: ResponseType.bytes);
         return res.data;
@@ -138,10 +166,11 @@ class Storage extends Service {
      /// Get a file preview image. Currently, this method supports preview for image
      /// files (jpg, png, and gif), other supported formats, like pdf, docs, slides,
      /// and spreadsheets, will return the file icon image. You can also pass query
-     /// string arguments for cutting and resizing your preview image.
+     /// string arguments for cutting and resizing your preview image. Preview is
+     /// supported only for image files smaller than 10MB.
      ///
-     Future<Uint8List>  getFilePreview({required String fileId, int? width, int? height, String? gravity, int? quality, int? borderWidth, String? borderColor, int? borderRadius, double? opacity, int? rotation, String? background, String? output}) async {
-        final String path = '/storage/files/{fileId}/preview'.replaceAll('{fileId}', fileId);
+     Future<Uint8List>  getFilePreview({required String bucketId, required String fileId, int? width, int? height, String? gravity, int? quality, int? borderWidth, String? borderColor, int? borderRadius, double? opacity, int? rotation, String? background, String? output}) async {
+        final String path = '/storage/buckets/{bucketId}/files/{fileId}/preview'.replaceAll('{bucketId}', bucketId).replaceAll('{fileId}', fileId);
 
         final Map<String, dynamic> params = {
             'width': width,
@@ -158,10 +187,6 @@ class Storage extends Service {
             'project': client.config['project'],
         };
 
-        params.keys.forEach((key) {if (params[key] is int || params[key] is double) {
-          params[key] = params[key].toString();
-        }});
-
         final res = await client.call(HttpMethod.get, path: path, params: params, responseType: ResponseType.bytes);
         return res.data;
     }
@@ -172,16 +197,12 @@ class Storage extends Service {
      /// download method but returns with no  'Content-Disposition: attachment'
      /// header.
      ///
-     Future<Uint8List>  getFileView({required String fileId}) async {
-        final String path = '/storage/files/{fileId}/view'.replaceAll('{fileId}', fileId);
+     Future<Uint8List>  getFileView({required String bucketId, required String fileId}) async {
+        final String path = '/storage/buckets/{bucketId}/files/{fileId}/view'.replaceAll('{bucketId}', bucketId).replaceAll('{fileId}', fileId);
 
         final Map<String, dynamic> params = {
             'project': client.config['project'],
         };
-
-        params.keys.forEach((key) {if (params[key] is int || params[key] is double) {
-          params[key] = params[key].toString();
-        }});
 
         final res = await client.call(HttpMethod.get, path: path, params: params, responseType: ResponseType.bytes);
         return res.data;

@@ -5,6 +5,7 @@ import 'client_stub.dart'
 import 'response.dart';
 
 abstract class Client {
+  static const int CHUNK_SIZE = 5*1024*1024;
   late Map<String, String> config;
   late String _endPoint;
   late String? _endPointRealtime;

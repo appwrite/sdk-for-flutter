@@ -1,18 +1,17 @@
-import 'dart:io';
 import 'package:appwrite/appwrite.dart';
 
 void main() { // Init SDK
   Client client = Client();
-  Storage storage = Storage(client);
+  Functions functions = Functions(client);
 
   client
     .setEndpoint('https://[HOSTNAME_OR_IP]/v1') // Your API Endpoint
     .setProject('5df5acd0d48c2') // Your project ID
   ;
-  Future result = storage.createFile(
-    bucketId: '[BUCKET_ID]',
-    fileId: '[FILE_ID]',
-    file: await MultipartFile.fromPath('file', './path-to-files/image.jpg', 'image.jpg'),
+  Future result = functions.retryBuild(
+    functionId: '[FUNCTION_ID]',
+    deploymentId: '[DEPLOYMENT_ID]',
+    buildId: '[BUILD_ID]',
   );
 
   result

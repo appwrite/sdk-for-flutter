@@ -38,16 +38,15 @@ class ClientMixin {
         });
       }
     } else if (method == HttpMethod.get) {
-      final encoded = <String, dynamic>{};
       if (params.isNotEmpty) {
-        params.keys.forEach((key) {
-          if (params[key] is int || params[key] is double) {
-            encoded[key] = params[key].toString();
-          } else if (params[key] is List) {
-            encoded[key + "[]"] = params[key];
-          } else {
-            encoded[key] = params[key];
+        params = params.map((key, value){
+          if (value is int || value is double) {
+            return MapEntry(key, value.toString());
           }
+          if (value is List) {
+            return MapEntry(key + "[]", value);
+          }
+          return MapEntry(key, value);
         });
       }
       uri = Uri(
@@ -55,7 +54,7 @@ class ClientMixin {
           path: uri.path,
           host: uri.host,
           scheme: uri.scheme,
-          queryParameters: encoded,
+          queryParameters: params,
           port: uri.port);
       request = http.Request(method.name(), uri);
     } else {
@@ -74,6 +73,7 @@ class ClientMixin {
         throw AppwriteException(
           response['message'],
           response['code'],
+          response['type'],
           response,
         );
       } else {

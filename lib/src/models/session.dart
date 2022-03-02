@@ -12,8 +12,12 @@ class Session implements Model {
     final String provider;
     /// Session Provider User ID.
     final String providerUid;
-    /// Session Provider Token.
-    final String providerToken;
+    /// Session Provider Access Token.
+    final String providerAccessToken;
+    /// Date, the Unix timestamp of when the access token expires.
+    final int providerAccessTokenExpiry;
+    /// Session Provider Refresh Token.
+    final String providerRefreshToken;
     /// IP in use when the session was created.
     final String ip;
     /// Operating system code name. View list of [available options](https://github.com/appwrite/appwrite/blob/master/docs/lists/os.json).
@@ -53,7 +57,9 @@ class Session implements Model {
         required this.expire,
         required this.provider,
         required this.providerUid,
-        required this.providerToken,
+        required this.providerAccessToken,
+        required this.providerAccessTokenExpiry,
+        required this.providerRefreshToken,
         required this.ip,
         required this.osCode,
         required this.osName,
@@ -79,7 +85,9 @@ class Session implements Model {
             expire: map['expire'],
             provider: map['provider'].toString(),
             providerUid: map['providerUid'].toString(),
-            providerToken: map['providerToken'].toString(),
+            providerAccessToken: map['providerAccessToken'].toString(),
+            providerAccessTokenExpiry: map['providerAccessTokenExpiry'],
+            providerRefreshToken: map['providerRefreshToken'].toString(),
             ip: map['ip'].toString(),
             osCode: map['osCode'].toString(),
             osName: map['osName'].toString(),
@@ -107,7 +115,9 @@ class Session implements Model {
             "expire": expire,
             "provider": provider,
             "providerUid": providerUid,
-            "providerToken": providerToken,
+            "providerAccessToken": providerAccessToken,
+            "providerAccessTokenExpiry": providerAccessTokenExpiry,
+            "providerRefreshToken": providerRefreshToken,
             "ip": ip,
             "osCode": osCode,
             "osName": osName,

@@ -13,7 +13,7 @@ class Locale extends Service {
      /// ([IP Geolocation by DB-IP](https://db-ip.com))
      ///
      Future<models.Locale> get() async {
-        final String path = '/locale';
+        const String path = '/locale';
 
         final Map<String, dynamic> params = {
         };
@@ -32,7 +32,7 @@ class Locale extends Service {
      /// supported language.
      ///
      Future<models.ContinentList> getContinents() async {
-        final String path = '/locale/continents';
+        const String path = '/locale/continents';
 
         final Map<String, dynamic> params = {
         };
@@ -51,7 +51,7 @@ class Locale extends Service {
      /// supported language.
      ///
      Future<models.CountryList> getCountries() async {
-        final String path = '/locale/countries';
+        const String path = '/locale/countries';
 
         final Map<String, dynamic> params = {
         };
@@ -70,7 +70,7 @@ class Locale extends Service {
      /// locale header to get the data in a supported language.
      ///
      Future<models.CountryList> getCountriesEU() async {
-        final String path = '/locale/countries/eu';
+        const String path = '/locale/countries/eu';
 
         final Map<String, dynamic> params = {
         };
@@ -89,7 +89,7 @@ class Locale extends Service {
      /// data in a supported language.
      ///
      Future<models.PhoneList> getCountriesPhones() async {
-        final String path = '/locale/countries/phones';
+        const String path = '/locale/countries/phones';
 
         final Map<String, dynamic> params = {
         };
@@ -109,7 +109,7 @@ class Locale extends Service {
      /// header to get the data in a supported language.
      ///
      Future<models.CurrencyList> getCurrencies() async {
-        final String path = '/locale/currencies';
+        const String path = '/locale/currencies';
 
         final Map<String, dynamic> params = {
         };
@@ -128,7 +128,7 @@ class Locale extends Service {
      /// in English, and name in the respective language.
      ///
      Future<models.LanguageList> getLanguages() async {
-        final String path = '/locale/languages';
+        const String path = '/locale/languages';
 
         final Map<String, dynamic> params = {
         };

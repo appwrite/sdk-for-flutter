@@ -2,19 +2,19 @@ part of appwrite.models;
 
 /// Countries List
 class CountryList implements Model {
-    /// Total number of items available on the server.
-    final int sum;
+    /// Total number of countries documents that matched your query.
+    final int total;
     /// List of countries.
     final List<Country> countries;
 
     CountryList({
-        required this.sum,
+        required this.total,
         required this.countries,
     });
 
     factory CountryList.fromMap(Map<String, dynamic> map) {
         return CountryList(
-            sum: map['sum'],
+            total: map['total'],
             countries: List<Country>.from(map['countries'].map((p) => Country.fromMap(p))),
         );
     }
@@ -22,7 +22,7 @@ class CountryList implements Model {
     @override
     Map<String, dynamic> toMap() {
         return {
-            "sum": sum,
+            "total": total,
             "countries": countries.map((p) => p.toMap()),
         };
     }

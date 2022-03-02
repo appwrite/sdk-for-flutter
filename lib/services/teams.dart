@@ -12,7 +12,7 @@ class Teams extends Service {
      /// project. [Learn more about different API modes](/docs/admin).
      ///
      Future<models.TeamList> list({String? search, int? limit, int? offset, String? cursor, String? cursorDirection, String? orderType}) async {
-        final String path = '/teams';
+        const String path = '/teams';
 
         final Map<String, dynamic> params = {
             'search': search,
@@ -38,7 +38,7 @@ class Teams extends Service {
      /// invite new members, add new owners and delete or update the team.
      ///
      Future<models.Team> create({required String teamId, required String name, List? roles}) async {
-        final String path = '/teams';
+        const String path = '/teams';
 
         final Map<String, dynamic> params = {
             'teamId': teamId,
@@ -237,6 +237,10 @@ class Teams extends Service {
      /// Use this endpoint to allow a user to accept an invitation to join a team
      /// after being redirected back to your app from the invitation email received
      /// by the user.
+     /// 
+     /// If the request is successful, a session for the user is automatically
+     /// created.
+     /// 
      ///
      Future<models.Membership> updateMembershipStatus({required String teamId, required String membershipId, required String userId, required String secret}) async {
         final String path = '/teams/{teamId}/memberships/{membershipId}/status'.replaceAll('{teamId}', teamId).replaceAll('{membershipId}', membershipId);

@@ -2,19 +2,19 @@ part of appwrite.models;
 
 /// Teams List
 class TeamList implements Model {
-    /// Total number of items available on the server.
-    final int sum;
+    /// Total number of teams documents that matched your query.
+    final int total;
     /// List of teams.
     final List<Team> teams;
 
     TeamList({
-        required this.sum,
+        required this.total,
         required this.teams,
     });
 
     factory TeamList.fromMap(Map<String, dynamic> map) {
         return TeamList(
-            sum: map['sum'],
+            total: map['total'],
             teams: List<Team>.from(map['teams'].map((p) => Team.fromMap(p))),
         );
     }
@@ -22,7 +22,7 @@ class TeamList implements Model {
     @override
     Map<String, dynamic> toMap() {
         return {
-            "sum": sum,
+            "total": total,
             "teams": teams.map((p) => p.toMap()),
         };
     }

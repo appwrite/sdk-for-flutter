@@ -2,19 +2,19 @@ part of appwrite.models;
 
 /// Memberships List
 class MembershipList implements Model {
-    /// Total number of items available on the server.
-    final int sum;
+    /// Total number of memberships documents that matched your query.
+    final int total;
     /// List of memberships.
     final List<Membership> memberships;
 
     MembershipList({
-        required this.sum,
+        required this.total,
         required this.memberships,
     });
 
     factory MembershipList.fromMap(Map<String, dynamic> map) {
         return MembershipList(
-            sum: map['sum'],
+            total: map['total'],
             memberships: List<Membership>.from(map['memberships'].map((p) => Membership.fromMap(p))),
         );
     }
@@ -22,7 +22,7 @@ class MembershipList implements Model {
     @override
     Map<String, dynamic> toMap() {
         return {
-            "sum": sum,
+            "total": total,
             "memberships": memberships.map((p) => p.toMap()),
         };
     }

@@ -2,19 +2,19 @@ part of appwrite.models;
 
 /// Executions List
 class ExecutionList implements Model {
-    /// Total number of items available on the server.
-    final int sum;
+    /// Total number of executions documents that matched your query.
+    final int total;
     /// List of executions.
     final List<Execution> executions;
 
     ExecutionList({
-        required this.sum,
+        required this.total,
         required this.executions,
     });
 
     factory ExecutionList.fromMap(Map<String, dynamic> map) {
         return ExecutionList(
-            sum: map['sum'],
+            total: map['total'],
             executions: List<Execution>.from(map['executions'].map((p) => Execution.fromMap(p))),
         );
     }
@@ -22,7 +22,7 @@ class ExecutionList implements Model {
     @override
     Map<String, dynamic> toMap() {
         return {
-            "sum": sum,
+            "total": total,
             "executions": executions.map((p) => p.toMap()),
         };
     }

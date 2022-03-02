@@ -8,14 +8,14 @@ class Team implements Model {
     final String name;
     /// Team creation date in Unix timestamp.
     final int dateCreated;
-    /// Total sum of team members.
-    final int sum;
+    /// Total number of team members.
+    final int total;
 
     Team({
         required this.$id,
         required this.name,
         required this.dateCreated,
-        required this.sum,
+        required this.total,
     });
 
     factory Team.fromMap(Map<String, dynamic> map) {
@@ -23,7 +23,7 @@ class Team implements Model {
             $id: map['\$id'].toString(),
             name: map['name'].toString(),
             dateCreated: map['dateCreated'],
-            sum: map['sum'],
+            total: map['total'],
         );
     }
 
@@ -33,7 +33,7 @@ class Team implements Model {
             "\$id": $id,
             "name": name,
             "dateCreated": dateCreated,
-            "sum": sum,
+            "total": total,
         };
     }
 }

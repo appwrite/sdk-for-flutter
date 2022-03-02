@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 import 'dart:math';
+import 'package:flutter/foundation.dart';
 import 'package:web_socket_channel/io.dart';
 import 'package:web_socket_channel/web_socket_channel.dart';
 import 'cookie_manager.dart';
@@ -17,7 +18,7 @@ class RealtimeIO extends RealtimeBase with RealtimeMixin {
 
   RealtimeIO(Client client) {
     this.client = client;
-    this.getWebSocket = _getWebSocket;
+    getWebSocket = _getWebSocket;
   }
 
   Future<WebSocketChannel> _getWebSocket(Uri uri) async {
@@ -53,7 +54,7 @@ class RealtimeIO extends RealtimeBase with RealtimeMixin {
       var client = HttpClient(context: SecurityContext());
       client.badCertificateCallback =
           (X509Certificate cert, String host, int port) {
-        print('AppwriteRealtime: Allow self-signed certificate');
+        debugPrint('AppwriteRealtime: Allow self-signed certificate');
         return true;
       };
 

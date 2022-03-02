@@ -14,8 +14,8 @@ class Execution implements Model {
     final String trigger;
     /// The status of the function execution. Possible values can be: `waiting`, `processing`, `completed`, or `failed`.
     final String status;
-    /// The script exit code.
-    final int exitCode;
+    /// The script status code.
+    final int statusCode;
     /// The script stdout output string. Logs the last 4,000 characters of the execution stdout output.
     final String stdout;
     /// The script stderr output string. Logs the last 4,000 characters of the execution stderr output
@@ -30,7 +30,7 @@ class Execution implements Model {
         required this.dateCreated,
         required this.trigger,
         required this.status,
-        required this.exitCode,
+        required this.statusCode,
         required this.stdout,
         required this.stderr,
         required this.time,
@@ -44,7 +44,7 @@ class Execution implements Model {
             dateCreated: map['dateCreated'],
             trigger: map['trigger'].toString(),
             status: map['status'].toString(),
-            exitCode: map['exitCode'],
+            statusCode: map['statusCode'],
             stdout: map['stdout'].toString(),
             stderr: map['stderr'].toString(),
             time: map['time'].toDouble(),
@@ -60,7 +60,7 @@ class Execution implements Model {
             "dateCreated": dateCreated,
             "trigger": trigger,
             "status": status,
-            "exitCode": exitCode,
+            "statusCode": statusCode,
             "stdout": stdout,
             "stderr": stderr,
             "time": time,

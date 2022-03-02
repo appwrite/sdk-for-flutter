@@ -2,19 +2,19 @@ part of appwrite.models;
 
 /// Languages List
 class LanguageList implements Model {
-    /// Total number of items available on the server.
-    final int sum;
+    /// Total number of languages documents that matched your query.
+    final int total;
     /// List of languages.
     final List<Language> languages;
 
     LanguageList({
-        required this.sum,
+        required this.total,
         required this.languages,
     });
 
     factory LanguageList.fromMap(Map<String, dynamic> map) {
         return LanguageList(
-            sum: map['sum'],
+            total: map['total'],
             languages: List<Language>.from(map['languages'].map((p) => Language.fromMap(p))),
         );
     }
@@ -22,7 +22,7 @@ class LanguageList implements Model {
     @override
     Map<String, dynamic> toMap() {
         return {
-            "sum": sum,
+            "total": total,
             "languages": languages.map((p) => p.toMap()),
         };
     }
