@@ -7,6 +7,7 @@ Future<Response> chunkedUpload({
   required String path,
   required Map<String, dynamic> params,
   required String paramName,
+  required String idParamName,
   required Map<String, String> headers,
   Function(UploadProgress)? onProgress,
 }) =>

@@ -2,7 +2,6 @@ library appwrite;
 
 import 'dart:async';
 import 'dart:typed_data';
-import 'package:http/http.dart' as http;
 import 'package:flutter/foundation.dart';
 import 'src/chunked_upload_stub.dart'
     if (dart.library.io) 'src/chunked_upload_io.dart';
