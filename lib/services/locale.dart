@@ -1,5 +1,8 @@
 part of appwrite;
 
+
+     /// The Locale service allows you to customize your app based on your users'
+     /// location.
 class Locale extends Service {
     Locale(Client client): super(client);
 

@@ -1,5 +1,7 @@
 part of appwrite;
 
+
+     /// The Storage service allows you to manage your project files.
 class Storage extends Service {
     Storage(Client client): super(client);
 
