@@ -26,7 +26,7 @@ Future<Response> chunkedUpload({
 
   late Response res;
   if (size <= Client.CHUNK_SIZE) {
-    params[paramName] = await http.MultipartFile.fromPath(paramName, file.path!, filename: file.fileName);
+    params[paramName] = await http.MultipartFile.fromPath(paramName, file.path!, filename: file.filename);
     return client.call(
       HttpMethod.post,
       path: path,
@@ -55,7 +55,7 @@ Future<Response> chunkedUpload({
     raf.setPositionSync(offset);
     final chunk = raf.readSync(Client.CHUNK_SIZE);
     params[paramName] =
-        http.MultipartFile.fromBytes(paramName, chunk, filename: file.fileName);
+        http.MultipartFile.fromBytes(paramName, chunk, filename: file.filename);
     headers['content-range'] =
         'bytes $offset-${min<int>(((offset + Client.CHUNK_SIZE) - 1), size)}/$size';
     res = await client.call(HttpMethod.post,
