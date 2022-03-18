@@ -15,7 +15,7 @@ class Session implements Model {
     /// Session Provider Access Token.
     final String providerAccessToken;
     /// Date, the Unix timestamp of when the access token expires.
-    final int providerAccessTokenExpiry;
+    final int? providerAccessTokenExpiry;
     /// Session Provider Refresh Token.
     final String providerRefreshToken;
     /// IP in use when the session was created.
