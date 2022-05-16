@@ -16,8 +16,8 @@ class Execution implements Model {
     final String status;
     /// The script status code.
     final int statusCode;
-    /// The script stdout output string. Logs the last 4,000 characters of the execution stdout output.
-    final String stdout;
+    /// The script response output string. Logs the last 4,000 characters of the execution response output.
+    final String response;
     /// The script stderr output string. Logs the last 4,000 characters of the execution stderr output
     final String stderr;
     /// The script execution time in seconds.
@@ -31,7 +31,7 @@ class Execution implements Model {
         required this.trigger,
         required this.status,
         required this.statusCode,
-        required this.stdout,
+        required this.response,
         required this.stderr,
         required this.time,
     });
@@ -45,7 +45,7 @@ class Execution implements Model {
             trigger: map['trigger'].toString(),
             status: map['status'].toString(),
             statusCode: map['statusCode'],
-            stdout: map['stdout'].toString(),
+            response: map['response'].toString(),
             stderr: map['stderr'].toString(),
             time: map['time'].toDouble(),
         );
@@ -61,7 +61,7 @@ class Execution implements Model {
             "trigger": trigger,
             "status": status,
             "statusCode": statusCode,
-            "stdout": stdout,
+            "response": response,
             "stderr": stderr,
             "time": time,
         };

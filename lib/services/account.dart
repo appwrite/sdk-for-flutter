@@ -50,28 +50,6 @@ class Account extends Service {
         return models.User.fromMap(res.data);
     }
 
-     /// Delete Account
-     ///
-     /// Delete a currently logged in user account. Behind the scene, the user
-     /// record is not deleted but permanently blocked from any access. This is done
-     /// to avoid deleted accounts being overtaken by new users with the same email
-     /// address. Any user-related resources like documents or storage files should
-     /// be deleted separately.
-     ///
-     Future delete() async {
-        const String path = '/account';
-
-        final Map<String, dynamic> params = {
-        };
-
-        final Map<String, String> headers = {
-            'content-type': 'application/json',
-        };
-
-        final res = await client.call(HttpMethod.delete, path: path, params: params, headers: headers);
-        return  res.data;
-    }
-
      /// Update Account Email
      ///
      /// Update currently logged in user account email address. After changing user
@@ -165,7 +143,7 @@ class Account extends Service {
      ///
      /// Update currently logged in user password. For validation, user is required
      /// to pass in the new password, and the old password. For users created with
-     /// OAuth and Team Invites, oldPassword is optional.
+     /// OAuth, Team Invites and Magic URL, oldPassword is optional.
      ///
      Future<models.User> updatePassword({required String password, String? oldPassword}) async {
         const String path = '/account/password';
@@ -491,6 +469,11 @@ class Account extends Service {
     }
 
      /// Update Session (Refresh Tokens)
+     ///
+     /// Access tokens have limited lifespan and expire to mitigate security risks.
+     /// If session was created using an OAuth provider, this route can be used to
+     /// "refresh" the access token.
+     ///
      Future<models.Session> updateSession({required String sessionId}) async {
         final String path = '/account/sessions/{sessionId}'.replaceAll('{sessionId}', sessionId);
 
@@ -524,6 +507,26 @@ class Account extends Service {
 
         final res = await client.call(HttpMethod.delete, path: path, params: params, headers: headers);
         return  res.data;
+    }
+
+     /// Update Account Status
+     ///
+     /// Block the currently logged in user account. Behind the scene, the user
+     /// record is not deleted but permanently blocked from any access. To
+     /// completely delete a user, use the Users API instead.
+     ///
+     Future<models.User> updateStatus() async {
+        const String path = '/account/status';
+
+        final Map<String, dynamic> params = {
+        };
+
+        final Map<String, String> headers = {
+            'content-type': 'application/json',
+        };
+
+        final res = await client.call(HttpMethod.patch, path: path, params: params, headers: headers);
+        return models.User.fromMap(res.data);
     }
 
      /// Create Email Verification

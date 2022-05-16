@@ -6,12 +6,14 @@ class Membership implements Model {
     final String $id;
     /// User ID.
     final String userId;
+    /// User name.
+    final String userName;
+    /// User email address.
+    final String userEmail;
     /// Team ID.
     final String teamId;
-    /// User name.
-    final String name;
-    /// User email address.
-    final String email;
+    /// Team name.
+    final String teamName;
     /// Date, the user has been invited to join the team in Unix timestamp.
     final int invited;
     /// Date, the user has accepted the invitation to join the team in Unix timestamp.
@@ -24,9 +26,10 @@ class Membership implements Model {
     Membership({
         required this.$id,
         required this.userId,
+        required this.userName,
+        required this.userEmail,
         required this.teamId,
-        required this.name,
-        required this.email,
+        required this.teamName,
         required this.invited,
         required this.joined,
         required this.confirm,
@@ -37,9 +40,10 @@ class Membership implements Model {
         return Membership(
             $id: map['\$id'].toString(),
             userId: map['userId'].toString(),
+            userName: map['userName'].toString(),
+            userEmail: map['userEmail'].toString(),
             teamId: map['teamId'].toString(),
-            name: map['name'].toString(),
-            email: map['email'].toString(),
+            teamName: map['teamName'].toString(),
             invited: map['invited'],
             joined: map['joined'],
             confirm: map['confirm'],
@@ -52,9 +56,10 @@ class Membership implements Model {
         return {
             "\$id": $id,
             "userId": userId,
+            "userName": userName,
+            "userEmail": userEmail,
             "teamId": teamId,
-            "name": name,
-            "email": email,
+            "teamName": teamName,
             "invited": invited,
             "joined": joined,
             "confirm": confirm,
