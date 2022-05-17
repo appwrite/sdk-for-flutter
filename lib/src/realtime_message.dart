@@ -2,25 +2,25 @@ import 'dart:convert';
 import 'package:flutter/foundation.dart';
 
 class RealtimeMessage {
-  final String event;
+  final List<String> events;
   final Map<String, dynamic> payload;
   final List<String> channels;
   final int timestamp;
   RealtimeMessage({
-    required this.event,
+    required this.events,
     required this.payload,
     required this.channels,
     required this.timestamp,
   });
 
   RealtimeMessage copyWith({
-    String? event,
+    List<String>? events,
     Map<String, dynamic>? payload,
     List<String>? channels,
     int? timestamp,
   }) {
     return RealtimeMessage(
-      event: event ?? this.event,
+      events: events ?? this.events,
       payload: payload ?? this.payload,
       channels: channels ?? this.channels,
       timestamp: timestamp ?? this.timestamp,
@@ -29,7 +29,7 @@ class RealtimeMessage {
 
   Map<String, dynamic> toMap() {
     return {
-      'event': event,
+      'events': events,
       'payload': payload,
       'channels': channels,
       'timestamp': timestamp,
@@ -38,7 +38,7 @@ class RealtimeMessage {
 
   factory RealtimeMessage.fromMap(Map<String, dynamic> map) {
     return RealtimeMessage(
-      event: map['event'],
+      events: List<String>.from(map['events'] ?? []),
       payload: Map<String, dynamic>.from(map['payload'] ?? <String, dynamic>{}),
       channels: List<String>.from(map['channels'] ?? []),
       timestamp: map['timestamp'],
@@ -52,7 +52,7 @@ class RealtimeMessage {
 
   @override
   String toString() {
-    return 'RealtimeMessage(event: $event, payload: $payload, channels: $channels, timestamp: $timestamp)';
+    return 'RealtimeMessage(events: $events, payload: $payload, channels: $channels, timestamp: $timestamp)';
   }
 
   @override
@@ -60,7 +60,7 @@ class RealtimeMessage {
     if (identical(this, other)) return true;
 
     return other is RealtimeMessage &&
-        other.event == event &&
+        listEquals(other.events, events) &&
         mapEquals(other.payload, payload) &&
         listEquals(other.channels, channels) &&
         other.timestamp == timestamp;
@@ -68,7 +68,7 @@ class RealtimeMessage {
 
   @override
   int get hashCode {
-    return event.hashCode ^
+    return events.hashCode ^
         payload.hashCode ^
         channels.hashCode ^
         timestamp.hashCode;
