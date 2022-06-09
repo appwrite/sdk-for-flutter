@@ -209,4 +209,17 @@ class Storage extends Service {
         final res = await client.call(HttpMethod.get, path: path, params: params, responseType: ResponseType.bytes);
         return res.data;
     }
+
+    /// Get File Preview Url
+    ///
+    /// Get a file preview url. This method just returns a url that
+    /// should return the uploaded file.
+    ///
+    Uri getFilePreviewUrl({
+        required String bucketId,
+        required String fileId,
+    }) {
+        final String path = '{endpoint}/storage/buckets/{bucketId}/files/{fileId}/preview?project={projectId}'.replaceAll('{endpoint}', client.endPoint).replaceAll('{bucketId}', bucketId).r>
+        return Uri.parse(path);
+    }
 }
