@@ -219,7 +219,7 @@ class Storage extends Service {
         required String bucketId,
         required String fileId,
     }) {
-        final String path = '{endpoint}/storage/buckets/{bucketId}/files/{fileId}/preview?project={projectId}'.replaceAll('{endpoint}', client.endPoint).replaceAll('{bucketId}', bucketId).r>
+        final String path = '{endpoint}/storage/buckets/{bucketId}/files/{fileId}/preview?project={projectId}'.replaceAll('{endpoint}', client.endPoint).replaceAll('{bucketId}', bucketId).replaceAll('{fileId}', fileId).replaceAll('{projectId}', "${client.config['project']}");
         return Uri.parse(path);
     }
 }
