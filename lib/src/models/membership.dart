@@ -4,6 +4,10 @@ part of appwrite.models;
 class Membership implements Model {
     /// Membership ID.
     final String $id;
+    /// Membership creation date in Unix timestamp.
+    final int $createdAt;
+    /// Membership update date in Unix timestamp.
+    final int $updatedAt;
     /// User ID.
     final String userId;
     /// User name.
@@ -25,6 +29,8 @@ class Membership implements Model {
 
     Membership({
         required this.$id,
+        required this.$createdAt,
+        required this.$updatedAt,
         required this.userId,
         required this.userName,
         required this.userEmail,
@@ -39,6 +45,8 @@ class Membership implements Model {
     factory Membership.fromMap(Map<String, dynamic> map) {
         return Membership(
             $id: map['\$id'].toString(),
+            $createdAt: map['\$createdAt'],
+            $updatedAt: map['\$updatedAt'],
             userId: map['userId'].toString(),
             userName: map['userName'].toString(),
             userEmail: map['userEmail'].toString(),
@@ -55,6 +63,8 @@ class Membership implements Model {
     Map<String, dynamic> toMap() {
         return {
             "\$id": $id,
+            "\$createdAt": $createdAt,
+            "\$updatedAt": $updatedAt,
             "userId": userId,
             "userName": userName,
             "userEmail": userEmail,

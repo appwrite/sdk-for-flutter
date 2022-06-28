@@ -6,14 +6,16 @@ class File implements Model {
     final String $id;
     /// Bucket ID.
     final String bucketId;
+    /// File creation date in Unix timestamp.
+    final int $createdAt;
+    /// File update date in Unix timestamp.
+    final int $updatedAt;
     /// File read permissions.
     final List $read;
     /// File write permissions.
     final List $write;
     /// File name.
     final String name;
-    /// File creation date in Unix timestamp.
-    final int dateCreated;
     /// File MD5 signature.
     final String signature;
     /// File mime type.
@@ -28,10 +30,11 @@ class File implements Model {
     File({
         required this.$id,
         required this.bucketId,
+        required this.$createdAt,
+        required this.$updatedAt,
         required this.$read,
         required this.$write,
         required this.name,
-        required this.dateCreated,
         required this.signature,
         required this.mimeType,
         required this.sizeOriginal,
@@ -43,10 +46,11 @@ class File implements Model {
         return File(
             $id: map['\$id'].toString(),
             bucketId: map['bucketId'].toString(),
+            $createdAt: map['\$createdAt'],
+            $updatedAt: map['\$updatedAt'],
             $read: map['\$read'],
             $write: map['\$write'],
             name: map['name'].toString(),
-            dateCreated: map['dateCreated'],
             signature: map['signature'].toString(),
             mimeType: map['mimeType'].toString(),
             sizeOriginal: map['sizeOriginal'],
@@ -60,10 +64,11 @@ class File implements Model {
         return {
             "\$id": $id,
             "bucketId": bucketId,
+            "\$createdAt": $createdAt,
+            "\$updatedAt": $updatedAt,
             "\$read": $read,
             "\$write": $write,
             "name": name,
-            "dateCreated": dateCreated,
             "signature": signature,
             "mimeType": mimeType,
             "sizeOriginal": sizeOriginal,

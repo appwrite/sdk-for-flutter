@@ -6,6 +6,10 @@ class Document implements Model {
     final String $id;
     /// Collection ID.
     final String $collection;
+    /// Document creation date in Unix timestamp.
+    final int $createdAt;
+    /// Document update date in Unix timestamp.
+    final int $updatedAt;
     /// Document read permissions.
     final List $read;
     /// Document write permissions.
@@ -15,6 +19,8 @@ class Document implements Model {
     Document({
         required this.$id,
         required this.$collection,
+        required this.$createdAt,
+        required this.$updatedAt,
         required this.$read,
         required this.$write,
         required this.data,
@@ -24,6 +30,8 @@ class Document implements Model {
         return Document(
             $id: map['\$id'].toString(),
             $collection: map['\$collection'].toString(),
+            $createdAt: map['\$createdAt'],
+            $updatedAt: map['\$updatedAt'],
             $read: map['\$read'],
             $write: map['\$write'],
             data: map,
@@ -35,6 +43,8 @@ class Document implements Model {
         return {
             "\$id": $id,
             "\$collection": $collection,
+            "\$createdAt": $createdAt,
+            "\$updatedAt": $updatedAt,
             "\$read": $read,
             "\$write": $write,
             "data": data,

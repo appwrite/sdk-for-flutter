@@ -1,6 +1,5 @@
 part of appwrite;
 
-
      /// The Avatars service aims to help you complete everyday tasks related to
      /// your app image, icons, and avatars.
 class Avatars extends Service {
@@ -23,13 +22,16 @@ class Avatars extends Service {
 
         final Map<String, dynamic> params = {
             'width': width,
-            'height': height,
-            'quality': quality,
+'height': height,
+'quality': quality,
+
+            
             'project': client.config['project'],
         };
 
         final res = await client.call(HttpMethod.get, path: path, params: params, responseType: ResponseType.bytes);
         return res.data;
+
     }
 
      /// Get Credit Card Icon
@@ -49,13 +51,16 @@ class Avatars extends Service {
 
         final Map<String, dynamic> params = {
             'width': width,
-            'height': height,
-            'quality': quality,
+'height': height,
+'quality': quality,
+
+            
             'project': client.config['project'],
         };
 
         final res = await client.call(HttpMethod.get, path: path, params: params, responseType: ResponseType.bytes);
         return res.data;
+
     }
 
      /// Get Favicon
@@ -69,11 +74,14 @@ class Avatars extends Service {
 
         final Map<String, dynamic> params = {
             'url': url,
+
+            
             'project': client.config['project'],
         };
 
         final res = await client.call(HttpMethod.get, path: path, params: params, responseType: ResponseType.bytes);
         return res.data;
+
     }
 
      /// Get Country Flag
@@ -93,13 +101,16 @@ class Avatars extends Service {
 
         final Map<String, dynamic> params = {
             'width': width,
-            'height': height,
-            'quality': quality,
+'height': height,
+'quality': quality,
+
+            
             'project': client.config['project'],
         };
 
         final res = await client.call(HttpMethod.get, path: path, params: params, responseType: ResponseType.bytes);
         return res.data;
+
     }
 
      /// Get Image from URL
@@ -120,13 +131,16 @@ class Avatars extends Service {
 
         final Map<String, dynamic> params = {
             'url': url,
-            'width': width,
-            'height': height,
+'width': width,
+'height': height,
+
+            
             'project': client.config['project'],
         };
 
         final res = await client.call(HttpMethod.get, path: path, params: params, responseType: ResponseType.bytes);
         return res.data;
+
     }
 
      /// Get User Initials
@@ -153,15 +167,18 @@ class Avatars extends Service {
 
         final Map<String, dynamic> params = {
             'name': name,
-            'width': width,
-            'height': height,
-            'color': color,
-            'background': background,
+'width': width,
+'height': height,
+'color': color,
+'background': background,
+
+            
             'project': client.config['project'],
         };
 
         final res = await client.call(HttpMethod.get, path: path, params: params, responseType: ResponseType.bytes);
         return res.data;
+
     }
 
      /// Get QR Code
@@ -175,13 +192,16 @@ class Avatars extends Service {
 
         final Map<String, dynamic> params = {
             'text': text,
-            'size': size,
-            'margin': margin,
-            'download': download,
+'size': size,
+'margin': margin,
+'download': download,
+
+            
             'project': client.config['project'],
         };
 
         final res = await client.call(HttpMethod.get, path: path, params: params, responseType: ResponseType.bytes);
         return res.data;
+
     }
 }

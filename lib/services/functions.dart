@@ -1,6 +1,5 @@
 part of appwrite;
 
-
      /// The Functions Service allows you view, create and manage your Cloud
      /// Functions.
 class Functions extends Service {
@@ -11,14 +10,20 @@ class Functions extends Service {
         final String path = '/functions/{functionId}/deployments/{deploymentId}/builds/{buildId}'.replaceAll('{functionId}', functionId).replaceAll('{deploymentId}', deploymentId).replaceAll('{buildId}', buildId);
 
         final Map<String, dynamic> params = {
+            
+            
         };
 
         final Map<String, String> headers = {
-            'content-type': 'application/json',
+                        'content-type': 'application/json',
+
         };
 
         final res = await client.call(HttpMethod.post, path: path, params: params, headers: headers);
+
         return  res.data;
+
+
     }
 
      /// List Executions
@@ -33,18 +38,24 @@ class Functions extends Service {
 
         final Map<String, dynamic> params = {
             'limit': limit,
-            'offset': offset,
-            'search': search,
-            'cursor': cursor,
-            'cursorDirection': cursorDirection,
+'offset': offset,
+'search': search,
+'cursor': cursor,
+'cursorDirection': cursorDirection,
+
+            
         };
 
         final Map<String, String> headers = {
-            'content-type': 'application/json',
+                        'content-type': 'application/json',
+
         };
 
         final res = await client.call(HttpMethod.get, path: path, params: params, headers: headers);
+
         return models.ExecutionList.fromMap(res.data);
+
+
     }
 
      /// Create Execution
@@ -58,16 +69,22 @@ class Functions extends Service {
         final String path = '/functions/{functionId}/executions'.replaceAll('{functionId}', functionId);
 
         final Map<String, dynamic> params = {
+            
             'data': data,
-            'async': xasync,
+'async': xasync,
+
         };
 
         final Map<String, String> headers = {
-            'content-type': 'application/json',
+                        'content-type': 'application/json',
+
         };
 
         final res = await client.call(HttpMethod.post, path: path, params: params, headers: headers);
+
         return models.Execution.fromMap(res.data);
+
+
     }
 
      /// Get Execution
@@ -78,13 +95,19 @@ class Functions extends Service {
         final String path = '/functions/{functionId}/executions/{executionId}'.replaceAll('{functionId}', functionId).replaceAll('{executionId}', executionId);
 
         final Map<String, dynamic> params = {
+            
+            
         };
 
         final Map<String, String> headers = {
-            'content-type': 'application/json',
+                        'content-type': 'application/json',
+
         };
 
         final res = await client.call(HttpMethod.get, path: path, params: params, headers: headers);
+
         return models.Execution.fromMap(res.data);
+
+
     }
 }

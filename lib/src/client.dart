@@ -3,6 +3,7 @@ import 'client_stub.dart'
     if (dart.library.html) 'client_browser.dart'
     if (dart.library.io) 'client_io.dart';
 import 'response.dart';
+import 'upload_progress.dart';
 
 abstract class Client {
   static const int CHUNK_SIZE = 5*1024*1024;
@@ -19,6 +20,15 @@ abstract class Client {
       createClient(endPoint: endPoint, selfSigned: selfSigned);
 
   Future webAuth(Uri url);
+
+  Future<Response> chunkedUpload({
+    required String path,
+    required Map<String, dynamic> params,
+    required String paramName,
+    required String idParamName,
+    required Map<String, String> headers,
+    Function(UploadProgress)? onProgress,
+  });
 
   Client setSelfSigned({bool status = true});
 

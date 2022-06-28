@@ -2,12 +2,12 @@
 
 [![pub package](https://img.shields.io/pub/v/appwrite?style=flat-square)](https://pub.dartlang.org/packages/appwrite)
 ![License](https://img.shields.io/github/license/appwrite/sdk-for-flutter.svg?style=flat-square)
-![Version](https://img.shields.io/badge/api%20version-0.14.0-blue.svg?style=flat-square)
+![Version](https://img.shields.io/badge/api%20version-0.15.0-blue.svg?style=flat-square)
 [![Build Status](https://img.shields.io/travis/com/appwrite/sdk-generator?style=flat-square)](https://travis-ci.com/appwrite/sdk-generator)
 [![Twitter Account](https://img.shields.io/twitter/follow/appwrite?color=00acee&label=twitter&style=flat-square)](https://twitter.com/appwrite)
 [![Discord](https://img.shields.io/discord/564160730845151244?label=discord&style=flat-square)](https://appwrite.io/discord)
 
-**This SDK is compatible with Appwrite server version 0.14.x. For older versions, please check [previous releases](https://github.com/appwrite/sdk-for-flutter/releases).**
+**This SDK is compatible with Appwrite server version 0.15.x. For older versions, please check [previous releases](https://github.com/appwrite/sdk-for-flutter/releases).**
 
 Appwrite is an open-source backend as a service server that abstract and simplify complex and repetitive development tasks behind a very simple to use REST API. Appwrite aims to help you develop your apps faster and in a more secure way. Use the Flutter SDK to integrate your app with the Appwrite server to easily start interacting with all of Appwrite backend APIs and tools. For full API documentation and tutorials go to [https://appwrite.io/docs](https://appwrite.io/docs)
 
@@ -21,7 +21,7 @@ Add this to your package's `pubspec.yaml` file:
 
 ```yml
 dependencies:
-  appwrite: ^5.0.0
+  appwrite: ^6.0.0
 ```
 
 You can install packages from the command line:
@@ -43,11 +43,14 @@ If you are building your Flutter application for multiple devices, you have to f
 ### Android
 For **Android** first add your app <u>name</u> and <u>package name</u>, Your package name is generally the **applicationId** in your app-level <a href="https://github.com/appwrite/playground-for-flutter/blob/0fdbdff98384fff940ed0b1e08cf14cfe3a2be3e/android/app/build.gradle#L41" target="_blank" rel="noopener">build.gradle</a> file. By registering your new app platform, you are allowing your app to communicate with the Appwrite API.
 
-In order to capture the Appwrite OAuth callback url, the following activity needs to be added to your [AndroidManifest.xml](https://github.com/appwrite/playground-for-flutter/blob/master/android/app/src/main/AndroidManifest.xml). Be sure to replace the **[PROJECT_ID]** string with your actual Appwrite project ID. You can find your Appwrite project ID in your project settings screen in the console.
+In order to capture the Appwrite OAuth callback url, the following activity needs to be added inside the `<application>` tag, along side the existing `<activity>` tags in your [AndroidManifest.xml](https://github.com/appwrite/playground-for-flutter/blob/master/android/app/src/main/AndroidManifest.xml). Be sure to replace the **[PROJECT_ID]** string with your actual Appwrite project ID. You can find your Appwrite project ID in your project settings screen in the console.
 
 ```xml
-<manifest>
-    <application>
+<manifest ...>
+    ....
+    <application ...>
+        ....
+        <!-- Add this inside the <application> tag, along side the existing <activity> tags -->
         <activity android:name="com.linusu.flutter_web_auth.CallbackActivity" >
             <intent-filter android:label="flutter_web_auth">
                 <action android:name="android.intent.action.VIEW" />

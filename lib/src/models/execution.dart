@@ -4,12 +4,14 @@ part of appwrite.models;
 class Execution implements Model {
     /// Execution ID.
     final String $id;
+    /// Execution creation date in Unix timestamp.
+    final int $createdAt;
+    /// Execution update date in Unix timestamp.
+    final int $updatedAt;
     /// Execution read permissions.
     final List $read;
     /// Function ID.
     final String functionId;
-    /// The execution creation date in Unix timestamp.
-    final int dateCreated;
     /// The trigger that caused the function to execute. Possible values can be: `http`, `schedule`, or `event`.
     final String trigger;
     /// The status of the function execution. Possible values can be: `waiting`, `processing`, `completed`, or `failed`.
@@ -25,9 +27,10 @@ class Execution implements Model {
 
     Execution({
         required this.$id,
+        required this.$createdAt,
+        required this.$updatedAt,
         required this.$read,
         required this.functionId,
-        required this.dateCreated,
         required this.trigger,
         required this.status,
         required this.statusCode,
@@ -39,9 +42,10 @@ class Execution implements Model {
     factory Execution.fromMap(Map<String, dynamic> map) {
         return Execution(
             $id: map['\$id'].toString(),
+            $createdAt: map['\$createdAt'],
+            $updatedAt: map['\$updatedAt'],
             $read: map['\$read'],
             functionId: map['functionId'].toString(),
-            dateCreated: map['dateCreated'],
             trigger: map['trigger'].toString(),
             status: map['status'].toString(),
             statusCode: map['statusCode'],
@@ -55,9 +59,10 @@ class Execution implements Model {
     Map<String, dynamic> toMap() {
         return {
             "\$id": $id,
+            "\$createdAt": $createdAt,
+            "\$updatedAt": $updatedAt,
             "\$read": $read,
             "functionId": functionId,
-            "dateCreated": dateCreated,
             "trigger": trigger,
             "status": status,
             "statusCode": statusCode,
