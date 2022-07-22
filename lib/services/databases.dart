@@ -35,7 +35,7 @@ class Databases extends Service {
     }
 
      /// Create Document
-     Future<models.Document> createDocument({required String collectionId, required String documentId, required Map data, List? read, List? write}) async {
+     Future<models.Document> createDocument({required String collectionId, String documentId = "unique()", required Map data, List? read, List? write}) async {
         final String path = '/databases/{databaseId}/collections/{collectionId}/documents'.replaceAll('{databaseId}', databaseId).replaceAll('{collectionId}', collectionId);
 
         final Map<String, dynamic> params = {
