@@ -2,28 +2,30 @@ part of appwrite.models;
 
 /// Memberships List
 class MembershipList implements Model {
-    /// Total number of memberships documents that matched your query.
-    final int total;
-    /// List of memberships.
-    final List<Membership> memberships;
+  /// Total number of memberships documents that matched your query.
+  final int total;
 
-    MembershipList({
-        required this.total,
-        required this.memberships,
-    });
+  /// List of memberships.
+  final List<Membership> memberships;
 
-    factory MembershipList.fromMap(Map<String, dynamic> map) {
-        return MembershipList(
-            total: map['total'],
-            memberships: List<Membership>.from(map['memberships'].map((p) => Membership.fromMap(p))),
-        );
-    }
+  MembershipList({
+    required this.total,
+    required this.memberships,
+  });
 
-    @override
-    Map<String, dynamic> toMap() {
-        return {
-            "total": total,
-            "memberships": memberships.map((p) => p.toMap()),
-        };
-    }
+  factory MembershipList.fromMap(Map<String, dynamic> map) {
+    return MembershipList(
+      total: map['total'],
+      memberships: List<Membership>.from(
+          map['memberships'].map((p) => Membership.fromMap(p))),
+    );
+  }
+
+  @override
+  Map<String, dynamic> toMap() {
+    return {
+      "total": total,
+      "memberships": memberships.map((p) => p.toMap()),
+    };
+  }
 }

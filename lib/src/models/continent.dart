@@ -2,28 +2,29 @@ part of appwrite.models;
 
 /// Continent
 class Continent implements Model {
-    /// Continent name.
-    final String name;
-    /// Continent two letter code.
-    final String code;
+  /// Continent name.
+  final String name;
 
-    Continent({
-        required this.name,
-        required this.code,
-    });
+  /// Continent two letter code.
+  final String code;
 
-    factory Continent.fromMap(Map<String, dynamic> map) {
-        return Continent(
-            name: map['name'].toString(),
-            code: map['code'].toString(),
-        );
-    }
+  Continent({
+    required this.name,
+    required this.code,
+  });
 
-    @override
-    Map<String, dynamic> toMap() {
-        return {
-            "name": name,
-            "code": code,
-        };
-    }
+  factory Continent.fromMap(Map<String, dynamic> map) {
+    return Continent(
+      name: map['name'].toString(),
+      code: map['code'].toString(),
+    );
+  }
+
+  @override
+  Map<String, dynamic> toMap() {
+    return {
+      "name": name,
+      "code": code,
+    };
+  }
 }
