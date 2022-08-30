@@ -23,6 +23,9 @@ class RealtimeIO extends RealtimeBase with RealtimeMixin {
 
   Future<WebSocketChannel> _getWebSocket(Uri uri) async {
     Map<String, String>? headers;
+    while (!(client as ClientIO).initialized && (client as ClientIO).initProgress) {
+      await Future.delayed(Duration(milliseconds: 10));
+    }
     if (!(client as ClientIO).initialized) {
       await (client as ClientIO).init();
     }
