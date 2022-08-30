@@ -6,7 +6,7 @@ import 'package:http/http.dart' as http;
 import 'package:http/io_client.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:path_provider/path_provider.dart';
-import 'package:flutter_web_auth_2/flutter_web_auth_2.dart';
+import 'package:flutter_web_auth/flutter_web_auth.dart';
 import 'client_mixin.dart';
 import 'client_base.dart';
 import 'cookie_manager.dart';
@@ -34,7 +34,6 @@ class ClientIO extends ClientBase with ClientMixin {
   @override
   late Map<String, String> config;
   bool selfSigned;
-  bool _initProgress = false;
   bool _initialized = false;
   String? _endPointRealtime;
   late http.Client _httpClient;
@@ -42,7 +41,6 @@ class ClientIO extends ClientBase with ClientMixin {
   late CookieJar _cookieJar;
   final List<Interceptor> _interceptors = [];
 
-  bool get initProgress => _initProgress;
   bool get initialized => _initialized;
   CookieJar get cookieJar => _cookieJar;
   @override
@@ -135,8 +133,6 @@ class ClientIO extends ClientBase with ClientMixin {
   }
 
   Future init() async {
-    if(_initProgress) return;
-    _initProgress = true;
     // if web skip cookie implementation and origin header as those are automatically handled by browsers
     final Directory cookieDir = await _getCookiePath();
     _cookieJar = PersistCookieJar(storage: FileStorage(cookieDir.path));
@@ -179,7 +175,6 @@ class ClientIO extends ClientBase with ClientMixin {
         'user-agent', '${packageInfo.packageName}/${packageInfo.version} $device');
 
     _initialized = true;
-    _initProgress = false;
   }
 
   Future<http.BaseRequest> _interceptRequest(http.BaseRequest request) async {
@@ -309,7 +304,7 @@ class ClientIO extends ClientBase with ClientMixin {
 
   @override
   Future webAuth(Uri url) {
-    return FlutterWebAuth2.authenticate(
+    return FlutterWebAuth.authenticate(
       url: url.toString(),
       callbackUrlScheme: "appwrite-callback-" + config['project']!,
     ).then((value) async {
@@ -338,9 +333,6 @@ class ClientIO extends ClientBase with ClientMixin {
     Map<String, dynamic> params = const {},
     ResponseType? responseType,
   }) async {
-    while (!_initialized && _initProgress) {
-      await Future.delayed(Duration(milliseconds: 10));
-    }
     if (!_initialized) {
       await init();
     }
