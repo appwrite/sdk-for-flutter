@@ -2,7 +2,7 @@
 
 [![pub package](https://img.shields.io/pub/v/appwrite?style=flat-square)](https://pub.dartlang.org/packages/appwrite)
 ![License](https://img.shields.io/github/license/appwrite/sdk-for-flutter.svg?style=flat-square)
-![Version](https://img.shields.io/badge/api%20version-0.15.0-blue.svg?style=flat-square)
+![Version](https://img.shields.io/badge/api%20version-0.15.2-blue.svg?style=flat-square)
 [![Build Status](https://img.shields.io/travis/com/appwrite/sdk-generator?style=flat-square)](https://travis-ci.com/appwrite/sdk-generator)
 [![Twitter Account](https://img.shields.io/twitter/follow/appwrite?color=00acee&label=twitter&style=flat-square)](https://twitter.com/appwrite)
 [![Discord](https://img.shields.io/discord/564160730845151244?label=discord&style=flat-square)](https://appwrite.io/discord)
@@ -21,7 +21,7 @@ Add this to your package's `pubspec.yaml` file:
 
 ```yml
 dependencies:
-  appwrite: ^6.0.0
+  appwrite: ^7.0.0
 ```
 
 You can install packages from the command line:
@@ -51,8 +51,8 @@ In order to capture the Appwrite OAuth callback url, the following activity need
     <application ...>
         ....
         <!-- Add this inside the <application> tag, along side the existing <activity> tags -->
-        <activity android:name="com.linusu.flutter_web_auth.CallbackActivity" >
-            <intent-filter android:label="flutter_web_auth">
+        <activity android:name="com.linusu.flutter_web_auth_2.CallbackActivity" >
+            <intent-filter android:label="flutter_web_auth_2">
                 <action android:name="android.intent.action.VIEW" />
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
@@ -91,7 +91,7 @@ For web in order to capture the OAuth2 callback URL and send it to the applicati
 close the window.
 <script>
   window.opener.postMessage({
-    flutter-web-auth: window.location.href
+    flutter-web-auth2: window.location.href
   }, window.location.origin);
   window.close();
 </script>
