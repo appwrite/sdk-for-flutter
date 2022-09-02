@@ -7,8 +7,7 @@ class PhoneList implements Model {
     /// List of phones.
     final List<Phone> phones;
 
-    PhoneList({
-        required this.total,
+    PhoneList({        required this.total,
         required this.phones,
     });
 
@@ -19,7 +18,6 @@ class PhoneList implements Model {
         );
     }
 
-    @override
     Map<String, dynamic> toMap() {
         return {
             "total": total,

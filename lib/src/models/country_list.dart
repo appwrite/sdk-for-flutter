@@ -7,8 +7,7 @@ class CountryList implements Model {
     /// List of countries.
     final List<Country> countries;
 
-    CountryList({
-        required this.total,
+    CountryList({        required this.total,
         required this.countries,
     });
 
@@ -19,7 +18,6 @@ class CountryList implements Model {
         );
     }
 
-    @override
     Map<String, dynamic> toMap() {
         return {
             "total": total,

@@ -7,8 +7,7 @@ class ExecutionList implements Model {
     /// List of executions.
     final List<Execution> executions;
 
-    ExecutionList({
-        required this.total,
+    ExecutionList({        required this.total,
         required this.executions,
     });
 
@@ -19,7 +18,6 @@ class ExecutionList implements Model {
         );
     }
 
-    @override
     Map<String, dynamic> toMap() {
         return {
             "total": total,

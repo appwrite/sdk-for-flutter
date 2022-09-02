@@ -7,8 +7,7 @@ class SessionList implements Model {
     /// List of sessions.
     final List<Session> sessions;
 
-    SessionList({
-        required this.total,
+    SessionList({        required this.total,
         required this.sessions,
     });
 
@@ -19,7 +18,6 @@ class SessionList implements Model {
         );
     }
 
-    @override
     Map<String, dynamic> toMap() {
         return {
             "total": total,

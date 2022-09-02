@@ -4,9 +4,8 @@ part of appwrite.models;
 class Preferences implements Model {
     final Map<String, dynamic> data;
 
-    Preferences({
-        required this.data,
-    });
+    Preferences(        required this.data,
+    );
 
     factory Preferences.fromMap(Map<String, dynamic> map) {
         return Preferences(
@@ -14,7 +13,6 @@ class Preferences implements Model {
         );
     }
 
-    @override
     Map<String, dynamic> toMap() {
         return {
             "data": data,

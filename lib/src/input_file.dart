@@ -1,4 +1,3 @@
-import 'package:flutter/foundation.dart';
 import 'exception.dart';
 
 class InputFile {
@@ -10,10 +9,8 @@ class InputFile {
   /// Provide a file, use `path` for IO platforms
   /// and provide `bytes` for web platform
   InputFile({this.path, this.filename, this.contentType, this.bytes}) {
-    if (kIsWeb && bytes == null) {
-      throw AppwriteException('On web `bytes` is required');
-    } else if(!kIsWeb && path == null && bytes == null) {
-      throw AppwriteException('On IO platforms one of `path` or `bytes`  is required');
+    if (path == null && bytes == null) {
+      throw AppwriteException('One of `path` or `bytes`  is required');
     }
   }
 }

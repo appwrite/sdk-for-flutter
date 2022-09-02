@@ -3,7 +3,7 @@ part of appwrite;
     /// The Avatars service aims to help you complete everyday tasks related to
     /// your app image, icons, and avatars.
 class Avatars extends Service {
-    Avatars(Client client): super(client);
+    Avatars(super.client);
 
     /// Get Browser Icon
     ///
@@ -17,7 +17,7 @@ class Avatars extends Service {
     /// image at source quality. If dimensions are not specified, the default size
     /// of image returned is 100x100px.
     ///
-    Future<Uint8List> getBrowser({required String code, int? width, int? height, int? quality}) async {
+     Future<Uint8List>  getBrowser({required String code, int? width, int? height, int? quality}) async {
         final String path = '/avatars/browsers/{code}'.replaceAll('{code}', code);
 
         final Map<String, dynamic> params = {
@@ -45,7 +45,7 @@ class Avatars extends Service {
     /// of image returned is 100x100px.
     /// 
     ///
-    Future<Uint8List> getCreditCard({required String code, int? width, int? height, int? quality}) async {
+     Future<Uint8List>  getCreditCard({required String code, int? width, int? height, int? quality}) async {
         final String path = '/avatars/credit-cards/{code}'.replaceAll('{code}', code);
 
         final Map<String, dynamic> params = {
@@ -67,7 +67,7 @@ class Avatars extends Service {
     /// website URL.
     /// 
     ///
-    Future<Uint8List> getFavicon({required String url}) async {
+     Future<Uint8List>  getFavicon({required String url}) async {
         const String path = '/avatars/favicon';
 
         final Map<String, dynamic> params = {
@@ -85,7 +85,8 @@ class Avatars extends Service {
     ///
     /// You can use this endpoint to show different country flags icons to your
     /// users. The code argument receives the 2 letter country code. Use width,
-    /// height and quality arguments to change the output settings.
+    /// height and quality arguments to change the output settings. Country codes
+    /// follow the [ISO 3166-1](http://en.wikipedia.org/wiki/ISO_3166-1) standard.
     /// 
     /// When one dimension is specified and the other is 0, the image is scaled
     /// with preserved aspect ratio. If both dimensions are 0, the API provides an
@@ -93,7 +94,7 @@ class Avatars extends Service {
     /// of image returned is 100x100px.
     /// 
     ///
-    Future<Uint8List> getFlag({required String code, int? width, int? height, int? quality}) async {
+     Future<Uint8List>  getFlag({required String code, int? width, int? height, int? quality}) async {
         final String path = '/avatars/flags/{code}'.replaceAll('{code}', code);
 
         final Map<String, dynamic> params = {
@@ -122,7 +123,7 @@ class Avatars extends Service {
     /// of image returned is 400x400px.
     /// 
     ///
-    Future<Uint8List> getImage({required String url, int? width, int? height}) async {
+     Future<Uint8List>  getImage({required String url, int? width, int? height}) async {
         const String path = '/avatars/image';
 
         final Map<String, dynamic> params = {
@@ -157,7 +158,7 @@ class Avatars extends Service {
     /// of image returned is 100x100px.
     /// 
     ///
-    Future<Uint8List> getInitials({String? name, int? width, int? height, String? color, String? background}) async {
+     Future<Uint8List>  getInitials({String? name, int? width, int? height, String? color, String? background}) async {
         const String path = '/avatars/initials';
 
         final Map<String, dynamic> params = {
@@ -181,7 +182,7 @@ class Avatars extends Service {
     /// parameters to change the size and style of the resulting image.
     /// 
     ///
-    Future<Uint8List> getQR({required String text, int? size, int? margin, bool? download}) async {
+     Future<Uint8List>  getQR({required String text, int? size, int? margin, bool? download}) async {
         const String path = '/avatars/qr';
 
         final Map<String, dynamic> params = {

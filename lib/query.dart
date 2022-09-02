@@ -7,25 +7,37 @@ class Query {
   static notEqual(String attribute, dynamic value) =>
       _addQuery(attribute, 'notEqual', value);
 
-  static lesser(String attribute, dynamic value) =>
-      _addQuery(attribute, 'lesser', value);
+  static lessThan(String attribute, dynamic value) =>
+      _addQuery(attribute, 'lessThan', value);
 
-  static lesserEqual(String attribute, dynamic value) =>
-      _addQuery(attribute, 'lesserEqual', value);
+  static lessThanEqual(String attribute, dynamic value) =>
+      _addQuery(attribute, 'lessThanEqual', value);
 
-  static greater(String attribute, dynamic value) =>
-      _addQuery(attribute, 'greater', value);
+  static greaterThan(String attribute, dynamic value) =>
+      _addQuery(attribute, 'greaterThan', value);
 
-  static greaterEqual(String attribute, dynamic value) =>
-      _addQuery(attribute, 'greaterEqual', value);
+  static greaterThanEqual(String attribute, dynamic value) =>
+      _addQuery(attribute, 'greaterThanEqual', value);
 
   static search(String attribute, String value) =>
       _addQuery(attribute, 'search', value);
 
-  static String _addQuery(String attribute, String oper, dynamic value) => (value
+  static String orderAsc(String attribute) => 'orderAsc("$attribute")';
+
+  static String orderDesc(String attribute) => 'orderDesc("$attribute")';
+
+  static String cursorBefore(String id) => 'cursorBefore("$id")';
+
+  static String cursorAfter(String id) => 'cursorAfter("$id")';
+
+  static String limit(int limit) => 'limit($limit)';
+
+  static String offset(int offset) => 'offset($offset)';
+
+  static String _addQuery(String attribute, String method, dynamic value) => (value
           is List)
-      ? '$attribute.$oper(${value.map((item) => parseValues(item)).join(",")})'
-      : '$attribute.$oper(${parseValues(value)})';
+      ? '$method("$attribute", [${value.map((item) => parseValues(item)).join(",")}])'
+      : '$method("$attribute", [${parseValues(value)}])';
 
   static String parseValues(dynamic value) =>
       (value is String) ? '"$value"' : '$value';

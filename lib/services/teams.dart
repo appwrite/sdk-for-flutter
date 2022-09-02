@@ -3,7 +3,7 @@ part of appwrite;
     /// The Teams service allows you to group users of your project and to enable
     /// them to share read and write access to your project resources
 class Teams extends Service {
-    Teams(Client client): super(client);
+    Teams(super.client);
 
     /// List Teams
     ///
@@ -13,16 +13,12 @@ class Teams extends Service {
     /// In admin mode, this endpoint returns a list of all the teams in the current
     /// project. [Learn more about different API modes](/docs/admin).
     ///
-    Future<models.TeamList> list({String? search, int? limit, int? offset, String? cursor, String? cursorDirection, String? orderType}) async {
+     Future<models.TeamList> list({List<String>? queries, String? search}) async {
         const String path = '/teams';
 
         final Map<String, dynamic> params = {
+            'queries': queries,
             'search': search,
-            'limit': limit,
-            'offset': offset,
-            'cursor': cursor,
-            'cursorDirection': cursorDirection,
-            'orderType': orderType,
         };
 
         final Map<String, String> headers = {
@@ -41,7 +37,7 @@ class Teams extends Service {
     /// assigned as the owner of the team. Only the users with the owner role can
     /// invite new members, add new owners and delete or update the team.
     ///
-    Future<models.Team> create({required String teamId, required String name, List? roles}) async {
+     Future<models.Team> create({required String teamId, required String name, List<String>? roles}) async {
         const String path = '/teams';
 
         final Map<String, dynamic> params = {
@@ -64,7 +60,7 @@ class Teams extends Service {
     ///
     /// Get a team by its ID. All team members have read access for this resource.
     ///
-    Future<models.Team> get({required String teamId}) async {
+     Future<models.Team> get({required String teamId}) async {
         final String path = '/teams/{teamId}'.replaceAll('{teamId}', teamId);
 
         final Map<String, dynamic> params = {
@@ -85,7 +81,7 @@ class Teams extends Service {
     /// Update a team using its ID. Only members with the owner role can update the
     /// team.
     ///
-    Future<models.Team> update({required String teamId, required String name}) async {
+     Future<models.Team> update({required String teamId, required String name}) async {
         final String path = '/teams/{teamId}'.replaceAll('{teamId}', teamId);
 
         final Map<String, dynamic> params = {
@@ -107,7 +103,7 @@ class Teams extends Service {
     /// Delete a team using its ID. Only team members with the owner role can
     /// delete the team.
     ///
-    Future delete({required String teamId}) async {
+     Future delete({required String teamId}) async {
         final String path = '/teams/{teamId}'.replaceAll('{teamId}', teamId);
 
         final Map<String, dynamic> params = {
@@ -128,16 +124,12 @@ class Teams extends Service {
     /// Use this endpoint to list a team's members using the team's ID. All team
     /// members have read access to this endpoint.
     ///
-    Future<models.MembershipList> getMemberships({required String teamId, String? search, int? limit, int? offset, String? cursor, String? cursorDirection, String? orderType}) async {
+     Future<models.MembershipList> getMemberships({required String teamId, List<String>? queries, String? search}) async {
         final String path = '/teams/{teamId}/memberships'.replaceAll('{teamId}', teamId);
 
         final Map<String, dynamic> params = {
+            'queries': queries,
             'search': search,
-            'limit': limit,
-            'offset': offset,
-            'cursor': cursor,
-            'cursorDirection': cursorDirection,
-            'orderType': orderType,
         };
 
         final Map<String, String> headers = {
@@ -168,7 +160,7 @@ class Teams extends Service {
     /// the only valid redirect URL's are the once from domains you have set when
     /// adding your platforms in the console interface.
     ///
-    Future<models.Membership> createMembership({required String teamId, required String email, required List roles, required String url, String? name}) async {
+     Future<models.Membership> createMembership({required String teamId, required String email, required List<String> roles, required String url, String? name}) async {
         final String path = '/teams/{teamId}/memberships'.replaceAll('{teamId}', teamId);
 
         final Map<String, dynamic> params = {
@@ -193,7 +185,7 @@ class Teams extends Service {
     /// Get a team member by the membership unique id. All team members have read
     /// access for this resource.
     ///
-    Future<models.MembershipList> getMembership({required String teamId, required String membershipId}) async {
+     Future<models.MembershipList> getMembership({required String teamId, required String membershipId}) async {
         final String path = '/teams/{teamId}/memberships/{membershipId}'.replaceAll('{teamId}', teamId).replaceAll('{membershipId}', membershipId);
 
         final Map<String, dynamic> params = {
@@ -215,7 +207,7 @@ class Teams extends Service {
     /// have access to this endpoint. Learn more about [roles and
     /// permissions](/docs/permissions).
     ///
-    Future<models.Membership> updateMembershipRoles({required String teamId, required String membershipId, required List roles}) async {
+     Future<models.Membership> updateMembershipRoles({required String teamId, required String membershipId, required List<String> roles}) async {
         final String path = '/teams/{teamId}/memberships/{membershipId}'.replaceAll('{teamId}', teamId).replaceAll('{membershipId}', membershipId);
 
         final Map<String, dynamic> params = {
@@ -238,7 +230,7 @@ class Teams extends Service {
     /// the membership of any other team member. You can also use this endpoint to
     /// delete a user membership even if it is not accepted.
     ///
-    Future deleteMembership({required String teamId, required String membershipId}) async {
+     Future deleteMembership({required String teamId, required String membershipId}) async {
         final String path = '/teams/{teamId}/memberships/{membershipId}'.replaceAll('{teamId}', teamId).replaceAll('{membershipId}', membershipId);
 
         final Map<String, dynamic> params = {
@@ -264,7 +256,7 @@ class Teams extends Service {
     /// created.
     /// 
     ///
-    Future<models.Membership> updateMembershipStatus({required String teamId, required String membershipId, required String userId, required String secret}) async {
+     Future<models.Membership> updateMembershipStatus({required String teamId, required String membershipId, required String userId, required String secret}) async {
         final String path = '/teams/{teamId}/memberships/{membershipId}/status'.replaceAll('{teamId}', teamId).replaceAll('{membershipId}', membershipId);
 
         final Map<String, dynamic> params = {

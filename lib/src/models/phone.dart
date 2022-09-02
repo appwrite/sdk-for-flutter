@@ -9,8 +9,7 @@ class Phone implements Model {
     /// Country name.
     final String countryName;
 
-    Phone({
-        required this.code,
+    Phone({        required this.code,
         required this.countryCode,
         required this.countryName,
     });
@@ -23,7 +22,6 @@ class Phone implements Model {
         );
     }
 
-    @override
     Map<String, dynamic> toMap() {
         return {
             "code": code,
