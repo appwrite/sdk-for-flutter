@@ -7,8 +7,7 @@ class Country implements Model {
     /// Country two-character ISO 3166-1 alpha code.
     final String code;
 
-    Country({
-        required this.name,
+    Country({        required this.name,
         required this.code,
     });
 
@@ -19,7 +18,6 @@ class Country implements Model {
         );
     }
 
-    @override
     Map<String, dynamic> toMap() {
         return {
             "name": name,

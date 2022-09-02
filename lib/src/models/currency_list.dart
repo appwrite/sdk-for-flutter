@@ -7,8 +7,7 @@ class CurrencyList implements Model {
     /// List of currencies.
     final List<Currency> currencies;
 
-    CurrencyList({
-        required this.total,
+    CurrencyList({        required this.total,
         required this.currencies,
     });
 
@@ -19,7 +18,6 @@ class CurrencyList implements Model {
         );
     }
 
-    @override
     Map<String, dynamic> toMap() {
         return {
             "total": total,
