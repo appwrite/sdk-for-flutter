@@ -7,8 +7,7 @@ class ContinentList implements Model {
     /// List of continents.
     final List<Continent> continents;
 
-    ContinentList({
-        required this.total,
+    ContinentList({        required this.total,
         required this.continents,
     });
 
@@ -19,7 +18,6 @@ class ContinentList implements Model {
         );
     }
 
-    @override
     Map<String, dynamic> toMap() {
         return {
             "total": total,

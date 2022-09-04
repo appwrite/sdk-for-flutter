@@ -7,8 +7,7 @@ class TeamList implements Model {
     /// List of teams.
     final List<Team> teams;
 
-    TeamList({
-        required this.total,
+    TeamList({        required this.total,
         required this.teams,
     });
 
@@ -19,7 +18,6 @@ class TeamList implements Model {
         );
     }
 
-    @override
     Map<String, dynamic> toMap() {
         return {
             "total": total,

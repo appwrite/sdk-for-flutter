@@ -9,8 +9,7 @@ class Language implements Model {
     /// Language native name.
     final String nativeName;
 
-    Language({
-        required this.name,
+    Language({        required this.name,
         required this.code,
         required this.nativeName,
     });
@@ -23,7 +22,6 @@ class Language implements Model {
         );
     }
 
-    @override
     Map<String, dynamic> toMap() {
         return {
             "name": name,

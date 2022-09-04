@@ -7,8 +7,7 @@ class Continent implements Model {
     /// Continent two letter code.
     final String code;
 
-    Continent({
-        required this.name,
+    Continent({        required this.name,
         required this.code,
     });
 
@@ -19,7 +18,6 @@ class Continent implements Model {
         );
     }
 
-    @override
     Map<String, dynamic> toMap() {
         return {
             "name": name,

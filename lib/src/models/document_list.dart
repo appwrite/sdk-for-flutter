@@ -7,8 +7,7 @@ class DocumentList implements Model {
     /// List of documents.
     final List<Document> documents;
 
-    DocumentList({
-        required this.total,
+    DocumentList({        required this.total,
         required this.documents,
     });
 
@@ -19,7 +18,6 @@ class DocumentList implements Model {
         );
     }
 
-    @override
     Map<String, dynamic> toMap() {
         return {
             "total": total,

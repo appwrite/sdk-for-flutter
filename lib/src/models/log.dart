@@ -14,8 +14,8 @@ class Log implements Model {
     final String mode;
     /// IP session in use when the session was created.
     final String ip;
-    /// Log creation time in Unix timestamp.
-    final int time;
+    /// Log creation date in ISO 8601 format.
+    final String time;
     /// Operating system code name. View list of [available options](https://github.com/appwrite/appwrite/blob/master/docs/lists/os.json).
     final String osCode;
     /// Operating system name.
@@ -45,8 +45,7 @@ class Log implements Model {
     /// Country name.
     final String countryName;
 
-    Log({
-        required this.event,
+    Log({        required this.event,
         required this.userId,
         required this.userEmail,
         required this.userName,
@@ -77,7 +76,7 @@ class Log implements Model {
             userName: map['userName'].toString(),
             mode: map['mode'].toString(),
             ip: map['ip'].toString(),
-            time: map['time'],
+            time: map['time'].toString(),
             osCode: map['osCode'].toString(),
             osName: map['osName'].toString(),
             osVersion: map['osVersion'].toString(),
@@ -95,7 +94,6 @@ class Log implements Model {
         );
     }
 
-    @override
     Map<String, dynamic> toMap() {
         return {
             "event": event,

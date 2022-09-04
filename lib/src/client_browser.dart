@@ -40,8 +40,11 @@ class ClientBrowser extends ClientBase with ClientMixin {
         .replaceFirst('http://', 'ws://');
     _headers = {
       'content-type': 'application/json',
-      'x-sdk-version': 'appwrite:flutter:7.0.0',
-      'X-Appwrite-Response-Format' : '0.15.0',
+      'x-sdk-name': 'Flutter',
+      'x-sdk-platform': 'client',
+      'x-sdk-language': 'flutter',
+      'x-sdk-version': '8.0.0-dev.1',
+      'X-Appwrite-Response-Format' : '1.0.0-RC1',
     };
 
     config = {};

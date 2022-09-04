@@ -4,17 +4,16 @@ part of appwrite.models;
 class Team implements Model {
     /// Team ID.
     final String $id;
-    /// Team creation date in Unix timestamp.
-    final int $createdAt;
-    /// Team update date in Unix timestamp.
-    final int $updatedAt;
+    /// Team creation date in ISO 8601 format.
+    final String $createdAt;
+    /// Team update date in ISO 8601 format.
+    final String $updatedAt;
     /// Team name.
     final String name;
     /// Total number of team members.
     final int total;
 
-    Team({
-        required this.$id,
+    Team({        required this.$id,
         required this.$createdAt,
         required this.$updatedAt,
         required this.name,
@@ -24,14 +23,13 @@ class Team implements Model {
     factory Team.fromMap(Map<String, dynamic> map) {
         return Team(
             $id: map['\$id'].toString(),
-            $createdAt: map['\$createdAt'],
-            $updatedAt: map['\$updatedAt'],
+            $createdAt: map['\$createdAt'].toString(),
+            $updatedAt: map['\$updatedAt'].toString(),
             name: map['name'].toString(),
             total: map['total'],
         );
     }
 
-    @override
     Map<String, dynamic> toMap() {
         return {
             "\$id": $id,

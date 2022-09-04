@@ -1,5 +1,3 @@
-dist: focal
-
 language: dart
 
 dart: stable
@@ -7,9 +5,9 @@ dart: stable
 os: linux
 
 install:
-- mkdir -p  ~/.pub-cache
+- mkdir -p  ~/.config/dart
 - |
-  cat <<EOF > ~/.pub-cache/credentials.json
+  cat <<EOF > ~/.config/dart/pub-credentials.json
     {
       "accessToken":"$PUB_ACCESS_TOKEN",
       "refreshToken":"$PUB_REFRESH_TOKEN",

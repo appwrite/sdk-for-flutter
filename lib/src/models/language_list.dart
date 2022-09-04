@@ -7,8 +7,7 @@ class LanguageList implements Model {
     /// List of languages.
     final List<Language> languages;
 
-    LanguageList({
-        required this.total,
+    LanguageList({        required this.total,
         required this.languages,
     });
 
@@ -19,7 +18,6 @@ class LanguageList implements Model {
         );
     }
 
-    @override
     Map<String, dynamic> toMap() {
         return {
             "total": total,

@@ -3,21 +3,20 @@ part of appwrite;
     /// The Databases service allows you to create structured collections of
     /// documents, query and filter lists of documents
 class Databases extends Service {
-    Databases(Client client, {required this.databaseId}): super(client);
-    String databaseId;
+    Databases(super.client);
 
     /// List Documents
-    Future<models.DocumentList> listDocuments({required String collectionId, List? queries, int? limit, int? offset, String? cursor, String? cursorDirection, List? orderAttributes, List? orderTypes}) async {
+    ///
+    /// Get a list of all the user's documents in a given collection. You can use
+    /// the query params to filter your results. On admin mode, this endpoint will
+    /// return a list of all of documents belonging to the provided collectionId.
+    /// [Learn more about different API modes](/docs/admin).
+    ///
+    Future<models.DocumentList> listDocuments({required String databaseId, required String collectionId, List<String>? queries}) async {
         final String path = '/databases/{databaseId}/collections/{collectionId}/documents'.replaceAll('{databaseId}', databaseId).replaceAll('{collectionId}', collectionId);
 
         final Map<String, dynamic> params = {
             'queries': queries,
-            'limit': limit,
-            'offset': offset,
-            'cursor': cursor,
-            'cursorDirection': cursorDirection,
-            'orderAttributes': orderAttributes,
-            'orderTypes': orderTypes,
         };
 
         final Map<String, String> headers = {
@@ -31,14 +30,19 @@ class Databases extends Service {
     }
 
     /// Create Document
-    Future<models.Document> createDocument({required String collectionId, required String documentId, required Map data, List? read, List? write}) async {
+    ///
+    /// Create a new Document. Before using this route, you should create a new
+    /// collection resource using either a [server
+    /// integration](/docs/server/databases#databasesCreateCollection) API or
+    /// directly from your database console.
+    ///
+    Future<models.Document> createDocument({required String databaseId, required String collectionId, required String documentId, required Map data, List<String>? permissions}) async {
         final String path = '/databases/{databaseId}/collections/{collectionId}/documents'.replaceAll('{databaseId}', databaseId).replaceAll('{collectionId}', collectionId);
 
         final Map<String, dynamic> params = {
             'documentId': documentId,
             'data': data,
-            'read': read,
-            'write': write,
+            'permissions': permissions,
         };
 
         final Map<String, String> headers = {
@@ -52,7 +56,11 @@ class Databases extends Service {
     }
 
     /// Get Document
-    Future<models.Document> getDocument({required String collectionId, required String documentId}) async {
+    ///
+    /// Get a document by its unique ID. This endpoint response returns a JSON
+    /// object with the document data.
+    ///
+    Future<models.Document> getDocument({required String databaseId, required String collectionId, required String documentId}) async {
         final String path = '/databases/{databaseId}/collections/{collectionId}/documents/{documentId}'.replaceAll('{databaseId}', databaseId).replaceAll('{collectionId}', collectionId).replaceAll('{documentId}', documentId);
 
         final Map<String, dynamic> params = {
@@ -69,13 +77,16 @@ class Databases extends Service {
     }
 
     /// Update Document
-    Future<models.Document> updateDocument({required String collectionId, required String documentId, Map? data, List? read, List? write}) async {
+    ///
+    /// Update a document by its unique ID. Using the patch method you can pass
+    /// only specific fields that will get updated.
+    ///
+    Future<models.Document> updateDocument({required String databaseId, required String collectionId, required String documentId, Map? data, List<String>? permissions}) async {
         final String path = '/databases/{databaseId}/collections/{collectionId}/documents/{documentId}'.replaceAll('{databaseId}', databaseId).replaceAll('{collectionId}', collectionId).replaceAll('{documentId}', documentId);
 
         final Map<String, dynamic> params = {
             'data': data,
-            'read': read,
-            'write': write,
+            'permissions': permissions,
         };
 
         final Map<String, String> headers = {
@@ -89,7 +100,10 @@ class Databases extends Service {
     }
 
     /// Delete Document
-    Future deleteDocument({required String collectionId, required String documentId}) async {
+    ///
+    /// Delete a document by its unique ID.
+    ///
+    Future deleteDocument({required String databaseId, required String collectionId, required String documentId}) async {
         final String path = '/databases/{databaseId}/collections/{collectionId}/documents/{documentId}'.replaceAll('{databaseId}', databaseId).replaceAll('{collectionId}', collectionId).replaceAll('{documentId}', documentId);
 
         final Map<String, dynamic> params = {

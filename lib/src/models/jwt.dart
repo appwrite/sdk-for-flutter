@@ -5,8 +5,7 @@ class Jwt implements Model {
     /// JWT encoded string.
     final String jwt;
 
-    Jwt({
-        required this.jwt,
+    Jwt({        required this.jwt,
     });
 
     factory Jwt.fromMap(Map<String, dynamic> map) {
@@ -15,7 +14,6 @@ class Jwt implements Model {
         );
     }
 
-    @override
     Map<String, dynamic> toMap() {
         return {
             "jwt": jwt,
