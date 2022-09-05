@@ -13,7 +13,8 @@ class Team implements Model {
     /// Total number of team members.
     final int total;
 
-    Team({        required this.$id,
+    Team({
+        required this.$id,
         required this.$createdAt,
         required this.$updatedAt,
         required this.name,

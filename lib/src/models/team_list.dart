@@ -7,7 +7,8 @@ class TeamList implements Model {
     /// List of teams.
     final List<Team> teams;
 
-    TeamList({        required this.total,
+    TeamList({
+        required this.total,
         required this.teams,
     });
 

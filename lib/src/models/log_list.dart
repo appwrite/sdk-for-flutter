@@ -7,7 +7,8 @@ class LogList implements Model {
     /// List of logs.
     final List<Log> logs;
 
-    LogList({        required this.total,
+    LogList({
+        required this.total,
         required this.logs,
     });
 

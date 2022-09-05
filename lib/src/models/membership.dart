@@ -27,7 +27,8 @@ class Membership implements Model {
     /// User list of roles
     final List roles;
 
-    Membership({        required this.$id,
+    Membership({
+        required this.$id,
         required this.$createdAt,
         required this.$updatedAt,
         required this.userId,

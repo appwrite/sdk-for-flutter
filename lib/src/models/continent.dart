@@ -7,7 +7,8 @@ class Continent implements Model {
     /// Continent two letter code.
     final String code;
 
-    Continent({        required this.name,
+    Continent({
+        required this.name,
         required this.code,
     });
 

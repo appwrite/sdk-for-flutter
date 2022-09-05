@@ -7,7 +7,8 @@ class MembershipList implements Model {
     /// List of memberships.
     final List<Membership> memberships;
 
-    MembershipList({        required this.total,
+    MembershipList({
+        required this.total,
         required this.memberships,
     });
 

@@ -27,7 +27,8 @@ class Execution implements Model {
     /// The script execution time in seconds.
     final double time;
 
-    Execution({        required this.$id,
+    Execution({
+        required this.$id,
         required this.$createdAt,
         required this.$updatedAt,
         required this.$permissions,

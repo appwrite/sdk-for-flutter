@@ -27,7 +27,8 @@ class Account implements Model {
     /// User preferences as a key-value object
     final Preferences prefs;
 
-    Account({        required this.$id,
+    Account({
+        required this.$id,
         required this.$createdAt,
         required this.$updatedAt,
         required this.name,

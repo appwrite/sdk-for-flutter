@@ -7,7 +7,8 @@ class FileList implements Model {
     /// List of files.
     final List<File> files;
 
-    FileList({        required this.total,
+    FileList({
+        required this.total,
         required this.files,
     });
 

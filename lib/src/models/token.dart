@@ -13,7 +13,8 @@ class Token implements Model {
     /// Token expiration date in ISO 8601 format.
     final String expire;
 
-    Token({        required this.$id,
+    Token({
+        required this.$id,
         required this.$createdAt,
         required this.userId,
         required this.secret,

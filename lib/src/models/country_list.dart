@@ -7,7 +7,8 @@ class CountryList implements Model {
     /// List of countries.
     final List<Country> countries;
 
-    CountryList({        required this.total,
+    CountryList({
+        required this.total,
         required this.countries,
     });
 

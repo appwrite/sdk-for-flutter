@@ -53,7 +53,8 @@ class Session implements Model {
     /// Returns true if this the current user session.
     final bool current;
 
-    Session({        required this.$id,
+    Session({
+        required this.$id,
         required this.$createdAt,
         required this.userId,
         required this.expire,

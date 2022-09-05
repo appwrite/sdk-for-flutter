@@ -17,7 +17,8 @@ class Currency implements Model {
     /// Currency plural name
     final String namePlural;
 
-    Currency({        required this.symbol,
+    Currency({
+        required this.symbol,
         required this.name,
         required this.symbolNative,
         required this.decimalDigits,

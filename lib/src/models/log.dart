@@ -45,7 +45,8 @@ class Log implements Model {
     /// Country name.
     final String countryName;
 
-    Log({        required this.event,
+    Log({
+        required this.event,
         required this.userId,
         required this.userEmail,
         required this.userName,

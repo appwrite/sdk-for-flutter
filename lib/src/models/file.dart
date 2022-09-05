@@ -25,7 +25,8 @@ class File implements Model {
     /// Total number of chunks uploaded
     final int chunksUploaded;
 
-    File({        required this.$id,
+    File({
+        required this.$id,
         required this.bucketId,
         required this.$createdAt,
         required this.$updatedAt,

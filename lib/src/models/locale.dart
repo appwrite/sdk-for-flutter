@@ -17,7 +17,8 @@ class Locale implements Model {
     /// Currency code in [ISO 4217-1](http://en.wikipedia.org/wiki/ISO_4217) three-character format
     final String currency;
 
-    Locale({        required this.ip,
+    Locale({
+        required this.ip,
         required this.countryCode,
         required this.country,
         required this.continentCode,

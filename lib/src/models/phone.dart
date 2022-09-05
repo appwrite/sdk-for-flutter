@@ -9,7 +9,8 @@ class Phone implements Model {
     /// Country name.
     final String countryName;
 
-    Phone({        required this.code,
+    Phone({
+        required this.code,
         required this.countryCode,
         required this.countryName,
     });

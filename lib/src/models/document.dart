@@ -14,7 +14,8 @@ class Document implements Model {
     final List $permissions;
     final Map<String, dynamic> data;
 
-    Document({        required this.$id,
+    Document({
+        required this.$id,
         required this.$collection,
         required this.$createdAt,
         required this.$updatedAt,

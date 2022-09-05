@@ -9,7 +9,8 @@ class Language implements Model {
     /// Language native name.
     final String nativeName;
 
-    Language({        required this.name,
+    Language({
+        required this.name,
         required this.code,
         required this.nativeName,
     });
