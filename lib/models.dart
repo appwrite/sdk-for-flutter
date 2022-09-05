@@ -15,7 +15,7 @@ part 'src/models/currency_list.dart';
 part 'src/models/phone_list.dart';
 part 'src/models/document.dart';
 part 'src/models/log.dart';
-part 'src/models/user.dart';
+part 'src/models/account.dart';
 part 'src/models/preferences.dart';
 part 'src/models/session.dart';
 part 'src/models/token.dart';

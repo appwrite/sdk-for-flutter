@@ -14,7 +14,6 @@ class Preferences implements Model {
         );
     }
 
-    @override
     Map<String, dynamic> toMap() {
         return {
             "data": data,

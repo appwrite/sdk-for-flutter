@@ -3,7 +3,7 @@ part of appwrite;
     /// The Avatars service aims to help you complete everyday tasks related to
     /// your app image, icons, and avatars.
 class Avatars extends Service {
-    Avatars(Client client): super(client);
+    Avatars(super.client);
 
     /// Get Browser Icon
     ///
@@ -85,7 +85,8 @@ class Avatars extends Service {
     ///
     /// You can use this endpoint to show different country flags icons to your
     /// users. The code argument receives the 2 letter country code. Use width,
-    /// height and quality arguments to change the output settings.
+    /// height and quality arguments to change the output settings. Country codes
+    /// follow the [ISO 3166-1](http://en.wikipedia.org/wiki/ISO_3166-1) standard.
     /// 
     /// When one dimension is specified and the other is 0, the image is scaled
     /// with preserved aspect ratio. If both dimensions are 0, the API provides an
@@ -157,7 +158,7 @@ class Avatars extends Service {
     /// of image returned is 100x100px.
     /// 
     ///
-    Future<Uint8List> getInitials({String? name, int? width, int? height, String? color, String? background}) async {
+    Future<Uint8List> getInitials({String? name, int? width, int? height, String? background}) async {
         const String path = '/avatars/initials';
 
         final Map<String, dynamic> params = {
@@ -165,7 +166,6 @@ class Avatars extends Service {
             'name': name,
             'width': width,
             'height': height,
-            'color': color,
             'background': background,
             
             'project': client.config['project'],

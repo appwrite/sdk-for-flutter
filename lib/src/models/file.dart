@@ -6,14 +6,12 @@ class File implements Model {
     final String $id;
     /// Bucket ID.
     final String bucketId;
-    /// File creation date in Unix timestamp.
-    final int $createdAt;
-    /// File update date in Unix timestamp.
-    final int $updatedAt;
-    /// File read permissions.
-    final List $read;
-    /// File write permissions.
-    final List $write;
+    /// File creation date in ISO 8601 format.
+    final String $createdAt;
+    /// File update date in ISO 8601 format.
+    final String $updatedAt;
+    /// File permissions. [Learn more about permissions](/docs/permissions).
+    final List $permissions;
     /// File name.
     final String name;
     /// File MD5 signature.
@@ -32,8 +30,7 @@ class File implements Model {
         required this.bucketId,
         required this.$createdAt,
         required this.$updatedAt,
-        required this.$read,
-        required this.$write,
+        required this.$permissions,
         required this.name,
         required this.signature,
         required this.mimeType,
@@ -46,10 +43,9 @@ class File implements Model {
         return File(
             $id: map['\$id'].toString(),
             bucketId: map['bucketId'].toString(),
-            $createdAt: map['\$createdAt'],
-            $updatedAt: map['\$updatedAt'],
-            $read: map['\$read'],
-            $write: map['\$write'],
+            $createdAt: map['\$createdAt'].toString(),
+            $updatedAt: map['\$updatedAt'].toString(),
+            $permissions: map['\$permissions'],
             name: map['name'].toString(),
             signature: map['signature'].toString(),
             mimeType: map['mimeType'].toString(),
@@ -59,15 +55,13 @@ class File implements Model {
         );
     }
 
-    @override
     Map<String, dynamic> toMap() {
         return {
             "\$id": $id,
             "bucketId": bucketId,
             "\$createdAt": $createdAt,
             "\$updatedAt": $updatedAt,
-            "\$read": $read,
-            "\$write": $write,
+            "\$permissions": $permissions,
             "name": name,
             "signature": signature,
             "mimeType": mimeType,

@@ -39,7 +39,6 @@ class Locale implements Model {
         );
     }
 
-    @override
     Map<String, dynamic> toMap() {
         return {
             "ip": ip,

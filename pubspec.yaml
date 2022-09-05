@@ -1,5 +1,5 @@
 name: appwrite
-version: 7.0.0
+version: 8.0.0-dev.1
 description: Appwrite is an open-source self-hosted backend server that abstract and simplify complex and repetitive development tasks behind a very simple REST API
 homepage: https://appwrite.io
 repository: https://github.com/appwrite/sdk-for-flutter
@@ -13,11 +13,12 @@ dependencies:
     sdk: flutter
   cookie_jar: ^3.0.1
   device_info_plus: ^4.1.2
-  flutter_web_auth_2: ^1.0.1
+  flutter_web_auth_2: ^1.1.2
   http: ^0.13.5
   package_info_plus: ^1.4.3+1
   path_provider: ^2.0.11
   web_socket_channel: ^2.2.0
+
 
 dev_dependencies:
   flutter_lints: ^2.0.1

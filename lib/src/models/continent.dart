@@ -19,7 +19,6 @@ class Continent implements Model {
         );
     }
 
-    @override
     Map<String, dynamic> toMap() {
         return {
             "name": name,

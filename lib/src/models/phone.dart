@@ -23,7 +23,6 @@ class Phone implements Model {
         );
     }
 
-    @override
     Map<String, dynamic> toMap() {
         return {
             "code": code,

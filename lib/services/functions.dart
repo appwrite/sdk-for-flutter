@@ -3,7 +3,7 @@ part of appwrite;
     /// The Functions Service allows you view, create and manage your Cloud
     /// Functions.
 class Functions extends Service {
-    Functions(Client client): super(client);
+    Functions(super.client);
 
     /// Retry Build
     Future retryBuild({required String functionId, required String deploymentId, required String buildId}) async {
@@ -29,15 +29,12 @@ class Functions extends Service {
     /// return a list of all of the project's executions. [Learn more about
     /// different API modes](/docs/admin).
     ///
-    Future<models.ExecutionList> listExecutions({required String functionId, int? limit, int? offset, String? search, String? cursor, String? cursorDirection}) async {
+    Future<models.ExecutionList> listExecutions({required String functionId, List<String>? queries, String? search}) async {
         final String path = '/functions/{functionId}/executions'.replaceAll('{functionId}', functionId);
 
         final Map<String, dynamic> params = {
-            'limit': limit,
-            'offset': offset,
+            'queries': queries,
             'search': search,
-            'cursor': cursor,
-            'cursorDirection': cursorDirection,
         };
 
         final Map<String, String> headers = {

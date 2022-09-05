@@ -1,21 +1,21 @@
 part of appwrite.models;
 
-/// User
-class User implements Model {
+/// Account
+class Account implements Model {
     /// User ID.
     final String $id;
-    /// User creation date in Unix timestamp.
-    final int $createdAt;
-    /// User update date in Unix timestamp.
-    final int $updatedAt;
+    /// User creation date in ISO 8601 format.
+    final String $createdAt;
+    /// User update date in ISO 8601 format.
+    final String $updatedAt;
     /// User name.
     final String name;
-    /// User registration date in Unix timestamp.
-    final int registration;
+    /// User registration date in ISO 8601 format.
+    final String registration;
     /// User status. Pass `true` for enabled and `false` for disabled.
     final bool status;
-    /// Unix timestamp of the most recent password update
-    final int passwordUpdate;
+    /// Password update time in ISO 8601 format.
+    final String passwordUpdate;
     /// User email address.
     final String email;
     /// User phone number in E.164 format.
@@ -27,7 +27,7 @@ class User implements Model {
     /// User preferences as a key-value object
     final Preferences prefs;
 
-    User({
+    Account({
         required this.$id,
         required this.$createdAt,
         required this.$updatedAt,
@@ -42,15 +42,15 @@ class User implements Model {
         required this.prefs,
     });
 
-    factory User.fromMap(Map<String, dynamic> map) {
-        return User(
+    factory Account.fromMap(Map<String, dynamic> map) {
+        return Account(
             $id: map['\$id'].toString(),
-            $createdAt: map['\$createdAt'],
-            $updatedAt: map['\$updatedAt'],
+            $createdAt: map['\$createdAt'].toString(),
+            $updatedAt: map['\$updatedAt'].toString(),
             name: map['name'].toString(),
-            registration: map['registration'],
+            registration: map['registration'].toString(),
             status: map['status'],
-            passwordUpdate: map['passwordUpdate'],
+            passwordUpdate: map['passwordUpdate'].toString(),
             email: map['email'].toString(),
             phone: map['phone'].toString(),
             emailVerification: map['emailVerification'],
@@ -59,7 +59,6 @@ class User implements Model {
         );
     }
 
-    @override
     Map<String, dynamic> toMap() {
         return {
             "\$id": $id,

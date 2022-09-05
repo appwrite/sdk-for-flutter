@@ -15,7 +15,6 @@ class Jwt implements Model {
         );
     }
 
-    @override
     Map<String, dynamic> toMap() {
         return {
             "jwt": jwt,

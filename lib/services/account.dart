@@ -2,13 +2,13 @@ part of appwrite;
 
     /// The Account service allows you to authenticate and manage a user account.
 class Account extends Service {
-    Account(Client client): super(client);
+    Account(super.client);
 
     /// Get Account
     ///
     /// Get currently logged in user data as JSON object.
     ///
-    Future<models.User> get() async {
+    Future<models.Account> get() async {
         const String path = '/account';
 
         final Map<String, dynamic> params = {
@@ -20,7 +20,7 @@ class Account extends Service {
 
         final res = await client.call(HttpMethod.get, path: path, params: params, headers: headers);
 
-        return models.User.fromMap(res.data);
+        return models.Account.fromMap(res.data);
 
     }
 
@@ -33,7 +33,7 @@ class Account extends Service {
     /// login to their new account, you need to create a new [account
     /// session](/docs/client/account#accountCreateSession).
     ///
-    Future<models.User> create({required String userId, required String email, required String password, String? name}) async {
+    Future<models.Account> create({required String userId, required String email, required String password, String? name}) async {
         const String path = '/account';
 
         final Map<String, dynamic> params = {
@@ -49,7 +49,7 @@ class Account extends Service {
 
         final res = await client.call(HttpMethod.post, path: path, params: params, headers: headers);
 
-        return models.User.fromMap(res.data);
+        return models.Account.fromMap(res.data);
 
     }
 
@@ -64,7 +64,7 @@ class Account extends Service {
     /// one, by passing an email address and a new password.
     /// 
     ///
-    Future<models.User> updateEmail({required String email, required String password}) async {
+    Future<models.Account> updateEmail({required String email, required String password}) async {
         const String path = '/account/email';
 
         final Map<String, dynamic> params = {
@@ -78,7 +78,7 @@ class Account extends Service {
 
         final res = await client.call(HttpMethod.patch, path: path, params: params, headers: headers);
 
-        return models.User.fromMap(res.data);
+        return models.Account.fromMap(res.data);
 
     }
 
@@ -111,12 +111,11 @@ class Account extends Service {
     /// Get currently logged in user list of latest security activity logs. Each
     /// log returns user IP address, location and date and time of log.
     ///
-    Future<models.LogList> getLogs({int? limit, int? offset}) async {
+    Future<models.LogList> getLogs({List<String>? queries}) async {
         const String path = '/account/logs';
 
         final Map<String, dynamic> params = {
-            'limit': limit,
-            'offset': offset,
+            'queries': queries,
         };
 
         final Map<String, String> headers = {
@@ -133,7 +132,7 @@ class Account extends Service {
     ///
     /// Update currently logged in user account name.
     ///
-    Future<models.User> updateName({required String name}) async {
+    Future<models.Account> updateName({required String name}) async {
         const String path = '/account/name';
 
         final Map<String, dynamic> params = {
@@ -146,7 +145,7 @@ class Account extends Service {
 
         final res = await client.call(HttpMethod.patch, path: path, params: params, headers: headers);
 
-        return models.User.fromMap(res.data);
+        return models.Account.fromMap(res.data);
 
     }
 
@@ -156,7 +155,7 @@ class Account extends Service {
     /// to pass in the new password, and the old password. For users created with
     /// OAuth, Team Invites and Magic URL, oldPassword is optional.
     ///
-    Future<models.User> updatePassword({required String password, String? oldPassword}) async {
+    Future<models.Account> updatePassword({required String password, String? oldPassword}) async {
         const String path = '/account/password';
 
         final Map<String, dynamic> params = {
@@ -170,7 +169,7 @@ class Account extends Service {
 
         final res = await client.call(HttpMethod.patch, path: path, params: params, headers: headers);
 
-        return models.User.fromMap(res.data);
+        return models.Account.fromMap(res.data);
 
     }
 
@@ -182,11 +181,11 @@ class Account extends Service {
     /// /account/verification/phone](/docs/client/account#accountCreatePhoneVerification)
     /// endpoint to send a confirmation SMS.
     ///
-    Future<models.User> updatePhone({required String number, required String password}) async {
+    Future<models.Account> updatePhone({required String phone, required String password}) async {
         const String path = '/account/phone';
 
         final Map<String, dynamic> params = {
-            'number': number,
+            'phone': phone,
             'password': password,
         };
 
@@ -196,7 +195,7 @@ class Account extends Service {
 
         final res = await client.call(HttpMethod.patch, path: path, params: params, headers: headers);
 
-        return models.User.fromMap(res.data);
+        return models.Account.fromMap(res.data);
 
     }
 
@@ -226,7 +225,7 @@ class Account extends Service {
     /// stored as is, and replaces any previous value. The maximum allowed prefs
     /// size is 64kB and throws error if exceeded.
     ///
-    Future<models.User> updatePrefs({required Map prefs}) async {
+    Future<models.Account> updatePrefs({required Map prefs}) async {
         const String path = '/account/prefs';
 
         final Map<String, dynamic> params = {
@@ -239,7 +238,7 @@ class Account extends Service {
 
         final res = await client.call(HttpMethod.patch, path: path, params: params, headers: headers);
 
-        return models.User.fromMap(res.data);
+        return models.Account.fromMap(res.data);
 
     }
 
@@ -396,9 +395,10 @@ class Account extends Service {
 
     /// Create Magic URL session
     ///
-    /// Sends the user an email with a secret key for creating a session. When the
-    /// user clicks the link in the email, the user is redirected back to the URL
-    /// you provided with the secret key and userId values attached to the URL
+    /// Sends the user an email with a secret key for creating a session. If the
+    /// provided user ID has not be registered, a new user will be created. When
+    /// the user clicks the link in the email, the user is redirected back to the
+    /// URL you provided with the secret key and userId values attached to the URL
     /// query string. Use the query string parameters to submit a request to the
     /// [PUT
     /// /account/sessions/magic-url](/docs/client/account#accountUpdateMagicURLSession)
@@ -473,7 +473,7 @@ class Account extends Service {
     /// user..
     /// 
     ///
-    Future createOAuth2Session({required String provider, String? success, String? failure, List? scopes}) async {
+    Future createOAuth2Session({required String provider, String? success, String? failure, List<String>? scopes}) async {
         final String path = '/account/sessions/oauth2/{provider}'.replaceAll('{provider}', provider);
 
         final Map<String, dynamic> params = {
@@ -517,12 +517,12 @@ class Account extends Service {
     /// endpoint to complete the login process. The secret sent to the user's phone
     /// is valid for 15 minutes.
     ///
-    Future<models.Token> createPhoneSession({required String userId, required String number}) async {
+    Future<models.Token> createPhoneSession({required String userId, required String phone}) async {
         const String path = '/account/sessions/phone';
 
         final Map<String, dynamic> params = {
             'userId': userId,
-            'number': number,
+            'phone': phone,
         };
 
         final Map<String, String> headers = {
@@ -535,7 +535,7 @@ class Account extends Service {
 
     }
 
-    /// Create Phone session (confirmation)
+    /// Create Phone Session (confirmation)
     ///
     /// Use this endpoint to complete creating a session with SMS. Use the
     /// **userId** from the
@@ -633,7 +633,7 @@ class Account extends Service {
     /// record is not deleted but permanently blocked from any access. To
     /// completely delete a user, use the Users API instead.
     ///
-    Future<models.User> updateStatus() async {
+    Future<models.Account> updateStatus() async {
         const String path = '/account/status';
 
         final Map<String, dynamic> params = {
@@ -645,7 +645,7 @@ class Account extends Service {
 
         final res = await client.call(HttpMethod.patch, path: path, params: params, headers: headers);
 
-        return models.User.fromMap(res.data);
+        return models.Account.fromMap(res.data);
 
     }
 
