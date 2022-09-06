@@ -22,7 +22,7 @@ class ContinentList implements Model {
     Map<String, dynamic> toMap() {
         return {
             "total": total,
-            "continents": continents.map((p) => p.toMap()),
+            "continents": continents.map((p) => p.toMap()).toList(),
         };
     }
 }

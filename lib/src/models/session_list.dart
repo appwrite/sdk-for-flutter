@@ -22,7 +22,7 @@ class SessionList implements Model {
     Map<String, dynamic> toMap() {
         return {
             "total": total,
-            "sessions": sessions.map((p) => p.toMap()),
+            "sessions": sessions.map((p) => p.toMap()).toList(),
         };
     }
 }

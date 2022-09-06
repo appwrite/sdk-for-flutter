@@ -22,7 +22,7 @@ class MembershipList implements Model {
     Map<String, dynamic> toMap() {
         return {
             "total": total,
-            "memberships": memberships.map((p) => p.toMap()),
+            "memberships": memberships.map((p) => p.toMap()).toList(),
         };
     }
 }

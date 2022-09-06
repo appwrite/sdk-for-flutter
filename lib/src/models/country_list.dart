@@ -22,7 +22,7 @@ class CountryList implements Model {
     Map<String, dynamic> toMap() {
         return {
             "total": total,
-            "countries": countries.map((p) => p.toMap()),
+            "countries": countries.map((p) => p.toMap()).toList(),
         };
     }
 }
