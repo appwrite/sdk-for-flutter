@@ -22,7 +22,7 @@ class FileList implements Model {
     Map<String, dynamic> toMap() {
         return {
             "total": total,
-            "files": files.map((p) => p.toMap()),
+            "files": files.map((p) => p.toMap()).toList(),
         };
     }
 }

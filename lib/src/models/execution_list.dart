@@ -22,7 +22,7 @@ class ExecutionList implements Model {
     Map<String, dynamic> toMap() {
         return {
             "total": total,
-            "executions": executions.map((p) => p.toMap()),
+            "executions": executions.map((p) => p.toMap()).toList(),
         };
     }
 }

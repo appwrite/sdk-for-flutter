@@ -22,7 +22,7 @@ class LanguageList implements Model {
     Map<String, dynamic> toMap() {
         return {
             "total": total,
-            "languages": languages.map((p) => p.toMap()),
+            "languages": languages.map((p) => p.toMap()).toList(),
         };
     }
 }

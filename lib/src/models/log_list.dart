@@ -22,7 +22,7 @@ class LogList implements Model {
     Map<String, dynamic> toMap() {
         return {
             "total": total,
-            "logs": logs.map((p) => p.toMap()),
+            "logs": logs.map((p) => p.toMap()).toList(),
         };
     }
 }

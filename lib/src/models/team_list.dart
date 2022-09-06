@@ -22,7 +22,7 @@ class TeamList implements Model {
     Map<String, dynamic> toMap() {
         return {
             "total": total,
-            "teams": teams.map((p) => p.toMap()),
+            "teams": teams.map((p) => p.toMap()).toList(),
         };
     }
 }
