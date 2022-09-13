@@ -20,8 +20,7 @@ Account account = Account(client);
 
 Response user = await account.create(userId: '[USER_ID]', email: 'me@appwrite.io', password: 'password', name: 'My Name');
 
-//For email and password session 
-Response session = await account.createEmailSession(email: 'me@appwrite.io', password: 'password');
+Response session = await account.createEmailSession(email: 'me@appwrite.io', password: 'password'); //For Email And Password Session
 
 ```
 
