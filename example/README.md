@@ -19,8 +19,9 @@ Create a new user and session:
 Account account = Account(client);
 
 Response user = await account.create(userId: '[USER_ID]', email: 'me@appwrite.io', password: 'password', name: 'My Name');
- 
-Response session = await account.createSession(email: 'me@appwrite.io', password: 'password');
+
+//For email and password session 
+Response session = await account.createEmailSession(email: 'me@appwrite.io', password: 'password');
 
 ```
 
