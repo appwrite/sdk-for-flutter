@@ -119,12 +119,12 @@ class Teams extends Service {
 
     }
 
-    /// Get Team Memberships
+    /// List Team Memberships
     ///
     /// Use this endpoint to list a team's members using the team's ID. All team
     /// members have read access to this endpoint.
     ///
-    Future<models.MembershipList> getMemberships({required String teamId, List<String>? queries, String? search}) async {
+    Future<models.MembershipList> listMemberships({required String teamId, List<String>? queries, String? search}) async {
         final String path = '/teams/{teamId}/memberships'.replaceAll('{teamId}', teamId);
 
         final Map<String, dynamic> params = {

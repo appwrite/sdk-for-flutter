@@ -5,7 +5,9 @@ class Document implements Model {
     /// Document ID.
     final String $id;
     /// Collection ID.
-    final String $collection;
+    final String $collectionId;
+    /// Database ID.
+    final String $databaseId;
     /// Document creation date in ISO 8601 format.
     final String $createdAt;
     /// Document update date in ISO 8601 format.
@@ -16,7 +18,8 @@ class Document implements Model {
 
     Document({
         required this.$id,
-        required this.$collection,
+        required this.$collectionId,
+        required this.$databaseId,
         required this.$createdAt,
         required this.$updatedAt,
         required this.$permissions,
@@ -26,7 +29,8 @@ class Document implements Model {
     factory Document.fromMap(Map<String, dynamic> map) {
         return Document(
             $id: map['\$id'].toString(),
-            $collection: map['\$collection'].toString(),
+            $collectionId: map['\$collectionId'].toString(),
+            $databaseId: map['\$databaseId'].toString(),
             $createdAt: map['\$createdAt'].toString(),
             $updatedAt: map['\$updatedAt'].toString(),
             $permissions: map['\$permissions'],
@@ -37,7 +41,8 @@ class Document implements Model {
     Map<String, dynamic> toMap() {
         return {
             "\$id": $id,
-            "\$collection": $collection,
+            "\$collectionId": $collectionId,
+            "\$databaseId": $databaseId,
             "\$createdAt": $createdAt,
             "\$updatedAt": $updatedAt,
             "\$permissions": $permissions,

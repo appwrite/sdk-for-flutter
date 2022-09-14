@@ -35,7 +35,7 @@ class Locale extends Service {
     /// List of all continents. You can use the locale header to get the data in a
     /// supported language.
     ///
-    Future<models.ContinentList> getContinents() async {
+    Future<models.ContinentList> listContinents() async {
         const String path = '/locale/continents';
 
         final Map<String, dynamic> params = {
@@ -56,7 +56,7 @@ class Locale extends Service {
     /// List of all countries. You can use the locale header to get the data in a
     /// supported language.
     ///
-    Future<models.CountryList> getCountries() async {
+    Future<models.CountryList> listCountries() async {
         const String path = '/locale/countries';
 
         final Map<String, dynamic> params = {
@@ -77,7 +77,7 @@ class Locale extends Service {
     /// List of all countries that are currently members of the EU. You can use the
     /// locale header to get the data in a supported language.
     ///
-    Future<models.CountryList> getCountriesEU() async {
+    Future<models.CountryList> listCountriesEU() async {
         const String path = '/locale/countries/eu';
 
         final Map<String, dynamic> params = {
@@ -98,7 +98,7 @@ class Locale extends Service {
     /// List of all countries phone codes. You can use the locale header to get the
     /// data in a supported language.
     ///
-    Future<models.PhoneList> getCountriesPhones() async {
+    Future<models.PhoneList> listCountriesPhones() async {
         const String path = '/locale/countries/phones';
 
         final Map<String, dynamic> params = {
@@ -120,7 +120,7 @@ class Locale extends Service {
     /// decimal digits for all major and minor currencies. You can use the locale
     /// header to get the data in a supported language.
     ///
-    Future<models.CurrencyList> getCurrencies() async {
+    Future<models.CurrencyList> listCurrencies() async {
         const String path = '/locale/currencies';
 
         final Map<String, dynamic> params = {
@@ -141,7 +141,7 @@ class Locale extends Service {
     /// List of all languages classified by ISO 639-1 including 2-letter code, name
     /// in English, and name in the respective language.
     ///
-    Future<models.LanguageList> getLanguages() async {
+    Future<models.LanguageList> listLanguages() async {
         const String path = '/locale/languages';
 
         final Map<String, dynamic> params = {

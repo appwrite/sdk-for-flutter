@@ -24,8 +24,8 @@ class Execution implements Model {
     final String stdout;
     /// The script stderr output string. Logs the last 4,000 characters of the execution stderr output. This will return an empty string unless the response is returned using an API key or as part of a webhook payload.
     final String stderr;
-    /// The script execution time in seconds.
-    final double time;
+    /// The script execution duration in seconds.
+    final double duration;
 
     Execution({
         required this.$id,
@@ -39,7 +39,7 @@ class Execution implements Model {
         required this.response,
         required this.stdout,
         required this.stderr,
-        required this.time,
+        required this.duration,
     });
 
     factory Execution.fromMap(Map<String, dynamic> map) {
@@ -55,7 +55,7 @@ class Execution implements Model {
             response: map['response'].toString(),
             stdout: map['stdout'].toString(),
             stderr: map['stderr'].toString(),
-            time: map['time'].toDouble(),
+            duration: map['duration'].toDouble(),
         );
     }
 
@@ -72,7 +72,7 @@ class Execution implements Model {
             "response": response,
             "stdout": stdout,
             "stderr": stderr,
-            "time": time,
+            "duration": duration,
         };
     }
 }

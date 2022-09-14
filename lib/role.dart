@@ -5,12 +5,18 @@ class Role {
         return 'any';
     }
 
-    static String user(String id) {
-        return 'user:$id';
+    static String user(String id, [String status = '']) {
+        if(status.isEmpty) {
+            return 'user:$id';
+        }
+        return 'user:$id/$status';
     }
 
-    static String users() {
-        return 'users';
+    static String users([String status = '']) {
+        if(status.isEmpty) {
+            return 'users';
+        }
+        return 'users/$status';
     }
 
     static String guests() {
@@ -22,6 +28,10 @@ class Role {
             return 'team:$id';
         }
         return 'team:$id/$role';
+    }
+
+    static String member(String id) {
+        return 'member:$id';
     }
     
     static String status(String status) {
