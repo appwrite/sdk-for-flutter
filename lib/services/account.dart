@@ -522,7 +522,7 @@ class Account extends Service {
 
         final Map<String, dynamic> params = {
             'userId': userId,
-            'phone': phone,
+            'number': phone,
         };
 
         final Map<String, String> headers = {
