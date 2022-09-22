@@ -33,8 +33,4 @@ class Role {
     static String member(String id) {
         return 'member:$id';
     }
-    
-    static String status(String status) {
-        return 'status:$status';
-    }
 }

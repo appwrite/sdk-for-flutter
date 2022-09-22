@@ -7,7 +7,7 @@
 [![Twitter Account](https://img.shields.io/twitter/follow/appwrite?color=00acee&label=twitter&style=flat-square)](https://twitter.com/appwrite)
 [![Discord](https://img.shields.io/discord/564160730845151244?label=discord&style=flat-square)](https://appwrite.io/discord)
 
-**This SDK is compatible with Appwrite server version 1.0.0. For older versions, please check [previous releases](https://github.com/appwrite/sdk-for-flutter/releases).**
+**This SDK is compatible with Appwrite server version 1.0.x. For older versions, please check [previous releases](https://github.com/appwrite/sdk-for-flutter/releases).**
 
 Appwrite is an open-source backend as a service server that abstract and simplify complex and repetitive development tasks behind a very simple to use REST API. Appwrite aims to help you develop your apps faster and in a more secure way. Use the Flutter SDK to integrate your app with the Appwrite server to easily start interacting with all of Appwrite backend APIs and tools. For full API documentation and tutorials go to [https://appwrite.io/docs](https://appwrite.io/docs)
 
@@ -21,7 +21,7 @@ Add this to your package's `pubspec.yaml` file:
 
 ```yml
 dependencies:
-  appwrite: ^8.0.0
+  appwrite: ^8.1.0
 ```
 
 You can install packages from the command line:
@@ -91,7 +91,7 @@ For web in order to capture the OAuth2 callback URL and send it to the applicati
 close the window.
 <script>
   window.opener.postMessage({
-    flutter-web-auth2: window.location.href
+    flutter-web-auth-2: window.location.href
   }, window.location.origin);
   window.close();
 </script>
