@@ -18,6 +18,7 @@ dependencies:
   package_info_plus: ^1.4.3+1
   path_provider: ^2.0.11
   web_socket_channel: ^2.2.0
+  universal_html: ^2.0.8
 
 
 dev_dependencies:
