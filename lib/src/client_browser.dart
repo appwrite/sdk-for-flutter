@@ -156,7 +156,7 @@ class ClientBrowser extends ClientBase with ClientMixin {
 
     while (offset < size) {
       var chunk;
-      final end = min(offset + CHUNK_SIZE-1, size-1);
+      final end = min(offset + CHUNK_SIZE, size);
       chunk = file.bytes!.getRange(offset, end).toList();
       params[paramName] =
           http.MultipartFile.fromBytes(paramName, chunk, filename: file.filename);
