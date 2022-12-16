@@ -12,7 +12,7 @@ dependencies:
   flutter:
     sdk: flutter
   cookie_jar: ^3.0.1
-  device_info_plus: ^8.0.0
+  device_info_plus: ^7.0.0
   flutter_web_auth_2: ^2.0.3
   http: ^0.13.5
   package_info_plus: ^3.0.2
