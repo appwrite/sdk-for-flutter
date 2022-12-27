@@ -19,7 +19,7 @@ abstract class Client {
           bool selfSigned = false}) =>
       createClient(endPoint: endPoint, selfSigned: selfSigned);
 
-  Future webAuth(Uri url);
+  Future webAuth(Uri url, {String? callbackUrlScheme});
 
   Future<Response> chunkedUpload({
     required String path,

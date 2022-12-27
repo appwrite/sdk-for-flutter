@@ -10,7 +10,7 @@ void main() { // Init SDK
   ;
   Future result = account.createPhoneSession(
     userId: '[USER_ID]',
-    phone: '',
+    phone: '+12065550100',
   );
 
   result
