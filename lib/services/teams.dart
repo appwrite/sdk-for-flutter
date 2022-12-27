@@ -9,9 +9,6 @@ class Teams extends Service {
     ///
     /// Get a list of all the teams in which the current user is a member. You can
     /// use the parameters to filter your results.
-    /// 
-    /// In admin mode, this endpoint returns a list of all the teams in the current
-    /// project. [Learn more about different API modes](/docs/admin).
     ///
     Future<models.TeamList> list({List<String>? queries, String? search}) async {
         const String path = '/teams';
@@ -185,7 +182,7 @@ class Teams extends Service {
     /// Get a team member by the membership unique id. All team members have read
     /// access for this resource.
     ///
-    Future<models.MembershipList> getMembership({required String teamId, required String membershipId}) async {
+    Future<models.Membership> getMembership({required String teamId, required String membershipId}) async {
         final String path = '/teams/{teamId}/memberships/{membershipId}'.replaceAll('{teamId}', teamId).replaceAll('{membershipId}', membershipId);
 
         final Map<String, dynamic> params = {
@@ -197,7 +194,7 @@ class Teams extends Service {
 
         final res = await client.call(HttpMethod.get, path: path, params: params, headers: headers);
 
-        return models.MembershipList.fromMap(res.data);
+        return models.Membership.fromMap(res.data);
 
     }
 

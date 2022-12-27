@@ -64,7 +64,7 @@ class ClientIO extends ClientBase with ClientMixin {
       'x-sdk-name': 'Flutter',
       'x-sdk-platform': 'client',
       'x-sdk-language': 'flutter',
-      'x-sdk-version': '8.1.0',
+      'x-sdk-version': '8.2.0',
       'X-Appwrite-Response-Format' : '1.0.0',
     };
 
@@ -311,10 +311,10 @@ class ClientIO extends ClientBase with ClientMixin {
   }
 
   @override
-  Future webAuth(Uri url) {
+  Future webAuth(Uri url, {String? callbackUrlScheme}) {
     return FlutterWebAuth2.authenticate(
       url: url.toString(),
-      callbackUrlScheme: "appwrite-callback-" + config['project']!,
+      callbackUrlScheme: callbackUrlScheme != null && Platform.isWindows ? callbackUrlScheme : "appwrite-callback-" + config['project']!,
     ).then((value) async {
       Uri url = Uri.parse(value);
       final key = url.queryParameters['key'];
