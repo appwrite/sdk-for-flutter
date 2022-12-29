@@ -1,22 +1,26 @@
+import 'dart:async';
 import 'dart:io';
 import 'dart:math';
+
+import 'package:appwrite/appwrite.dart';
+import 'package:appwrite/src/client_offline_mixin.dart';
+import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:cookie_jar/cookie_jar.dart';
 import 'package:device_info_plus/device_info_plus.dart';
+import 'package:flutter/foundation.dart';
+import 'package:flutter_web_auth_2/flutter_web_auth_2.dart';
 import 'package:http/http.dart' as http;
 import 'package:http/io_client.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:path_provider/path_provider.dart';
-import 'package:flutter_web_auth_2/flutter_web_auth_2.dart';
-import 'client_mixin.dart';
+import 'package:sembast/sembast.dart';
+import 'package:sembast/utils/value_utils.dart';
+
 import 'client_base.dart';
+import 'client_mixin.dart';
 import 'cookie_manager.dart';
 import 'enums.dart';
-import 'exception.dart';
 import 'interceptor.dart';
-import 'response.dart';
-import 'package:flutter/foundation.dart';
-import 'input_file.dart';
-import 'upload_progress.dart';
 
 ClientBase createClient({
   required String endPoint,
@@ -27,8 +31,8 @@ ClientBase createClient({
       selfSigned: selfSigned,
     );
 
-class ClientIO extends ClientBase with ClientMixin {
-  static const int CHUNK_SIZE = 5*1024*1024;
+class ClientIO extends ClientBase with ClientMixin, ClientOfflineMixin {
+  static const int CHUNK_SIZE = 5 * 1024 * 1024;
   String _endPoint;
   Map<String, String>? _headers;
   @override
@@ -47,6 +51,8 @@ class ClientIO extends ClientBase with ClientMixin {
   CookieJar get cookieJar => _cookieJar;
   @override
   String? get endPointRealtime => _endPointRealtime;
+  bool _offlinePersistency = false;
+  int _maxCacheSize = 40000; // 40MB
 
   ClientIO({
     String endPoint = 'https://HOSTNAME/v1',
@@ -86,26 +92,28 @@ class ClientIO extends ClientBase with ClientMixin {
     return dir;
   }
 
-     /// Your project ID
-    @override
-    ClientIO setProject(value) {
-        config['project'] = value;
-        addHeader('X-Appwrite-Project', value);
-        return this;
-    }
-     /// Your secret JSON Web Token
-    @override
-    ClientIO setJWT(value) {
-        config['jWT'] = value;
-        addHeader('X-Appwrite-JWT', value);
-        return this;
-    }
-    @override
-    ClientIO setLocale(value) {
-        config['locale'] = value;
-        addHeader('X-Appwrite-Locale', value);
-        return this;
-    }
+  /// Your project ID
+  @override
+  ClientIO setProject(value) {
+    config['project'] = value;
+    addHeader('X-Appwrite-Project', value);
+    return this;
+  }
+
+  /// Your secret JSON Web Token
+  @override
+  ClientIO setJWT(value) {
+    config['jWT'] = value;
+    addHeader('X-Appwrite-JWT', value);
+    return this;
+  }
+
+  @override
+  ClientIO setLocale(value) {
+    config['locale'] = value;
+    addHeader('X-Appwrite-Locale', value);
+    return this;
+  }
 
   @override
   ClientIO setSelfSigned({bool status = true}) {
@@ -138,7 +146,7 @@ class ClientIO extends ClientBase with ClientMixin {
   }
 
   Future init() async {
-    if(_initProgress) return;
+    if (_initProgress) return;
     _initProgress = true;
     // if web skip cookie implementation and origin header as those are automatically handled by browsers
     final Directory cookieDir = await _getCookiePath();
@@ -178,8 +186,8 @@ class ClientIO extends ClientBase with ClientMixin {
       debugPrint('Error getting device info: $e');
       device = Platform.operatingSystem;
     }
-    addHeader(
-        'user-agent', '${packageInfo.packageName}/${packageInfo.version} $device');
+    addHeader('user-agent',
+        '${packageInfo.packageName}/${packageInfo.version} $device');
 
     _initialized = true;
     _initProgress = false;
@@ -281,14 +289,14 @@ class ClientIO extends ClientBase with ClientMixin {
     while (offset < size) {
       var chunk;
       if (file.bytes != null) {
-        final end = min(offset + CHUNK_SIZE-1, size-1);
+        final end = min(offset + CHUNK_SIZE - 1, size - 1);
         chunk = file.bytes!.getRange(offset, end).toList();
       } else {
         raf!.setPositionSync(offset);
         chunk = raf.readSync(CHUNK_SIZE);
       }
-      params[paramName] =
-          http.MultipartFile.fromBytes(paramName, chunk, filename: file.filename);
+      params[paramName] = http.MultipartFile.fromBytes(paramName, chunk,
+          filename: file.filename);
       headers['content-range'] =
           'bytes $offset-${min<int>(((offset + CHUNK_SIZE) - 1), size)}/$size';
       res = await call(HttpMethod.post,
@@ -348,29 +356,348 @@ class ClientIO extends ClientBase with ClientMixin {
       await init();
     }
 
-    late http.Response res;
+    final uri = Uri.parse(_endPoint + path);
+
     http.BaseRequest request = prepareRequest(
       method,
-      uri: Uri.parse(_endPoint + path),
+      uri: uri,
       headers: {..._headers!, ...headers},
       params: params,
     );
 
+    if (getOfflinePersistency() &&
+        !isOnline &&
+        responseType != ResponseType.bytes) {
+      final pathSegments = uri.pathSegments;
+      String model = getModel(uri);
+      String cacheKey = getKey(uri);
+      String queuedWriteKey = '';
+
+      final store = getModelStore(model);
+      switch (method) {
+        case HttpMethod.get:
+          if (cacheKey.isNotEmpty) {
+            final recordRef = store.record(cacheKey);
+            final record = await recordRef.get(db);
+            if (record != null) {
+              updateAccessedAt(db, store.name, cacheKey);
+              return Response(data: record);
+            }
+          } else {
+            final finder = Finder(limit: 25);
+            // TODO: await both at same time
+            final records = await store.find(db, finder: finder);
+            db.transaction((txn) async {
+              for (final record in records) {
+                await updateAccessedAt(txn, store.name, record.key);
+              }
+            });
+            final count = await store.count(db);
+            String containerKey = model.split('/').last;
+            if (containerKey == 'eu') {
+              containerKey = 'countries';
+            }
+            return Response(data: {
+              'total': count,
+              containerKey: records.map((record) {
+                final map = Map<String, dynamic>();
+                record.value.entries.forEach((entry) {
+                  map[entry.key] = entry.value;
+                });
+                return map;
+              }).toList(),
+            });
+          }
+          throw AppwriteException(
+            "Client is offline and data is not cached",
+            0,
+            "general_offline",
+          );
+        case HttpMethod.post:
+        case HttpMethod.patch:
+        case HttpMethod.put:
+        case HttpMethod.delete:
+          switch (method) {
+            case HttpMethod.post:
+              if (params.containsKey('data')) {
+                final documentId = params['documentId'];
+                cacheKey = documentId;
+                final document = Map<String, dynamic>.from(params['data']);
+                document['\$createdAt'] = DateTime.now().toIso8601String();
+                document['\$updatedAt'] = DateTime.now().toIso8601String();
+                document['\$id'] = documentId;
+                document['\$collectionId'] = pathSegments[4];
+                document['\$databaseId'] = pathSegments[2];
+                document['\$permissions'] = params['permissions'] ?? [];
+                await db.transaction((txn) async {
+                  await upsertCache(txn, store, document, key: cacheKey);
+                  queuedWriteKey =
+                      await addQueuedWrite(txn, method, path, headers, params);
+                });
+              }
+              break;
+            case HttpMethod.delete:
+              if (cacheKey.isNotEmpty) {
+                await db.transaction((txn) async {
+                  await deleteCache(txn, store, key: cacheKey);
+                  queuedWriteKey =
+                      await addQueuedWrite(txn, method, path, headers, params);
+                });
+              }
+              break;
+            case HttpMethod.put:
+            case HttpMethod.patch:
+              final entry = Map<String, dynamic>();
+              if (params.containsKey('data')) {
+                entry.addAll(Map<String, dynamic>.from(params['data']));
+                entry['\$createdAt'] = DateTime.now().toIso8601String();
+                entry['\$updatedAt'] = DateTime.now().toIso8601String();
+                entry['\$id'] = cacheKey;
+              } else if (params.containsKey('prefs')) {
+                entry.addAll(Map<String, dynamic>.from(params['prefs']));
+              }
+
+              await db.transaction((txn) async {
+                await upsertCache(txn, store, entry, key: cacheKey);
+                queuedWriteKey =
+                    await addQueuedWrite(txn, method, path, headers, params);
+              });
+              break;
+            case HttpMethod.get:
+              // already handled
+              break;
+          }
+          final completer = Completer<Response>();
+          late StreamSubscription<ConnectivityResult> subscription;
+          subscription =
+              Connectivity().onConnectivityChanged.listen(((result) async {
+            if (resultIsOnline(result) && !request.finalized) {
+              while (true) {
+                final queuedWrites = await listQueuedWrites(db);
+
+                if (queuedWrites.isEmpty) {
+                  break;
+                }
+
+                if (queuedWrites.first.key != queuedWriteKey) {
+                  await Future.delayed(Duration.zero);
+                  continue;
+                }
+
+                try {
+                  final res =
+                      await sendRequest(request, responseType: responseType);
+
+                  await db.transaction((txn) async {
+                    final futures = <Future>[];
+                    if (method == HttpMethod.post) {
+                      futures.add(
+                          upsertCache(txn, store, res.data, key: cacheKey));
+                    }
+
+                    futures.add(deleteQueuedWrite(txn, queuedWriteKey));
+
+                    await Future.wait(futures);
+                  });
+
+                  completer.complete(res);
+                } on AppwriteException catch (e) {
+                  if (e.message ==
+                      "Bad state: Can't finalize a finalized Request.") {
+                    continue;
+                  }
+                  completer.completeError(e);
+                } catch (e) {
+                  completer.completeError(e);
+                }
+                subscription.cancel();
+                break;
+              }
+            }
+          }));
+          return completer.future;
+      }
+    }
+
+    return sendRequest(request, responseType: responseType);
+  }
+
+  Future<Response> sendRequest(
+    http.BaseRequest request, {
+    ResponseType? responseType,
+  }) async {
     try {
       request = await _interceptRequest(request);
       final streamedResponse = await _httpClient.send(request);
-      res = await toResponse(streamedResponse);
+      http.Response res = await toResponse(streamedResponse);
       res = await _interceptResponse(res);
-
-      return prepareResponse(
+      final response = prepareResponse(
         res,
         responseType: responseType,
       );
+
+      if (getOfflinePersistency()) {
+        final uri = request.url;
+        String model = getModel(uri);
+        String cacheKey = getKey(uri);
+
+        final store = getModelStore(model);
+        switch (request.method) {
+          case 'GET':
+            final clone = cloneMap(response.data);
+            if (cacheKey.isNotEmpty) {
+              db.transaction((txn) async {
+                await upsertCache(txn, store, clone, key: cacheKey);
+              });
+            } else {
+              clone.forEach((key, value) {
+                if (key == 'total') return;
+                db.transaction((txn) async {
+                  for (final element in value as List) {
+                    final map = element as Map<String, dynamic>;
+                    final id = map['\$id'] ?? map['code'];
+                    await upsertCache(txn, store, map, key: id);
+                  }
+                });
+              });
+            }
+            break;
+          case 'POST':
+          case 'PUT':
+          case 'PATCH':
+            Map<String, Object?> clone = cloneMap(response.data);
+            if (cacheKey.isEmpty) {
+              cacheKey = clone['\$id'] as String;
+            }
+            if (model.endsWith('/prefs')) {
+              clone = response.data['prefs'];
+            }
+            db.transaction((txn) async {
+              await upsertCache(txn, store, clone, key: cacheKey);
+            });
+            break;
+          case 'DELETE':
+            if (cacheKey.isNotEmpty) {
+              db.transaction((txn) async {
+                await deleteCache(txn, store, key: cacheKey);
+              });
+            }
+        }
+      }
+
+      return response;
     } catch (e) {
       if (e is AppwriteException) {
         rethrow;
       }
       throw AppwriteException(e.toString());
+    }
+  }
+
+  @override
+  Future<ClientIO> setOfflinePersistency({bool status = true}) async {
+    _offlinePersistency = status;
+
+    if (_offlinePersistency) {
+      await Future.wait([initOfflineDatabase(), listenForConnectivity()]);
+      await processWriteQueue();
+      final cacheSizeRecordRef = getCacheSizeRecordRef();
+      cacheSizeRecordRef.onSnapshot(db).listen((snapshot) {
+        int? currentSize = snapshot?.value;
+
+        if (currentSize == null || currentSize < getOfflineCacheSize()) return;
+
+        db.transaction((txn) async {
+          final records = await listAccessedAt(txn);
+          if (records.isEmpty) return;
+          final record = records.first;
+          print('deleting $record');
+          final modelStore = getModelStore(record.value['model'] as String);
+          final cacheKey = record.value['key'] as String;
+          await deleteCache(txn, modelStore, key: cacheKey);
+        });
+      });
+    }
+
+    return this;
+  }
+
+  @override
+  bool getOfflinePersistency() {
+    return _offlinePersistency;
+  }
+
+  @override
+  ClientIO setOfflineCacheSize(int kbytes) {
+    _maxCacheSize = kbytes * 1000;
+
+    return this;
+  }
+
+  @override
+  int getOfflineCacheSize() {
+    return _maxCacheSize;
+  }
+
+  Future<void> processWriteQueue() async {
+    // TODO: remove
+    print('accessedAt records:');
+    final records = await listAccessedAt(db);
+    for (final record in records) {
+      print('  ${record.value}');
+    }
+
+    if (getOfflinePersistency() && !isOnline) return;
+    final queuedWriteRecords = await listQueuedWrites(db);
+    print('queued writes:');
+    for (final queuedWriteRecord in queuedWriteRecords) {
+      final queuedWrite = queuedWriteRecord.value;
+      print('  queuedWrite: $queuedWrite');
+      try {
+        final method = HttpMethod.values
+            .where((v) => v.name() == queuedWrite['method'])
+            .first;
+        final path = queuedWrite['path'] as String;
+        final headers = (queuedWrite['headers'] as Map<String, Object?>)
+            .map((key, value) => MapEntry(key, value?.toString() ?? ''));
+        final params = queuedWrite['params'] as Map<String, Object?>;
+        final res = await this.call(
+          method,
+          path: path,
+          headers: headers,
+          params: params,
+        );
+        print('  res: $res');
+
+        final model = getModel(Uri.parse(_endPoint + path));
+        final modelStore = getModelStore(model);
+        db.transaction((txn) async {
+          final futures = <Future>[];
+          if (method == HttpMethod.post) {
+            final recordKey = res.data['\$id'];
+            futures.add(
+              upsertCache(
+                txn,
+                modelStore,
+                res.data,
+                key: recordKey,
+              ),
+            );
+          }
+
+          futures.add(queuedWriteRecord.ref.delete(txn));
+
+          await Future.wait(futures);
+        });
+      } on AppwriteException catch (e) {
+        if (e.code == 404) {
+          db.transaction((txn) async {
+            await queuedWriteRecord.ref.delete(txn);
+          });
+        }
+      } catch (e) {
+        print(e);
+      }
     }
   }
 }

@@ -1,12 +1,13 @@
-import 'response.dart';
 import 'client.dart';
 import 'enums.dart';
+import 'response.dart';
 
-abstract class ClientBase implements Client {  
-    /// Your project ID
+abstract class ClientBase implements Client {
+  /// Your project ID
   @override
   ClientBase setProject(value);
-    /// Your secret JSON Web Token
+
+  /// Your secret JSON Web Token
   @override
   ClientBase setJWT(value);
   @override
@@ -32,4 +33,16 @@ abstract class ClientBase implements Client {
     Map<String, dynamic> params = const {},
     ResponseType? responseType,
   });
+
+  @override
+  Future<ClientBase> setOfflinePersistency({bool status = true});
+
+  @override
+  bool getOfflinePersistency();
+
+  @override
+  ClientBase setOfflineCacheSize(int kbytes);
+
+  @override
+  int getOfflineCacheSize();
 }
