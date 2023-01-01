@@ -2,21 +2,13 @@ import 'response.dart';
 import 'client.dart';
 import 'enums.dart';
 
-abstract class ClientBase implements Client {  
-    /// Your project ID
-  @override
-  ClientBase setProject(value);
-    /// Your secret JSON Web Token
+abstract class ClientBase implements Client {
+  /// Your secret JSON Web Token
   @override
   ClientBase setJWT(value);
+
   @override
   ClientBase setLocale(value);
-
-  @override
-  ClientBase setSelfSigned({bool status = true});
-
-  @override
-  ClientBase setEndpoint(String endPoint);
 
   @override
   Client setEndPointRealtime(String endPoint);

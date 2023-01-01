@@ -16,7 +16,7 @@ ClientBase createClient({
   required String endPoint,
   required bool selfSigned,
 }) =>
-    ClientBrowser(endPoint: endPoint, selfSigned: selfSigned);
+    ClientBrowser.instance.initialize(endPoint: endPoint, selfSigned: selfSigned);
 
 class ClientBrowser extends ClientBase with ClientMixin {
   static const int CHUNK_SIZE = 5*1024*1024;
@@ -30,9 +30,8 @@ class ClientBrowser extends ClientBase with ClientMixin {
   @override
   String? get endPointRealtime => _endPointRealtime;
 
-  ClientBrowser({
+  ClientBrowser._({
     String endPoint = 'https://HOSTNAME/v1',
-    bool selfSigned = false,
   }) : _endPoint = endPoint {
     _httpClient = BrowserClient();
     _endPointRealtime = endPoint
@@ -54,12 +53,20 @@ class ClientBrowser extends ClientBase with ClientMixin {
     init();
   }
 
+  static final instance = ClientBrowser._();
+
+  ClientBrowser initialize({String endPoint = 'https://HOSTNAME/v1', String? projectId, bool selfSigned = false}) {
+    return instance
+      .._setEndpoint(endPoint)
+      .._setProject(projectId ?? '')
+      .._setSelfSigned(status: selfSigned);
+  }
+
   @override
   String get endPoint => _endPoint;
 
-     /// Your project ID
-    @override
-    ClientBrowser setProject(value) {
+
+    ClientBrowser _setProject(value) {
         config['project'] = value;
         addHeader('X-Appwrite-Project', value);
         return this;
@@ -78,13 +85,11 @@ class ClientBrowser extends ClientBase with ClientMixin {
         return this;
     }
 
-  @override
-  ClientBrowser setSelfSigned({bool status = true}) {
+  ClientBrowser _setSelfSigned({bool status = true}) {
     return this;
   }
 
-  @override
-  ClientBrowser setEndpoint(String endPoint) {
+  ClientBrowser _setEndpoint(String endPoint) {
     _endPoint = endPoint;
     _endPointRealtime = endPoint
         .replaceFirst('https://', 'wss://')

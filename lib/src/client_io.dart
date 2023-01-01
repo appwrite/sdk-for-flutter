@@ -22,13 +22,13 @@ ClientBase createClient({
   required String endPoint,
   required bool selfSigned,
 }) =>
-    ClientIO(
+    ClientIO.instance.initialize(
       endPoint: endPoint,
       selfSigned: selfSigned,
     );
 
 class ClientIO extends ClientBase with ClientMixin {
-  static const int CHUNK_SIZE = 5*1024*1024;
+  static const int CHUNK_SIZE = 5 * 1024 * 1024;
   String _endPoint;
   Map<String, String>? _headers;
   @override
@@ -43,12 +43,15 @@ class ClientIO extends ClientBase with ClientMixin {
   final List<Interceptor> _interceptors = [];
 
   bool get initProgress => _initProgress;
+
   bool get initialized => _initialized;
+
   CookieJar get cookieJar => _cookieJar;
+
   @override
   String? get endPointRealtime => _endPointRealtime;
 
-  ClientIO({
+  ClientIO._({
     String endPoint = 'https://HOSTNAME/v1',
     this.selfSigned = false,
   }) : _endPoint = endPoint {
@@ -65,7 +68,7 @@ class ClientIO extends ClientBase with ClientMixin {
       'x-sdk-platform': 'client',
       'x-sdk-language': 'flutter',
       'x-sdk-version': '8.2.0',
-      'X-Appwrite-Response-Format' : '1.0.0',
+      'X-Appwrite-Response-Format': '1.0.0',
     };
 
     config = {};
@@ -73,6 +76,21 @@ class ClientIO extends ClientBase with ClientMixin {
     assert(_endPoint.startsWith(RegExp("http://|https://")),
         "endPoint $_endPoint must start with 'http'");
     init();
+  }
+
+  static final instance = ClientIO._();
+
+  @override
+  ClientIO initialize({
+    String endPoint = 'https://HOSTNAME/v1',
+    String? projectId,
+    bool selfSigned = false,
+  }) {
+    return instance
+      .._setEndpoint(endPoint)
+      .._setSelfSigned(status: selfSigned)
+      .._setProject(projectId ?? '')
+      .._initialized = true;
   }
 
   @override
@@ -86,37 +104,35 @@ class ClientIO extends ClientBase with ClientMixin {
     return dir;
   }
 
-     /// Your project ID
-    @override
-    ClientIO setProject(value) {
-        config['project'] = value;
-        addHeader('X-Appwrite-Project', value);
-        return this;
-    }
-     /// Your secret JSON Web Token
-    @override
-    ClientIO setJWT(value) {
-        config['jWT'] = value;
-        addHeader('X-Appwrite-JWT', value);
-        return this;
-    }
-    @override
-    ClientIO setLocale(value) {
-        config['locale'] = value;
-        addHeader('X-Appwrite-Locale', value);
-        return this;
-    }
+  ClientIO _setProject(value) {
+    config['project'] = value;
+    addHeader('X-Appwrite-Project', value);
+    return this;
+  }
+
+  /// Your secret JSON Web Token
+  @override
+  ClientIO setJWT(value) {
+    config['jWT'] = value;
+    addHeader('X-Appwrite-JWT', value);
+    return this;
+  }
 
   @override
-  ClientIO setSelfSigned({bool status = true}) {
+  ClientIO setLocale(value) {
+    config['locale'] = value;
+    addHeader('X-Appwrite-Locale', value);
+    return this;
+  }
+
+  ClientIO _setSelfSigned({bool status = true}) {
     selfSigned = status;
     _nativeClient.badCertificateCallback =
         ((X509Certificate cert, String host, int port) => status);
     return this;
   }
 
-  @override
-  ClientIO setEndpoint(String endPoint) {
+  ClientIO _setEndpoint(String endPoint) {
     _endPoint = endPoint;
     _endPointRealtime = endPoint
         .replaceFirst('https://', 'wss://')
@@ -138,7 +154,7 @@ class ClientIO extends ClientBase with ClientMixin {
   }
 
   Future init() async {
-    if(_initProgress) return;
+    if (_initProgress) return;
     _initProgress = true;
     // if web skip cookie implementation and origin header as those are automatically handled by browsers
     final Directory cookieDir = await _getCookiePath();
@@ -178,8 +194,8 @@ class ClientIO extends ClientBase with ClientMixin {
       debugPrint('Error getting device info: $e');
       device = Platform.operatingSystem;
     }
-    addHeader(
-        'user-agent', '${packageInfo.packageName}/${packageInfo.version} $device');
+    addHeader('user-agent',
+        '${packageInfo.packageName}/${packageInfo.version} $device');
 
     _initialized = true;
     _initProgress = false;
@@ -281,14 +297,14 @@ class ClientIO extends ClientBase with ClientMixin {
     while (offset < size) {
       var chunk;
       if (file.bytes != null) {
-        final end = min(offset + CHUNK_SIZE-1, size-1);
+        final end = min(offset + CHUNK_SIZE - 1, size - 1);
         chunk = file.bytes!.getRange(offset, end).toList();
       } else {
         raf!.setPositionSync(offset);
         chunk = raf.readSync(CHUNK_SIZE);
       }
-      params[paramName] =
-          http.MultipartFile.fromBytes(paramName, chunk, filename: file.filename);
+      params[paramName] = http.MultipartFile.fromBytes(paramName, chunk,
+          filename: file.filename);
       headers['content-range'] =
           'bytes $offset-${min<int>(((offset + CHUNK_SIZE) - 1), size)}/$size';
       res = await call(HttpMethod.post,
@@ -314,7 +330,9 @@ class ClientIO extends ClientBase with ClientMixin {
   Future webAuth(Uri url, {String? callbackUrlScheme}) {
     return FlutterWebAuth2.authenticate(
       url: url.toString(),
-      callbackUrlScheme: callbackUrlScheme != null && Platform.isWindows ? callbackUrlScheme : "appwrite-callback-" + config['project']!,
+      callbackUrlScheme: callbackUrlScheme != null && Platform.isWindows
+          ? callbackUrlScheme
+          : "appwrite-callback-" + config['project']!,
     ).then((value) async {
       Uri url = Uri.parse(value);
       final key = url.queryParameters['key'];

@@ -14,10 +14,24 @@ abstract class Client {
   String get endPoint => _endPoint;
   String? get endPointRealtime => _endPointRealtime;
 
-  factory Client(
+  factory Client._(
           {String endPoint = 'https://HOSTNAME/v1',
           bool selfSigned = false}) =>
       createClient(endPoint: endPoint, selfSigned: selfSigned);
+
+  static final instance = Client._();
+
+  Client initialize({String endPoint = 'https://HOSTNAME/v1', String? projectId, bool selfSigned = false}) {
+    instance
+      .._setEndpoint(endPoint)
+      .._setSelfSigned(status: selfSigned);
+
+    if (projectId != null) {
+      instance._setProject(projectId);
+    }
+
+    return instance;
+  }
 
   Future webAuth(Uri url, {String? callbackUrlScheme});
 
@@ -30,14 +44,14 @@ abstract class Client {
     Function(UploadProgress)? onProgress,
   });
 
-  Client setSelfSigned({bool status = true});
+  Client _setSelfSigned({bool status = true});
 
-  Client setEndpoint(String endPoint);
+  Client _setEndpoint(String endPoint);
 
   Client setEndPointRealtime(String endPoint);
 
     /// Your project ID
-  Client setProject(value);
+  Client _setProject(String value);
     /// Your secret JSON Web Token
   Client setJWT(value);
   Client setLocale(value);
