@@ -1,10 +1,11 @@
 import 'dart:convert';
-import 'dart:math';
+import 'dart:io';
 
 import 'package:appwrite/appwrite.dart';
 import 'package:appwrite/src/enums.dart';
 import 'package:appwrite/src/offline_db.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
+import 'package:flutter/foundation.dart';
 import 'package:sembast/sembast.dart';
 import 'package:sembast/timestamp.dart';
 
@@ -30,7 +31,7 @@ class AccessTimestamp {
 }
 
 class ClientOfflineMixin {
-  bool isOnline = true;
+  ValueNotifier<bool> isOnline = ValueNotifier(true);
   late Database db;
 
   StoreRef<String, Map<String, Object?>> _queuedWritesStore =
@@ -38,8 +39,6 @@ class ClientOfflineMixin {
   StoreRef<String, Map<String, Object?>> _accessTimestampsStore =
       stringMapStoreFactory.store('accessTimestamps');
   StoreRef<String, int> _cacheSizeStore = StoreRef<String, int>('cacheSize');
-
-  Random _random = Random();
 
   Future<void> initOfflineDatabase() async {
     db = await OfflineDatabase.instance.db();
@@ -51,13 +50,34 @@ class ClientOfflineMixin {
         result == ConnectivityResult.wifi;
   }
 
+  Future<void> checkOnlineStatus() async {
+    Socket? s;
+    try {
+      print('Checking online status...');
+      s = await Socket.connect(
+        'appwrite.io',
+        443,
+        timeout: Duration(seconds: 1),
+      );
+      isOnline.value = true;
+    } on SocketException catch (_) {
+      isOnline.value = false;
+    } finally {
+      s?.close();
+    }
+  }
+
   Future<void> listenForConnectivity() async {
     void handleConnectivityResult(ConnectivityResult result) {
-      isOnline = resultIsOnline(result);
+      isOnline.value = resultIsOnline(result);
     }
 
     final result = await Connectivity().checkConnectivity();
     handleConnectivityResult(result);
+    if (isOnline.value) {
+      // wifi or mobile is connected, but double check internet connectivity
+      await checkOnlineStatus();
+    }
     Connectivity().onConnectivityChanged.listen(handleConnectivityResult);
   }
 
