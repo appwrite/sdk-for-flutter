@@ -1,5 +1,8 @@
 part of appwrite;
 
+// access Account without conflicting namespaces
+typedef AccountService = Account;
+
     /// The Account service allows you to authenticate and manage a user account.
 class Account extends Service {
     Account(super.client);
