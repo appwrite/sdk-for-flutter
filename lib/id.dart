@@ -1,6 +1,8 @@
 part of appwrite;
 
 class ID {
+    ID._();
+    
     static String unique() {
         return 'unique()';
     }
