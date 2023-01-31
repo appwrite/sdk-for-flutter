@@ -1,3 +1,8 @@
+## 8.2.1
+
+* Fix OAuth issue on web
+* Make improvements in helper classes
+
 ## 8.2.0
 
 * Support for GraphQL
