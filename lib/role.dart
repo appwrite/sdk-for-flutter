@@ -1,6 +1,8 @@
 part of appwrite;
 
 class Role {
+    Role._();
+    
     static String any() {
         return 'any';
     }

@@ -1,6 +1,8 @@
 part of appwrite;
 
 class Query {
+    Query._();
+    
   static equal(String attribute, dynamic value) =>
       _addQuery(attribute, 'equal', value);
 

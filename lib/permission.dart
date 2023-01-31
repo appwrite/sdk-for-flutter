@@ -1,6 +1,8 @@
 part of appwrite;
 
 class Permission {
+    Permission._();
+
     static String read(String role) {
         return 'read("$role")';
     }

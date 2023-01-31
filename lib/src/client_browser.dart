@@ -43,7 +43,7 @@ class ClientBrowser extends ClientBase with ClientMixin {
       'x-sdk-name': 'Flutter',
       'x-sdk-platform': 'client',
       'x-sdk-language': 'flutter',
-      'x-sdk-version': '8.2.0',
+      'x-sdk-version': '8.2.1',
       'X-Appwrite-Response-Format' : '1.0.0',
     };
 
@@ -221,7 +221,7 @@ class ClientBrowser extends ClientBase with ClientMixin {
   Future webAuth(Uri url, {String? callbackUrlScheme}) {
   return FlutterWebAuth2.authenticate(
       url: url.toString(),
-      callbackUrlScheme: callbackUrlScheme ?? "appwrite-callback-" + config['project']!,
+      callbackUrlScheme: "appwrite-callback-" + config['project']!,
     );
   }
 }
