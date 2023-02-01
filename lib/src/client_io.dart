@@ -347,6 +347,11 @@ class ClientIO extends ClientBase with ClientMixin {
     Map<String, String> headers = const {},
     Map<String, dynamic> params = const {},
     ResponseType? responseType,
+    String cacheModel = '',
+    String cacheKey = '',
+    String cacheResponseIdKey = '',
+    String cacheResponseContainerKey = '',
+    Map<String, Object?>? previous,
   }) async {
     while (!_initialized && _initProgress) {
       await Future.delayed(Duration(milliseconds: 10));

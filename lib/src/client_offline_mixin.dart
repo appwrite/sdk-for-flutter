@@ -81,48 +81,48 @@ class ClientOfflineMixin {
     Connectivity().onConnectivityChanged.listen(handleConnectivityResult);
   }
 
-  String getModel(Uri uri) {
-    final pathSegments = uri.pathSegments;
-    if (pathSegments.length > 5 &&
-        pathSegments[1] == 'databases' &&
-        pathSegments[3] == 'collections' &&
-        pathSegments[5] == 'documents') {
-      return '/' + uri.pathSegments.sublist(0, 6).join('/');
-    }
+  // String getModel(Uri uri) {
+  //   final pathSegments = uri.pathSegments;
+  //   if (pathSegments.length > 5 &&
+  //       pathSegments[1] == 'databases' &&
+  //       pathSegments[3] == 'collections' &&
+  //       pathSegments[5] == 'documents') {
+  //     return '/' + uri.pathSegments.sublist(0, 6).join('/');
+  //   }
 
-    if (pathSegments.length > 2 &&
-        pathSegments[1] == 'account' &&
-        pathSegments[2] == 'sessions') {
-      return '/' + uri.pathSegments.sublist(0, 3).join('/');
-    }
+  //   if (pathSegments.length > 2 &&
+  //       pathSegments[1] == 'account' &&
+  //       pathSegments[2] == 'sessions') {
+  //     return '/' + uri.pathSegments.sublist(0, 3).join('/');
+  //   }
 
-    return uri.path;
-  }
+  //   return uri.path;
+  // }
 
-  String getKey(Uri uri) {
-    final pathSegments = uri.pathSegments;
-    String key = '';
-    if (pathSegments.length == 2 && pathSegments[1] == 'account') {
-      key = 'current';
-    } else if (pathSegments.length > 6 &&
-        pathSegments[1] == 'databases' &&
-        pathSegments[3] == 'collections' &&
-        pathSegments[5] == 'documents') {
-      key = pathSegments[6];
-    } else if (pathSegments.length > 3 &&
-        pathSegments[1] == 'account' &&
-        pathSegments[2] == 'sessions') {
-      key = pathSegments[3];
-    } else if (pathSegments.length > 2 &&
-        pathSegments[1] == 'account' &&
-        pathSegments[2] == 'prefs') {
-      key = 'current';
-    } else if (pathSegments.length == 2 && pathSegments[1] == 'locale') {
-      key = 'current';
-    }
+  // String getKey(Uri uri) {
+  //   final pathSegments = uri.pathSegments;
+  //   String key = '';
+  //   if (pathSegments.length == 2 && pathSegments[1] == 'account') {
+  //     key = 'current';
+  //   } else if (pathSegments.length > 6 &&
+  //       pathSegments[1] == 'databases' &&
+  //       pathSegments[3] == 'collections' &&
+  //       pathSegments[5] == 'documents') {
+  //     key = pathSegments[6];
+  //   } else if (pathSegments.length > 3 &&
+  //       pathSegments[1] == 'account' &&
+  //       pathSegments[2] == 'sessions') {
+  //     key = pathSegments[3];
+  //   } else if (pathSegments.length > 2 &&
+  //       pathSegments[1] == 'account' &&
+  //       pathSegments[2] == 'prefs') {
+  //     key = 'current';
+  //   } else if (pathSegments.length == 2 && pathSegments[1] == 'locale') {
+  //     key = 'current';
+  //   }
 
-    return key;
-  }
+  //   return key;
+  // }
 
   // String getId(Uri uri) {
   //   String id = '';
@@ -193,7 +193,7 @@ class ClientOfflineMixin {
   //   await updateAccessedAt(db, store.name, record.key);
   // }
 
-  Future<void> upsertCache(DatabaseClient db,
+  Future<Map<String, Object?>> upsertCache(DatabaseClient db,
       StoreRef<String, Map<String, Object?>> store, Map<String, dynamic> map,
       {String? key, String? id}) async {
     if (key == null && id == null) {
@@ -213,9 +213,9 @@ class ClientOfflineMixin {
       }
 
       await updateCacheSize(db, change);
-      await recordRef.put(db, map);
+      final result = await recordRef.put(db, map, merge: true);
       await updateAccessedAt(db, store.name, key);
-      return;
+      return result;
     }
 
     final record = await store.findFirst(db,
@@ -227,15 +227,13 @@ class ClientOfflineMixin {
       await updateCacheSize(db, change);
       final key = await store.add(db, map);
       await updateAccessedAt(db, store.name, key);
-      return;
+      return record!.value;
     }
 
-    final updated = await record.ref.update(db, map);
-    if (updated != null) {
-      final change = calculateChange(record.value, map);
-      await updateCacheSize(db, change);
-    }
-    await updateAccessedAt(db, store.name, record.key);
+    final updated = await record.ref.put(db, map, merge: true);
+    final change = calculateChange(record.value, map);
+    await updateCacheSize(db, change);
+    return updated;
   }
 
   Future<void> deleteCache(
@@ -313,14 +311,29 @@ class ClientOfflineMixin {
     return _queuedWritesStore.find(db);
   }
 
-  Future<String> addQueuedWrite(DatabaseClient db, HttpMethod method,
-      String path, Map<String, String> headers, Map<String, dynamic> params) {
+  Future<String> addQueuedWrite(
+    DatabaseClient db,
+    HttpMethod method,
+    String path,
+    Map<String, String> headers,
+    Map<String, dynamic> params,
+    String cacheModel,
+    String cacheKey,
+    String cacheResponseIdKey,
+    String cacheResponseContainerKey,
+    Map<String, Object?>? previous,
+  ) async {
     return _queuedWritesStore.add(db, {
       'queuedAt': Timestamp.now(),
       'method': method.name(),
       'path': path,
       'headers': headers,
       'params': params,
+      'cacheModel': cacheModel,
+      'cacheKey': cacheKey,
+      'cacheResponseIdKey': cacheResponseIdKey,
+      'cacheResponseContainerKey': cacheResponseContainerKey,
+      'previous': previous,
     });
   }
 

@@ -21,7 +21,11 @@ class Databases extends Service {
             'content-type': 'application/json',
         };
 
-        final res = await client.call(HttpMethod.get, path: path, params: params, headers: headers);
+        final String cacheModel = '/databases/{databaseId}/collections/{collectionId}/documents'.replaceAll('{databaseId}', databaseId).replaceAll('{collectionId}', collectionId);
+        final String cacheResponseIdKey = '\$id';
+        final String cacheResponseContainerKey = 'documents';
+
+        final res = await client.call(HttpMethod.get, path: path, params: params, headers: headers, cacheModel: cacheModel, cacheResponseIdKey:cacheResponseIdKey, cacheResponseContainerKey: cacheResponseContainerKey);
 
         return models.DocumentList.fromMap(res.data);
 
@@ -47,7 +51,9 @@ class Databases extends Service {
             'content-type': 'application/json',
         };
 
-        final res = await client.call(HttpMethod.post, path: path, params: params, headers: headers);
+        final String cacheModel = '/databases/{databaseId}/collections/{collectionId}/documents'.replaceAll('{databaseId}', databaseId).replaceAll('{collectionId}', collectionId);
+
+        final res = await client.call(HttpMethod.post, path: path, params: params, headers: headers, cacheModel: cacheModel);
 
         return models.Document.fromMap(res.data);
 
@@ -68,7 +74,9 @@ class Databases extends Service {
             'content-type': 'application/json',
         };
 
-        final res = await client.call(HttpMethod.get, path: path, params: params, headers: headers);
+        final String cacheModel = '/databases/{databaseId}/collections/{collectionId}/documents'.replaceAll('{databaseId}', databaseId).replaceAll('{collectionId}', collectionId);
+
+        final res = await client.call(HttpMethod.get, path: path, params: params, headers: headers, cacheModel: cacheModel);
 
         return models.Document.fromMap(res.data);
 
@@ -91,7 +99,9 @@ class Databases extends Service {
             'content-type': 'application/json',
         };
 
-        final res = await client.call(HttpMethod.patch, path: path, params: params, headers: headers);
+        final String cacheModel = '/databases/{databaseId}/collections/{collectionId}/documents'.replaceAll('{databaseId}', databaseId).replaceAll('{collectionId}', collectionId);
+
+        final res = await client.call(HttpMethod.patch, path: path, params: params, headers: headers, cacheModel: cacheModel);
 
         return models.Document.fromMap(res.data);
 
@@ -111,7 +121,9 @@ class Databases extends Service {
             'content-type': 'application/json',
         };
 
-        final res = await client.call(HttpMethod.delete, path: path, params: params, headers: headers);
+        final String cacheModel = '/databases/{databaseId}/collections/{collectionId}/documents'.replaceAll('{databaseId}', databaseId).replaceAll('{collectionId}', collectionId);
+
+        final res = await client.call(HttpMethod.delete, path: path, params: params, headers: headers, cacheModel: cacheModel);
 
         return  res.data;
 

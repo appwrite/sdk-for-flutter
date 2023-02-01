@@ -18,7 +18,10 @@ class Account extends Service {
             'content-type': 'application/json',
         };
 
-        final res = await client.call(HttpMethod.get, path: path, params: params, headers: headers);
+        const String cacheModel = '/account';
+        const String cacheKey = 'current';
+
+        final res = await client.call(HttpMethod.get, path: path, params: params, headers: headers, cacheModel: cacheModel, cacheKey: cacheKey);
 
         return models.Account.fromMap(res.data);
 
@@ -47,7 +50,10 @@ class Account extends Service {
             'content-type': 'application/json',
         };
 
-        final res = await client.call(HttpMethod.post, path: path, params: params, headers: headers);
+        const String cacheModel = '';
+        const String cacheKey = '';
+
+        final res = await client.call(HttpMethod.post, path: path, params: params, headers: headers, cacheModel: cacheModel, cacheKey: cacheKey);
 
         return models.Account.fromMap(res.data);
 
@@ -76,7 +82,10 @@ class Account extends Service {
             'content-type': 'application/json',
         };
 
-        final res = await client.call(HttpMethod.patch, path: path, params: params, headers: headers);
+        const String cacheModel = '/account';
+        const String cacheKey = 'current';
+
+        final res = await client.call(HttpMethod.patch, path: path, params: params, headers: headers, cacheModel: cacheModel, cacheKey: cacheKey);
 
         return models.Account.fromMap(res.data);
 
@@ -100,7 +109,10 @@ class Account extends Service {
             'content-type': 'application/json',
         };
 
-        final res = await client.call(HttpMethod.post, path: path, params: params, headers: headers);
+        const String cacheModel = '';
+        const String cacheKey = '';
+
+        final res = await client.call(HttpMethod.post, path: path, params: params, headers: headers, cacheModel: cacheModel, cacheKey: cacheKey);
 
         return models.Jwt.fromMap(res.data);
 
@@ -122,7 +134,10 @@ class Account extends Service {
             'content-type': 'application/json',
         };
 
-        final res = await client.call(HttpMethod.get, path: path, params: params, headers: headers);
+        const String cacheModel = '';
+        const String cacheKey = '';
+
+        final res = await client.call(HttpMethod.get, path: path, params: params, headers: headers, cacheModel: cacheModel, cacheKey: cacheKey);
 
         return models.LogList.fromMap(res.data);
 
@@ -143,7 +158,10 @@ class Account extends Service {
             'content-type': 'application/json',
         };
 
-        final res = await client.call(HttpMethod.patch, path: path, params: params, headers: headers);
+        const String cacheModel = '/account';
+        const String cacheKey = 'current';
+
+        final res = await client.call(HttpMethod.patch, path: path, params: params, headers: headers, cacheModel: cacheModel, cacheKey: cacheKey);
 
         return models.Account.fromMap(res.data);
 
@@ -167,7 +185,10 @@ class Account extends Service {
             'content-type': 'application/json',
         };
 
-        final res = await client.call(HttpMethod.patch, path: path, params: params, headers: headers);
+        const String cacheModel = '/account';
+        const String cacheKey = 'current';
+
+        final res = await client.call(HttpMethod.patch, path: path, params: params, headers: headers, cacheModel: cacheModel, cacheKey: cacheKey);
 
         return models.Account.fromMap(res.data);
 
@@ -193,7 +214,10 @@ class Account extends Service {
             'content-type': 'application/json',
         };
 
-        final res = await client.call(HttpMethod.patch, path: path, params: params, headers: headers);
+        const String cacheModel = '/account';
+        const String cacheKey = 'current';
+
+        final res = await client.call(HttpMethod.patch, path: path, params: params, headers: headers, cacheModel: cacheModel, cacheKey: cacheKey);
 
         return models.Account.fromMap(res.data);
 
@@ -213,7 +237,10 @@ class Account extends Service {
             'content-type': 'application/json',
         };
 
-        final res = await client.call(HttpMethod.get, path: path, params: params, headers: headers);
+        const String cacheModel = '/account/prefs';
+        const String cacheKey = 'current';
+
+        final res = await client.call(HttpMethod.get, path: path, params: params, headers: headers, cacheModel: cacheModel, cacheKey: cacheKey);
 
         return models.Preferences.fromMap(res.data);
 
@@ -236,7 +263,10 @@ class Account extends Service {
             'content-type': 'application/json',
         };
 
-        final res = await client.call(HttpMethod.patch, path: path, params: params, headers: headers);
+        const String cacheModel = '/account';
+        const String cacheKey = 'current';
+
+        final res = await client.call(HttpMethod.patch, path: path, params: params, headers: headers, cacheModel: cacheModel, cacheKey: cacheKey);
 
         return models.Account.fromMap(res.data);
 
@@ -265,7 +295,10 @@ class Account extends Service {
             'content-type': 'application/json',
         };
 
-        final res = await client.call(HttpMethod.post, path: path, params: params, headers: headers);
+        const String cacheModel = '';
+        const String cacheKey = '';
+
+        final res = await client.call(HttpMethod.post, path: path, params: params, headers: headers, cacheModel: cacheModel, cacheKey: cacheKey);
 
         return models.Token.fromMap(res.data);
 
@@ -297,7 +330,10 @@ class Account extends Service {
             'content-type': 'application/json',
         };
 
-        final res = await client.call(HttpMethod.put, path: path, params: params, headers: headers);
+        const String cacheModel = '';
+        const String cacheKey = '';
+
+        final res = await client.call(HttpMethod.put, path: path, params: params, headers: headers, cacheModel: cacheModel, cacheKey: cacheKey);
 
         return models.Token.fromMap(res.data);
 
@@ -318,7 +354,10 @@ class Account extends Service {
             'content-type': 'application/json',
         };
 
-        final res = await client.call(HttpMethod.get, path: path, params: params, headers: headers);
+        const String cacheModel = '/account/sessions';
+        const String cacheKey = '';
+
+        final res = await client.call(HttpMethod.get, path: path, params: params, headers: headers, cacheModel: cacheModel, cacheKey: cacheKey);
 
         return models.SessionList.fromMap(res.data);
 
@@ -339,7 +378,10 @@ class Account extends Service {
             'content-type': 'application/json',
         };
 
-        final res = await client.call(HttpMethod.delete, path: path, params: params, headers: headers);
+        const String cacheModel = '/account/sessions';
+        const String cacheKey = '';
+
+        final res = await client.call(HttpMethod.delete, path: path, params: params, headers: headers, cacheModel: cacheModel, cacheKey: cacheKey);
 
         return  res.data;
 
@@ -364,7 +406,10 @@ class Account extends Service {
             'content-type': 'application/json',
         };
 
-        final res = await client.call(HttpMethod.post, path: path, params: params, headers: headers);
+        const String cacheModel = '';
+        const String cacheKey = '';
+
+        final res = await client.call(HttpMethod.post, path: path, params: params, headers: headers, cacheModel: cacheModel, cacheKey: cacheKey);
 
         return models.Session.fromMap(res.data);
 
@@ -390,7 +435,10 @@ class Account extends Service {
             'content-type': 'application/json',
         };
 
-        final res = await client.call(HttpMethod.post, path: path, params: params, headers: headers);
+        const String cacheModel = '';
+        const String cacheKey = '';
+
+        final res = await client.call(HttpMethod.post, path: path, params: params, headers: headers, cacheModel: cacheModel, cacheKey: cacheKey);
 
         return models.Session.fromMap(res.data);
 
@@ -426,7 +474,10 @@ class Account extends Service {
             'content-type': 'application/json',
         };
 
-        final res = await client.call(HttpMethod.post, path: path, params: params, headers: headers);
+        const String cacheModel = '';
+        const String cacheKey = '';
+
+        final res = await client.call(HttpMethod.post, path: path, params: params, headers: headers, cacheModel: cacheModel, cacheKey: cacheKey);
 
         return models.Token.fromMap(res.data);
 
@@ -458,7 +509,10 @@ class Account extends Service {
             'content-type': 'application/json',
         };
 
-        final res = await client.call(HttpMethod.put, path: path, params: params, headers: headers);
+        const String cacheModel = '';
+        const String cacheKey = '';
+
+        final res = await client.call(HttpMethod.put, path: path, params: params, headers: headers, cacheModel: cacheModel, cacheKey: cacheKey);
 
         return models.Session.fromMap(res.data);
 
@@ -541,7 +595,10 @@ class Account extends Service {
             'content-type': 'application/json',
         };
 
-        final res = await client.call(HttpMethod.post, path: path, params: params, headers: headers);
+        const String cacheModel = '';
+        const String cacheKey = '';
+
+        final res = await client.call(HttpMethod.post, path: path, params: params, headers: headers, cacheModel: cacheModel, cacheKey: cacheKey);
 
         return models.Token.fromMap(res.data);
 
@@ -567,7 +624,10 @@ class Account extends Service {
             'content-type': 'application/json',
         };
 
-        final res = await client.call(HttpMethod.put, path: path, params: params, headers: headers);
+        const String cacheModel = '';
+        const String cacheKey = '';
+
+        final res = await client.call(HttpMethod.put, path: path, params: params, headers: headers, cacheModel: cacheModel, cacheKey: cacheKey);
 
         return models.Session.fromMap(res.data);
 
@@ -588,7 +648,10 @@ class Account extends Service {
             'content-type': 'application/json',
         };
 
-        final res = await client.call(HttpMethod.get, path: path, params: params, headers: headers);
+        const String cacheModel = '/account/sessions';
+        final String cacheKey = '{sessionId}'.replaceAll('{sessionId}', sessionId);
+
+        final res = await client.call(HttpMethod.get, path: path, params: params, headers: headers, cacheModel: cacheModel, cacheKey: cacheKey);
 
         return models.Session.fromMap(res.data);
 
@@ -610,7 +673,10 @@ class Account extends Service {
             'content-type': 'application/json',
         };
 
-        final res = await client.call(HttpMethod.patch, path: path, params: params, headers: headers);
+        const String cacheModel = '/account/sessions';
+        final String cacheKey = '{sessionId}'.replaceAll('{sessionId}', sessionId);
+
+        final res = await client.call(HttpMethod.patch, path: path, params: params, headers: headers, cacheModel: cacheModel, cacheKey: cacheKey);
 
         return models.Session.fromMap(res.data);
 
@@ -633,7 +699,10 @@ class Account extends Service {
             'content-type': 'application/json',
         };
 
-        final res = await client.call(HttpMethod.delete, path: path, params: params, headers: headers);
+        const String cacheModel = '/account/sessions';
+        final String cacheKey = '{sessionId}'.replaceAll('{sessionId}', sessionId);
+
+        final res = await client.call(HttpMethod.delete, path: path, params: params, headers: headers, cacheModel: cacheModel, cacheKey: cacheKey);
 
         return  res.data;
 
@@ -655,7 +724,10 @@ class Account extends Service {
             'content-type': 'application/json',
         };
 
-        final res = await client.call(HttpMethod.patch, path: path, params: params, headers: headers);
+        const String cacheModel = '/account';
+        final String cacheKey = 'current';
+
+        final res = await client.call(HttpMethod.patch, path: path, params: params, headers: headers, cacheModel: cacheModel, cacheKey: cacheKey);
 
         return models.Account.fromMap(res.data);
 

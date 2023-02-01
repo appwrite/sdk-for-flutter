@@ -36,6 +36,11 @@ class ClientIOOffline extends ClientIO with ClientOfflineMixin {
     Map<String, String> headers = const {},
     Map<String, dynamic> params = const {},
     ResponseType? responseType,
+    String cacheModel = '',
+    String cacheKey = '',
+    String cacheResponseIdKey = '',
+    String cacheResponseContainerKey = '',
+    Map<String, Object?>? previous,
   }) async {
     while (true) {
       final uri = Uri.parse(endPoint + path);
@@ -54,12 +59,14 @@ class ClientIOOffline extends ClientIO with ClientOfflineMixin {
       if (getOfflinePersistency() &&
           !isOnline.value &&
           responseType != ResponseType.bytes) {
+        if (!headers.containsKey('X-Appwrite-Timestamp')) {
+          headers['X-Appwrite-Timestamp'] =
+              DateTime.now().toUtc().toIso8601String();
+        }
         final pathSegments = uri.pathSegments;
-        String model = getModel(uri);
-        String cacheKey = getKey(uri);
         String queuedWriteKey = '';
 
-        final store = getModelStore(model);
+        final store = getModelStore(cacheModel);
         switch (method) {
           case HttpMethod.get:
             if (cacheKey.isNotEmpty) {
@@ -79,13 +86,9 @@ class ClientIOOffline extends ClientIO with ClientOfflineMixin {
                 }
               });
               final count = await store.count(db);
-              String containerKey = model.split('/').last;
-              if (containerKey == 'eu') {
-                containerKey = 'countries';
-              }
               return Response(data: {
                 'total': count,
-                containerKey: records.map((record) {
+                cacheResponseContainerKey: records.map((record) {
                   final map = Map<String, dynamic>();
                   record.value.entries.forEach((entry) {
                     map[entry.key] = entry.value;
@@ -109,8 +112,10 @@ class ClientIOOffline extends ClientIO with ClientOfflineMixin {
                   final documentId = params['documentId'];
                   cacheKey = documentId;
                   final document = Map<String, dynamic>.from(params['data']);
-                  document['\$createdAt'] = DateTime.now().toIso8601String();
-                  document['\$updatedAt'] = DateTime.now().toIso8601String();
+                  document['\$createdAt'] =
+                      DateTime.now().toUtc().toIso8601String();
+                  document['\$updatedAt'] =
+                      DateTime.now().toUtc().toIso8601String();
                   document['\$id'] = documentId;
                   document['\$collectionId'] = pathSegments[4];
                   document['\$databaseId'] = pathSegments[2];
@@ -118,16 +123,37 @@ class ClientIOOffline extends ClientIO with ClientOfflineMixin {
                   await db.transaction((txn) async {
                     await upsertCache(txn, store, document, key: cacheKey);
                     queuedWriteKey = await addQueuedWrite(
-                        txn, method, path, headers, params);
+                      txn,
+                      method,
+                      path,
+                      headers,
+                      params,
+                      cacheModel,
+                      cacheKey,
+                      cacheResponseIdKey,
+                      cacheResponseContainerKey,
+                      null,
+                    );
                   });
                 }
                 break;
               case HttpMethod.delete:
                 if (cacheKey.isNotEmpty) {
                   await db.transaction((txn) async {
+                    final previous = await store.record(cacheKey).get(txn);
                     await deleteCache(txn, store, key: cacheKey);
                     queuedWriteKey = await addQueuedWrite(
-                        txn, method, path, headers, params);
+                      txn,
+                      method,
+                      path,
+                      headers,
+                      params,
+                      cacheModel,
+                      cacheKey,
+                      cacheResponseIdKey,
+                      cacheResponseContainerKey,
+                      previous,
+                    );
                   });
                 }
                 break;
@@ -136,17 +162,30 @@ class ClientIOOffline extends ClientIO with ClientOfflineMixin {
                 final entry = Map<String, dynamic>();
                 if (params.containsKey('data')) {
                   entry.addAll(Map<String, dynamic>.from(params['data']));
-                  entry['\$createdAt'] = DateTime.now().toIso8601String();
-                  entry['\$updatedAt'] = DateTime.now().toIso8601String();
+                  entry['\$createdAt'] =
+                      DateTime.now().toUtc().toIso8601String();
+                  entry['\$updatedAt'] =
+                      DateTime.now().toUtc().toIso8601String();
                   entry['\$id'] = cacheKey;
                 } else if (params.containsKey('prefs')) {
                   entry.addAll(Map<String, dynamic>.from(params['prefs']));
                 }
 
                 await db.transaction((txn) async {
+                  final previous = await store.record(cacheKey).get(txn);
                   await upsertCache(txn, store, entry, key: cacheKey);
-                  queuedWriteKey =
-                      await addQueuedWrite(txn, method, path, headers, params);
+                  queuedWriteKey = await addQueuedWrite(
+                    txn,
+                    method,
+                    path,
+                    headers,
+                    params,
+                    cacheModel,
+                    cacheKey,
+                    cacheResponseIdKey,
+                    cacheResponseContainerKey,
+                    previous,
+                  );
                 });
                 break;
               case HttpMethod.get:
@@ -196,10 +235,26 @@ class ClientIOOffline extends ClientIO with ClientOfflineMixin {
                     continue;
                   }
                   if (!completer.isCompleted) {
+                    // restore cache
+                    final previous = queuedWrites.first.value['previous']
+                        as Map<String, Object?>?;
+                    if (previous != null) {
+                      await db.transaction((txn) async {
+                        await upsertCache(txn, store, previous, key: cacheKey);
+                      });
+                    }
                     completer.completeError(e);
                   }
                 } catch (e) {
                   if (!completer.isCompleted) {
+                    // restore cache
+                    final previous = queuedWrites.first.value['previous']
+                        as Map<String, Object?>?;
+                    if (previous != null) {
+                      await db.transaction((txn) async {
+                        await upsertCache(txn, store, previous, key: cacheKey);
+                      });
+                    }
                     completer.completeError(e);
                   }
                 }
@@ -213,20 +268,18 @@ class ClientIOOffline extends ClientIO with ClientOfflineMixin {
       }
 
       try {
-        final response = await super.call(
-          method,
-          path: path,
-          headers: headers,
-          params: params,
-          responseType: responseType,
-        );
+        final response = await super.call(method,
+            path: path,
+            headers: headers,
+            params: params,
+            responseType: responseType,
+            cacheModel: cacheModel,
+            cacheKey: cacheKey,
+            cacheResponseIdKey: cacheResponseIdKey,
+            cacheResponseContainerKey: cacheResponseContainerKey);
 
         if (getOfflinePersistency()) {
-          final uri = request.url;
-          String model = getModel(uri);
-          String cacheKey = getKey(uri);
-
-          final store = getModelStore(model);
+          final store = getModelStore(cacheModel);
           switch (request.method) {
             case 'GET':
               final clone = cloneMap(response.data);
@@ -240,7 +293,7 @@ class ClientIOOffline extends ClientIO with ClientOfflineMixin {
                   db.transaction((txn) async {
                     for (final element in value as List) {
                       final map = element as Map<String, dynamic>;
-                      final id = map['\$id'] ?? map['code'];
+                      final id = map[cacheResponseIdKey];
                       await upsertCache(txn, store, map, key: id);
                     }
                   });
@@ -254,7 +307,7 @@ class ClientIOOffline extends ClientIO with ClientOfflineMixin {
               if (cacheKey.isEmpty) {
                 cacheKey = clone['\$id'] as String;
               }
-              if (model.endsWith('/prefs')) {
+              if (cacheModel.endsWith('/prefs')) {
                 clone = response.data['prefs'];
               }
               db.transaction((txn) async {
@@ -298,7 +351,7 @@ class ClientIOOffline extends ClientIO with ClientOfflineMixin {
 
     if (_offlinePersistency) {
       await Future.wait([initOfflineDatabase(), listenForConnectivity()]);
-      await processWriteQueue();
+      await processWriteQueue(this.call);
       final cacheSizeRecordRef = getCacheSizeRecordRef();
       cacheSizeRecordRef.onSnapshot(db).listen((snapshot) {
         int? currentSize = snapshot?.value;
@@ -337,7 +390,17 @@ class ClientIOOffline extends ClientIO with ClientOfflineMixin {
     return _maxCacheSize;
   }
 
-  Future<void> processWriteQueue() async {
+  Future<void> processWriteQueue(
+      Future<Response<dynamic>> Function(HttpMethod,
+              {String path,
+              Map<String, String> headers,
+              Map<String, dynamic> params,
+              ResponseType? responseType,
+              String cacheModel,
+              String cacheKey,
+              String cacheResponseIdKey,
+              String cacheResponseContainerKey})
+          call) async {
     // TODO: remove
     print('accessedAt records:');
     final records = await listAccessedAt(db);
@@ -359,16 +422,24 @@ class ClientIOOffline extends ClientIO with ClientOfflineMixin {
         final headers = (queuedWrite['headers'] as Map<String, Object?>)
             .map((key, value) => MapEntry(key, value?.toString() ?? ''));
         final params = queuedWrite['params'] as Map<String, Object?>;
-        final res = await this.call(
+        final cacheModel = queuedWrite['cacheModel'] as String;
+        final cacheKey = queuedWrite['cacheKey'] as String;
+        final cacheResponseContainerKey =
+            queuedWrite['cacheResponseContainerKey'] as String;
+        final cacheResponseIdKey = queuedWrite['cacheResponseIdKey'] as String;
+        final res = await call(
           method,
           path: path,
           headers: headers,
           params: params,
+          cacheModel: cacheModel,
+          cacheKey: cacheKey,
+          cacheResponseContainerKey: cacheResponseContainerKey,
+          cacheResponseIdKey: cacheResponseIdKey,
         );
         print('  res: $res');
 
-        final model = getModel(Uri.parse(endPoint + path));
-        final modelStore = getModelStore(model);
+        final modelStore = getModelStore(cacheModel);
         db.transaction((txn) async {
           final futures = <Future>[];
           if (method == HttpMethod.post) {
