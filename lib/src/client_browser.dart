@@ -235,7 +235,8 @@ class ClientBrowser extends ClientBase with ClientMixin {
     );
   }
 
-  Future<ClientBrowser> setOfflinePersistency({bool status = true}) {
+  Future<ClientBrowser> setOfflinePersistency(
+      {bool status = true, Function? onWriteQueueError}) {
     throw AppwriteException('Not implemented', 0, "general_offline");
   }
 

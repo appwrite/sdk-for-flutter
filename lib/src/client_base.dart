@@ -40,7 +40,8 @@ abstract class ClientBase implements Client {
   });
 
   @override
-  Future<ClientBase> setOfflinePersistency({bool status = true});
+  Future<ClientBase> setOfflinePersistency(
+      {bool status = true, void Function(Object)? onWriteQueueError});
 
   @override
   bool getOfflinePersistency();

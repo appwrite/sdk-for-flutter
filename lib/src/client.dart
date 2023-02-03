@@ -57,7 +57,8 @@ abstract class Client {
     Map<String, Object?>? previous,
   });
 
-  Future<Client> setOfflinePersistency({bool status = true});
+  Future<Client> setOfflinePersistency(
+      {bool status = true, void Function(Object)? onWriteQueueError});
 
   bool getOfflinePersistency();
 

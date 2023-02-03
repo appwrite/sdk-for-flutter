@@ -407,7 +407,8 @@ class ClientIO extends ClientBase with ClientMixin {
   }
 
   @override
-  Future<ClientBase> setOfflinePersistency({bool status = true}) {
+  Future<ClientBase> setOfflinePersistency(
+      {bool status = true, void Function(Object)? onWriteQueueError}) {
     // TODO: implement setOfflinePersistency
     throw UnimplementedError();
   }

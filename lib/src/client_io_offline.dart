@@ -235,12 +235,22 @@ class ClientIOOffline extends ClientIO with ClientOfflineMixin {
                     continue;
                   }
                   if (!completer.isCompleted) {
-                    // restore cache
-                    final previous = queuedWrites.first.value['previous']
-                        as Map<String, Object?>?;
-                    if (previous != null) {
+                    if (e.code == 404) {
+                      // delete from cache
                       await db.transaction((txn) async {
-                        await upsertCache(txn, store, previous, key: cacheKey);
+                        await deleteCache(txn, store, key: cacheKey);
+                        await deleteQueuedWrite(txn, queuedWriteKey);
+                      });
+                    } else if ((e.code ?? 0) >= 400) {
+                      // restore cache
+                      final previous = queuedWrites.first.value['previous']
+                          as Map<String, Object?>?;
+                      await db.transaction((txn) async {
+                        if (previous != null) {
+                          await upsertCache(txn, store, previous,
+                              key: cacheKey);
+                        }
+                        await deleteQueuedWrite(txn, queuedWriteKey);
                       });
                     }
                     completer.completeError(e);
@@ -253,6 +263,7 @@ class ClientIOOffline extends ClientIO with ClientOfflineMixin {
                     if (previous != null) {
                       await db.transaction((txn) async {
                         await upsertCache(txn, store, previous, key: cacheKey);
+                        await deleteQueuedWrite(txn, queuedWriteKey);
                       });
                     }
                     completer.completeError(e);
@@ -343,7 +354,8 @@ class ClientIOOffline extends ClientIO with ClientOfflineMixin {
   }
 
   @override
-  Future<ClientIO> setOfflinePersistency({bool status = true}) async {
+  Future<ClientIO> setOfflinePersistency(
+      {bool status = true, void Function(Object)? onWriteQueueError}) async {
     isOnline.addListener(() {
       print('isOnline: ${isOnline.value}');
     });
@@ -351,7 +363,7 @@ class ClientIOOffline extends ClientIO with ClientOfflineMixin {
 
     if (_offlinePersistency) {
       await Future.wait([initOfflineDatabase(), listenForConnectivity()]);
-      await processWriteQueue(this.call);
+      await processWriteQueue(this.call, onError: onWriteQueueError);
       final cacheSizeRecordRef = getCacheSizeRecordRef();
       cacheSizeRecordRef.onSnapshot(db).listen((snapshot) {
         int? currentSize = snapshot?.value;
@@ -400,7 +412,8 @@ class ClientIOOffline extends ClientIO with ClientOfflineMixin {
               String cacheKey,
               String cacheResponseIdKey,
               String cacheResponseContainerKey})
-          call) async {
+          call,
+      {void Function(Object e)? onError}) async {
     // TODO: remove
     print('accessedAt records:');
     final records = await listAccessedAt(db);
@@ -459,13 +472,27 @@ class ClientIOOffline extends ClientIO with ClientOfflineMixin {
           await Future.wait(futures);
         });
       } on AppwriteException catch (e) {
-        if (e.code == 404) {
+        if (onError != null) {
+          onError(e);
+        }
+        if ((e.code ?? 0) >= 400) {
           db.transaction((txn) async {
-            await queuedWriteRecord.ref.delete(txn);
+            final queuedWriteKey = queuedWriteRecord.key;
+            await deleteQueuedWrite(txn, queuedWriteKey);
+            // restore cach
+            final previous = queuedWrite['previous'] as Map<String, Object?>?;
+            final cacheModel = queuedWrite['cacheModel'] as String;
+            final cacheKey = queuedWrite['cacheKey'] as String;
+            final modelStore = getModelStore(cacheModel);
+            if (previous != null) {
+              await upsertCache(txn, modelStore, previous, key: cacheKey);
+            }
           });
         }
       } catch (e) {
-        print(e);
+        if (onError != null) {
+          onError(e);
+        }
       }
     }
   }
