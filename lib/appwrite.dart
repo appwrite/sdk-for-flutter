@@ -2,11 +2,13 @@ library appwrite;
 
 import 'dart:async';
 import 'dart:typed_data';
+
 import 'src/enums.dart';
 import 'src/service.dart';
 import 'src/input_file.dart';
 import 'models.dart' as models;
 import 'src/upload_progress.dart';
+import 'src/exception.dart';
 
 export 'src/response.dart';
 export 'src/client.dart';
