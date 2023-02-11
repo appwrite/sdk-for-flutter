@@ -14,6 +14,7 @@ import 'package:path_provider/path_provider.dart';
 
 import 'client_base.dart';
 import 'client_mixin.dart';
+import 'client_offline_mixin.dart';
 import 'cookie_manager.dart';
 import 'enums.dart';
 import 'interceptor.dart';
@@ -27,7 +28,7 @@ ClientBase createClient({
       selfSigned: selfSigned,
     );
 
-class ClientIO extends ClientBase with ClientMixin {
+class ClientIO extends ClientBase with ClientMixin, ClientOfflineMixin {
   static const int CHUNK_SIZE = 5 * 1024 * 1024;
   String _endPoint;
   Map<String, String>? _headers;
@@ -132,6 +133,41 @@ class ClientIO extends ClientBase with ClientMixin {
   ClientIO setEndPointRealtime(String endPoint) {
     _endPointRealtime = endPoint;
     return this;
+  }
+
+  bool getOfflinePersistency() {
+    return _offlinePersistency;
+  }
+
+  @override
+  Future<ClientIO> setOfflinePersistency(
+      {bool status = true, void Function(Object)? onWriteQueueError}) async {
+    isOnline.addListener(() {
+      print('isOnline: ${isOnline.value}');
+    });
+    _offlinePersistency = status;
+
+    if (_offlinePersistency) {
+      await initOffline(
+        call: call,
+        onWriteQueueError: onWriteQueueError,
+        getOfflineCacheSize: getOfflineCacheSize,
+      );
+    }
+
+    return this;
+  }
+
+  @override
+  ClientIO setOfflineCacheSize(int kbytes) {
+    _maxCacheSize = kbytes * 1000;
+
+    return this;
+  }
+
+  @override
+  int getOfflineCacheSize() {
+    return _maxCacheSize;
   }
 
   Map<String, String> get headers =>
@@ -341,7 +377,7 @@ class ClientIO extends ClientBase with ClientMixin {
   }
 
   @override
-  Future<Response> call(
+  Future<Response> send(
     HttpMethod method, {
     String path = '',
     Map<String, String> headers = const {},
@@ -389,27 +425,90 @@ class ClientIO extends ClientBase with ClientMixin {
   }
 
   @override
-  int getOfflineCacheSize() {
-    // TODO: implement getOfflineCacheSize
-    throw UnimplementedError();
-  }
+  Future<Response> call(
+    HttpMethod method, {
+    String path = '',
+    Map<String, String> headers = const {},
+    Map<String, dynamic> params = const {},
+    ResponseType? responseType,
+    String cacheModel = '',
+    String cacheKey = '',
+    String cacheResponseIdKey = '',
+    String cacheResponseContainerKey = '',
+    Map<String, Object?>? previous,
+  }) async {
+    while (true) {
+      final uri = Uri.parse(endPoint + path);
 
-  @override
-  bool getOfflinePersistency() {
-    // TODO: implement getOfflinePersistency
-    throw UnimplementedError();
-  }
+      http.BaseRequest request = prepareRequest(
+        method,
+        uri: uri,
+        headers: {...this.headers, ...headers},
+        params: params,
+      );
 
-  @override
-  ClientBase setOfflineCacheSize(int kbytes) {
-    // TODO: implement setOfflineCacheSize
-    throw UnimplementedError();
-  }
+      if (getOfflinePersistency() && !isOnline.value) {
+        await checkOnlineStatus();
+      }
 
-  @override
-  Future<ClientBase> setOfflinePersistency(
-      {bool status = true, void Function(Object)? onWriteQueueError}) {
-    // TODO: implement setOfflinePersistency
-    throw UnimplementedError();
+      if (cacheModel.isNotEmpty &&
+          getOfflinePersistency() &&
+          !isOnline.value &&
+          responseType != ResponseType.bytes) {
+        return handleOfflineRequest(
+          uri: uri,
+          method: method,
+          call: call,
+          path: path,
+          headers: headers,
+          params: params,
+          responseType: responseType,
+          cacheModel: cacheModel,
+          cacheKey: cacheKey,
+          cacheResponseIdKey: cacheResponseIdKey,
+          cacheResponseContainerKey: cacheResponseContainerKey,
+        );
+      }
+
+      try {
+        final response = await send(
+          method,
+          path: path,
+          headers: headers,
+          params: params,
+          responseType: responseType,
+          cacheModel: cacheModel,
+          cacheKey: cacheKey,
+          cacheResponseIdKey: cacheResponseIdKey,
+          cacheResponseContainerKey: cacheResponseContainerKey,
+        );
+
+        if (getOfflinePersistency()) {
+          cacheResponse(
+            cacheModel: cacheModel,
+            cacheKey: cacheKey,
+            cacheResponseIdKey: cacheResponseIdKey,
+            request: request,
+            response: response,
+          );
+        }
+
+        return response;
+      } on AppwriteException catch (e) {
+        if ((e.message != "Network is unreachable" &&
+                !(e.message?.contains("Failed host lookup") ?? false)) ||
+            !getOfflinePersistency()) {
+          rethrow;
+        }
+        isOnline.value = false;
+      } on SocketException catch (_) {
+        if (!getOfflinePersistency()) {
+          rethrow;
+        }
+        isOnline.value = false;
+      } catch (e) {
+        throw AppwriteException(e.toString());
+      }
+    }
   }
 }
