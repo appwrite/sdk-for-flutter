@@ -22,7 +22,21 @@ class Functions extends Service {
             'content-type': 'application/json',
         };
 
-        final res = await client.call(HttpMethod.get, path: path, params: params, headers: headers);
+        final cacheModel = '';
+        final cacheKey = '';
+        final cacheResponseIdKey = '\$id';
+        final cacheResponseContainerKey = 'executions';
+
+        final res = await client.call(
+            HttpMethod.get,
+            path: path,
+            params: params,
+            headers: headers,
+            cacheModel: cacheModel,
+            cacheKey: cacheKey,
+            cacheResponseIdKey: cacheResponseIdKey,
+            cacheResponseContainerKey: cacheResponseContainerKey,
+        );
 
         return models.ExecutionList.fromMap(res.data);
 
@@ -47,7 +61,21 @@ class Functions extends Service {
             'content-type': 'application/json',
         };
 
-        final res = await client.call(HttpMethod.post, path: path, params: params, headers: headers);
+        final cacheModel = '';
+        final cacheKey = '';
+        final cacheResponseIdKey = '\$id';
+        final cacheResponseContainerKey = '';
+
+        final res = await client.call(
+            HttpMethod.post,
+            path: path,
+            params: params,
+            headers: headers,
+            cacheModel: cacheModel,
+            cacheKey: cacheKey,
+            cacheResponseIdKey: cacheResponseIdKey,
+            cacheResponseContainerKey: cacheResponseContainerKey,
+        );
 
         return models.Execution.fromMap(res.data);
 
@@ -67,7 +95,21 @@ class Functions extends Service {
             'content-type': 'application/json',
         };
 
-        final res = await client.call(HttpMethod.get, path: path, params: params, headers: headers);
+        final cacheModel = '';
+        final cacheKey = '';
+        final cacheResponseIdKey = '\$id';
+        final cacheResponseContainerKey = '';
+
+        final res = await client.call(
+            HttpMethod.get,
+            path: path,
+            params: params,
+            headers: headers,
+            cacheModel: cacheModel,
+            cacheKey: cacheKey,
+            cacheResponseIdKey: cacheResponseIdKey,
+            cacheResponseContainerKey: cacheResponseContainerKey,
+        );
 
         return models.Execution.fromMap(res.data);
 

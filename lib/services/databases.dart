@@ -1,9 +1,9 @@
 part of appwrite;
 
-/// The Databases service allows you to create structured collections of
-/// documents, query and filter lists of documents
+    /// The Databases service allows you to create structured collections of
+    /// documents, query and filter lists of documents
 class Databases extends Service {
-  Databases(super.client);
+    Databases(super.client);
 
     /// List Documents
     ///
@@ -13,214 +13,177 @@ class Databases extends Service {
     Future<models.DocumentList> listDocuments({required String databaseId, required String collectionId, List<String>? queries}) async {
         final String path = '/databases/{databaseId}/collections/{collectionId}/documents'.replaceAll('{databaseId}', databaseId).replaceAll('{collectionId}', collectionId);
 
-    final Map<String, dynamic> params = {
-      'queries': queries,
-    };
+        final Map<String, dynamic> params = {
+            'queries': queries,
+        };
 
-    final Map<String, String> headers = {
-      'content-type': 'application/json',
-    };
+        final Map<String, String> headers = {
+            'content-type': 'application/json',
+        };
 
-    final String cacheModel =
-        '/databases/{databaseId}/collections/{collectionId}/documents'
-            .replaceAll('{databaseId}', databaseId)
-            .replaceAll('{collectionId}', collectionId);
-    final cacheKey = ''.replaceAll('{databaseId}', databaseId);
-    final String cacheResponseIdKey = '\$id';
-    final String cacheResponseContainerKey = 'documents';
+        final cacheModel = '/databases/{databaseId}/collections/{collectionId}/documents'.replaceAll('{databaseId}', databaseId).replaceAll('{collectionId}', collectionId);
+        final cacheKey = '';
+        final cacheResponseIdKey = '\$id';
+        final cacheResponseContainerKey = 'documents';
 
-    final res = await client.call(HttpMethod.get,
-        path: path,
-        params: params,
-        headers: headers,
-        cacheKey: cacheKey,
-        cacheModel: cacheModel,
-        cacheResponseIdKey: cacheResponseIdKey,
-        cacheResponseContainerKey: cacheResponseContainerKey);
+        final res = await client.call(
+            HttpMethod.get,
+            path: path,
+            params: params,
+            headers: headers,
+            cacheModel: cacheModel,
+            cacheKey: cacheKey,
+            cacheResponseIdKey: cacheResponseIdKey,
+            cacheResponseContainerKey: cacheResponseContainerKey,
+        );
 
-    return models.DocumentList.fromMap(res.data);
-  }
+        return models.DocumentList.fromMap(res.data);
 
-  /// Create Document
-  ///
-  /// Create a new Document. Before using this route, you should create a new
-  /// collection resource using either a [server
-  /// integration](/docs/server/databases#databasesCreateCollection) API or
-  /// directly from your database console.
-  ///
-  Future<models.Document> createDocument(
-      {required String databaseId,
-      required String collectionId,
-      required String documentId,
-      required Map data,
-      List<String>? permissions}) async {
-    final String path =
-        '/databases/{databaseId}/collections/{collectionId}/documents'
-            .replaceAll('{databaseId}', databaseId)
-            .replaceAll('{collectionId}', collectionId);
+    }
 
-    final Map<String, dynamic> params = {
-      'documentId': documentId,
-      'data': data,
-      'permissions': permissions,
-    };
+    /// Create Document
+    ///
+    /// Create a new Document. Before using this route, you should create a new
+    /// collection resource using either a [server
+    /// integration](/docs/server/databases#databasesCreateCollection) API or
+    /// directly from your database console.
+    ///
+    Future<models.Document> createDocument({required String databaseId, required String collectionId, required String documentId, required Map data, List<String>? permissions}) async {
+        final String path = '/databases/{databaseId}/collections/{collectionId}/documents'.replaceAll('{databaseId}', databaseId).replaceAll('{collectionId}', collectionId);
 
-    final Map<String, String> headers = {
-      'content-type': 'application/json',
-    };
+        final Map<String, dynamic> params = {
+            'documentId': documentId,
+            'data': data,
+            'permissions': permissions,
+        };
 
-    final cacheModel =
-        '/databases/{databaseId}/collections/{collectionId}/documents'
-            .replaceAll('{databaseId}', databaseId)
-            .replaceAll('{collectionId}', collectionId);
-    final cacheKey = '{documentId}'.replaceAll('{documentId}', documentId);
-    final cacheResponseIdKey = '\$id';
-    final cacheResponseContainerKey = '';
+        final Map<String, String> headers = {
+            'content-type': 'application/json',
+        };
 
-    final res = await client.call(
-      HttpMethod.post,
-      path: path,
-      params: params,
-      headers: headers,
-      cacheModel: cacheModel,
-      cacheKey: cacheKey,
-      cacheResponseIdKey: cacheResponseIdKey,
-      cacheResponseContainerKey: cacheResponseContainerKey,
-    );
+        final cacheModel = '/databases/{databaseId}/collections/{collectionId}/documents'.replaceAll('{databaseId}', databaseId).replaceAll('{collectionId}', collectionId);
+        final cacheKey = documentId;
+        final cacheResponseIdKey = '\$id';
+        final cacheResponseContainerKey = '';
 
-    return models.Document.fromMap(res.data);
-  }
+        final res = await client.call(
+            HttpMethod.post,
+            path: path,
+            params: params,
+            headers: headers,
+            cacheModel: cacheModel,
+            cacheKey: cacheKey,
+            cacheResponseIdKey: cacheResponseIdKey,
+            cacheResponseContainerKey: cacheResponseContainerKey,
+        );
 
-  /// Get Document
-  ///
-  /// Get a document by its unique ID. This endpoint response returns a JSON
-  /// object with the document data.
-  ///
-  Future<models.Document> getDocument(
-      {required String databaseId,
-      required String collectionId,
-      required String documentId}) async {
-    final String path =
-        '/databases/{databaseId}/collections/{collectionId}/documents/{documentId}'
-            .replaceAll('{databaseId}', databaseId)
-            .replaceAll('{collectionId}', collectionId)
-            .replaceAll('{documentId}', documentId);
+        return models.Document.fromMap(res.data);
 
-    final Map<String, dynamic> params = {};
+    }
 
-    final Map<String, String> headers = {
-      'content-type': 'application/json',
-    };
+    /// Get Document
+    ///
+    /// Get a document by its unique ID. This endpoint response returns a JSON
+    /// object with the document data.
+    ///
+    Future<models.Document> getDocument({required String databaseId, required String collectionId, required String documentId}) async {
+        final String path = '/databases/{databaseId}/collections/{collectionId}/documents/{documentId}'.replaceAll('{databaseId}', databaseId).replaceAll('{collectionId}', collectionId).replaceAll('{documentId}', documentId);
 
-    final String cacheModel =
-        '/databases/{databaseId}/collections/{collectionId}/documents'
-            .replaceAll('{databaseId}', databaseId)
-            .replaceAll('{collectionId}', collectionId);
-    final cacheKey = '{documentId}'.replaceAll('{documentId}', documentId);
-    final cacheResponseIdKey = '\$id';
-    final cacheResponseContainerKey = '';
+        final Map<String, dynamic> params = {
+        };
 
-    final res = await client.call(
-      HttpMethod.get,
-      path: path,
-      params: params,
-      headers: headers,
-      cacheModel: cacheModel,
-      cacheKey: cacheKey,
-      cacheResponseIdKey: cacheResponseIdKey,
-      cacheResponseContainerKey: cacheResponseContainerKey,
-    );
+        final Map<String, String> headers = {
+            'content-type': 'application/json',
+        };
 
-    return models.Document.fromMap(res.data);
-  }
+        final cacheModel = '/databases/{databaseId}/collections/{collectionId}/documents'.replaceAll('{databaseId}', databaseId).replaceAll('{collectionId}', collectionId).replaceAll('{documentId}', documentId);
+        final cacheKey = documentId;
+        final cacheResponseIdKey = '\$id';
+        final cacheResponseContainerKey = '';
 
-  /// Update Document
-  ///
-  /// Update a document by its unique ID. Using the patch method you can pass
-  /// only specific fields that will get updated.
-  ///
-  Future<models.Document> updateDocument(
-      {required String databaseId,
-      required String collectionId,
-      required String documentId,
-      Map? data,
-      List<String>? permissions}) async {
-    final String path =
-        '/databases/{databaseId}/collections/{collectionId}/documents/{documentId}'
-            .replaceAll('{databaseId}', databaseId)
-            .replaceAll('{collectionId}', collectionId)
-            .replaceAll('{documentId}', documentId);
+        final res = await client.call(
+            HttpMethod.get,
+            path: path,
+            params: params,
+            headers: headers,
+            cacheModel: cacheModel,
+            cacheKey: cacheKey,
+            cacheResponseIdKey: cacheResponseIdKey,
+            cacheResponseContainerKey: cacheResponseContainerKey,
+        );
 
-    final Map<String, dynamic> params = {
-      'data': data,
-      'permissions': permissions,
-    };
+        return models.Document.fromMap(res.data);
 
-    final Map<String, String> headers = {
-      'content-type': 'application/json',
-    };
+    }
 
-    final String cacheModel =
-        '/databases/{databaseId}/collections/{collectionId}/documents'
-            .replaceAll('{databaseId}', databaseId)
-            .replaceAll('{collectionId}', collectionId);
-    final cacheKey = '{documentId}'.replaceAll('{documentId}', documentId);
-    final cacheResponseIdKey = '\$id';
-    final cacheResponseContainerKey = '';
+    /// Update Document
+    ///
+    /// Update a document by its unique ID. Using the patch method you can pass
+    /// only specific fields that will get updated.
+    ///
+    Future<models.Document> updateDocument({required String databaseId, required String collectionId, required String documentId, Map? data, List<String>? permissions}) async {
+        final String path = '/databases/{databaseId}/collections/{collectionId}/documents/{documentId}'.replaceAll('{databaseId}', databaseId).replaceAll('{collectionId}', collectionId).replaceAll('{documentId}', documentId);
 
-    final res = await client.call(
-      HttpMethod.patch,
-      path: path,
-      params: params,
-      headers: headers,
-      cacheModel: cacheModel,
-      cacheKey: cacheKey,
-      cacheResponseIdKey: cacheResponseIdKey,
-      cacheResponseContainerKey: cacheResponseContainerKey,
-    );
+        final Map<String, dynamic> params = {
+            'data': data,
+            'permissions': permissions,
+        };
 
-    return models.Document.fromMap(res.data);
-  }
+        final Map<String, String> headers = {
+            'content-type': 'application/json',
+        };
 
-  /// Delete Document
-  ///
-  /// Delete a document by its unique ID.
-  ///
-  Future deleteDocument(
-      {required String databaseId,
-      required String collectionId,
-      required String documentId}) async {
-    final String path =
-        '/databases/{databaseId}/collections/{collectionId}/documents/{documentId}'
-            .replaceAll('{databaseId}', databaseId)
-            .replaceAll('{collectionId}', collectionId)
-            .replaceAll('{documentId}', documentId);
+        final cacheModel = '/databases/{databaseId}/collections/{collectionId}/documents'.replaceAll('{databaseId}', databaseId).replaceAll('{collectionId}', collectionId).replaceAll('{documentId}', documentId);
+        final cacheKey = documentId;
+        final cacheResponseIdKey = '\$id';
+        final cacheResponseContainerKey = '';
 
-    final Map<String, dynamic> params = {};
+        final res = await client.call(
+            HttpMethod.patch,
+            path: path,
+            params: params,
+            headers: headers,
+            cacheModel: cacheModel,
+            cacheKey: cacheKey,
+            cacheResponseIdKey: cacheResponseIdKey,
+            cacheResponseContainerKey: cacheResponseContainerKey,
+        );
 
-    final Map<String, String> headers = {
-      'content-type': 'application/json',
-    };
+        return models.Document.fromMap(res.data);
 
-    final String cacheModel =
-        '/databases/{databaseId}/collections/{collectionId}/documents'
-            .replaceAll('{databaseId}', databaseId)
-            .replaceAll('{collectionId}', collectionId);
-    final cacheKey = '{documentId}'.replaceAll('{documentId}', documentId);
-    final cacheResponseIdKey = '';
-    final cacheResponseContainerKey = '';
+    }
 
-    final res = await client.call(
-      HttpMethod.delete,
-      path: path,
-      params: params,
-      headers: headers,
-      cacheModel: cacheModel,
-      cacheKey: cacheKey,
-      cacheResponseIdKey: cacheResponseIdKey,
-      cacheResponseContainerKey: cacheResponseContainerKey,
-    );
+    /// Delete Document
+    ///
+    /// Delete a document by its unique ID.
+    ///
+    Future deleteDocument({required String databaseId, required String collectionId, required String documentId}) async {
+        final String path = '/databases/{databaseId}/collections/{collectionId}/documents/{documentId}'.replaceAll('{databaseId}', databaseId).replaceAll('{collectionId}', collectionId).replaceAll('{documentId}', documentId);
 
-    return res.data;
-  }
+        final Map<String, dynamic> params = {
+        };
+
+        final Map<String, String> headers = {
+            'content-type': 'application/json',
+        };
+
+        final cacheModel = '/databases/{databaseId}/collections/{collectionId}/documents'.replaceAll('{databaseId}', databaseId).replaceAll('{collectionId}', collectionId).replaceAll('{documentId}', documentId);
+        final cacheKey = documentId;
+        final cacheResponseIdKey = '\$id';
+        final cacheResponseContainerKey = '';
+
+        final res = await client.call(
+            HttpMethod.delete,
+            path: path,
+            params: params,
+            headers: headers,
+            cacheModel: cacheModel,
+            cacheKey: cacheKey,
+            cacheResponseIdKey: cacheResponseIdKey,
+            cacheResponseContainerKey: cacheResponseContainerKey,
+        );
+
+        return  res.data;
+
+    }
 }
