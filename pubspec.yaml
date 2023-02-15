@@ -21,8 +21,9 @@ dependencies:
   universal_html: ^2.0.8
   connectivity_plus: ^2.3.9
   path: ^1.8.2
-  sembast: ^3.3.1
-  sembast_sqflite: ^2.0.1
+  sembast: ^3.4.0+6
+  sembast_sqflite: ^2.1.0+1
+  sembast_web: ^2.1.0+4
   sqflite: ^2.2.2
 
 dev_dependencies:

@@ -376,7 +376,6 @@ class ClientIO extends ClientBase with ClientMixin, ClientOfflineMixin {
     });
   }
 
-  @override
   Future<Response> send(
     HttpMethod method, {
     String path = '',

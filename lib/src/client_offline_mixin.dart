@@ -1,6 +1,5 @@
 import 'dart:async';
 import 'dart:convert';
-import 'dart:io';
 
 import 'package:appwrite/appwrite.dart';
 import 'package:appwrite/src/enums.dart';
@@ -184,19 +183,13 @@ class ClientOfflineMixin {
   }
 
   Future<void> checkOnlineStatus() async {
-    Socket? s;
     try {
       print('Checking online status...');
-      s = await Socket.connect(
-        'appwrite.io',
-        443,
-        timeout: Duration(seconds: 1),
-      );
+      final url = Uri.parse('https://appwrite.io/version');
+      await http.head(url).timeout(Duration(seconds: 1));
       isOnline.value = true;
-    } on SocketException catch (_) {
+    } catch (_) {
       isOnline.value = false;
-    } finally {
-      s?.close();
     }
   }
 
