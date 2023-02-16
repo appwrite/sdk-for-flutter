@@ -23,7 +23,7 @@ class CookieManager extends Interceptor {
       }
       return request;
     }).catchError((e, stackTrace) {
-      // throw AppwriteException(e.message);
+      return request;
     });
     return request;
   }
@@ -31,7 +31,7 @@ class CookieManager extends Interceptor {
   @override
   FutureOr<http.Response> onResponse(http.Response response) {
     _saveCookies(response).then((_) => response).catchError((e, stackTrace) {
-      // throw AppwriteException(e.message);
+      return response;
     });
     return response;
   }

@@ -76,6 +76,24 @@ mixin RealtimeMixin {
             }
             break;
         }
+      }, onDone: () {
+        for (var list in _channels.values) {
+          for (var stream in list) {
+            stream.close();
+          }
+        }
+        _channels.clear();
+        _closeConnection();
+      }, onError: (err, stack) {
+        for (var list in _channels.values) {
+          for (var stream in list) {
+            stream.sink.addError(err, stack);
+          }
+        }
+        if (_websok?.closeCode != null && _websok?.closeCode != 1008) {
+          debugPrint("Reconnecting in one second.");
+          Future.delayed(Duration(seconds: 1), _createSocket);
+        }
       });
     } catch (e) {
       if (e is AppwriteException) {

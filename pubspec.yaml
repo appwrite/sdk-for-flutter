@@ -16,11 +16,12 @@ dependencies:
   flutter_web_auth_2: ^2.0.2
   http: ^0.13.5
   package_info_plus: ^3.0.2
-  path_provider: ^2.0.11
+  path_provider: ^2.0.12
   web_socket_channel: ^2.2.0
   universal_html: ^2.0.8
 
 dev_dependencies:
+  path_provider_platform_interface: ^2.0.5
   flutter_lints: ^2.0.1
   flutter_test:
     sdk: flutter
