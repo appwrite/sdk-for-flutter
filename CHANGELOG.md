@@ -1,7 +1,6 @@
 ## 8.2.1
 
-* Fix OAuth issue on web
-* Make improvements in helper classes
+* Fix: notify callback when websocket closes [#604](https://github.com/appwrite/sdk-generator/pull/604)
 
 ## 8.2.0
 

@@ -140,18 +140,18 @@ class ClientIO extends ClientBase with ClientMixin {
   Future init() async {
     if(_initProgress) return;
     _initProgress = true;
-    // if web skip cookie implementation and origin header as those are automatically handled by browsers
     final Directory cookieDir = await _getCookiePath();
     _cookieJar = PersistCookieJar(storage: FileStorage(cookieDir.path));
     _interceptors.add(CookieManager(_cookieJar));
-    PackageInfo packageInfo = await PackageInfo.fromPlatform();
-    addHeader('Origin',
-        'appwrite-${Platform.operatingSystem}://${packageInfo.packageName}');
 
-    //creating custom user agent
-    DeviceInfoPlugin deviceInfoPlugin = DeviceInfoPlugin();
     var device = '';
     try {
+      PackageInfo packageInfo = await PackageInfo.fromPlatform();
+      addHeader('Origin',
+          'appwrite-${Platform.operatingSystem}://${packageInfo.packageName}');
+
+      //creating custom user agent
+      DeviceInfoPlugin deviceInfoPlugin = DeviceInfoPlugin();
       if (Platform.isAndroid) {
         final andinfo = await deviceInfoPlugin.androidInfo;
         device =
@@ -174,12 +174,14 @@ class ClientIO extends ClientBase with ClientMixin {
         final macinfo = await deviceInfoPlugin.macOsInfo;
         device = '(Macintosh; ${macinfo.model})';
       }
+      addHeader(
+          'user-agent', '${packageInfo.packageName}/${packageInfo.version} $device');
     } catch (e) {
       debugPrint('Error getting device info: $e');
       device = Platform.operatingSystem;
+      addHeader(
+          'user-agent', '$device');
     }
-    addHeader(
-        'user-agent', '${packageInfo.packageName}/${packageInfo.version} $device');
 
     _initialized = true;
     _initProgress = false;
