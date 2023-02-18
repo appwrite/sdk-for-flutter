@@ -145,9 +145,6 @@ class ClientIO extends ClientBase with ClientMixin, ClientOfflineMixin {
   @override
   Future<ClientIO> setOfflinePersistency(
       {bool status = true, void Function(Object)? onWriteQueueError}) async {
-    isOnline.addListener(() {
-      print('isOnline: ${isOnline.value}');
-    });
     _offlinePersistency = status;
 
     if (_offlinePersistency) {
@@ -188,8 +185,10 @@ class ClientIO extends ClientBase with ClientMixin, ClientOfflineMixin {
     _cookieJar = PersistCookieJar(storage: FileStorage(cookieDir.path));
     _interceptors.add(CookieManager(_cookieJar));
     PackageInfo packageInfo = await PackageInfo.fromPlatform();
-    addHeader('Origin',
-        'appwrite-${Platform.operatingSystem}://${packageInfo.packageName}');
+    addHeader(
+      'Origin',
+      'appwrite-${Platform.operatingSystem}://${packageInfo.packageName}',
+    );
 
     //creating custom user agent
     DeviceInfoPlugin deviceInfoPlugin = DeviceInfoPlugin();
@@ -221,8 +220,10 @@ class ClientIO extends ClientBase with ClientMixin, ClientOfflineMixin {
       debugPrint('Error getting device info: $e');
       device = Platform.operatingSystem;
     }
-    addHeader('user-agent',
-        '${packageInfo.packageName}/${packageInfo.version} $device');
+    addHeader(
+      'user-agent',
+      '${packageInfo.packageName}/${packageInfo.version} $device',
+    );
 
     _initialized = true;
     _initProgress = false;
@@ -287,11 +288,16 @@ class ClientIO extends ClientBase with ClientMixin, ClientOfflineMixin {
     if (size <= CHUNK_SIZE) {
       if (file.path != null) {
         params[paramName] = await http.MultipartFile.fromPath(
-            paramName, file.path!,
-            filename: file.filename);
+          paramName,
+          file.path!,
+          filename: file.filename,
+        );
       } else {
-        params[paramName] = http.MultipartFile.fromBytes(paramName, file.bytes!,
-            filename: file.filename);
+        params[paramName] = http.MultipartFile.fromBytes(
+          paramName,
+          file.bytes!,
+          filename: file.filename,
+        );
       }
       return call(
         HttpMethod.post,
@@ -330,12 +336,19 @@ class ClientIO extends ClientBase with ClientMixin, ClientOfflineMixin {
         raf!.setPositionSync(offset);
         chunk = raf.readSync(CHUNK_SIZE);
       }
-      params[paramName] = http.MultipartFile.fromBytes(paramName, chunk,
-          filename: file.filename);
+      params[paramName] = http.MultipartFile.fromBytes(
+        paramName,
+        chunk,
+        filename: file.filename,
+      );
       headers['content-range'] =
           'bytes $offset-${min<int>(((offset + CHUNK_SIZE) - 1), size)}/$size';
-      res = await call(HttpMethod.post,
-          path: path, headers: headers, params: params);
+      res = await call(
+        HttpMethod.post,
+        path: path,
+        headers: headers,
+        params: params,
+      );
       offset += CHUNK_SIZE;
       if (offset < size) {
         headers['x-appwrite-id'] = res.data['\$id'];
@@ -398,7 +411,6 @@ class ClientIO extends ClientBase with ClientMixin, ClientOfflineMixin {
     }
 
     final uri = Uri.parse(_endPoint + path);
-
     http.BaseRequest request = prepareRequest(
       method,
       uri: uri,
@@ -411,6 +423,7 @@ class ClientIO extends ClientBase with ClientMixin, ClientOfflineMixin {
       final streamedResponse = await _httpClient.send(request);
       http.Response res = await toResponse(streamedResponse);
       res = await _interceptResponse(res);
+
       final response = prepareResponse(
         res,
         responseType: responseType,

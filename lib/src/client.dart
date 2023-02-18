@@ -39,7 +39,6 @@ abstract class Client {
 
   /// Your project ID
   Client setProject(value);
-
   /// Your secret JSON Web Token
   Client setJWT(value);
   Client setLocale(value);

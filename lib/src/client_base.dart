@@ -10,6 +10,7 @@ abstract class ClientBase implements Client {
   /// Your secret JSON Web Token
   @override
   ClientBase setJWT(value);
+
   @override
   ClientBase setLocale(value);
 
@@ -40,8 +41,10 @@ abstract class ClientBase implements Client {
   });
 
   @override
-  Future<ClientBase> setOfflinePersistency(
-      {bool status = true, void Function(Object)? onWriteQueueError});
+  Future<ClientBase> setOfflinePersistency({
+    bool status = true,
+    void Function(Object)? onWriteQueueError,
+  });
 
   @override
   bool getOfflinePersistency();

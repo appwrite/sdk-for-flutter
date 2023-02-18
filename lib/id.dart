@@ -2,7 +2,7 @@ part of appwrite;
 
 class ID {
   ID._();
-    
+
   // Generate a unique ID based on timestamp
   // Recreated from https://www.php.net/manual/en/function.uniqid.php
   static String _uniqid() {
