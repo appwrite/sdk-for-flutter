@@ -2,7 +2,6 @@ import 'dart:async';
 import 'dart:io';
 import 'dart:math';
 
-import 'package:appwrite/appwrite.dart';
 import 'package:cookie_jar/cookie_jar.dart';
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:flutter/foundation.dart';
@@ -17,7 +16,11 @@ import 'client_mixin.dart';
 import 'client_offline_mixin.dart';
 import 'cookie_manager.dart';
 import 'enums.dart';
+import 'exception.dart';
+import 'input_file.dart';
 import 'interceptor.dart';
+import 'response.dart';
+import 'upload_progress.dart';
 
 ClientBase createClient({
   required String endPoint,
@@ -68,7 +71,7 @@ class ClientIO extends ClientBase with ClientMixin, ClientOfflineMixin {
       'x-sdk-platform': 'client',
       'x-sdk-language': 'flutter',
       'x-sdk-version': '8.2.1',
-      'X-Appwrite-Response-Format' : '1.0.0',
+      'X-Appwrite-Response-Format': '1.0.0',
     };
 
     config = {};
@@ -169,9 +172,6 @@ class ClientIO extends ClientBase with ClientMixin, ClientOfflineMixin {
   int getOfflineCacheSize() {
     return _maxCacheSize;
   }
-
-  Map<String, String> get headers =>
-      Map<String, String>.from(_headers ?? Map());
 
   @override
   ClientIO addHeader(String key, String value) {
@@ -357,7 +357,9 @@ class ClientIO extends ClientBase with ClientMixin, ClientOfflineMixin {
   Future webAuth(Uri url, {String? callbackUrlScheme}) {
     return FlutterWebAuth2.authenticate(
       url: url.toString(),
-      callbackUrlScheme: callbackUrlScheme != null && Platform.isWindows ? callbackUrlScheme : "appwrite-callback-" + config['project']!,
+      callbackUrlScheme: callbackUrlScheme != null && Platform.isWindows
+          ? callbackUrlScheme
+          : "appwrite-callback-" + config['project']!,
     ).then((value) async {
       Uri url = Uri.parse(value);
       final key = url.queryParameters['key'];
@@ -442,7 +444,7 @@ class ClientIO extends ClientBase with ClientMixin, ClientOfflineMixin {
       http.BaseRequest request = prepareRequest(
         method,
         uri: uri,
-        headers: {...this.headers, ...headers},
+        headers: {..._headers!, ...headers},
         params: params,
       );
 

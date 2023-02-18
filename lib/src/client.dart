@@ -14,8 +14,10 @@ abstract class Client {
   String get endPoint => _endPoint;
   String? get endPointRealtime => _endPointRealtime;
 
-  factory Client(
-          {String endPoint = 'https://HOSTNAME/v1', bool selfSigned = false}) =>
+  factory Client({
+    String endPoint = 'https://HOSTNAME/v1',
+    bool selfSigned = false,
+  }) =>
       createClient(endPoint: endPoint, selfSigned: selfSigned);
 
   Future webAuth(Uri url, {String? callbackUrlScheme});
@@ -57,8 +59,10 @@ abstract class Client {
     Map<String, Object?>? previous,
   });
 
-  Future<Client> setOfflinePersistency(
-      {bool status = true, void Function(Object)? onWriteQueueError});
+  Future<Client> setOfflinePersistency({
+    bool status = true,
+    void Function(Object)? onWriteQueueError,
+  });
 
   bool getOfflinePersistency();
 

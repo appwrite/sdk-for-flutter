@@ -1,9 +1,6 @@
 import 'dart:async';
 import 'dart:convert';
 
-import 'package:appwrite/appwrite.dart';
-import 'package:appwrite/src/enums.dart';
-import 'package:appwrite/src/offline_db.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
@@ -11,13 +8,21 @@ import 'package:sembast/sembast.dart';
 import 'package:sembast/timestamp.dart';
 import 'package:sembast/utils/value_utils.dart';
 
+import 'enums.dart';
+import 'exception.dart';
+import 'offline_db.dart';
+import 'response.dart';
+
 class AccessTimestamp {
   final String model;
   final String key;
   final Timestamp accessedAt;
 
-  AccessTimestamp(
-      {required this.model, required this.key, required this.accessedAt});
+  AccessTimestamp({
+    required this.model,
+    required this.key,
+    required this.accessedAt,
+  });
 
   factory AccessTimestamp.fromMap(Map<String, Object?> json) => AccessTimestamp(
         model: json["model"] as String,
@@ -43,15 +48,17 @@ class ClientOfflineMixin {
   StoreRef<String, int> _cacheSizeStore = StoreRef<String, int>('cacheSize');
 
   Future<void> initOffline({
-    required Future<Response<dynamic>> Function(HttpMethod,
-            {String path,
-            Map<String, String> headers,
-            Map<String, dynamic> params,
-            ResponseType? responseType,
-            String cacheModel,
-            String cacheKey,
-            String cacheResponseIdKey,
-            String cacheResponseContainerKey})
+    required Future<Response<dynamic>> Function(
+      HttpMethod, {
+      String path,
+      Map<String, String> headers,
+      Map<String, dynamic> params,
+      ResponseType? responseType,
+      String cacheModel,
+      String cacheKey,
+      String cacheResponseIdKey,
+      String cacheResponseContainerKey,
+    })
         call,
     void Function(Object)? onWriteQueueError,
     required int Function() getOfflineCacheSize,
@@ -82,30 +89,23 @@ class ClientOfflineMixin {
   }
 
   Future<void> processWriteQueue(
-      Future<Response<dynamic>> Function(HttpMethod,
-              {String path,
-              Map<String, String> headers,
-              Map<String, dynamic> params,
-              ResponseType? responseType,
-              String cacheModel,
-              String cacheKey,
-              String cacheResponseIdKey,
-              String cacheResponseContainerKey})
+      Future<Response<dynamic>> Function(
+    HttpMethod, {
+    String path,
+    Map<String, String> headers,
+    Map<String, dynamic> params,
+    ResponseType? responseType,
+    String cacheModel,
+    String cacheKey,
+    String cacheResponseIdKey,
+    String cacheResponseContainerKey,
+  })
           call,
       {void Function(Object e)? onError}) async {
-    // TODO: remove
-    print('accessedAt records:');
-    final records = await listAccessedAt(db);
-    for (final record in records) {
-      print('  ${record.value}');
-    }
-
     if (!isOnline.value) return;
     final queuedWriteRecords = await listQueuedWrites(db);
-    print('queued writes:');
     for (final queuedWriteRecord in queuedWriteRecords) {
       final queuedWrite = queuedWriteRecord.value;
-      print('  queuedWrite: $queuedWrite');
       try {
         final method = HttpMethod.values
             .where((v) => v.name() == queuedWrite['method'])
@@ -129,7 +129,6 @@ class ClientOfflineMixin {
           cacheResponseContainerKey: cacheResponseContainerKey,
           cacheResponseIdKey: cacheResponseIdKey,
         );
-        print('  res: $res');
 
         final modelStore = getModelStore(cacheModel);
         db.transaction((txn) async {
@@ -158,7 +157,7 @@ class ClientOfflineMixin {
           db.transaction((txn) async {
             final queuedWriteKey = queuedWriteRecord.key;
             await deleteQueuedWrite(txn, queuedWriteKey);
-            // restore cach
+            // restore cache
             final previous = queuedWrite['previous'] as Map<String, Object?>?;
             final cacheModel = queuedWrite['cacheModel'] as String;
             final cacheKey = queuedWrite['cacheKey'] as String;
@@ -184,7 +183,6 @@ class ClientOfflineMixin {
 
   Future<void> checkOnlineStatus() async {
     try {
-      print('Checking online status...');
       final url = Uri.parse('https://appwrite.io/version');
       await http.head(url).timeout(Duration(seconds: 1));
       isOnline.value = true;
@@ -498,63 +496,6 @@ class ClientOfflineMixin {
     }
   }
 
-  // String getModel(Uri uri) {
-  //   final pathSegments = uri.pathSegments;
-  //   if (pathSegments.length > 5 &&
-  //       pathSegments[1] == 'databases' &&
-  //       pathSegments[3] == 'collections' &&
-  //       pathSegments[5] == 'documents') {
-  //     return '/' + uri.pathSegments.sublist(0, 6).join('/');
-  //   }
-
-  //   if (pathSegments.length > 2 &&
-  //       pathSegments[1] == 'account' &&
-  //       pathSegments[2] == 'sessions') {
-  //     return '/' + uri.pathSegments.sublist(0, 3).join('/');
-  //   }
-
-  //   return uri.path;
-  // }
-
-  // String getKey(Uri uri) {
-  //   final pathSegments = uri.pathSegments;
-  //   String key = '';
-  //   if (pathSegments.length == 2 && pathSegments[1] == 'account') {
-  //     key = 'current';
-  //   } else if (pathSegments.length > 6 &&
-  //       pathSegments[1] == 'databases' &&
-  //       pathSegments[3] == 'collections' &&
-  //       pathSegments[5] == 'documents') {
-  //     key = pathSegments[6];
-  //   } else if (pathSegments.length > 3 &&
-  //       pathSegments[1] == 'account' &&
-  //       pathSegments[2] == 'sessions') {
-  //     key = pathSegments[3];
-  //   } else if (pathSegments.length > 2 &&
-  //       pathSegments[1] == 'account' &&
-  //       pathSegments[2] == 'prefs') {
-  //     key = 'current';
-  //   } else if (pathSegments.length == 2 && pathSegments[1] == 'locale') {
-  //     key = 'current';
-  //   }
-
-  //   return key;
-  // }
-
-  // String getId(Uri uri) {
-  //   String id = '';
-
-  //   final pathSegments = uri.pathSegments;
-  //   if (pathSegments.length > 6 &&
-  //       pathSegments[1] == 'databases' &&
-  //       pathSegments[3] == 'collections' &&
-  //       pathSegments[5] == 'documents') {
-  //     id = pathSegments[6];
-  //   }
-
-  //   return id;
-  // }
-
   String encode(Map map) {
     final encoded =
         jsonEncode(sembastCodecDefault.jsonEncodableCodec.encode(map));
@@ -564,51 +505,6 @@ class ClientOfflineMixin {
   StoreRef<String, Map<String, Object?>> getModelStore(String model) {
     return stringMapStoreFactory.store(model);
   }
-
-  // Future<void> addCache(
-  //     DatabaseClient db,
-  //     StoreRef<String, Map<String, Object?>> store,
-  //     String key,
-  //     Map<String, dynamic> map) async {
-  //   final recordRef = store.record(key);
-  //   final record = await recordRef.get(db);
-  //   int change = 0;
-  //   if (record == null) {
-  //     final encoded = encode(map);
-  //     change = encoded.length;
-  //   } else {
-  //     change = calculateChange(record, map);
-  //   }
-
-  //   await updateCacheSize(db, change);
-  //   await recordRef.put(db, map);
-  //   await updateAccessedAt(db, store.name, key);
-  // }
-
-  // Future<void> upsertCacheOld(
-  //     DatabaseClient db,
-  //     StoreRef<String, Map<String, Object?>> store,
-  //     String id,
-  //     Map<String, dynamic> map) async {
-  //   final record = await store.findFirst(db,
-  //       finder: Finder(filter: Filter.equals('\$id', id)));
-
-  //   if (record == null) {
-  //     final encoded = encode(map);
-  //     final change = encoded.length;
-  //     await updateCacheSize(db, change);
-  //     final key = await store.add(db, map);
-  //     await updateAccessedAt(db, store.name, key);
-  //     return;
-  //   }
-
-  //   final updated = await record.ref.update(db, map);
-  //   if (updated != null) {
-  //     final change = calculateChange(record.value, map);
-  //     await updateCacheSize(db, change);
-  //   }
-  //   await updateAccessedAt(db, store.name, record.key);
-  // }
 
   Future<Map<String, Object?>> upsertCache(DatabaseClient db,
       StoreRef<String, Map<String, Object?>> store, Map<String, dynamic> map,
@@ -658,15 +554,20 @@ class ClientOfflineMixin {
       {String? key, String? id}) async {
     if (key == null && id == null) {
       throw AppwriteException(
-          'key and id cannot be null', 0, 'general_cache_error');
+        'key and id cannot be null',
+        0,
+        'general_cache_error',
+      );
     }
 
     RecordSnapshot<String, Map<String, Object?>>? record;
     if (key != null) {
       record = await store.record(key).getSnapshot(db);
     } else {
-      record = await store.findFirst(db,
-          finder: Finder(filter: Filter.equals('\$id', id)));
+      record = await store.findFirst(
+        db,
+        finder: Finder(filter: Filter.equals('\$id', id)),
+      );
     }
 
     if (record == null) {
@@ -686,13 +587,16 @@ class ClientOfflineMixin {
   }
 
   Future<void> updateAccessedAt(
-      DatabaseClient db, String model, String key) async {
-    final value =
-        AccessTimestamp(model: model, key: key, accessedAt: Timestamp.now());
-    final result = await _accessTimestampsStore
-        .record('$model-$key')
-        .put(db, value.toMap());
-    print('touched ' + result.toString());
+    DatabaseClient db,
+    String model,
+    String key,
+  ) async {
+    final value = AccessTimestamp(
+      model: model,
+      key: key,
+      accessedAt: Timestamp.now(),
+    );
+    await _accessTimestampsStore.record('$model-$key').put(db, value.toMap());
   }
 
   Future<void> deleteAccessedAt(DatabaseClient db, String model, String key) {
@@ -718,9 +622,7 @@ class ClientOfflineMixin {
     final record = getCacheSizeRecordRef();
 
     final currentSize = await record.get(db) ?? 0;
-    final newSize = await record.put(db, currentSize + change);
-
-    print('updateCacheSize: $currentSize + ($change) = $newSize');
+    await record.put(db, currentSize + change);
   }
 
   Future<List<RecordSnapshot<String, Map<String, Object?>>>> listQueuedWrites(
