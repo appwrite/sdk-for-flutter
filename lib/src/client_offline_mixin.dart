@@ -38,6 +38,7 @@ class AccessTimestamp {
 }
 
 class ClientOfflineMixin {
+  static const defaultLimit = 25;
   ValueNotifier<bool> isOnline = ValueNotifier(true);
   late Database db;
 
@@ -245,8 +246,13 @@ class ClientOfflineMixin {
             updateAccessedAt(db, store.name, cacheKey);
             return Response(data: record);
           }
+          throw AppwriteException(
+            "Client is offline and data is not cached",
+            0,
+            "general_offline",
+          );
         } else {
-          final finder = Finder(limit: 25);
+          final finder = Finder(limit: defaultLimit);
           // TODO: await both at same time
           final records = await store.find(db, finder: finder);
           db.transaction((txn) async {
@@ -266,11 +272,6 @@ class ClientOfflineMixin {
             }).toList(),
           });
         }
-        throw AppwriteException(
-          "Client is offline and data is not cached",
-          0,
-          "general_offline",
-        );
       case HttpMethod.post:
       case HttpMethod.patch:
       case HttpMethod.put:
@@ -281,14 +282,13 @@ class ClientOfflineMixin {
               final documentId = params['documentId'];
               cacheKey = documentId;
               final document = Map<String, dynamic>.from(params['data']);
-              document['\$createdAt'] =
-                  DateTime.now().toUtc().toIso8601String();
-              document['\$updatedAt'] =
-                  DateTime.now().toUtc().toIso8601String();
+              final now = DateTime.now().toUtc().toIso8601String();
+              document['\$createdAt'] = now;
+              document['\$updatedAt'] = now;
               document['\$id'] = documentId;
               document['\$collectionId'] = pathSegments[4];
               document['\$databaseId'] = pathSegments[2];
-              document['\$permissions'] = params['permissions'] ?? [];
+              document['\$permissions'] = params['permissions'];
               await db.transaction((txn) async {
                 await upsertCache(txn, store, document, key: cacheKey);
                 queuedWriteKey = await addQueuedWrite(
@@ -331,8 +331,9 @@ class ClientOfflineMixin {
             final entry = Map<String, dynamic>();
             if (params.containsKey('data')) {
               entry.addAll(Map<String, dynamic>.from(params['data']));
-              entry['\$createdAt'] = DateTime.now().toUtc().toIso8601String();
-              entry['\$updatedAt'] = DateTime.now().toUtc().toIso8601String();
+              final now = DateTime.now().toUtc().toIso8601String();
+              entry['\$createdAt'] = now;
+              entry['\$updatedAt'] = now;
               entry['\$id'] = cacheKey;
             } else if (params.containsKey('prefs')) {
               entry.addAll(Map<String, dynamic>.from(params['prefs']));
@@ -340,6 +341,9 @@ class ClientOfflineMixin {
 
             await db.transaction((txn) async {
               final previous = await store.record(cacheKey).get(txn);
+              if (previous != null && previous.containsKey('\$createdAt')) {
+                entry['\$createdAt'] = previous['\$createdAt'];
+              }
               await upsertCache(txn, store, entry, key: cacheKey);
               queuedWriteKey = await addQueuedWrite(
                 txn,
@@ -360,6 +364,7 @@ class ClientOfflineMixin {
             break;
         }
         final completer = Completer<Response>();
+        // Declare listener first so it can be referenced inside itself
         Function() listener = () {};
         listener = () async {
           while (true) {
