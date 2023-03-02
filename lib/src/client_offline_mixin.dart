@@ -237,215 +237,209 @@ class ClientOfflineMixin {
     String queuedWriteKey = '';
 
     final store = getModelStore(cacheModel);
-    switch (method) {
-      case HttpMethod.get:
-        if (cacheKey.isNotEmpty) {
-          final recordRef = store.record(cacheKey);
-          final record = await recordRef.get(db);
-          if (record != null) {
-            updateAccessedAt(db, store.name, cacheKey);
-            return Response(data: record);
-          }
+    if (method == HttpMethod.get) {
+      if (cacheKey.isNotEmpty) {
+        final recordRef = store.record(cacheKey);
+        final record = await recordRef.get(db);
+        if (record == null) {
           throw AppwriteException(
             "Client is offline and data is not cached",
             0,
             "general_offline",
           );
-        } else {
-          final finder = Finder(limit: defaultLimit);
-          // TODO: await both at same time
-          final records = await store.find(db, finder: finder);
-          db.transaction((txn) async {
-            for (final record in records) {
-              await updateAccessedAt(txn, store.name, record.key);
-            }
-          });
-          final count = await store.count(db);
-          return Response(data: {
-            'total': count,
-            cacheResponseContainerKey: records.map((record) {
-              final map = Map<String, dynamic>();
-              record.value.entries.forEach((entry) {
-                map[entry.key] = entry.value;
-              });
-              return map;
-            }).toList(),
-          });
         }
-      case HttpMethod.post:
-      case HttpMethod.patch:
-      case HttpMethod.put:
-      case HttpMethod.delete:
-        switch (method) {
-          case HttpMethod.post:
-            if (params.containsKey('data')) {
-              final documentId = params['documentId'];
-              cacheKey = documentId;
-              final document = Map<String, dynamic>.from(params['data']);
-              final now = DateTime.now().toUtc().toIso8601String();
-              document['\$createdAt'] = now;
-              document['\$updatedAt'] = now;
-              document['\$id'] = documentId;
-              document['\$collectionId'] = pathSegments[4];
-              document['\$databaseId'] = pathSegments[2];
-              document['\$permissions'] = params['permissions'];
-              await db.transaction((txn) async {
-                await upsertCache(txn, store, document, key: cacheKey);
-                queuedWriteKey = await addQueuedWrite(
-                  txn,
-                  method,
-                  path,
-                  headers,
-                  params,
-                  cacheModel,
-                  cacheKey,
-                  cacheResponseIdKey,
-                  cacheResponseContainerKey,
-                  null,
-                );
-              });
-            }
-            break;
-          case HttpMethod.delete:
-            if (cacheKey.isNotEmpty) {
-              await db.transaction((txn) async {
-                final previous = await store.record(cacheKey).get(txn);
-                await deleteCache(txn, store, key: cacheKey);
-                queuedWriteKey = await addQueuedWrite(
-                  txn,
-                  method,
-                  path,
-                  headers,
-                  params,
-                  cacheModel,
-                  cacheKey,
-                  cacheResponseIdKey,
-                  cacheResponseContainerKey,
-                  previous,
-                );
-              });
-            }
-            break;
-          case HttpMethod.put:
-          case HttpMethod.patch:
-            final entry = Map<String, dynamic>();
-            if (params.containsKey('data')) {
-              entry.addAll(Map<String, dynamic>.from(params['data']));
-              final now = DateTime.now().toUtc().toIso8601String();
-              entry['\$createdAt'] = now;
-              entry['\$updatedAt'] = now;
-              entry['\$id'] = cacheKey;
-            } else if (params.containsKey('prefs')) {
-              entry.addAll(Map<String, dynamic>.from(params['prefs']));
-            }
-
-            await db.transaction((txn) async {
-              final previous = await store.record(cacheKey).get(txn);
-              if (previous != null && previous.containsKey('\$createdAt')) {
-                entry['\$createdAt'] = previous['\$createdAt'];
-              }
-              await upsertCache(txn, store, entry, key: cacheKey);
-              queuedWriteKey = await addQueuedWrite(
-                txn,
-                method,
-                path,
-                headers,
-                params,
-                cacheModel,
-                cacheKey,
-                cacheResponseIdKey,
-                cacheResponseContainerKey,
-                previous,
-              );
-            });
-            break;
-          case HttpMethod.get:
-            // already handled
-            break;
-        }
-        final completer = Completer<Response>();
-        // Declare listener first so it can be referenced inside itself
-        Function() listener = () {};
-        listener = () async {
-          while (true) {
-            final queuedWrites = await listQueuedWrites(db);
-
-            if (queuedWrites.isEmpty) {
-              break;
-            }
-
-            if (queuedWrites.first.key != queuedWriteKey) {
-              await Future.delayed(Duration.zero);
-              continue;
-            }
-
-            try {
-              final res = await call(
-                method,
-                headers: headers,
-                params: params,
-                path: path,
-                responseType: responseType,
-              );
-
-              await db.transaction((txn) async {
-                final futures = <Future>[];
-                if (method == HttpMethod.post) {
-                  futures.add(upsertCache(txn, store, res.data, key: cacheKey));
-                }
-
-                futures.add(deleteQueuedWrite(txn, queuedWriteKey));
-
-                await Future.wait(futures);
-              });
-
-              completer.complete(res);
-            } on AppwriteException catch (e) {
-              if (e.message ==
-                  "Bad state: Can't finalize a finalized Request.") {
-                continue;
-              }
-              if (!completer.isCompleted) {
-                if (e.code == 404) {
-                  // delete from cache
-                  await db.transaction((txn) async {
-                    await deleteCache(txn, store, key: cacheKey);
-                    await deleteQueuedWrite(txn, queuedWriteKey);
-                  });
-                } else if ((e.code ?? 0) >= 400) {
-                  // restore cache
-                  final previous = queuedWrites.first.value['previous']
-                      as Map<String, Object?>?;
-                  await db.transaction((txn) async {
-                    if (previous != null) {
-                      await upsertCache(txn, store, previous, key: cacheKey);
-                    }
-                    await deleteQueuedWrite(txn, queuedWriteKey);
-                  });
-                }
-                completer.completeError(e);
-              }
-            } catch (e) {
-              if (!completer.isCompleted) {
-                // restore cache
-                final previous = queuedWrites.first.value['previous']
-                    as Map<String, Object?>?;
-                if (previous != null) {
-                  await db.transaction((txn) async {
-                    await upsertCache(txn, store, previous, key: cacheKey);
-                    await deleteQueuedWrite(txn, queuedWriteKey);
-                  });
-                }
-                completer.completeError(e);
-              }
-            }
-            isOnline.removeListener(listener);
-            break;
+        updateAccessedAt(db, store.name, cacheKey);
+        return Response(data: record);
+      } else {
+        final finder = Finder(limit: defaultLimit);
+        // TODO: await both at same time
+        final records = await store.find(db, finder: finder);
+        db.transaction((txn) async {
+          for (final record in records) {
+            await updateAccessedAt(txn, store.name, record.key);
           }
-        };
-        isOnline.addListener(listener);
-        return completer.future;
+        });
+        final count = await store.count(db);
+        return Response(data: {
+          'total': count,
+          cacheResponseContainerKey: records.map((record) {
+            final map = Map<String, dynamic>();
+            record.value.entries.forEach((entry) {
+              map[entry.key] = entry.value;
+            });
+            return map;
+          }).toList(),
+        });
+      }
     }
+    switch (method) {
+      case HttpMethod.get:
+        // already handled
+        break;
+      case HttpMethod.post:
+        if (params.containsKey('data')) {
+          final documentId = params['documentId'];
+          cacheKey = documentId;
+          final document = Map<String, dynamic>.from(params['data']);
+          final now = DateTime.now().toUtc().toIso8601String();
+          document['\$createdAt'] = now;
+          document['\$updatedAt'] = now;
+          document['\$id'] = documentId;
+          document['\$collectionId'] = pathSegments[4];
+          document['\$databaseId'] = pathSegments[2];
+          document['\$permissions'] = params['permissions'];
+          await db.transaction((txn) async {
+            await upsertCache(txn, store, document, key: cacheKey);
+            queuedWriteKey = await addQueuedWrite(
+              txn,
+              method,
+              path,
+              headers,
+              params,
+              cacheModel,
+              cacheKey,
+              cacheResponseIdKey,
+              cacheResponseContainerKey,
+              null,
+            );
+          });
+        }
+        break;
+      case HttpMethod.delete:
+        if (cacheKey.isNotEmpty) {
+          await db.transaction((txn) async {
+            final previous = await store.record(cacheKey).get(txn);
+            await deleteCache(txn, store, key: cacheKey);
+            queuedWriteKey = await addQueuedWrite(
+              txn,
+              method,
+              path,
+              headers,
+              params,
+              cacheModel,
+              cacheKey,
+              cacheResponseIdKey,
+              cacheResponseContainerKey,
+              previous,
+            );
+          });
+        }
+        break;
+      case HttpMethod.put:
+      case HttpMethod.patch:
+        final entry = Map<String, dynamic>();
+        if (params.containsKey('data')) {
+          entry.addAll(Map<String, dynamic>.from(params['data']));
+          final now = DateTime.now().toUtc().toIso8601String();
+          entry['\$createdAt'] = now;
+          entry['\$updatedAt'] = now;
+          entry['\$id'] = cacheKey;
+        } else if (params.containsKey('prefs')) {
+          entry.addAll(Map<String, dynamic>.from(params['prefs']));
+        }
+
+        await db.transaction((txn) async {
+          final previous = await store.record(cacheKey).get(txn);
+          if (previous != null && previous.containsKey('\$createdAt')) {
+            entry['\$createdAt'] = previous['\$createdAt'];
+          }
+          await upsertCache(txn, store, entry, key: cacheKey);
+          queuedWriteKey = await addQueuedWrite(
+            txn,
+            method,
+            path,
+            headers,
+            params,
+            cacheModel,
+            cacheKey,
+            cacheResponseIdKey,
+            cacheResponseContainerKey,
+            previous,
+          );
+        });
+        break;
+    }
+    final completer = Completer<Response>();
+    // Declare listener first so it can be referenced inside itself
+    Function() listener = () {};
+    listener = () async {
+      while (true) {
+        final queuedWrites = await listQueuedWrites(db);
+
+        if (queuedWrites.isEmpty) {
+          break;
+        }
+
+        if (queuedWrites.first.key != queuedWriteKey) {
+          await Future.delayed(Duration.zero);
+          continue;
+        }
+
+        try {
+          final res = await call(
+            method,
+            headers: headers,
+            params: params,
+            path: path,
+            responseType: responseType,
+          );
+
+          await db.transaction((txn) async {
+            final futures = <Future>[];
+            if (method == HttpMethod.post) {
+              futures.add(upsertCache(txn, store, res.data, key: cacheKey));
+            }
+
+            futures.add(deleteQueuedWrite(txn, queuedWriteKey));
+
+            await Future.wait(futures);
+          });
+
+          completer.complete(res);
+        } on AppwriteException catch (e) {
+          if (e.message == "Bad state: Can't finalize a finalized Request.") {
+            continue;
+          }
+          if (!completer.isCompleted) {
+            if (e.code == 404) {
+              // delete from cache
+              await db.transaction((txn) async {
+                await deleteCache(txn, store, key: cacheKey);
+                await deleteQueuedWrite(txn, queuedWriteKey);
+              });
+            } else if ((e.code ?? 0) >= 400) {
+              // restore cache
+              final previous =
+                  queuedWrites.first.value['previous'] as Map<String, Object?>?;
+              await db.transaction((txn) async {
+                if (previous != null) {
+                  await upsertCache(txn, store, previous, key: cacheKey);
+                }
+                await deleteQueuedWrite(txn, queuedWriteKey);
+              });
+            }
+            completer.completeError(e);
+          }
+        } catch (e) {
+          if (!completer.isCompleted) {
+            // restore cache
+            final previous =
+                queuedWrites.first.value['previous'] as Map<String, Object?>?;
+            if (previous != null) {
+              await db.transaction((txn) async {
+                await upsertCache(txn, store, previous, key: cacheKey);
+                await deleteQueuedWrite(txn, queuedWriteKey);
+              });
+            }
+            completer.completeError(e);
+          }
+        }
+        isOnline.removeListener(listener);
+        break;
+      }
+    };
+    isOnline.addListener(listener);
+    return completer.future;
   }
 
   void cacheResponse({
