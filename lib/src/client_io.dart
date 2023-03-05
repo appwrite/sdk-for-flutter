@@ -312,11 +312,13 @@ class ClientIO extends ClientBase with ClientMixin {
     return res;
   }
 
+  bool get _customSchemeAllowed => Platform.isWindows || Platform.isLinux;
+
   @override
   Future webAuth(Uri url, {String? callbackUrlScheme}) {
     return FlutterWebAuth2.authenticate(
       url: url.toString(),
-      callbackUrlScheme: callbackUrlScheme != null && Platform.isWindows ? callbackUrlScheme : "appwrite-callback-" + config['project']!,
+      callbackUrlScheme: callbackUrlScheme != null && _customSchemeAllowed ? callbackUrlScheme : "appwrite-callback-" + config['project']!,
     ).then((value) async {
       Uri url = Uri.parse(value);
       final key = url.queryParameters['key'];
