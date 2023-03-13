@@ -21,7 +21,21 @@ class Databases extends Service {
             'content-type': 'application/json',
         };
 
-        final res = await client.call(HttpMethod.get, path: path, params: params, headers: headers);
+        final cacheModel = '/databases/{databaseId}/collections/{collectionId}/documents'.replaceAll('{databaseId}', databaseId).replaceAll('{collectionId}', collectionId);
+        final cacheKey = '';
+        final cacheResponseIdKey = '\$id';
+        final cacheResponseContainerKey = 'documents';
+
+        final res = await client.call(
+            HttpMethod.get,
+            path: path,
+            params: params,
+            headers: headers,
+            cacheModel: cacheModel,
+            cacheKey: cacheKey,
+            cacheResponseIdKey: cacheResponseIdKey,
+            cacheResponseContainerKey: cacheResponseContainerKey,
+        );
 
         return models.DocumentList.fromMap(res.data);
 
@@ -47,7 +61,21 @@ class Databases extends Service {
             'content-type': 'application/json',
         };
 
-        final res = await client.call(HttpMethod.post, path: path, params: params, headers: headers);
+        final cacheModel = '/databases/{databaseId}/collections/{collectionId}/documents'.replaceAll('{databaseId}', databaseId).replaceAll('{collectionId}', collectionId);
+        final cacheKey = documentId;
+        final cacheResponseIdKey = '\$id';
+        final cacheResponseContainerKey = '';
+
+        final res = await client.call(
+            HttpMethod.post,
+            path: path,
+            params: params,
+            headers: headers,
+            cacheModel: cacheModel,
+            cacheKey: cacheKey,
+            cacheResponseIdKey: cacheResponseIdKey,
+            cacheResponseContainerKey: cacheResponseContainerKey,
+        );
 
         return models.Document.fromMap(res.data);
 
@@ -68,7 +96,21 @@ class Databases extends Service {
             'content-type': 'application/json',
         };
 
-        final res = await client.call(HttpMethod.get, path: path, params: params, headers: headers);
+        final cacheModel = '/databases/{databaseId}/collections/{collectionId}/documents'.replaceAll('{databaseId}', databaseId).replaceAll('{collectionId}', collectionId).replaceAll('{documentId}', documentId);
+        final cacheKey = documentId;
+        final cacheResponseIdKey = '\$id';
+        final cacheResponseContainerKey = '';
+
+        final res = await client.call(
+            HttpMethod.get,
+            path: path,
+            params: params,
+            headers: headers,
+            cacheModel: cacheModel,
+            cacheKey: cacheKey,
+            cacheResponseIdKey: cacheResponseIdKey,
+            cacheResponseContainerKey: cacheResponseContainerKey,
+        );
 
         return models.Document.fromMap(res.data);
 
@@ -91,7 +133,21 @@ class Databases extends Service {
             'content-type': 'application/json',
         };
 
-        final res = await client.call(HttpMethod.patch, path: path, params: params, headers: headers);
+        final cacheModel = '/databases/{databaseId}/collections/{collectionId}/documents'.replaceAll('{databaseId}', databaseId).replaceAll('{collectionId}', collectionId).replaceAll('{documentId}', documentId);
+        final cacheKey = documentId;
+        final cacheResponseIdKey = '\$id';
+        final cacheResponseContainerKey = '';
+
+        final res = await client.call(
+            HttpMethod.patch,
+            path: path,
+            params: params,
+            headers: headers,
+            cacheModel: cacheModel,
+            cacheKey: cacheKey,
+            cacheResponseIdKey: cacheResponseIdKey,
+            cacheResponseContainerKey: cacheResponseContainerKey,
+        );
 
         return models.Document.fromMap(res.data);
 
@@ -111,7 +167,21 @@ class Databases extends Service {
             'content-type': 'application/json',
         };
 
-        final res = await client.call(HttpMethod.delete, path: path, params: params, headers: headers);
+        final cacheModel = '/databases/{databaseId}/collections/{collectionId}/documents'.replaceAll('{databaseId}', databaseId).replaceAll('{collectionId}', collectionId).replaceAll('{documentId}', documentId);
+        final cacheKey = documentId;
+        final cacheResponseIdKey = '\$id';
+        final cacheResponseContainerKey = '';
+
+        final res = await client.call(
+            HttpMethod.delete,
+            path: path,
+            params: params,
+            headers: headers,
+            cacheModel: cacheModel,
+            cacheKey: cacheKey,
+            cacheResponseIdKey: cacheResponseIdKey,
+            cacheResponseContainerKey: cacheResponseContainerKey,
+        );
 
         return  res.data;
 
