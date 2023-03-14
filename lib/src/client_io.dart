@@ -1,21 +1,25 @@
+import 'dart:async';
 import 'dart:io';
 import 'dart:math';
+
 import 'package:cookie_jar/cookie_jar.dart';
 import 'package:device_info_plus/device_info_plus.dart';
+import 'package:flutter/foundation.dart';
+import 'package:flutter_web_auth_2/flutter_web_auth_2.dart';
 import 'package:http/http.dart' as http;
 import 'package:http/io_client.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:path_provider/path_provider.dart';
-import 'package:flutter_web_auth_2/flutter_web_auth_2.dart';
-import 'client_mixin.dart';
+
 import 'client_base.dart';
+import 'client_mixin.dart';
+import 'client_offline_mixin.dart';
 import 'cookie_manager.dart';
 import 'enums.dart';
 import 'exception.dart';
+import 'input_file.dart';
 import 'interceptor.dart';
 import 'response.dart';
-import 'package:flutter/foundation.dart';
-import 'input_file.dart';
 import 'upload_progress.dart';
 
 ClientBase createClient({
@@ -27,8 +31,8 @@ ClientBase createClient({
       selfSigned: selfSigned,
     );
 
-class ClientIO extends ClientBase with ClientMixin {
-  static const int CHUNK_SIZE = 5*1024*1024;
+class ClientIO extends ClientBase with ClientMixin, ClientOfflineMixin {
+  static const int CHUNK_SIZE = 5 * 1024 * 1024;
   String _endPoint;
   Map<String, String>? _headers;
   @override
@@ -47,6 +51,8 @@ class ClientIO extends ClientBase with ClientMixin {
   CookieJar get cookieJar => _cookieJar;
   @override
   String? get endPointRealtime => _endPointRealtime;
+  bool _offlinePersistency = false;
+  int _maxCacheSize = 40000; // 40MB
 
   ClientIO({
     String endPoint = 'https://HOSTNAME/v1',
@@ -64,8 +70,8 @@ class ClientIO extends ClientBase with ClientMixin {
       'x-sdk-name': 'Flutter',
       'x-sdk-platform': 'client',
       'x-sdk-language': 'flutter',
-      'x-sdk-version': '8.3.0',
-      'X-Appwrite-Response-Format' : '1.0.0',
+      'x-sdk-version': '9.0.0',
+      'X-Appwrite-Response-Format': '1.0.0',
     };
 
     config = {};
@@ -86,26 +92,28 @@ class ClientIO extends ClientBase with ClientMixin {
     return dir;
   }
 
-     /// Your project ID
-    @override
-    ClientIO setProject(value) {
-        config['project'] = value;
-        addHeader('X-Appwrite-Project', value);
-        return this;
-    }
-     /// Your secret JSON Web Token
-    @override
-    ClientIO setJWT(value) {
-        config['jWT'] = value;
-        addHeader('X-Appwrite-JWT', value);
-        return this;
-    }
-    @override
-    ClientIO setLocale(value) {
-        config['locale'] = value;
-        addHeader('X-Appwrite-Locale', value);
-        return this;
-    }
+  /// Your project ID
+  @override
+  ClientIO setProject(value) {
+    config['project'] = value;
+    addHeader('X-Appwrite-Project', value);
+    return this;
+  }
+
+  /// Your secret JSON Web Token
+  @override
+  ClientIO setJWT(value) {
+    config['jWT'] = value;
+    addHeader('X-Appwrite-JWT', value);
+    return this;
+  }
+
+  @override
+  ClientIO setLocale(value) {
+    config['locale'] = value;
+    addHeader('X-Appwrite-Locale', value);
+    return this;
+  }
 
   @override
   ClientIO setSelfSigned({bool status = true}) {
@@ -130,6 +138,38 @@ class ClientIO extends ClientBase with ClientMixin {
     return this;
   }
 
+  bool getOfflinePersistency() {
+    return _offlinePersistency;
+  }
+
+  @override
+  Future<ClientIO> setOfflinePersistency(
+      {bool status = true, void Function(Object)? onWriteQueueError}) async {
+    _offlinePersistency = status;
+
+    if (_offlinePersistency) {
+      await initOffline(
+        call: call,
+        onWriteQueueError: onWriteQueueError,
+        getOfflineCacheSize: getOfflineCacheSize,
+      );
+    }
+
+    return this;
+  }
+
+  @override
+  ClientIO setOfflineCacheSize(int kbytes) {
+    _maxCacheSize = kbytes * 1000;
+
+    return this;
+  }
+
+  @override
+  int getOfflineCacheSize() {
+    return _maxCacheSize;
+  }
+
   @override
   ClientIO addHeader(String key, String value) {
     _headers![key] = value;
@@ -138,7 +178,7 @@ class ClientIO extends ClientBase with ClientMixin {
   }
 
   Future init() async {
-    if(_initProgress) return;
+    if (_initProgress) return;
     _initProgress = true;
     final Directory cookieDir = await _getCookiePath();
     _cookieJar = PersistCookieJar(storage: FileStorage(cookieDir.path));
@@ -147,8 +187,10 @@ class ClientIO extends ClientBase with ClientMixin {
     var device = '';
     try {
       PackageInfo packageInfo = await PackageInfo.fromPlatform();
-      addHeader('Origin',
-          'appwrite-${Platform.operatingSystem}://${packageInfo.packageName}');
+      addHeader(
+        'Origin',
+        'appwrite-${Platform.operatingSystem}://${packageInfo.packageName}',
+      );
 
       //creating custom user agent
       DeviceInfoPlugin deviceInfoPlugin = DeviceInfoPlugin();
@@ -175,12 +217,13 @@ class ClientIO extends ClientBase with ClientMixin {
         device = '(Macintosh; ${macinfo.model})';
       }
       addHeader(
-          'user-agent', '${packageInfo.packageName}/${packageInfo.version} $device');
+        'user-agent',
+        '${packageInfo.packageName}/${packageInfo.version} $device',
+      );
     } catch (e) {
       debugPrint('Error getting device info: $e');
       device = Platform.operatingSystem;
-      addHeader(
-          'user-agent', '$device');
+      addHeader('user-agent', '$device');
     }
 
     _initialized = true;
@@ -246,11 +289,16 @@ class ClientIO extends ClientBase with ClientMixin {
     if (size <= CHUNK_SIZE) {
       if (file.path != null) {
         params[paramName] = await http.MultipartFile.fromPath(
-            paramName, file.path!,
-            filename: file.filename);
+          paramName,
+          file.path!,
+          filename: file.filename,
+        );
       } else {
-        params[paramName] = http.MultipartFile.fromBytes(paramName, file.bytes!,
-            filename: file.filename);
+        params[paramName] = http.MultipartFile.fromBytes(
+          paramName,
+          file.bytes!,
+          filename: file.filename,
+        );
       }
       return call(
         HttpMethod.post,
@@ -281,20 +329,27 @@ class ClientIO extends ClientBase with ClientMixin {
     }
 
     while (offset < size) {
-      var chunk;
+      List<int> chunk = [];
       if (file.bytes != null) {
-        final end = min(offset + CHUNK_SIZE-1, size-1);
+        final end = min(offset + CHUNK_SIZE - 1, size - 1);
         chunk = file.bytes!.getRange(offset, end).toList();
       } else {
         raf!.setPositionSync(offset);
         chunk = raf.readSync(CHUNK_SIZE);
       }
-      params[paramName] =
-          http.MultipartFile.fromBytes(paramName, chunk, filename: file.filename);
+      params[paramName] = http.MultipartFile.fromBytes(
+        paramName,
+        chunk,
+        filename: file.filename,
+      );
       headers['content-range'] =
           'bytes $offset-${min<int>(((offset + CHUNK_SIZE) - 1), size)}/$size';
-      res = await call(HttpMethod.post,
-          path: path, headers: headers, params: params);
+      res = await call(
+        HttpMethod.post,
+        path: path,
+        headers: headers,
+        params: params,
+      );
       offset += CHUNK_SIZE;
       if (offset < size) {
         headers['x-appwrite-id'] = res.data['\$id'];
@@ -316,7 +371,9 @@ class ClientIO extends ClientBase with ClientMixin {
   Future webAuth(Uri url, {String? callbackUrlScheme}) {
     return FlutterWebAuth2.authenticate(
       url: url.toString(),
-      callbackUrlScheme: callbackUrlScheme != null && Platform.isWindows ? callbackUrlScheme : "appwrite-callback-" + config['project']!,
+      callbackUrlScheme: callbackUrlScheme != null && Platform.isWindows
+          ? callbackUrlScheme
+          : "appwrite-callback-" + config['project']!,
       preferEphemeral: true,
     ).then((value) async {
       Uri url = Uri.parse(value);
@@ -336,13 +393,17 @@ class ClientIO extends ClientBase with ClientMixin {
     });
   }
 
-  @override
-  Future<Response> call(
+  Future<Response> send(
     HttpMethod method, {
     String path = '',
     Map<String, String> headers = const {},
     Map<String, dynamic> params = const {},
     ResponseType? responseType,
+    String cacheModel = '',
+    String cacheKey = '',
+    String cacheResponseIdKey = '',
+    String cacheResponseContainerKey = '',
+    Map<String, Object?>? previous,
   }) async {
     while (!_initialized && _initProgress) {
       await Future.delayed(Duration(milliseconds: 10));
@@ -351,10 +412,10 @@ class ClientIO extends ClientBase with ClientMixin {
       await init();
     }
 
-    late http.Response res;
+    final uri = Uri.parse(_endPoint + path);
     http.BaseRequest request = prepareRequest(
       method,
-      uri: Uri.parse(_endPoint + path),
+      uri: uri,
       headers: {..._headers!, ...headers},
       params: params,
     );
@@ -362,18 +423,108 @@ class ClientIO extends ClientBase with ClientMixin {
     try {
       request = await _interceptRequest(request);
       final streamedResponse = await _httpClient.send(request);
-      res = await toResponse(streamedResponse);
+      http.Response res = await toResponse(streamedResponse);
       res = await _interceptResponse(res);
 
-      return prepareResponse(
+      final response = prepareResponse(
         res,
         responseType: responseType,
       );
+
+      return response;
     } catch (e) {
       if (e is AppwriteException) {
         rethrow;
       }
       throw AppwriteException(e.toString());
+    }
+  }
+
+  @override
+  Future<Response> call(
+    HttpMethod method, {
+    String path = '',
+    Map<String, String> headers = const {},
+    Map<String, dynamic> params = const {},
+    ResponseType? responseType,
+    String cacheModel = '',
+    String cacheKey = '',
+    String cacheResponseIdKey = '',
+    String cacheResponseContainerKey = '',
+    Map<String, Object?>? previous,
+  }) async {
+    while (true) {
+      final uri = Uri.parse(endPoint + path);
+
+      http.BaseRequest request = prepareRequest(
+        method,
+        uri: uri,
+        headers: {..._headers!, ...headers},
+        params: params,
+      );
+
+      if (getOfflinePersistency() && !isOnline.value) {
+        await checkOnlineStatus();
+      }
+
+      if (cacheModel.isNotEmpty &&
+          getOfflinePersistency() &&
+          !isOnline.value &&
+          responseType != ResponseType.bytes) {
+        return handleOfflineRequest(
+          uri: uri,
+          method: method,
+          call: call,
+          path: path,
+          headers: headers,
+          params: params,
+          responseType: responseType,
+          cacheModel: cacheModel,
+          cacheKey: cacheKey,
+          cacheResponseIdKey: cacheResponseIdKey,
+          cacheResponseContainerKey: cacheResponseContainerKey,
+        );
+      }
+
+      try {
+        final response = await send(
+          method,
+          path: path,
+          headers: headers,
+          params: params,
+          responseType: responseType,
+          cacheModel: cacheModel,
+          cacheKey: cacheKey,
+          cacheResponseIdKey: cacheResponseIdKey,
+          cacheResponseContainerKey: cacheResponseContainerKey,
+        );
+
+        if (getOfflinePersistency()) {
+          cacheResponse(
+            cacheModel: cacheModel,
+            cacheKey: cacheKey,
+            cacheResponseIdKey: cacheResponseIdKey,
+            request: request,
+            response: response,
+          );
+        }
+
+        return response;
+      } on AppwriteException catch (e) {
+        if ((e.message != "Network is unreachable" &&
+                !(e.message?.contains("Failed host lookup") ?? false)) ||
+            !getOfflinePersistency()) {
+          rethrow;
+        }
+        isOnline.value = false;
+      } on SocketException catch (_) {
+        if (!getOfflinePersistency()) {
+          rethrow;
+        }
+        isOnline.value = false;
+      } catch (e) {
+        throw AppwriteException(e.toString());
+      }
     }
   }
 }

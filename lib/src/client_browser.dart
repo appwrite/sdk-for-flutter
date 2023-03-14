@@ -1,16 +1,20 @@
+import 'dart:io';
 import 'dart:math';
+
 import 'package:flutter/foundation.dart';
 import 'package:flutter_web_auth_2/flutter_web_auth_2.dart';
-import 'package:http/http.dart' as http;
 import 'package:http/browser_client.dart';
+import 'package:http/http.dart' as http;
 import 'package:universal_html/html.dart' as html;
+
+import 'client_base.dart';
 import 'client_mixin.dart';
+import 'client_offline_mixin.dart';
 import 'enums.dart';
 import 'exception.dart';
-import 'client_base.dart';
 import 'input_file.dart';
-import 'upload_progress.dart';
 import 'response.dart';
+import 'upload_progress.dart';
 
 ClientBase createClient({
   required String endPoint,
@@ -18,14 +22,16 @@ ClientBase createClient({
 }) =>
     ClientBrowser(endPoint: endPoint, selfSigned: selfSigned);
 
-class ClientBrowser extends ClientBase with ClientMixin {
-  static const int CHUNK_SIZE = 5*1024*1024;
+class ClientBrowser extends ClientBase with ClientMixin, ClientOfflineMixin {
+  static const int CHUNK_SIZE = 5 * 1024 * 1024;
   String _endPoint;
   Map<String, String>? _headers;
   @override
   late Map<String, String> config;
   late BrowserClient _httpClient;
   String? _endPointRealtime;
+  bool _offlinePersistency = false;
+  int _maxCacheSize = 40000; // 40MB
 
   @override
   String? get endPointRealtime => _endPointRealtime;
@@ -43,8 +49,8 @@ class ClientBrowser extends ClientBase with ClientMixin {
       'x-sdk-name': 'Flutter',
       'x-sdk-platform': 'client',
       'x-sdk-language': 'flutter',
-      'x-sdk-version': '8.3.0',
-      'X-Appwrite-Response-Format' : '1.0.0',
+      'x-sdk-version': '9.0.0',
+      'X-Appwrite-Response-Format': '1.0.0',
     };
 
     config = {};
@@ -57,26 +63,28 @@ class ClientBrowser extends ClientBase with ClientMixin {
   @override
   String get endPoint => _endPoint;
 
-     /// Your project ID
-    @override
-    ClientBrowser setProject(value) {
-        config['project'] = value;
-        addHeader('X-Appwrite-Project', value);
-        return this;
-    }
-     /// Your secret JSON Web Token
-    @override
-    ClientBrowser setJWT(value) {
-        config['jWT'] = value;
-        addHeader('X-Appwrite-JWT', value);
-        return this;
-    }
-    @override
-    ClientBrowser setLocale(value) {
-        config['locale'] = value;
-        addHeader('X-Appwrite-Locale', value);
-        return this;
-    }
+  /// Your project ID
+  @override
+  ClientBrowser setProject(value) {
+    config['project'] = value;
+    addHeader('X-Appwrite-Project', value);
+    return this;
+  }
+
+  /// Your secret JSON Web Token
+  @override
+  ClientBrowser setJWT(value) {
+    config['jWT'] = value;
+    addHeader('X-Appwrite-JWT', value);
+    return this;
+  }
+
+  @override
+  ClientBrowser setLocale(value) {
+    config['locale'] = value;
+    addHeader('X-Appwrite-Locale', value);
+    return this;
+  }
 
   @override
   ClientBrowser setSelfSigned({bool status = true}) {
@@ -96,6 +104,38 @@ class ClientBrowser extends ClientBase with ClientMixin {
   ClientBrowser setEndPointRealtime(String endPoint) {
     _endPointRealtime = endPoint;
     return this;
+  }
+
+  bool getOfflinePersistency() {
+    return _offlinePersistency;
+  }
+
+  @override
+  Future<ClientBrowser> setOfflinePersistency(
+      {bool status = true, void Function(Object)? onWriteQueueError}) async {
+    _offlinePersistency = status;
+
+    if (_offlinePersistency) {
+      await initOffline(
+        call: call,
+        onWriteQueueError: onWriteQueueError,
+        getOfflineCacheSize: getOfflineCacheSize,
+      );
+    }
+
+    return this;
+  }
+
+  @override
+  ClientBrowser setOfflineCacheSize(int kbytes) {
+    _maxCacheSize = kbytes * 1000;
+
+    return this;
+  }
+
+  @override
+  int getOfflineCacheSize() {
+    return _maxCacheSize;
   }
 
   @override
@@ -131,7 +171,11 @@ class ClientBrowser extends ClientBase with ClientMixin {
 
     late Response res;
     if (size <= CHUNK_SIZE) {
-      params[paramName] = http.MultipartFile.fromBytes(paramName, file.bytes!, filename: file.filename);
+      params[paramName] = http.MultipartFile.fromBytes(
+        paramName,
+        file.bytes!,
+        filename: file.filename,
+      );
       return call(
         HttpMethod.post,
         path: path,
@@ -158,8 +202,11 @@ class ClientBrowser extends ClientBase with ClientMixin {
       var chunk;
       final end = min(offset + CHUNK_SIZE, size);
       chunk = file.bytes!.getRange(offset, end).toList();
-      params[paramName] =
-          http.MultipartFile.fromBytes(paramName, chunk, filename: file.filename);
+      params[paramName] = http.MultipartFile.fromBytes(
+        paramName,
+        chunk,
+        filename: file.filename,
+      );
       headers['content-range'] =
           'bytes $offset-${min<int>(((offset + CHUNK_SIZE) - 1), size)}/$size';
       res = await call(HttpMethod.post,
@@ -187,6 +234,98 @@ class ClientBrowser extends ClientBase with ClientMixin {
     Map<String, String> headers = const {},
     Map<String, dynamic> params = const {},
     ResponseType? responseType,
+    String cacheModel = '',
+    String cacheKey = '',
+    String cacheResponseIdKey = '',
+    String cacheResponseContainerKey = '',
+    Map<String, Object?>? previous,
+  }) async {
+    while (true) {
+      final uri = Uri.parse(endPoint + path);
+
+      http.BaseRequest request = prepareRequest(
+        method,
+        uri: uri,
+        headers: {..._headers!, ...headers},
+        params: params,
+      );
+
+      if (getOfflinePersistency() && !isOnline.value) {
+        await checkOnlineStatus();
+      }
+
+      if (cacheModel.isNotEmpty &&
+          getOfflinePersistency() &&
+          !isOnline.value &&
+          responseType != ResponseType.bytes) {
+        return handleOfflineRequest(
+          uri: uri,
+          method: method,
+          call: call,
+          path: path,
+          headers: headers,
+          params: params,
+          responseType: responseType,
+          cacheModel: cacheModel,
+          cacheKey: cacheKey,
+          cacheResponseIdKey: cacheResponseIdKey,
+          cacheResponseContainerKey: cacheResponseContainerKey,
+        );
+      }
+
+      try {
+        final response = await send(
+          method,
+          path: path,
+          headers: headers,
+          params: params,
+          responseType: responseType,
+          cacheModel: cacheModel,
+          cacheKey: cacheKey,
+          cacheResponseIdKey: cacheResponseIdKey,
+          cacheResponseContainerKey: cacheResponseContainerKey,
+        );
+
+        if (getOfflinePersistency()) {
+          cacheResponse(
+            cacheModel: cacheModel,
+            cacheKey: cacheKey,
+            cacheResponseIdKey: cacheResponseIdKey,
+            request: request,
+            response: response,
+          );
+        }
+
+        return response;
+      } on AppwriteException catch (e) {
+        if ((e.message != "Network is unreachable" &&
+                !(e.message?.contains("Failed host lookup") ?? false)) ||
+            !getOfflinePersistency()) {
+          rethrow;
+        }
+        isOnline.value = false;
+      } on SocketException catch (_) {
+        if (!getOfflinePersistency()) {
+          rethrow;
+        }
+        isOnline.value = false;
+      } catch (e) {
+        throw AppwriteException(e.toString());
+      }
+    }
+  }
+
+  Future<Response> send(
+    HttpMethod method, {
+    String path = '',
+    Map<String, String> headers = const {},
+    Map<String, dynamic> params = const {},
+    ResponseType? responseType,
+    String cacheModel = '',
+    String cacheKey = '',
+    String cacheResponseIdKey = '',
+    String cacheResponseContainerKey = '',
+    Map<String, Object?>? previous,
   }) async {
     await init();
 
@@ -219,7 +358,7 @@ class ClientBrowser extends ClientBase with ClientMixin {
 
   @override
   Future webAuth(Uri url, {String? callbackUrlScheme}) {
-  return FlutterWebAuth2.authenticate(
+    return FlutterWebAuth2.authenticate(
       url: url.toString(),
       callbackUrlScheme: "appwrite-callback-" + config['project']!,
     );
