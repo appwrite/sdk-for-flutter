@@ -1,8 +1,11 @@
 part of appwrite;
 
+// regex to extract method name and params
+final _methodAndParamsRegEx = RegExp(r'(\w+)\((.*)\)');
+
 class Query {
-    Query._();
-    
+  Query._(this.method, this.params);
+
   static equal(String attribute, dynamic value) =>
       _addQuery(attribute, 'equal', value);
 
@@ -43,4 +46,29 @@ class Query {
 
   static String parseValues(dynamic value) =>
       (value is String) ? '"$value"' : '$value';
+
+  String method;
+  List<dynamic> params;
+
+  factory Query.parse(String query) {
+    if (!query.contains('(') || !query.contains(')')) {
+      throw Exception('Invalid query');
+    }
+
+    final matches = _methodAndParamsRegEx.firstMatch(query);
+
+    if (matches == null || matches.groupCount < 2) {
+      throw Exception('Invalid query');
+    }
+
+    final method = matches.group(1)!;
+
+    try {
+      final params = jsonDecode('[' + matches.group(2)! + ']') as List<dynamic>;
+
+      return Query._(method, params);
+    } catch (e) {
+      throw Exception('Invalid query');
+    }
+  }
 }

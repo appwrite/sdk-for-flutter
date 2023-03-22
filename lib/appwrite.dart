@@ -1,12 +1,14 @@
 library appwrite;
 
 import 'dart:async';
+import 'dart:convert';
 import 'dart:math';
 import 'dart:typed_data';
-import 'src/enums.dart';
-import 'src/service.dart';
-import 'src/input_file.dart';
+
 import 'models.dart' as models;
+import 'src/enums.dart';
+import 'src/input_file.dart';
+import 'src/service.dart';
 import 'src/upload_progress.dart';
 
 export 'src/client.dart';
