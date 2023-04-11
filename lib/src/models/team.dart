@@ -12,6 +12,8 @@ class Team implements Model {
     final String name;
     /// Total number of team members.
     final int total;
+    /// Team preferences as a key-value object
+    final Preferences prefs;
 
     Team({
         required this.$id,
@@ -19,6 +21,7 @@ class Team implements Model {
         required this.$updatedAt,
         required this.name,
         required this.total,
+        required this.prefs,
     });
 
     factory Team.fromMap(Map<String, dynamic> map) {
@@ -28,6 +31,7 @@ class Team implements Model {
             $updatedAt: map['\$updatedAt'].toString(),
             name: map['name'].toString(),
             total: map['total'],
+            prefs: Preferences.fromMap(map['prefs']),
         );
     }
 
@@ -38,6 +42,7 @@ class Team implements Model {
             "\$updatedAt": $updatedAt,
             "name": name,
             "total": total,
+            "prefs": prefs.toMap(),
         };
     }
 }

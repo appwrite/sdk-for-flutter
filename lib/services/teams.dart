@@ -73,12 +73,11 @@ class Teams extends Service {
 
     }
 
-    /// Update Team
+    /// Update Name
     ///
-    /// Update a team using its ID. Only members with the owner role can update the
-    /// team.
+    /// Update the team's name by its unique ID.
     ///
-    Future<models.Team> update({required String teamId, required String name}) async {
+    Future<models.Team> updateName({required String teamId, required String name}) async {
         final String path = '/teams/{teamId}'.replaceAll('{teamId}', teamId);
 
         final Map<String, dynamic> params = {
@@ -141,27 +140,35 @@ class Teams extends Service {
 
     /// Create Team Membership
     ///
-    /// Invite a new member to join your team. If initiated from the client SDK, an
-    /// email with a link to join the team will be sent to the member's email
-    /// address and an account will be created for them should they not be signed
-    /// up already. If initiated from server-side SDKs, the new member will
-    /// automatically be added to the team.
+    /// Invite a new member to join your team. Provide an ID for existing users, or
+    /// invite unregistered users using an email or phone number. If initiated from
+    /// a Client SDK, Appwrite will send an email or sms with a link to join the
+    /// team to the invited user, and an account will be created for them if one
+    /// doesn't exist. If initiated from a Server SDK, the new member will be added
+    /// automatically to the team.
     /// 
-    /// Use the 'url' parameter to redirect the user from the invitation email back
-    /// to your app. When the user is redirected, use the [Update Team Membership
+    /// You only need to provide one of a user ID, email, or phone number. Appwrite
+    /// will prioritize accepting the user ID > email > phone number if you provide
+    /// more than one of these parameters.
+    /// 
+    /// Use the `url` parameter to redirect the user from the invitation email to
+    /// your app. After the user is redirected, use the [Update Team Membership
     /// Status](/docs/client/teams#teamsUpdateMembershipStatus) endpoint to allow
     /// the user to accept the invitation to the team. 
     /// 
     /// Please note that to avoid a [Redirect
     /// Attack](https://github.com/OWASP/CheatSheetSeries/blob/master/cheatsheets/Unvalidated_Redirects_and_Forwards_Cheat_Sheet.md)
-    /// the only valid redirect URL's are the once from domains you have set when
-    /// adding your platforms in the console interface.
+    /// Appwrite will accept the only redirect URLs under the domains you have
+    /// added as a platform on the Appwrite Console.
+    /// 
     ///
-    Future<models.Membership> createMembership({required String teamId, required String email, required List<String> roles, required String url, String? name}) async {
+    Future<models.Membership> createMembership({required String teamId, required List<String> roles, required String url, String? email, String? userId, String? phone, String? name}) async {
         final String path = '/teams/{teamId}/memberships'.replaceAll('{teamId}', teamId);
 
         final Map<String, dynamic> params = {
             'email': email,
+            'userId': userId,
+            'phone': phone,
             'roles': roles,
             'url': url,
             'name': name,
@@ -268,6 +275,51 @@ class Teams extends Service {
         final res = await client.call(HttpMethod.patch, path: path, params: params, headers: headers);
 
         return models.Membership.fromMap(res.data);
+
+    }
+
+    /// Get Team Preferences
+    ///
+    /// Get the team's shared preferences by its unique ID. If a preference doesn't
+    /// need to be shared by all team members, prefer storing them in [user
+    /// preferences](/docs/client/account#accountGetPrefs).
+    ///
+    Future<models.Preferences> getPrefs({required String teamId}) async {
+        final String path = '/teams/{teamId}/prefs'.replaceAll('{teamId}', teamId);
+
+        final Map<String, dynamic> params = {
+        };
+
+        final Map<String, String> headers = {
+            'content-type': 'application/json',
+        };
+
+        final res = await client.call(HttpMethod.get, path: path, params: params, headers: headers);
+
+        return models.Preferences.fromMap(res.data);
+
+    }
+
+    /// Update Preferences
+    ///
+    /// Update the team's preferences by its unique ID. The object you pass is
+    /// stored as is and replaces any previous value. The maximum allowed prefs
+    /// size is 64kB and throws an error if exceeded.
+    ///
+    Future<models.Preferences> updatePrefs({required String teamId, required Map prefs}) async {
+        final String path = '/teams/{teamId}/prefs'.replaceAll('{teamId}', teamId);
+
+        final Map<String, dynamic> params = {
+            'prefs': prefs,
+        };
+
+        final Map<String, String> headers = {
+            'content-type': 'application/json',
+        };
+
+        final res = await client.call(HttpMethod.put, path: path, params: params, headers: headers);
+
+        return models.Preferences.fromMap(res.data);
 
     }
 }

@@ -58,10 +58,11 @@ class Databases extends Service {
     /// Get a document by its unique ID. This endpoint response returns a JSON
     /// object with the document data.
     ///
-    Future<models.Document> getDocument({required String databaseId, required String collectionId, required String documentId}) async {
+    Future<models.Document> getDocument({required String databaseId, required String collectionId, required String documentId, List<String>? queries}) async {
         final String path = '/databases/{databaseId}/collections/{collectionId}/documents/{documentId}'.replaceAll('{databaseId}', databaseId).replaceAll('{collectionId}', collectionId).replaceAll('{documentId}', documentId);
 
         final Map<String, dynamic> params = {
+            'queries': queries,
         };
 
         final Map<String, String> headers = {

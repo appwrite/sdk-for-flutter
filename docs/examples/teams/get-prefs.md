@@ -8,10 +8,8 @@ void main() { // Init SDK
     .setEndpoint('https://[HOSTNAME_OR_IP]/v1') // Your API Endpoint
     .setProject('5df5acd0d48c2') // Your project ID
   ;
-  Future result = teams.createMembership(
+  Future result = teams.getPrefs(
     teamId: '[TEAM_ID]',
-    roles: [],
-    url: 'https://example.com',
   );
 
   result

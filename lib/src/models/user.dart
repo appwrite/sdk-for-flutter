@@ -1,7 +1,7 @@
 part of appwrite.models;
 
-/// Account
-class Account implements Model {
+/// User
+class User implements Model {
     /// User ID.
     final String $id;
     /// User creation date in ISO 8601 format.
@@ -10,6 +10,12 @@ class Account implements Model {
     final String $updatedAt;
     /// User name.
     final String name;
+    /// Hashed user password.
+    final String? password;
+    /// Password hashing algorithm.
+    final String? hash;
+    /// Password hashing algorithm configuration.
+    final Map? hashOptions;
     /// User registration date in ISO 8601 format.
     final String registration;
     /// User status. Pass `true` for enabled and `false` for disabled.
@@ -27,11 +33,14 @@ class Account implements Model {
     /// User preferences as a key-value object
     final Preferences prefs;
 
-    Account({
+    User({
         required this.$id,
         required this.$createdAt,
         required this.$updatedAt,
         required this.name,
+        this.password,
+        this.hash,
+        this.hashOptions,
         required this.registration,
         required this.status,
         required this.passwordUpdate,
@@ -42,12 +51,15 @@ class Account implements Model {
         required this.prefs,
     });
 
-    factory Account.fromMap(Map<String, dynamic> map) {
-        return Account(
+    factory User.fromMap(Map<String, dynamic> map) {
+        return User(
             $id: map['\$id'].toString(),
             $createdAt: map['\$createdAt'].toString(),
             $updatedAt: map['\$updatedAt'].toString(),
             name: map['name'].toString(),
+            password: map['password']?.toString(),
+            hash: map['hash']?.toString(),
+            hashOptions: map['hashOptions'],
             registration: map['registration'].toString(),
             status: map['status'],
             passwordUpdate: map['passwordUpdate'].toString(),
@@ -65,6 +77,9 @@ class Account implements Model {
             "\$createdAt": $createdAt,
             "\$updatedAt": $updatedAt,
             "name": name,
+            "password": password,
+            "hash": hash,
+            "hashOptions": hashOptions,
             "registration": registration,
             "status": status,
             "passwordUpdate": passwordUpdate,
