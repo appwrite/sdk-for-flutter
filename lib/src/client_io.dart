@@ -64,7 +64,7 @@ class ClientIO extends ClientBase with ClientMixin {
       'x-sdk-name': 'Flutter',
       'x-sdk-platform': 'client',
       'x-sdk-language': 'flutter',
-      'x-sdk-version': '8.3.0',
+      'x-sdk-version': '9.0.0',
       'X-Appwrite-Response-Format' : '1.0.0',
     };
 
@@ -281,7 +281,7 @@ class ClientIO extends ClientBase with ClientMixin {
     }
 
     while (offset < size) {
-      var chunk;
+      List<int> chunk = [];
       if (file.bytes != null) {
         final end = min(offset + CHUNK_SIZE-1, size-1);
         chunk = file.bytes!.getRange(offset, end).toList();
@@ -312,11 +312,15 @@ class ClientIO extends ClientBase with ClientMixin {
     return res;
   }
 
+  bool get _customSchemeAllowed => Platform.isWindows || Platform.isLinux;
+
   @override
   Future webAuth(Uri url, {String? callbackUrlScheme}) {
     return FlutterWebAuth2.authenticate(
       url: url.toString(),
-      callbackUrlScheme: callbackUrlScheme != null && Platform.isWindows ? callbackUrlScheme : "appwrite-callback-" + config['project']!,
+      callbackUrlScheme: callbackUrlScheme != null && _customSchemeAllowed
+          ? callbackUrlScheme
+          : "appwrite-callback-" + config['project']!,
       preferEphemeral: true,
     ).then((value) async {
       Uri url = Uri.parse(value);

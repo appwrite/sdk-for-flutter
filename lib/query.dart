@@ -3,26 +3,41 @@ part of appwrite;
 class Query {
     Query._();
     
-  static equal(String attribute, dynamic value) =>
+  static String equal(String attribute, dynamic value) =>
       _addQuery(attribute, 'equal', value);
 
-  static notEqual(String attribute, dynamic value) =>
+  static String notEqual(String attribute, dynamic value) =>
       _addQuery(attribute, 'notEqual', value);
 
-  static lessThan(String attribute, dynamic value) =>
+  static String lessThan(String attribute, dynamic value) =>
       _addQuery(attribute, 'lessThan', value);
 
-  static lessThanEqual(String attribute, dynamic value) =>
+  static String lessThanEqual(String attribute, dynamic value) =>
       _addQuery(attribute, 'lessThanEqual', value);
 
-  static greaterThan(String attribute, dynamic value) =>
+  static String greaterThan(String attribute, dynamic value) =>
       _addQuery(attribute, 'greaterThan', value);
 
-  static greaterThanEqual(String attribute, dynamic value) =>
+  static String greaterThanEqual(String attribute, dynamic value) =>
       _addQuery(attribute, 'greaterThanEqual', value);
 
-  static search(String attribute, String value) =>
+  static String search(String attribute, String value) =>
       _addQuery(attribute, 'search', value);
+
+  static String isNull(String attribute) => 'isNull("$attribute")';
+
+  static String isNotNull(String attribute) => 'isNotNull("$attribute")';
+
+  static String between(String attribute, dynamic start, dynamic end) =>
+      _addQuery(attribute, 'between', [start, end]);
+
+  static String startsWith(String attribute, String value) =>
+      _addQuery(attribute, 'startsWith', value);
+
+  static String endsWith(String attribute, String value) =>
+      _addQuery(attribute, 'endsWith', value);
+
+  static String select(List<String> attributes) => 'select([${attributes.map((attr) => "\"$attr\"").join(",")}])';
 
   static String orderAsc(String attribute) => 'orderAsc("$attribute")';
 
