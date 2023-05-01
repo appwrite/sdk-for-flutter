@@ -2,6 +2,7 @@ import 'dart:io';
 import 'dart:math';
 import 'package:appwrite/appwrite.dart'
     show AppwriteException, Account, Response, InputFile, UploadProgress;
+import 'package:appwrite/src/jwt_decoder.dart';
 import 'package:cookie_jar/cookie_jar.dart';
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:http/http.dart' as http;
@@ -389,15 +390,26 @@ class ClientIO extends ClientBase with ClientMixin {
       if (_preferences == null) {
         _preferences = await SharedPreferences.getInstance();
       }
-      final jwtDate = _preferences!.getInt('jwtExpiry') ?? 0;
       final savedJwt = _preferences!.getString('jwt');
-      if (savedJwt != null && jwtDate > DateTime.now().millisecondsSinceEpoch) {
-        return savedJwt;
+      if (savedJwt != null) {
+        try {
+          if (!JwtDecoder.isExpired(savedJwt)) {
+            print('saved jwt not yet expired');
+            return savedJwt;
+          } else {
+            print('jwt expired');
+          }
+        } catch (e) {
+          // Remove invalid token
+          print('invalid token');
+          await _preferences!.remove('jwt');
+        }
+      } else {
+        print('no saved jwt');
       }
+
       final jwt = (await account.createJWT()).jwt;
       _preferences!.setString('jwt', jwt);
-      _preferences!.setInt(
-          'jwtExpiry', DateTime.now().millisecondsSinceEpoch + 900 * 1000);
       return jwt;
     } catch (e) {
       return null;
