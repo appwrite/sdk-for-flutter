@@ -371,10 +371,19 @@ class ClientIO extends ClientBase with ClientMixin {
       res = await toResponse(streamedResponse);
       res = await _interceptResponse(res);
 
-      return prepareResponse(
+      final response = prepareResponse(
         res,
         responseType: responseType,
       );
+
+      if (method == HttpMethod.delete &&
+          path.contains('/account/sessions/current')) {
+        _resetJWT();
+      }
+      if ((method == HttpMethod.get && path == '/account') || (method == HttpMethod.post && path.contains('/account/sessions/'))) {
+        getJWT(true);
+      }
+      return response;
     } catch (e) {
       if (e is AppwriteException) {
         rethrow;
@@ -383,29 +392,34 @@ class ClientIO extends ClientBase with ClientMixin {
     }
   }
 
+  void _resetJWT() async {
+    if (_preferences != null) {
+      await _preferences!.remove('jwt');
+    }
+  }
+
   @override
-  Future<String?> getJWT() async {
+  Future<String?> getJWT([bool fresh = false]) async {
     final Account account = Account(this);
     try {
-      if (_preferences == null) {
-        _preferences = await SharedPreferences.getInstance();
-      }
-      final savedJwt = _preferences!.getString('jwt');
-      if (savedJwt != null) {
-        try {
-          if (!JwtDecoder.isExpired(savedJwt)) {
-            print('saved jwt not yet expired');
-            return savedJwt;
-          } else {
-            print('jwt expired');
-          }
-        } catch (e) {
-          // Remove invalid token
-          print('invalid token');
-          await _preferences!.remove('jwt');
+      if(!fresh) {
+
+        if (_preferences == null) {
+          _preferences = await SharedPreferences.getInstance();
         }
-      } else {
-        print('no saved jwt');
+        final savedJwt = _preferences!.getString('jwt');
+        if (savedJwt != null) {
+          try {
+            if (!JwtDecoder.isExpired(savedJwt)) {
+              return savedJwt;
+            }
+          } catch (e) {
+            // Remove invalid token
+            await _preferences!.remove('jwt');
+          }
+        } else {
+          print('no saved jwt');
+        }
       }
 
       final jwt = (await account.createJWT()).jwt;
