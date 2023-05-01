@@ -1,5 +1,7 @@
 import 'dart:io';
 import 'dart:math';
+import 'package:appwrite/appwrite.dart'
+    show AppwriteException, Account, Response, InputFile, UploadProgress;
 import 'package:cookie_jar/cookie_jar.dart';
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:http/http.dart' as http;
@@ -7,16 +9,13 @@ import 'package:http/io_client.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:flutter_web_auth_2/flutter_web_auth_2.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'client_mixin.dart';
 import 'client_base.dart';
 import 'cookie_manager.dart';
 import 'enums.dart';
-import 'exception.dart';
 import 'interceptor.dart';
-import 'response.dart';
 import 'package:flutter/foundation.dart';
-import 'input_file.dart';
-import 'upload_progress.dart';
 
 ClientBase createClient({
   required String endPoint,
@@ -28,7 +27,7 @@ ClientBase createClient({
     );
 
 class ClientIO extends ClientBase with ClientMixin {
-  static const int CHUNK_SIZE = 5*1024*1024;
+  static const int CHUNK_SIZE = 5 * 1024 * 1024;
   String _endPoint;
   Map<String, String>? _headers;
   @override
@@ -47,6 +46,7 @@ class ClientIO extends ClientBase with ClientMixin {
   CookieJar get cookieJar => _cookieJar;
   @override
   String? get endPointRealtime => _endPointRealtime;
+  SharedPreferences? _preferences;
 
   ClientIO({
     String endPoint = 'https://HOSTNAME/v1',
@@ -65,7 +65,7 @@ class ClientIO extends ClientBase with ClientMixin {
       'x-sdk-platform': 'client',
       'x-sdk-language': 'flutter',
       'x-sdk-version': '9.0.0',
-      'X-Appwrite-Response-Format' : '1.0.0',
+      'X-Appwrite-Response-Format': '1.0.0',
     };
 
     config = {};
@@ -86,26 +86,28 @@ class ClientIO extends ClientBase with ClientMixin {
     return dir;
   }
 
-     /// Your project ID
-    @override
-    ClientIO setProject(value) {
-        config['project'] = value;
-        addHeader('X-Appwrite-Project', value);
-        return this;
-    }
-     /// Your secret JSON Web Token
-    @override
-    ClientIO setJWT(value) {
-        config['jWT'] = value;
-        addHeader('X-Appwrite-JWT', value);
-        return this;
-    }
-    @override
-    ClientIO setLocale(value) {
-        config['locale'] = value;
-        addHeader('X-Appwrite-Locale', value);
-        return this;
-    }
+  /// Your project ID
+  @override
+  ClientIO setProject(value) {
+    config['project'] = value;
+    addHeader('X-Appwrite-Project', value);
+    return this;
+  }
+
+  /// Your secret JSON Web Token
+  @override
+  ClientIO setJWT(value) {
+    config['jWT'] = value;
+    addHeader('X-Appwrite-JWT', value);
+    return this;
+  }
+
+  @override
+  ClientIO setLocale(value) {
+    config['locale'] = value;
+    addHeader('X-Appwrite-Locale', value);
+    return this;
+  }
 
   @override
   ClientIO setSelfSigned({bool status = true}) {
@@ -138,7 +140,7 @@ class ClientIO extends ClientBase with ClientMixin {
   }
 
   Future init() async {
-    if(_initProgress) return;
+    if (_initProgress) return;
     _initProgress = true;
     final Directory cookieDir = await _getCookiePath();
     _cookieJar = PersistCookieJar(storage: FileStorage(cookieDir.path));
@@ -174,13 +176,12 @@ class ClientIO extends ClientBase with ClientMixin {
         final macinfo = await deviceInfoPlugin.macOsInfo;
         device = '(Macintosh; ${macinfo.model})';
       }
-      addHeader(
-          'user-agent', '${packageInfo.packageName}/${packageInfo.version} $device');
+      addHeader('user-agent',
+          '${packageInfo.packageName}/${packageInfo.version} $device');
     } catch (e) {
       debugPrint('Error getting device info: $e');
       device = Platform.operatingSystem;
-      addHeader(
-          'user-agent', '$device');
+      addHeader('user-agent', '$device');
     }
 
     _initialized = true;
@@ -283,14 +284,14 @@ class ClientIO extends ClientBase with ClientMixin {
     while (offset < size) {
       List<int> chunk = [];
       if (file.bytes != null) {
-        final end = min(offset + CHUNK_SIZE-1, size-1);
+        final end = min(offset + CHUNK_SIZE - 1, size - 1);
         chunk = file.bytes!.getRange(offset, end).toList();
       } else {
         raf!.setPositionSync(offset);
         chunk = raf.readSync(CHUNK_SIZE);
       }
-      params[paramName] =
-          http.MultipartFile.fromBytes(paramName, chunk, filename: file.filename);
+      params[paramName] = http.MultipartFile.fromBytes(paramName, chunk,
+          filename: file.filename);
       headers['content-range'] =
           'bytes $offset-${min<int>(((offset + CHUNK_SIZE) - 1), size)}/$size';
       res = await call(HttpMethod.post,
@@ -378,6 +379,28 @@ class ClientIO extends ClientBase with ClientMixin {
         rethrow;
       }
       throw AppwriteException(e.toString());
+    }
+  }
+
+  @override
+  Future<String?> getJWT() async {
+    final Account account = Account(this);
+    try {
+      if (_preferences == null) {
+        _preferences = await SharedPreferences.getInstance();
+      }
+      final jwtDate = _preferences!.getInt('jwtExpiry') ?? 0;
+      final savedJwt = _preferences!.getString('jwt');
+      if (savedJwt != null && jwtDate > DateTime.now().millisecondsSinceEpoch) {
+        return savedJwt;
+      }
+      final jwt = (await account.createJWT()).jwt;
+      _preferences!.setString('jwt', jwt);
+      _preferences!.setInt(
+          'jwtExpiry', DateTime.now().millisecondsSinceEpoch + 900 * 1000);
+      return jwt;
+    } catch (e) {
+      return null;
     }
   }
 }

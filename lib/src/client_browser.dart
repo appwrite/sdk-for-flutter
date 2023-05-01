@@ -224,4 +224,9 @@ class ClientBrowser extends ClientBase with ClientMixin {
       callbackUrlScheme: "appwrite-callback-" + config['project']!,
     );
   }
+
+  @override
+  Future<String?> getJWT() {
+    throw UnsupportedError('Not supported in web.');
+  }
 }
