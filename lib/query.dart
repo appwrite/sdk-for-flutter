@@ -47,8 +47,8 @@ class Query {
   static String parseValues(dynamic value) =>
       (value is String) ? '"$value"' : '$value';
 
-  String method;
-  List<dynamic> params;
+  final String method;
+  final List<dynamic> params;
 
   factory Query.parse(String query) {
     if (!query.contains('(') || !query.contains(')')) {

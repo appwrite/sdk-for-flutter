@@ -5,8 +5,11 @@ import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
 import 'package:sembast/utils/value_utils.dart';
 
+import 'call_handlers/offline_call_handler.dart';
+import 'call_params.dart';
 import 'enums.dart';
 import 'exception.dart';
+import 'offline/caller.dart';
 import 'offline/services/accessed_at.dart';
 import 'offline/services/cache_size.dart';
 import 'offline/services/model_data.dart';
@@ -25,18 +28,7 @@ class ClientOfflineMixin {
   late QueuedWrites _queuedWrites;
 
   Future<void> initOffline({
-    required Future<Response<dynamic>> Function(
-      HttpMethod, {
-      String path,
-      Map<String, String> headers,
-      Map<String, dynamic> params,
-      ResponseType? responseType,
-      String cacheModel,
-      String cacheKey,
-      String cacheResponseIdKey,
-      String cacheResponseContainerKey,
-    })
-        call,
+    required Caller call,
     void Function(Object)? onWriteQueueError,
     required int Function() getOfflineCacheSize,
   }) async {
@@ -64,20 +56,7 @@ class ClientOfflineMixin {
     _queuedWrites = QueuedWrites(db);
   }
 
-  Future<void> processWriteQueue(
-      Future<Response<dynamic>> Function(
-    HttpMethod, {
-    String path,
-    Map<String, String> headers,
-    Map<String, dynamic> params,
-    ResponseType? responseType,
-    String cacheModel,
-    String cacheKey,
-    String cacheResponseIdKey,
-    String cacheResponseContainerKey,
-  })
-          call,
-      {void Function(Object e)? onError}) async {
+  Future<void> processWriteQueue(Caller call, {Function? onError}) async {
     if (!isOnline.value) return;
     final queuedWrites = await _queuedWrites.list();
     for (final queuedWrite in queuedWrites) {
@@ -85,16 +64,22 @@ class ClientOfflineMixin {
         final method = HttpMethod.values
             .where((v) => v.name() == queuedWrite.method)
             .first;
-        final res = await call(
-          method,
-          path: queuedWrite.path,
-          headers: queuedWrite.headers,
-          params: queuedWrite.params,
-          cacheModel: queuedWrite.cacheModel,
-          cacheKey: queuedWrite.cacheKey,
-          cacheResponseContainerKey: queuedWrite.cacheResponseContainerKey,
-          cacheResponseIdKey: queuedWrite.cacheResponseIdKey,
+
+        final params = withCacheParams(
+          CallParams(
+            method,
+            queuedWrite.path,
+            headers: queuedWrite.headers,
+            params: queuedWrite.params,
+          ),
+          CacheParams(
+            model: queuedWrite.cacheModel,
+            key: queuedWrite.cacheKey,
+            responseContainerKey: queuedWrite.cacheResponseContainerKey,
+            responseIdKey: queuedWrite.cacheResponseIdKey,
+          ),
         );
+        final res = await call(params);
 
         if (method == HttpMethod.post) {
           await _modelData.upsert(
@@ -160,16 +145,7 @@ class ClientOfflineMixin {
   Future<Response> handleOfflineRequest({
     required Uri uri,
     required HttpMethod method,
-    required Future<Response<dynamic>> Function(HttpMethod,
-            {String path,
-            Map<String, String> headers,
-            Map<String, dynamic> params,
-            ResponseType? responseType,
-            String cacheModel,
-            String cacheKey,
-            String cacheResponseIdKey,
-            String cacheResponseContainerKey})
-        call,
+    required Caller call,
     String path = '',
     Map<String, String> headers = const {},
     Map<String, dynamic> params = const {},
@@ -320,13 +296,13 @@ class ClientOfflineMixin {
         }
 
         try {
-          final res = await call(
+          final res = await call(CallParams(
             method,
+            path,
             headers: headers,
             params: params,
-            path: path,
             responseType: responseType,
-          );
+          ));
 
           final futures = <Future>[];
           if (method == HttpMethod.post) {

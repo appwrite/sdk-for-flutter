@@ -6,6 +6,8 @@ import 'dart:math';
 import 'dart:typed_data';
 
 import 'models.dart' as models;
+import 'src/call_handlers/offline_call_handler.dart';
+import 'src/call_params.dart';
 import 'src/enums.dart';
 import 'src/input_file.dart';
 import 'src/service.dart';
