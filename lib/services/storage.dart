@@ -23,24 +23,11 @@ class Storage extends Service {
       'content-type': 'application/json',
     };
 
-    final cacheModel = '';
-    final cacheKey = '';
-    final cacheResponseIdKey = '\$id';
-    final cacheResponseContainerKey = 'files';
-
-    final res = await client.call(withCacheParams(
-      CallParams(
-        HttpMethod.get,
-        path,
-        params: params,
-        headers: headers,
-      ),
-      CacheParams(
-        model: cacheModel,
-        key: cacheKey,
-        responseIdKey: cacheResponseIdKey,
-        responseContainerKey: cacheResponseContainerKey,
-      ),
+    final res = await client.call(CallParams(
+      HttpMethod.get,
+      path,
+      params: params,
+      headers: headers,
     ));
 
     return models.FileList.fromMap(res.data);
@@ -118,24 +105,11 @@ class Storage extends Service {
       'content-type': 'application/json',
     };
 
-    final cacheModel = '';
-    final cacheKey = '';
-    final cacheResponseIdKey = '\$id';
-    final cacheResponseContainerKey = '';
-
-    final res = await client.call(withCacheParams(
-      CallParams(
-        HttpMethod.get,
-        path,
-        params: params,
-        headers: headers,
-      ),
-      CacheParams(
-        model: cacheModel,
-        key: cacheKey,
-        responseIdKey: cacheResponseIdKey,
-        responseContainerKey: cacheResponseContainerKey,
-      ),
+    final res = await client.call(CallParams(
+      HttpMethod.get,
+      path,
+      params: params,
+      headers: headers,
     ));
 
     return models.File.fromMap(res.data);
@@ -162,24 +136,11 @@ class Storage extends Service {
       'content-type': 'application/json',
     };
 
-    final cacheModel = '';
-    final cacheKey = '';
-    final cacheResponseIdKey = '\$id';
-    final cacheResponseContainerKey = '';
-
-    final res = await client.call(withCacheParams(
-      CallParams(
-        HttpMethod.put,
-        path,
-        params: params,
-        headers: headers,
-      ),
-      CacheParams(
-        model: cacheModel,
-        key: cacheKey,
-        responseIdKey: cacheResponseIdKey,
-        responseContainerKey: cacheResponseContainerKey,
-      ),
+    final res = await client.call(CallParams(
+      HttpMethod.put,
+      path,
+      params: params,
+      headers: headers,
     ));
 
     return models.File.fromMap(res.data);
@@ -201,24 +162,11 @@ class Storage extends Service {
       'content-type': 'application/json',
     };
 
-    final cacheModel = '';
-    final cacheKey = '';
-    final cacheResponseIdKey = '\$id';
-    final cacheResponseContainerKey = '';
-
-    final res = await client.call(withCacheParams(
-      CallParams(
-        HttpMethod.delete,
-        path,
-        params: params,
-        headers: headers,
-      ),
-      CacheParams(
-        model: cacheModel,
-        key: cacheKey,
-        responseIdKey: cacheResponseIdKey,
-        responseContainerKey: cacheResponseContainerKey,
-      ),
+    final res = await client.call(CallParams(
+      HttpMethod.delete,
+      path,
+      params: params,
+      headers: headers,
     ));
 
     return res.data;

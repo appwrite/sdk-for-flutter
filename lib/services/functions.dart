@@ -26,24 +26,11 @@ class Functions extends Service {
       'content-type': 'application/json',
     };
 
-    final cacheModel = '';
-    final cacheKey = '';
-    final cacheResponseIdKey = '\$id';
-    final cacheResponseContainerKey = 'executions';
-
-    final res = await client.call(withCacheParams(
-      CallParams(
-        HttpMethod.get,
-        path,
-        params: params,
-        headers: headers,
-      ),
-      CacheParams(
-        model: cacheModel,
-        key: cacheKey,
-        responseIdKey: cacheResponseIdKey,
-        responseContainerKey: cacheResponseContainerKey,
-      ),
+    final res = await client.call(CallParams(
+      HttpMethod.get,
+      path,
+      params: params,
+      headers: headers,
     ));
 
     return models.ExecutionList.fromMap(res.data);
@@ -70,24 +57,11 @@ class Functions extends Service {
       'content-type': 'application/json',
     };
 
-    final cacheModel = '';
-    final cacheKey = '';
-    final cacheResponseIdKey = '\$id';
-    final cacheResponseContainerKey = '';
-
-    final res = await client.call(withCacheParams(
-      CallParams(
-        HttpMethod.post,
-        path,
-        params: params,
-        headers: headers,
-      ),
-      CacheParams(
-        model: cacheModel,
-        key: cacheKey,
-        responseIdKey: cacheResponseIdKey,
-        responseContainerKey: cacheResponseContainerKey,
-      ),
+    final res = await client.call(CallParams(
+      HttpMethod.post,
+      path,
+      params: params,
+      headers: headers,
     ));
 
     return models.Execution.fromMap(res.data);
@@ -109,24 +83,11 @@ class Functions extends Service {
       'content-type': 'application/json',
     };
 
-    final cacheModel = '';
-    final cacheKey = '';
-    final cacheResponseIdKey = '\$id';
-    final cacheResponseContainerKey = '';
-
-    final res = await client.call(withCacheParams(
-      CallParams(
-        HttpMethod.get,
-        path,
-        params: params,
-        headers: headers,
-      ),
-      CacheParams(
-        model: cacheModel,
-        key: cacheKey,
-        responseIdKey: cacheResponseIdKey,
-        responseContainerKey: cacheResponseContainerKey,
-      ),
+    final res = await client.call(CallParams(
+      HttpMethod.get,
+      path,
+      params: params,
+      headers: headers,
     ));
 
     return models.Execution.fromMap(res.data);

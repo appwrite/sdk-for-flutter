@@ -8,6 +8,9 @@ import '../client_offline_mixin.dart';
 import '../enums.dart';
 import '../exception.dart';
 import '../offline/caller.dart';
+import '../offline/route.dart';
+import '../offline/route_mapping.dart';
+import '../offline/router.dart';
 import '../response.dart';
 import 'call_handler.dart';
 import 'http_call_handler.dart';
@@ -57,8 +60,22 @@ CallParams withCacheParams(CallParams params, CacheParams cacheParams) {
 class OfflineCallHandler extends CallHandler
     with ClientMixin, ClientOfflineMixin {
   final Caller _call;
+  final Router _router = Router();
 
-  OfflineCallHandler(this._call);
+  OfflineCallHandler(this._call) {
+    routes.forEach((route) {
+      final method = (route['method'] as String).toUpperCase();
+      final path = route['path'] as String;
+      final offline = route['offline'] as Map<String, String>;
+      _router.addRoute(
+        Route(method, path)
+            .label('offline.model', offline['model']!)
+            .label('offline.key', offline['key']!)
+            .label('offline.response-key', offline['response-key']!)
+            .label('offline.container-key', offline['container-key']!),
+      );
+    });
+  }
 
   @override
   Future<Response> handleCall(CallParams params) async {
@@ -69,6 +86,30 @@ class OfflineCallHandler extends CallHandler
       try {
         // if offline, do offline stuff
         print('checking offline status...');
+
+        final routeMatch = _router.match(
+          params.method.name(),
+          params.path,
+        );
+
+        final modelPattern = routeMatch?.getLabel('offline.model') as String;
+
+        final pathValues = routeMatch?.getPathValues(params.path);
+
+        final model = modelPattern.split('/').map((part) {
+          if (!part.startsWith('{') || !part.endsWith('}')) {
+            return part;
+          }
+          return pathValues![part.substring(1, part.length - 1)];
+        }).join('/');
+
+        final cacheParams = CacheParams(
+          model: model,
+          key: routeMatch?.getLabel('offline.key') as String,
+          responseIdKey: routeMatch?.getLabel('offline.response-key') as String,
+          responseContainerKey:
+              routeMatch?.getLabel('offline.container-key') as String,
+        );
 
         final uri = Uri.parse(endpoint + params.path);
 
@@ -82,8 +123,6 @@ class OfflineCallHandler extends CallHandler
         if (offlinePersistency && !isOnline.value) {
           await checkOnlineStatus();
         }
-
-        final cacheParams = getCacheParams(params);
 
         if (cacheParams.model.isNotEmpty &&
             offlinePersistency &&

@@ -22,24 +22,11 @@ class Teams extends Service {
       'content-type': 'application/json',
     };
 
-    final cacheModel = '/teams';
-    final cacheKey = '';
-    final cacheResponseIdKey = '\$id';
-    final cacheResponseContainerKey = 'teams';
-
-    final res = await client.call(withCacheParams(
-      CallParams(
-        HttpMethod.get,
-        path,
-        params: params,
-        headers: headers,
-      ),
-      CacheParams(
-        model: cacheModel,
-        key: cacheKey,
-        responseIdKey: cacheResponseIdKey,
-        responseContainerKey: cacheResponseContainerKey,
-      ),
+    final res = await client.call(CallParams(
+      HttpMethod.get,
+      path,
+      params: params,
+      headers: headers,
     ));
 
     return models.TeamList.fromMap(res.data);
@@ -67,24 +54,11 @@ class Teams extends Service {
       'content-type': 'application/json',
     };
 
-    final cacheModel = '';
-    final cacheKey = '';
-    final cacheResponseIdKey = '\$id';
-    final cacheResponseContainerKey = '';
-
-    final res = await client.call(withCacheParams(
-      CallParams(
-        HttpMethod.post,
-        path,
-        params: params,
-        headers: headers,
-      ),
-      CacheParams(
-        model: cacheModel,
-        key: cacheKey,
-        responseIdKey: cacheResponseIdKey,
-        responseContainerKey: cacheResponseContainerKey,
-      ),
+    final res = await client.call(CallParams(
+      HttpMethod.post,
+      path,
+      params: params,
+      headers: headers,
     ));
 
     return models.Team.fromMap(res.data);
@@ -103,24 +77,11 @@ class Teams extends Service {
       'content-type': 'application/json',
     };
 
-    final cacheModel = '/teams'.replaceAll('{teamId}', teamId);
-    final cacheKey = teamId;
-    final cacheResponseIdKey = '\$id';
-    final cacheResponseContainerKey = '';
-
-    final res = await client.call(withCacheParams(
-      CallParams(
-        HttpMethod.get,
-        path,
-        params: params,
-        headers: headers,
-      ),
-      CacheParams(
-        model: cacheModel,
-        key: cacheKey,
-        responseIdKey: cacheResponseIdKey,
-        responseContainerKey: cacheResponseContainerKey,
-      ),
+    final res = await client.call(CallParams(
+      HttpMethod.get,
+      path,
+      params: params,
+      headers: headers,
     ));
 
     return models.Team.fromMap(res.data);
@@ -143,24 +104,11 @@ class Teams extends Service {
       'content-type': 'application/json',
     };
 
-    final cacheModel = '/teams'.replaceAll('{teamId}', teamId);
-    final cacheKey = teamId;
-    final cacheResponseIdKey = '\$id';
-    final cacheResponseContainerKey = '';
-
-    final res = await client.call(withCacheParams(
-      CallParams(
-        HttpMethod.put,
-        path,
-        params: params,
-        headers: headers,
-      ),
-      CacheParams(
-        model: cacheModel,
-        key: cacheKey,
-        responseIdKey: cacheResponseIdKey,
-        responseContainerKey: cacheResponseContainerKey,
-      ),
+    final res = await client.call(CallParams(
+      HttpMethod.put,
+      path,
+      params: params,
+      headers: headers,
     ));
 
     return models.Team.fromMap(res.data);
@@ -180,24 +128,11 @@ class Teams extends Service {
       'content-type': 'application/json',
     };
 
-    final cacheModel = '';
-    final cacheKey = '';
-    final cacheResponseIdKey = '\$id';
-    final cacheResponseContainerKey = '';
-
-    final res = await client.call(withCacheParams(
-      CallParams(
-        HttpMethod.delete,
-        path,
-        params: params,
-        headers: headers,
-      ),
-      CacheParams(
-        model: cacheModel,
-        key: cacheKey,
-        responseIdKey: cacheResponseIdKey,
-        responseContainerKey: cacheResponseContainerKey,
-      ),
+    final res = await client.call(CallParams(
+      HttpMethod.delete,
+      path,
+      params: params,
+      headers: headers,
     ));
 
     return res.data;
@@ -222,25 +157,11 @@ class Teams extends Service {
       'content-type': 'application/json',
     };
 
-    final cacheModel =
-        '/teams/{teamId}/memberships'.replaceAll('{teamId}', teamId);
-    final cacheKey = '';
-    final cacheResponseIdKey = '\$id';
-    final cacheResponseContainerKey = 'memberships';
-
-    final res = await client.call(withCacheParams(
-      CallParams(
-        HttpMethod.get,
-        path,
-        params: params,
-        headers: headers,
-      ),
-      CacheParams(
-        model: cacheModel,
-        key: cacheKey,
-        responseIdKey: cacheResponseIdKey,
-        responseContainerKey: cacheResponseContainerKey,
-      ),
+    final res = await client.call(CallParams(
+      HttpMethod.get,
+      path,
+      params: params,
+      headers: headers,
     ));
 
     return models.MembershipList.fromMap(res.data);
@@ -284,24 +205,11 @@ class Teams extends Service {
       'content-type': 'application/json',
     };
 
-    final cacheModel = '';
-    final cacheKey = '';
-    final cacheResponseIdKey = '\$id';
-    final cacheResponseContainerKey = '';
-
-    final res = await client.call(withCacheParams(
-      CallParams(
-        HttpMethod.post,
-        path,
-        params: params,
-        headers: headers,
-      ),
-      CacheParams(
-        model: cacheModel,
-        key: cacheKey,
-        responseIdKey: cacheResponseIdKey,
-        responseContainerKey: cacheResponseContainerKey,
-      ),
+    final res = await client.call(CallParams(
+      HttpMethod.post,
+      path,
+      params: params,
+      headers: headers,
     ));
 
     return models.Membership.fromMap(res.data);
@@ -324,26 +232,11 @@ class Teams extends Service {
       'content-type': 'application/json',
     };
 
-    final cacheModel = '/teams/{teamId}/memberships'
-        .replaceAll('{teamId}', teamId)
-        .replaceAll('{membershipId}', membershipId);
-    final cacheKey = membershipId;
-    final cacheResponseIdKey = '\$id';
-    final cacheResponseContainerKey = '';
-
-    final res = await client.call(withCacheParams(
-      CallParams(
-        HttpMethod.get,
-        path,
-        params: params,
-        headers: headers,
-      ),
-      CacheParams(
-        model: cacheModel,
-        key: cacheKey,
-        responseIdKey: cacheResponseIdKey,
-        responseContainerKey: cacheResponseContainerKey,
-      ),
+    final res = await client.call(CallParams(
+      HttpMethod.get,
+      path,
+      params: params,
+      headers: headers,
     ));
 
     return models.Membership.fromMap(res.data);
@@ -371,24 +264,11 @@ class Teams extends Service {
       'content-type': 'application/json',
     };
 
-    final cacheModel = '';
-    final cacheKey = '';
-    final cacheResponseIdKey = '\$id';
-    final cacheResponseContainerKey = '';
-
-    final res = await client.call(withCacheParams(
-      CallParams(
-        HttpMethod.patch,
-        path,
-        params: params,
-        headers: headers,
-      ),
-      CacheParams(
-        model: cacheModel,
-        key: cacheKey,
-        responseIdKey: cacheResponseIdKey,
-        responseContainerKey: cacheResponseContainerKey,
-      ),
+    final res = await client.call(CallParams(
+      HttpMethod.patch,
+      path,
+      params: params,
+      headers: headers,
     ));
 
     return models.Membership.fromMap(res.data);
@@ -412,24 +292,11 @@ class Teams extends Service {
       'content-type': 'application/json',
     };
 
-    final cacheModel = '';
-    final cacheKey = '';
-    final cacheResponseIdKey = '\$id';
-    final cacheResponseContainerKey = '';
-
-    final res = await client.call(withCacheParams(
-      CallParams(
-        HttpMethod.delete,
-        path,
-        params: params,
-        headers: headers,
-      ),
-      CacheParams(
-        model: cacheModel,
-        key: cacheKey,
-        responseIdKey: cacheResponseIdKey,
-        responseContainerKey: cacheResponseContainerKey,
-      ),
+    final res = await client.call(CallParams(
+      HttpMethod.delete,
+      path,
+      params: params,
+      headers: headers,
     ));
 
     return res.data;
@@ -463,24 +330,11 @@ class Teams extends Service {
       'content-type': 'application/json',
     };
 
-    final cacheModel = '';
-    final cacheKey = '';
-    final cacheResponseIdKey = '\$id';
-    final cacheResponseContainerKey = '';
-
-    final res = await client.call(withCacheParams(
-      CallParams(
-        HttpMethod.patch,
-        path,
-        params: params,
-        headers: headers,
-      ),
-      CacheParams(
-        model: cacheModel,
-        key: cacheKey,
-        responseIdKey: cacheResponseIdKey,
-        responseContainerKey: cacheResponseContainerKey,
-      ),
+    final res = await client.call(CallParams(
+      HttpMethod.patch,
+      path,
+      params: params,
+      headers: headers,
     ));
 
     return models.Membership.fromMap(res.data);

@@ -27,27 +27,11 @@ class Databases extends Service {
       'content-type': 'application/json',
     };
 
-    final cacheModel =
-        '/databases/{databaseId}/collections/{collectionId}/documents'
-            .replaceAll('{databaseId}', databaseId)
-            .replaceAll('{collectionId}', collectionId);
-    final cacheKey = '';
-    final cacheResponseIdKey = '\$id';
-    final cacheResponseContainerKey = 'documents';
-
-    final res = await client.call(withCacheParams(
-      CallParams(
-        HttpMethod.get,
-        path,
-        params: params,
-        headers: headers,
-      ),
-      CacheParams(
-        model: cacheModel,
-        key: cacheKey,
-        responseIdKey: cacheResponseIdKey,
-        responseContainerKey: cacheResponseContainerKey,
-      ),
+    final res = await client.call(CallParams(
+      HttpMethod.get,
+      path,
+      params: params,
+      headers: headers,
     ));
 
     return models.DocumentList.fromMap(res.data);
@@ -81,27 +65,11 @@ class Databases extends Service {
       'content-type': 'application/json',
     };
 
-    final cacheModel =
-        '/databases/{databaseId}/collections/{collectionId}/documents'
-            .replaceAll('{databaseId}', databaseId)
-            .replaceAll('{collectionId}', collectionId);
-    final cacheKey = documentId;
-    final cacheResponseIdKey = '\$id';
-    final cacheResponseContainerKey = '';
-
-    final res = await client.call(withCacheParams(
-      CallParams(
-        HttpMethod.post,
-        path,
-        params: params,
-        headers: headers,
-      ),
-      CacheParams(
-        model: cacheModel,
-        key: cacheKey,
-        responseIdKey: cacheResponseIdKey,
-        responseContainerKey: cacheResponseContainerKey,
-      ),
+    final res = await client.call(CallParams(
+      HttpMethod.post,
+      path,
+      params: params,
+      headers: headers,
     ));
 
     return models.Document.fromMap(res.data);
@@ -128,28 +96,11 @@ class Databases extends Service {
       'content-type': 'application/json',
     };
 
-    final cacheModel =
-        '/databases/{databaseId}/collections/{collectionId}/documents'
-            .replaceAll('{databaseId}', databaseId)
-            .replaceAll('{collectionId}', collectionId)
-            .replaceAll('{documentId}', documentId);
-    final cacheKey = documentId;
-    final cacheResponseIdKey = '\$id';
-    final cacheResponseContainerKey = '';
-
-    final res = await client.call(withCacheParams(
-      CallParams(
-        HttpMethod.get,
-        path,
-        params: params,
-        headers: headers,
-      ),
-      CacheParams(
-        model: cacheModel,
-        key: cacheKey,
-        responseIdKey: cacheResponseIdKey,
-        responseContainerKey: cacheResponseContainerKey,
-      ),
+    final res = await client.call(CallParams(
+      HttpMethod.get,
+      path,
+      params: params,
+      headers: headers,
     ));
 
     return models.Document.fromMap(res.data);
@@ -181,28 +132,11 @@ class Databases extends Service {
       'content-type': 'application/json',
     };
 
-    final cacheModel =
-        '/databases/{databaseId}/collections/{collectionId}/documents'
-            .replaceAll('{databaseId}', databaseId)
-            .replaceAll('{collectionId}', collectionId)
-            .replaceAll('{documentId}', documentId);
-    final cacheKey = documentId;
-    final cacheResponseIdKey = '\$id';
-    final cacheResponseContainerKey = '';
-
-    final res = await client.call(withCacheParams(
-      CallParams(
-        HttpMethod.patch,
-        path,
-        params: params,
-        headers: headers,
-      ),
-      CacheParams(
-        model: cacheModel,
-        key: cacheKey,
-        responseIdKey: cacheResponseIdKey,
-        responseContainerKey: cacheResponseContainerKey,
-      ),
+    final res = await client.call(CallParams(
+      HttpMethod.patch,
+      path,
+      params: params,
+      headers: headers,
     ));
 
     return models.Document.fromMap(res.data);
@@ -228,28 +162,11 @@ class Databases extends Service {
       'content-type': 'application/json',
     };
 
-    final cacheModel =
-        '/databases/{databaseId}/collections/{collectionId}/documents'
-            .replaceAll('{databaseId}', databaseId)
-            .replaceAll('{collectionId}', collectionId)
-            .replaceAll('{documentId}', documentId);
-    final cacheKey = documentId;
-    final cacheResponseIdKey = '\$id';
-    final cacheResponseContainerKey = '';
-
-    final res = await client.call(withCacheParams(
-      CallParams(
-        HttpMethod.delete,
-        path,
-        params: params,
-        headers: headers,
-      ),
-      CacheParams(
-        model: cacheModel,
-        key: cacheKey,
-        responseIdKey: cacheResponseIdKey,
-        responseContainerKey: cacheResponseContainerKey,
-      ),
+    final res = await client.call(CallParams(
+      HttpMethod.delete,
+      path,
+      params: params,
+      headers: headers,
     ));
 
     return res.data;

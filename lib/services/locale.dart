@@ -23,24 +23,11 @@ class Locale extends Service {
       'content-type': 'application/json',
     };
 
-    final cacheModel = '/locale';
-    final cacheKey = 'current';
-    final cacheResponseIdKey = '\$id';
-    final cacheResponseContainerKey = '';
-
-    final res = await client.call(withCacheParams(
-      CallParams(
-        HttpMethod.get,
-        path,
-        params: params,
-        headers: headers,
-      ),
-      CacheParams(
-        model: cacheModel,
-        key: cacheKey,
-        responseIdKey: cacheResponseIdKey,
-        responseContainerKey: cacheResponseContainerKey,
-      ),
+    final res = await client.call(CallParams(
+      HttpMethod.get,
+      path,
+      params: params,
+      headers: headers,
     ));
 
     return models.Locale.fromMap(res.data);
@@ -60,24 +47,11 @@ class Locale extends Service {
       'content-type': 'application/json',
     };
 
-    final cacheModel = '/locale/continents';
-    final cacheKey = '';
-    final cacheResponseIdKey = 'code';
-    final cacheResponseContainerKey = 'continents';
-
-    final res = await client.call(withCacheParams(
-      CallParams(
-        HttpMethod.get,
-        path,
-        params: params,
-        headers: headers,
-      ),
-      CacheParams(
-        model: cacheModel,
-        key: cacheKey,
-        responseIdKey: cacheResponseIdKey,
-        responseContainerKey: cacheResponseContainerKey,
-      ),
+    final res = await client.call(CallParams(
+      HttpMethod.get,
+      path,
+      params: params,
+      headers: headers,
     ));
 
     return models.ContinentList.fromMap(res.data);
@@ -97,24 +71,11 @@ class Locale extends Service {
       'content-type': 'application/json',
     };
 
-    final cacheModel = '/locale/countries';
-    final cacheKey = '';
-    final cacheResponseIdKey = 'code';
-    final cacheResponseContainerKey = 'countries';
-
-    final res = await client.call(withCacheParams(
-      CallParams(
-        HttpMethod.get,
-        path,
-        params: params,
-        headers: headers,
-      ),
-      CacheParams(
-        model: cacheModel,
-        key: cacheKey,
-        responseIdKey: cacheResponseIdKey,
-        responseContainerKey: cacheResponseContainerKey,
-      ),
+    final res = await client.call(CallParams(
+      HttpMethod.get,
+      path,
+      params: params,
+      headers: headers,
     ));
 
     return models.CountryList.fromMap(res.data);
@@ -134,24 +95,11 @@ class Locale extends Service {
       'content-type': 'application/json',
     };
 
-    final cacheModel = '/locale/countries/eu';
-    final cacheKey = '';
-    final cacheResponseIdKey = 'code';
-    final cacheResponseContainerKey = 'countries';
-
-    final res = await client.call(withCacheParams(
-      CallParams(
-        HttpMethod.get,
-        path,
-        params: params,
-        headers: headers,
-      ),
-      CacheParams(
-        model: cacheModel,
-        key: cacheKey,
-        responseIdKey: cacheResponseIdKey,
-        responseContainerKey: cacheResponseContainerKey,
-      ),
+    final res = await client.call(CallParams(
+      HttpMethod.get,
+      path,
+      params: params,
+      headers: headers,
     ));
 
     return models.CountryList.fromMap(res.data);
@@ -171,24 +119,11 @@ class Locale extends Service {
       'content-type': 'application/json',
     };
 
-    final cacheModel = '/locale/countries/phones';
-    final cacheKey = '';
-    final cacheResponseIdKey = 'countryCode';
-    final cacheResponseContainerKey = 'phones';
-
-    final res = await client.call(withCacheParams(
-      CallParams(
-        HttpMethod.get,
-        path,
-        params: params,
-        headers: headers,
-      ),
-      CacheParams(
-        model: cacheModel,
-        key: cacheKey,
-        responseIdKey: cacheResponseIdKey,
-        responseContainerKey: cacheResponseContainerKey,
-      ),
+    final res = await client.call(CallParams(
+      HttpMethod.get,
+      path,
+      params: params,
+      headers: headers,
     ));
 
     return models.PhoneList.fromMap(res.data);
@@ -209,24 +144,11 @@ class Locale extends Service {
       'content-type': 'application/json',
     };
 
-    final cacheModel = '/locale/currencies';
-    final cacheKey = '';
-    final cacheResponseIdKey = 'code';
-    final cacheResponseContainerKey = 'currencies';
-
-    final res = await client.call(withCacheParams(
-      CallParams(
-        HttpMethod.get,
-        path,
-        params: params,
-        headers: headers,
-      ),
-      CacheParams(
-        model: cacheModel,
-        key: cacheKey,
-        responseIdKey: cacheResponseIdKey,
-        responseContainerKey: cacheResponseContainerKey,
-      ),
+    final res = await client.call(CallParams(
+      HttpMethod.get,
+      path,
+      params: params,
+      headers: headers,
     ));
 
     return models.CurrencyList.fromMap(res.data);
@@ -246,24 +168,11 @@ class Locale extends Service {
       'content-type': 'application/json',
     };
 
-    final cacheModel = '/locale/languages';
-    final cacheKey = '';
-    final cacheResponseIdKey = 'code';
-    final cacheResponseContainerKey = 'languages';
-
-    final res = await client.call(withCacheParams(
-      CallParams(
-        HttpMethod.get,
-        path,
-        params: params,
-        headers: headers,
-      ),
-      CacheParams(
-        model: cacheModel,
-        key: cacheKey,
-        responseIdKey: cacheResponseIdKey,
-        responseContainerKey: cacheResponseContainerKey,
-      ),
+    final res = await client.call(CallParams(
+      HttpMethod.get,
+      path,
+      params: params,
+      headers: headers,
     ));
 
     return models.LanguageList.fromMap(res.data);
