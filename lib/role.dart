@@ -3,27 +3,23 @@ part of appwrite;
 class Role {
     Role._();
     
-    static String any() {
-        return 'any';
-    }
-
-    static String user(String id, [String status = '']) {
+    static String any() => 'any';
+    String status='';
+    static String user(String id, status]) {
         if(status.isEmpty) {
             return 'user:$id';
         }
         return 'user:$id/$status';
     }
 
-    static String users([String status = '']) {
+    static String users(status]) {
         if(status.isEmpty) {
             return 'users';
         }
         return 'users/$status';
     }
 
-    static String guests() {
-        return 'guests';
-    }
+    static String guests() => 'guests';
 
     static String team(String id, [String role = '']) {
         if(role.isEmpty) {
