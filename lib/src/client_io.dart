@@ -374,6 +374,10 @@ class ClientIO extends ClientBase with ClientMixin {
 
   @override
   Future<Response> call(CallParams params) async {
+    while (!_initialized) {
+      await Future.delayed(Duration(milliseconds: 100));
+    }
+
     params.headers.addAll(this._headers!);
     final response = await _handler.handleCall(
       withOfflinePersistency(

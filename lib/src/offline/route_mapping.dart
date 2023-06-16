@@ -36,7 +36,7 @@ final routes = [
     "offline": {
       "model":
           "\/databases\/{databaseId}\/collections\/{collectionId}\/documents",
-      "key": "{documentId}",
+      "key": "",
       "response-key": "\$id",
       "container-key": "",
     },

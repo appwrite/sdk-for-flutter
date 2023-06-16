@@ -366,45 +366,122 @@ class ClientOfflineMixin {
     return completer.future;
   }
 
+  void cacheRelated({
+    required Map<String, Object?> document,
+  }) {
+    // iterate over each attribute to see if it's nested data
+    document.entries.forEach((entry) {
+      if (entry.value is Map) {
+        final nestedDocument = entry.value as Map<String, Object?>;
+        final nestedDatabaseId = nestedDocument['\$databaseId'] as String?;
+        final nestedCollectionId = nestedDocument['\$collectionId'] as String?;
+        final nestedDocumentId = nestedDocument['\$id'] as String?;
+        if (nestedDatabaseId == null ||
+            nestedCollectionId == null ||
+            nestedDocumentId == null) return;
+        final nestedModel =
+            "/databases/$nestedDatabaseId/collections/$nestedCollectionId/documents";
+        cacheResponse(
+          cacheModel: nestedModel,
+          cacheKey: nestedDocumentId,
+          cacheResponseIdKey: "\$id",
+          cacheResponseContainerKey: '',
+          requestMethod: 'GET',
+          responseData: entry.value,
+        );
+        document[entry.key] = {
+          '\$id': nestedDocumentId,
+          '\$databaseId': nestedDatabaseId,
+          '\$collectionId': nestedCollectionId,
+        };
+      } else if (entry.value is List &&
+          entry.value != null &&
+          (entry.value as List).isNotEmpty) {
+        final values = (entry.value as List);
+        if (!(values.first is Map<String, Object?>)) return;
+        final nestedDocument = values.first;
+        final nestedDatabaseId = nestedDocument['\$databaseId'] as String?;
+        final nestedCollectionId = nestedDocument['\$collectionId'] as String?;
+        if (nestedDatabaseId == null || nestedCollectionId == null) return;
+        final nestedModel =
+            "/databases/$nestedDatabaseId/collections/$nestedCollectionId/documents";
+        cacheResponse(
+          cacheModel: nestedModel,
+          cacheKey: '',
+          cacheResponseIdKey: "\$id",
+          cacheResponseContainerKey: 'documents',
+          requestMethod: 'GET',
+          responseData: {
+            'documents': entry.value,
+          },
+        );
+        document[entry.key] = values.map((value) {
+          final nestedDocumentId = value['\$id'] as String?;
+          return {
+            '\$id': nestedDocumentId,
+            '\$databaseId': nestedDatabaseId,
+            '\$collectionId': nestedCollectionId,
+          };
+        }).toList();
+      }
+    });
+  }
+
+  Future<void> cacheCollections(List<Map<String, dynamic>> relations) {
+    final futures = <Future>[];
+    for (var collection in relations) {
+      futures.add(_modelData.cacheModel(collection));
+    }
+    return Future.wait(futures);
+  }
+
   void cacheResponse({
     required String cacheModel,
     required String cacheKey,
     required String cacheResponseIdKey,
-    required http.BaseRequest request,
-    required Response response,
+    required String cacheResponseContainerKey,
+    required String requestMethod,
+    required dynamic responseData,
   }) {
     if (cacheModel.isEmpty) return;
 
-    switch (request.method) {
+    switch (requestMethod) {
       case 'GET':
-        final clone = cloneMap(response.data);
+        final clone = cloneMap(responseData);
         if (cacheKey.isNotEmpty) {
+          cacheRelated(document: clone);
           _modelData.upsert(model: cacheModel, data: clone, key: cacheKey);
         } else {
-          clone.forEach((key, value) {
-            if (key == 'total') return;
-            _modelData.batchUpsert(
-              model: cacheModel,
-              dataList: value as List,
-              idKey: cacheResponseIdKey,
-            );
+          final values = clone[cacheResponseContainerKey] as List;
+          values.forEach((value) {
+            cacheRelated(document: value);
           });
+          _modelData.batchUpsert(
+            model: cacheModel,
+            dataList: values,
+            idKey: cacheResponseIdKey,
+          );
         }
         break;
       case 'POST':
       case 'PUT':
       case 'PATCH':
-        Map<String, Object?> clone = cloneMap(response.data);
+        Map<String, Object?> clone = cloneMap(responseData);
         if (cacheKey.isEmpty) {
           cacheKey = clone['\$id'] as String;
         }
         if (cacheModel.endsWith('/prefs')) {
-          clone = response.data['prefs'];
+          clone = responseData['prefs'];
         }
         _modelData.upsert(model: cacheModel, data: clone, key: cacheKey);
         break;
       case 'DELETE':
         if (cacheKey.isNotEmpty) {
+          // _modelData.get(model: cacheModel, key: cacheKey).then((cachedData) {
+          //   if (cachedData == null) {
+          //     return;
+          //   }
+          // });
           _modelData.delete(model: cacheModel, key: cacheKey);
         }
     }

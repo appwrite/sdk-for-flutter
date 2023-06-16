@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:io';
 
 import 'package:http/http.dart' as http;
@@ -82,6 +83,10 @@ class OfflineCallHandler extends CallHandler
     final endpoint = getEndpoint(params);
     final offlinePersistency = getOfflinePersistency(params);
 
+    if (offlinePersistency) {
+      params.headers['X-SDK-Offline'] = 'true';
+    }
+
     while (true) {
       try {
         // if offline, do offline stuff
@@ -96,19 +101,36 @@ class OfflineCallHandler extends CallHandler
 
         final pathValues = routeMatch?.getPathValues(params.path);
 
-        final model = modelPattern.split('/').map((part) {
-          if (!part.startsWith('{') || !part.endsWith('}')) {
-            return part;
+        String replacePlaceholder(
+            String input, Map<String, String>? pathValues) {
+          if (!input.startsWith('{') || !input.endsWith('}')) {
+            return input;
           }
-          return pathValues![part.substring(1, part.length - 1)];
+          return pathValues![input.substring(1, input.length - 1)]!;
+        }
+
+        final model = modelPattern.split('/').map((part) {
+          return replacePlaceholder(part, pathValues);
         }).join('/');
+
+        final keyPattern = routeMatch?.getLabel('offline.key') ?? '';
+        final key = replacePlaceholder(
+          keyPattern,
+          pathValues,
+        );
+
+        final containerKeyPattern =
+            routeMatch?.getLabel('offline.container-key') ?? '';
+        final containerKey = replacePlaceholder(
+          containerKeyPattern,
+          pathValues,
+        );
 
         final cacheParams = CacheParams(
           model: model,
-          key: routeMatch?.getLabel('offline.key') as String,
+          key: key,
           responseIdKey: routeMatch?.getLabel('offline.response-key') as String,
-          responseContainerKey:
-              routeMatch?.getLabel('offline.container-key') as String,
+          responseContainerKey: containerKey,
         );
 
         final uri = Uri.parse(endpoint + params.path);
@@ -145,15 +167,23 @@ class OfflineCallHandler extends CallHandler
 
         final response = await next.handleCall(params);
 
-        // cache stuff
-        print('cached stuff...');
         if (offlinePersistency) {
+          // cache stuff
+          print('cached stuff...');
+
+          final relationsHeader = response.headers['x-appwrite-relations'];
+          if (relationsHeader != null) {
+            final relations = (jsonDecode(relationsHeader) as List)
+                .cast<Map<String, dynamic>>();
+            await cacheCollections(relations);
+          }
           cacheResponse(
             cacheModel: cacheParams.model,
             cacheKey: cacheParams.key,
             cacheResponseIdKey: cacheParams.responseIdKey,
-            request: request,
-            response: response,
+            cacheResponseContainerKey: cacheParams.responseContainerKey,
+            requestMethod: request.method,
+            responseData: response.data,
           );
         }
 
@@ -170,7 +200,8 @@ class OfflineCallHandler extends CallHandler
           rethrow;
         }
         isOnline.value = false;
-      } catch (e) {
+      } catch (e, s) {
+        print(s);
         throw AppwriteException(e.toString());
       }
     }

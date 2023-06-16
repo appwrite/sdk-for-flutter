@@ -19,23 +19,33 @@ class CacheSize {
     return encoded;
   }
 
-  Future<void> applyChange(int change) async {
-    if (change == 0) return;
+  Future<int?> applyChange(Transaction txn, int change) async {
+    if (change == 0) return null;
 
     final record = getCacheSizeRecordRef();
-
-    final currentSize = await record.get(_db) ?? 0;
-    await record.put(_db, currentSize + change);
+    final currentSize = await record.get(txn) ?? 0;
+    return await record.put(txn, currentSize + change);
   }
 
   Future<void> update({
-    Map<String, dynamic>? oldData,
+    required RecordRef<String, Map<String, Object?>> recordRef,
+    required Transaction txn,
     Map<String, dynamic>? newData,
   }) async {
+    final oldData = await recordRef.get(txn);
     final oldSize = oldData != null ? encode(oldData).length : 0;
     final newSize = newData != null ? encode(newData).length : 0;
     final change = newSize - oldSize;
-    await applyChange(change);
+    final cacheSize = await applyChange(txn, change);
+
+    if (change != 0) {
+      print([
+        '${recordRef.key}: oldSize: $oldSize',
+        'newSize: $newSize',
+        'change: $change',
+        'cacheSize: $cacheSize',
+      ].join(', '));
+    }
   }
 
   void onChange(void callback(int? currentSize)) {
