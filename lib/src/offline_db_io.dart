@@ -3,7 +3,7 @@ import 'dart:io';
 import 'package:sembast/sembast.dart';
 import 'package:sembast_sqflite/sembast_sqflite.dart';
 import 'package:sqflite/sqflite.dart' as sqflite;
-import 'package:sqflite_common_ffi/sqflite_ffi.dart';
+import 'package:sqflite_common_ffi/sqflite_ffi.dart' hide Database;
 
 class OfflineDatabase {
   static final OfflineDatabase instance = OfflineDatabase._internal();

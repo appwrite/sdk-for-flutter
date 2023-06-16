@@ -1,7 +1,8 @@
+import 'call_handlers/call_handler.dart';
+import 'call_params.dart';
 import 'client_stub.dart'
     if (dart.library.html) 'client_browser.dart'
     if (dart.library.io) 'client_io.dart';
-import 'enums.dart';
 import 'response.dart';
 import 'upload_progress.dart';
 
@@ -39,24 +40,14 @@ abstract class Client {
 
   /// Your project ID
   Client setProject(value);
+
   /// Your secret JSON Web Token
   Client setJWT(value);
   Client setLocale(value);
 
   Client addHeader(String key, String value);
 
-  Future<Response> call(
-    HttpMethod method, {
-    String path = '',
-    Map<String, String> headers = const {},
-    Map<String, dynamic> params = const {},
-    ResponseType? responseType,
-    String cacheModel = '',
-    String cacheKey = '',
-    String cacheResponseIdKey = '',
-    String cacheResponseContainerKey = '',
-    Map<String, Object?>? previous,
-  });
+  Future<Response> call(CallParams params);
 
   Future<Client> setOfflinePersistency({
     bool status = true,
@@ -68,4 +59,6 @@ abstract class Client {
   Client setOfflineCacheSize(int kbytes);
 
   int getOfflineCacheSize();
+
+  Client addHandler(CallHandler handler);
 }

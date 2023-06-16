@@ -1,15 +1,16 @@
-import 'dart:io';
 import 'dart:math';
 
-import 'package:flutter/foundation.dart';
 import 'package:flutter_web_auth_2/flutter_web_auth_2.dart';
 import 'package:http/browser_client.dart';
 import 'package:http/http.dart' as http;
-import 'package:universal_html/html.dart' as html;
 
+import 'call_handlers/call_handler.dart';
+import 'call_handlers/fallback_auth_call_handler.dart';
+import 'call_handlers/http_call_handler.dart';
+import 'call_handlers/offline_call_handler.dart';
+import 'call_params.dart';
 import 'client_base.dart';
 import 'client_mixin.dart';
-import 'client_offline_mixin.dart';
 import 'enums.dart';
 import 'exception.dart';
 import 'input_file.dart';
@@ -22,7 +23,7 @@ ClientBase createClient({
 }) =>
     ClientBrowser(endPoint: endPoint, selfSigned: selfSigned);
 
-class ClientBrowser extends ClientBase with ClientMixin, ClientOfflineMixin {
+class ClientBrowser extends ClientBase with ClientMixin {
   static const int CHUNK_SIZE = 5 * 1024 * 1024;
   String _endPoint;
   Map<String, String>? _headers;
@@ -30,6 +31,8 @@ class ClientBrowser extends ClientBase with ClientMixin, ClientOfflineMixin {
   late Map<String, String> config;
   late BrowserClient _httpClient;
   String? _endPointRealtime;
+  late CallHandler _handler;
+  late OfflineCallHandler _offlineHandler;
   bool _offlinePersistency = false;
   int _maxCacheSize = 40000; // 40MB
 
@@ -57,6 +60,9 @@ class ClientBrowser extends ClientBase with ClientMixin, ClientOfflineMixin {
 
     assert(_endPoint.startsWith(RegExp("http://|https://")),
         "endPoint $_endPoint must start with 'http'");
+    _handler = HttpCallHandler(_httpClient);
+    _offlineHandler = OfflineCallHandler(call);
+
     init();
   }
 
@@ -116,7 +122,7 @@ class ClientBrowser extends ClientBase with ClientMixin, ClientOfflineMixin {
     _offlinePersistency = status;
 
     if (_offlinePersistency) {
-      await initOffline(
+      await _offlineHandler.initOffline(
         call: call,
         onWriteQueueError: onWriteQueueError,
         getOfflineCacheSize: getOfflineCacheSize,
@@ -146,10 +152,8 @@ class ClientBrowser extends ClientBase with ClientMixin, ClientOfflineMixin {
   }
 
   Future init() async {
-    if (html.window.localStorage.keys.contains('cookieFallback')) {
-      addHeader('x-fallback-cookies',
-          html.window.localStorage['cookieFallback'] ?? '');
-    }
+    addHandler(FallbackAuthCallHandler());
+    addHandler(_offlineHandler);
     _httpClient.withCredentials = true;
   }
 
@@ -176,23 +180,23 @@ class ClientBrowser extends ClientBase with ClientMixin, ClientOfflineMixin {
         file.bytes!,
         filename: file.filename,
       );
-      return call(
+      return call(CallParams(
         HttpMethod.post,
-        path: path,
+        path,
         params: params,
         headers: headers,
-      );
+      ));
     }
 
     var offset = 0;
     if (idParamName.isNotEmpty && params[idParamName] != 'unique()') {
       //make a request to check if a file already exists
       try {
-        res = await call(
+        res = await call(CallParams(
           HttpMethod.get,
-          path: path + '/' + params[idParamName],
+          path + '/' + params[idParamName],
           headers: headers,
-        );
+        ));
         final int chunksUploaded = res.data['chunksUploaded'] as int;
         offset = min(size, chunksUploaded * CHUNK_SIZE);
       } on AppwriteException catch (_) {}
@@ -209,8 +213,12 @@ class ClientBrowser extends ClientBase with ClientMixin, ClientOfflineMixin {
       );
       headers['content-range'] =
           'bytes $offset-${min<int>(((offset + CHUNK_SIZE) - 1), size)}/$size';
-      res = await call(HttpMethod.post,
-          path: path, headers: headers, params: params);
+      res = await call(CallParams(
+        HttpMethod.post,
+        path,
+        headers: headers,
+        params: params,
+      ));
       offset += CHUNK_SIZE;
       if (offset < size) {
         headers['x-appwrite-id'] = res.data['\$id'];
@@ -228,132 +236,16 @@ class ClientBrowser extends ClientBase with ClientMixin, ClientOfflineMixin {
   }
 
   @override
-  Future<Response> call(
-    HttpMethod method, {
-    String path = '',
-    Map<String, String> headers = const {},
-    Map<String, dynamic> params = const {},
-    ResponseType? responseType,
-    String cacheModel = '',
-    String cacheKey = '',
-    String cacheResponseIdKey = '',
-    String cacheResponseContainerKey = '',
-    Map<String, Object?>? previous,
-  }) async {
-    while (true) {
-      final uri = Uri.parse(endPoint + path);
-
-      http.BaseRequest request = prepareRequest(
-        method,
-        uri: uri,
-        headers: {..._headers!, ...headers},
-        params: params,
-      );
-
-      if (getOfflinePersistency() && !isOnline.value) {
-        await checkOnlineStatus();
-      }
-
-      if (cacheModel.isNotEmpty &&
-          getOfflinePersistency() &&
-          !isOnline.value &&
-          responseType != ResponseType.bytes) {
-        return handleOfflineRequest(
-          uri: uri,
-          method: method,
-          call: call,
-          path: path,
-          headers: headers,
-          params: params,
-          responseType: responseType,
-          cacheModel: cacheModel,
-          cacheKey: cacheKey,
-          cacheResponseIdKey: cacheResponseIdKey,
-          cacheResponseContainerKey: cacheResponseContainerKey,
-        );
-      }
-
-      try {
-        final response = await send(
-          method,
-          path: path,
-          headers: headers,
-          params: params,
-          responseType: responseType,
-          cacheModel: cacheModel,
-          cacheKey: cacheKey,
-          cacheResponseIdKey: cacheResponseIdKey,
-          cacheResponseContainerKey: cacheResponseContainerKey,
-        );
-
-        if (getOfflinePersistency()) {
-          cacheResponse(
-            cacheModel: cacheModel,
-            cacheKey: cacheKey,
-            cacheResponseIdKey: cacheResponseIdKey,
-            request: request,
-            response: response,
-          );
-        }
-
-        return response;
-      } on AppwriteException catch (e) {
-        if ((e.message != "Network is unreachable" &&
-                !(e.message?.contains("Failed host lookup") ?? false)) ||
-            !getOfflinePersistency()) {
-          rethrow;
-        }
-        isOnline.value = false;
-      } on SocketException catch (_) {
-        if (!getOfflinePersistency()) {
-          rethrow;
-        }
-        isOnline.value = false;
-      } catch (e) {
-        throw AppwriteException(e.toString());
-      }
-    }
-  }
-
-  Future<Response> send(
-    HttpMethod method, {
-    String path = '',
-    Map<String, String> headers = const {},
-    Map<String, dynamic> params = const {},
-    ResponseType? responseType,
-    String cacheModel = '',
-    String cacheKey = '',
-    String cacheResponseIdKey = '',
-    String cacheResponseContainerKey = '',
-    Map<String, Object?>? previous,
-  }) async {
-    await init();
-
-    late http.Response res;
-    http.BaseRequest request = prepareRequest(
-      method,
-      uri: Uri.parse(_endPoint + path),
-      headers: {..._headers!, ...headers},
-      params: params,
+  Future<Response> call(CallParams params) async {
+    params.headers.addAll(this._headers!);
+    final response = await _handler.handleCall(
+      withOfflinePersistency(
+        withEndpoint(params, endPoint),
+        getOfflinePersistency(),
+      ),
     );
-    try {
-      final streamedResponse = await _httpClient.send(request);
-      res = await toResponse(streamedResponse);
 
-      final cookieFallback = res.headers['x-fallback-cookies'];
-      if (cookieFallback != null) {
-        debugPrint(
-            'Appwrite is using localStorage for session management. Increase your security by adding a custom domain as your API endpoint.');
-        addHeader('X-Fallback-Cookies', cookieFallback);
-        html.window.localStorage['cookieFallback'] = cookieFallback;
-      }
-      return prepareResponse(res, responseType: responseType);
-    } catch (e) {
-      if (e is AppwriteException) {
-        rethrow;
-      }
-      throw AppwriteException(e.toString());
-    }
+    return response;
   }
 
   @override
@@ -362,5 +254,12 @@ class ClientBrowser extends ClientBase with ClientMixin, ClientOfflineMixin {
       url: url.toString(),
       callbackUrlScheme: "appwrite-callback-" + config['project']!,
     );
+  }
+
+  @override
+  ClientBrowser addHandler(CallHandler handler) {
+    handler.setNext(_handler);
+    _handler = handler;
+    return this;
   }
 }

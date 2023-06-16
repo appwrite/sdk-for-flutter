@@ -11,14 +11,16 @@ import 'package:http/io_client.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:path_provider/path_provider.dart';
 
+import 'call_handlers/call_handler.dart';
+import 'call_handlers/cookie_auth_call_handler.dart';
+import 'call_handlers/http_call_handler.dart';
+import 'call_handlers/offline_call_handler.dart';
+import 'call_params.dart';
 import 'client_base.dart';
 import 'client_mixin.dart';
-import 'client_offline_mixin.dart';
-import 'cookie_manager.dart';
 import 'enums.dart';
 import 'exception.dart';
 import 'input_file.dart';
-import 'interceptor.dart';
 import 'response.dart';
 import 'upload_progress.dart';
 
@@ -31,7 +33,7 @@ ClientBase createClient({
       selfSigned: selfSigned,
     );
 
-class ClientIO extends ClientBase with ClientMixin, ClientOfflineMixin {
+class ClientIO extends ClientBase with ClientMixin {
   static const int CHUNK_SIZE = 5 * 1024 * 1024;
   String _endPoint;
   Map<String, String>? _headers;
@@ -44,7 +46,8 @@ class ClientIO extends ClientBase with ClientMixin, ClientOfflineMixin {
   late http.Client _httpClient;
   late HttpClient _nativeClient;
   late CookieJar _cookieJar;
-  final List<Interceptor> _interceptors = [];
+  late CallHandler _handler;
+  late OfflineCallHandler _offlineHandler;
 
   bool get initProgress => _initProgress;
   bool get initialized => _initialized;
@@ -78,6 +81,10 @@ class ClientIO extends ClientBase with ClientMixin, ClientOfflineMixin {
 
     assert(_endPoint.startsWith(RegExp("http://|https://")),
         "endPoint $_endPoint must start with 'http'");
+
+    _handler = HttpCallHandler(_httpClient);
+    _offlineHandler = OfflineCallHandler(call);
+
     init();
   }
 
@@ -148,7 +155,7 @@ class ClientIO extends ClientBase with ClientMixin, ClientOfflineMixin {
     _offlinePersistency = status;
 
     if (_offlinePersistency) {
-      await initOffline(
+      await _offlineHandler.initOffline(
         call: call,
         onWriteQueueError: onWriteQueueError,
         getOfflineCacheSize: getOfflineCacheSize,
@@ -182,7 +189,8 @@ class ClientIO extends ClientBase with ClientMixin, ClientOfflineMixin {
     _initProgress = true;
     final Directory cookieDir = await _getCookiePath();
     _cookieJar = PersistCookieJar(storage: FileStorage(cookieDir.path));
-    _interceptors.add(CookieManager(_cookieJar));
+    addHandler(CookieAuthCallHandler(_cookieJar));
+    addHandler(_offlineHandler);
 
     var device = '';
     try {
@@ -230,35 +238,6 @@ class ClientIO extends ClientBase with ClientMixin, ClientOfflineMixin {
     _initProgress = false;
   }
 
-  Future<http.BaseRequest> _interceptRequest(http.BaseRequest request) async {
-    final body = (request is http.Request) ? request.body : '';
-    for (final i in _interceptors) {
-      request = await i.onRequest(request);
-    }
-
-    if (request is http.Request) {
-      assert(
-        body == request.body,
-        'Interceptors should not transform the body of the request'
-        'Use Request converter instead',
-      );
-    }
-    return request;
-  }
-
-  Future<http.Response> _interceptResponse(http.Response response) async {
-    final body = response.body;
-    for (final i in _interceptors) {
-      response = await i.onResponse(response);
-    }
-
-    assert(
-      body == response.body,
-      'Interceptors should not transform the body of the response',
-    );
-    return response;
-  }
-
   @override
   Future<Response> chunkedUpload({
     required String path,
@@ -300,23 +279,23 @@ class ClientIO extends ClientBase with ClientMixin, ClientOfflineMixin {
           filename: file.filename,
         );
       }
-      return call(
+      return call(CallParams(
         HttpMethod.post,
-        path: path,
+        path,
         params: params,
         headers: headers,
-      );
+      ));
     }
 
     var offset = 0;
     if (idParamName.isNotEmpty && params[idParamName] != 'unique()') {
       //make a request to check if a file already exists
       try {
-        res = await call(
+        res = await call(CallParams(
           HttpMethod.get,
-          path: path + '/' + params[idParamName],
+          path + '/' + params[idParamName],
           headers: headers,
-        );
+        ));
         final int chunksUploaded = res.data['chunksUploaded'] as int;
         offset = min(size, chunksUploaded * CHUNK_SIZE);
       } on AppwriteException catch (_) {}
@@ -344,12 +323,12 @@ class ClientIO extends ClientBase with ClientMixin, ClientOfflineMixin {
       );
       headers['content-range'] =
           'bytes $offset-${min<int>(((offset + CHUNK_SIZE) - 1), size)}/$size';
-      res = await call(
+      res = await call(CallParams(
         HttpMethod.post,
-        path: path,
+        path,
         headers: headers,
         params: params,
-      );
+      ));
       offset += CHUNK_SIZE;
       if (offset < size) {
         headers['x-appwrite-id'] = res.data['\$id'];
@@ -393,138 +372,27 @@ class ClientIO extends ClientBase with ClientMixin, ClientOfflineMixin {
     });
   }
 
-  Future<Response> send(
-    HttpMethod method, {
-    String path = '',
-    Map<String, String> headers = const {},
-    Map<String, dynamic> params = const {},
-    ResponseType? responseType,
-    String cacheModel = '',
-    String cacheKey = '',
-    String cacheResponseIdKey = '',
-    String cacheResponseContainerKey = '',
-    Map<String, Object?>? previous,
-  }) async {
-    while (!_initialized && _initProgress) {
-      await Future.delayed(Duration(milliseconds: 10));
-    }
-    if (!_initialized) {
-      await init();
+  @override
+  Future<Response> call(CallParams params) async {
+    while (!_initialized) {
+      await Future.delayed(Duration(milliseconds: 100));
     }
 
-    final uri = Uri.parse(_endPoint + path);
-    http.BaseRequest request = prepareRequest(
-      method,
-      uri: uri,
-      headers: {..._headers!, ...headers},
-      params: params,
+    params.headers.addAll(this._headers!);
+    final response = await _handler.handleCall(
+      withOfflinePersistency(
+        withEndpoint(params, endPoint),
+        getOfflinePersistency(),
+      ),
     );
 
-    try {
-      request = await _interceptRequest(request);
-      final streamedResponse = await _httpClient.send(request);
-      http.Response res = await toResponse(streamedResponse);
-      res = await _interceptResponse(res);
-
-      final response = prepareResponse(
-        res,
-        responseType: responseType,
-      );
-
-      return response;
-    } catch (e) {
-      if (e is AppwriteException) {
-        rethrow;
-      }
-      throw AppwriteException(e.toString());
-    }
+    return response;
   }
 
   @override
-  Future<Response> call(
-    HttpMethod method, {
-    String path = '',
-    Map<String, String> headers = const {},
-    Map<String, dynamic> params = const {},
-    ResponseType? responseType,
-    String cacheModel = '',
-    String cacheKey = '',
-    String cacheResponseIdKey = '',
-    String cacheResponseContainerKey = '',
-    Map<String, Object?>? previous,
-  }) async {
-    while (true) {
-      final uri = Uri.parse(endPoint + path);
-
-      http.BaseRequest request = prepareRequest(
-        method,
-        uri: uri,
-        headers: {..._headers!, ...headers},
-        params: params,
-      );
-
-      if (getOfflinePersistency() && !isOnline.value) {
-        await checkOnlineStatus();
-      }
-
-      if (cacheModel.isNotEmpty &&
-          getOfflinePersistency() &&
-          !isOnline.value &&
-          responseType != ResponseType.bytes) {
-        return handleOfflineRequest(
-          uri: uri,
-          method: method,
-          call: call,
-          path: path,
-          headers: headers,
-          params: params,
-          responseType: responseType,
-          cacheModel: cacheModel,
-          cacheKey: cacheKey,
-          cacheResponseIdKey: cacheResponseIdKey,
-          cacheResponseContainerKey: cacheResponseContainerKey,
-        );
-      }
-
-      try {
-        final response = await send(
-          method,
-          path: path,
-          headers: headers,
-          params: params,
-          responseType: responseType,
-          cacheModel: cacheModel,
-          cacheKey: cacheKey,
-          cacheResponseIdKey: cacheResponseIdKey,
-          cacheResponseContainerKey: cacheResponseContainerKey,
-        );
-
-        if (getOfflinePersistency()) {
-          cacheResponse(
-            cacheModel: cacheModel,
-            cacheKey: cacheKey,
-            cacheResponseIdKey: cacheResponseIdKey,
-            request: request,
-            response: response,
-          );
-        }
-
-        return response;
-      } on AppwriteException catch (e) {
-        if ((e.message != "Network is unreachable" &&
-                !(e.message?.contains("Failed host lookup") ?? false)) ||
-            !getOfflinePersistency()) {
-          rethrow;
-        }
-        isOnline.value = false;
-      } on SocketException catch (_) {
-        if (!getOfflinePersistency()) {
-          rethrow;
-        }
-        isOnline.value = false;
-      } catch (e) {
-        throw AppwriteException(e.toString());
-      }
-    }
+  ClientBase addHandler(CallHandler handler) {
+    handler.setNext(_handler);
+    _handler = handler;
+    return this;
   }
 }

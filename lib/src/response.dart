@@ -1,8 +1,9 @@
 import 'dart:convert';
 
 class Response<T> {
-  Response({this.data});
+  Response({this.headers = const {}, this.data});
 
+  final Map<String, String> headers;
   T? data;
 
   @override
