@@ -1,5 +1,6 @@
 import 'exception.dart';
 
+/// Helper class to handle files.
 class InputFile {
   late final String? path;
   late final List<int>? bytes;

@@ -1,3 +1,8 @@
+/// Appwrite Flutter SDK
+///
+/// This SDK is compatible with Appwrite server version 1.3.x. 
+/// For older versions, please check
+/// [previous releases](https://github.com/appwrite/sdk-for-flutter/releases).
 library appwrite;
 
 import 'dart:async';
