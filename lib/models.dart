@@ -1,3 +1,4 @@
+/// Appwrite Models
 library appwrite.models;
 
 part 'src/models/model.dart';

@@ -5,7 +5,9 @@ import 'realtime_subscription.dart';
 import 'service.dart';
 import 'client.dart';
 
+/// Realtime allows you to listen to any events on the server-side in realtime using the subscribe method.
 abstract class Realtime extends Service {
+  /// Initializes a [Realtime] service
   factory Realtime(Client client) => createRealtime(client);
 
   /// Subscribes to Appwrite events and returns a `RealtimeSubscription` object, which can be used 
@@ -42,9 +44,8 @@ abstract class Realtime extends Service {
   /// 
   RealtimeSubscription subscribe(List<String> channels);
 
-  // The [close code][] set when the WebSocket connection is closed.
+  /// The [close code](https://datatracker.ietf.org/doc/html/rfc6455#section-7.1.5) set when the WebSocket connection is closed.
   ///
   /// Before the connection has been closed, this will be `null`.
-
   int? get closeCode => null;
 }

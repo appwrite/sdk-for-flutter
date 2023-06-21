@@ -1,8 +1,9 @@
 part of appwrite;
 
-    /// The Locale service allows you to customize your app based on your users'
-    /// location.
+/// The Locale service allows you to customize your app based on your users&#039;
+/// location.
 class Locale extends Service {
+    /// Initializes a [Locale] service
     Locale(super.client);
 
     /// Get User Locale
@@ -13,7 +14,6 @@ class Locale extends Service {
     /// supported language.
     /// 
     /// ([IP Geolocation by DB-IP](https://db-ip.com))
-    ///
     Future<models.Locale> get() async {
         const String path = '/locale';
 
@@ -34,7 +34,6 @@ class Locale extends Service {
     ///
     /// List of all continents. You can use the locale header to get the data in a
     /// supported language.
-    ///
     Future<models.ContinentList> listContinents() async {
         const String path = '/locale/continents';
 
@@ -55,7 +54,6 @@ class Locale extends Service {
     ///
     /// List of all countries. You can use the locale header to get the data in a
     /// supported language.
-    ///
     Future<models.CountryList> listCountries() async {
         const String path = '/locale/countries';
 
@@ -76,7 +74,6 @@ class Locale extends Service {
     ///
     /// List of all countries that are currently members of the EU. You can use the
     /// locale header to get the data in a supported language.
-    ///
     Future<models.CountryList> listCountriesEU() async {
         const String path = '/locale/countries/eu';
 
@@ -97,7 +94,6 @@ class Locale extends Service {
     ///
     /// List of all countries phone codes. You can use the locale header to get the
     /// data in a supported language.
-    ///
     Future<models.PhoneList> listCountriesPhones() async {
         const String path = '/locale/countries/phones';
 
@@ -119,7 +115,6 @@ class Locale extends Service {
     /// List of all currencies, including currency symbol, name, plural, and
     /// decimal digits for all major and minor currencies. You can use the locale
     /// header to get the data in a supported language.
-    ///
     Future<models.CurrencyList> listCurrencies() async {
         const String path = '/locale/currencies';
 
@@ -140,7 +135,6 @@ class Locale extends Service {
     ///
     /// List of all languages classified by ISO 639-1 including 2-letter code, name
     /// in English, and name in the respective language.
-    ///
     Future<models.LanguageList> listLanguages() async {
         const String path = '/locale/languages';
 
