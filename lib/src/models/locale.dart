@@ -12,7 +12,7 @@ class Locale implements Model {
     final String continentCode;
     /// Continent name. This field support localization.
     final String continent;
-    /// True if country is part of the Europian Union.
+    /// True if country is part of the European Union.
     final bool eu;
     /// Currency code in [ISO 4217-1](http://en.wikipedia.org/wiki/ISO_4217) three-character format
     final String currency;

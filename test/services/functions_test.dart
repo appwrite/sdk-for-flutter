@@ -54,21 +54,6 @@ void main() {
             functions = Functions(client);
         });
 
-        test('test method retryBuild()', () async {
-            final data = '';
-
-            when(client.call(
-                HttpMethod.post,
-            )).thenAnswer((_) async => Response(data: data));
-
-
-            final response = await functions.retryBuild(
-                functionId: '[FUNCTION_ID]',
-                deploymentId: '[DEPLOYMENT_ID]',
-                buildId: '[BUILD_ID]',
-            );
-        });
-
         test('test method listExecutions()', () async {
             final Map<String, dynamic> data = {
                 'total': 5,
@@ -90,15 +75,17 @@ void main() {
         test('test method createExecution()', () async {
             final Map<String, dynamic> data = {
                 '\$id': '5e5ea5c16897e',
-                '\$read': [],
+                '\$createdAt': '2020-10-15T06:38:00.000+00:00',
+                '\$updatedAt': '2020-10-15T06:38:00.000+00:00',
+                '\$permissions': [],
                 'functionId': '5e5ea6g16897e',
-                'dateCreated': 1592981250,
                 'trigger': 'http',
                 'status': 'processing',
                 'statusCode': 0,
+                'response': '',
                 'stdout': '',
                 'stderr': '',
-                'time': 0.4,};
+                'duration': 0.4,};
 
 
             when(client.call(
@@ -116,15 +103,17 @@ void main() {
         test('test method getExecution()', () async {
             final Map<String, dynamic> data = {
                 '\$id': '5e5ea5c16897e',
-                '\$read': [],
+                '\$createdAt': '2020-10-15T06:38:00.000+00:00',
+                '\$updatedAt': '2020-10-15T06:38:00.000+00:00',
+                '\$permissions': [],
                 'functionId': '5e5ea6g16897e',
-                'dateCreated': 1592981250,
                 'trigger': 'http',
                 'status': 'processing',
                 'statusCode': 0,
+                'response': '',
                 'stdout': '',
                 'stderr': '',
-                'time': 0.4,};
+                'duration': 0.4,};
 
 
             when(client.call(

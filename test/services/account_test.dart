@@ -57,12 +57,16 @@ void main() {
         test('test method get()', () async {
             final Map<String, dynamic> data = {
                 '\$id': '5e5ea5c16897e',
+                '\$createdAt': '2020-10-15T06:38:00.000+00:00',
+                '\$updatedAt': '2020-10-15T06:38:00.000+00:00',
                 'name': 'John Doe',
-                'registration': 1592981250,
+                'registration': '2020-10-15T06:38:00.000+00:00',
                 'status': true,
-                'passwordUpdate': 1592981250,
+                'passwordUpdate': '2020-10-15T06:38:00.000+00:00',
                 'email': 'john@appwrite.io',
+                'phone': '+4930901820',
                 'emailVerification': true,
+                'phoneVerification': true,
                 'prefs': <String, dynamic>{},};
 
 
@@ -80,12 +84,16 @@ void main() {
         test('test method create()', () async {
             final Map<String, dynamic> data = {
                 '\$id': '5e5ea5c16897e',
+                '\$createdAt': '2020-10-15T06:38:00.000+00:00',
+                '\$updatedAt': '2020-10-15T06:38:00.000+00:00',
                 'name': 'John Doe',
-                'registration': 1592981250,
+                'registration': '2020-10-15T06:38:00.000+00:00',
                 'status': true,
-                'passwordUpdate': 1592981250,
+                'passwordUpdate': '2020-10-15T06:38:00.000+00:00',
                 'email': 'john@appwrite.io',
+                'phone': '+4930901820',
                 'emailVerification': true,
+                'phoneVerification': true,
                 'prefs': <String, dynamic>{},};
 
 
@@ -97,33 +105,25 @@ void main() {
             final response = await account.create(
                 userId: '[USER_ID]',
                 email: 'email@example.com',
-                password: 'password',
+                password: '',
             );
             expect(response, isA<models.User>());
 
         });
 
-        test('test method delete()', () async {
-            final data = '';
-
-            when(client.call(
-                HttpMethod.delete,
-            )).thenAnswer((_) async => Response(data: data));
-
-
-            final response = await account.delete(
-            );
-        });
-
         test('test method updateEmail()', () async {
             final Map<String, dynamic> data = {
                 '\$id': '5e5ea5c16897e',
+                '\$createdAt': '2020-10-15T06:38:00.000+00:00',
+                '\$updatedAt': '2020-10-15T06:38:00.000+00:00',
                 'name': 'John Doe',
-                'registration': 1592981250,
+                'registration': '2020-10-15T06:38:00.000+00:00',
                 'status': true,
-                'passwordUpdate': 1592981250,
+                'passwordUpdate': '2020-10-15T06:38:00.000+00:00',
                 'email': 'john@appwrite.io',
+                'phone': '+4930901820',
                 'emailVerification': true,
+                'phoneVerification': true,
                 'prefs': <String, dynamic>{},};
 
 
@@ -156,7 +156,7 @@ void main() {
 
         });
 
-        test('test method getLogs()', () async {
+        test('test method listLogs()', () async {
             final Map<String, dynamic> data = {
                 'total': 5,
                 'logs': [],};
@@ -167,7 +167,7 @@ void main() {
             )).thenAnswer((_) async => Response(data: data));
 
 
-            final response = await account.getLogs(
+            final response = await account.listLogs(
             );
             expect(response, isA<models.LogList>());
 
@@ -176,12 +176,16 @@ void main() {
         test('test method updateName()', () async {
             final Map<String, dynamic> data = {
                 '\$id': '5e5ea5c16897e',
+                '\$createdAt': '2020-10-15T06:38:00.000+00:00',
+                '\$updatedAt': '2020-10-15T06:38:00.000+00:00',
                 'name': 'John Doe',
-                'registration': 1592981250,
+                'registration': '2020-10-15T06:38:00.000+00:00',
                 'status': true,
-                'passwordUpdate': 1592981250,
+                'passwordUpdate': '2020-10-15T06:38:00.000+00:00',
                 'email': 'john@appwrite.io',
+                'phone': '+4930901820',
                 'emailVerification': true,
+                'phoneVerification': true,
                 'prefs': <String, dynamic>{},};
 
 
@@ -200,12 +204,16 @@ void main() {
         test('test method updatePassword()', () async {
             final Map<String, dynamic> data = {
                 '\$id': '5e5ea5c16897e',
+                '\$createdAt': '2020-10-15T06:38:00.000+00:00',
+                '\$updatedAt': '2020-10-15T06:38:00.000+00:00',
                 'name': 'John Doe',
-                'registration': 1592981250,
+                'registration': '2020-10-15T06:38:00.000+00:00',
                 'status': true,
-                'passwordUpdate': 1592981250,
+                'passwordUpdate': '2020-10-15T06:38:00.000+00:00',
                 'email': 'john@appwrite.io',
+                'phone': '+4930901820',
                 'emailVerification': true,
+                'phoneVerification': true,
                 'prefs': <String, dynamic>{},};
 
 
@@ -215,6 +223,35 @@ void main() {
 
 
             final response = await account.updatePassword(
+                password: '',
+            );
+            expect(response, isA<models.User>());
+
+        });
+
+        test('test method updatePhone()', () async {
+            final Map<String, dynamic> data = {
+                '\$id': '5e5ea5c16897e',
+                '\$createdAt': '2020-10-15T06:38:00.000+00:00',
+                '\$updatedAt': '2020-10-15T06:38:00.000+00:00',
+                'name': 'John Doe',
+                'registration': '2020-10-15T06:38:00.000+00:00',
+                'status': true,
+                'passwordUpdate': '2020-10-15T06:38:00.000+00:00',
+                'email': 'john@appwrite.io',
+                'phone': '+4930901820',
+                'emailVerification': true,
+                'phoneVerification': true,
+                'prefs': <String, dynamic>{},};
+
+
+            when(client.call(
+                HttpMethod.patch,
+            )).thenAnswer((_) async => Response(data: data));
+
+
+            final response = await account.updatePhone(
+                phone: '+12065550100',
                 password: 'password',
             );
             expect(response, isA<models.User>());
@@ -239,12 +276,16 @@ void main() {
         test('test method updatePrefs()', () async {
             final Map<String, dynamic> data = {
                 '\$id': '5e5ea5c16897e',
+                '\$createdAt': '2020-10-15T06:38:00.000+00:00',
+                '\$updatedAt': '2020-10-15T06:38:00.000+00:00',
                 'name': 'John Doe',
-                'registration': 1592981250,
+                'registration': '2020-10-15T06:38:00.000+00:00',
                 'status': true,
-                'passwordUpdate': 1592981250,
+                'passwordUpdate': '2020-10-15T06:38:00.000+00:00',
                 'email': 'john@appwrite.io',
+                'phone': '+4930901820',
                 'emailVerification': true,
+                'phoneVerification': true,
                 'prefs': <String, dynamic>{},};
 
 
@@ -263,9 +304,10 @@ void main() {
         test('test method createRecovery()', () async {
             final Map<String, dynamic> data = {
                 '\$id': 'bb8ea5c16897e',
+                '\$createdAt': '2020-10-15T06:38:00.000+00:00',
                 'userId': '5e5ea5c168bb8',
                 'secret': '',
-                'expire': 1592981250,};
+                'expire': '2020-10-15T06:38:00.000+00:00',};
 
 
             when(client.call(
@@ -284,9 +326,10 @@ void main() {
         test('test method updateRecovery()', () async {
             final Map<String, dynamic> data = {
                 '\$id': 'bb8ea5c16897e',
+                '\$createdAt': '2020-10-15T06:38:00.000+00:00',
                 'userId': '5e5ea5c168bb8',
                 'secret': '',
-                'expire': 1592981250,};
+                'expire': '2020-10-15T06:38:00.000+00:00',};
 
 
             when(client.call(
@@ -304,7 +347,7 @@ void main() {
 
         });
 
-        test('test method getSessions()', () async {
+        test('test method listSessions()', () async {
             final Map<String, dynamic> data = {
                 'total': 5,
                 'sessions': [],};
@@ -315,50 +358,9 @@ void main() {
             )).thenAnswer((_) async => Response(data: data));
 
 
-            final response = await account.getSessions(
+            final response = await account.listSessions(
             );
             expect(response, isA<models.SessionList>());
-
-        });
-
-        test('test method createSession()', () async {
-            final Map<String, dynamic> data = {
-                '\$id': '5e5ea5c16897e',
-                'userId': '5e5bb8c16897e',
-                'expire': 1592981250,
-                'provider': 'email',
-                'providerUid': 'user@example.com',
-                'providerAccessToken': 'MTQ0NjJkZmQ5OTM2NDE1ZTZjNGZmZjI3',
-                'providerAccessTokenExpiry': 1592981250,
-                'providerRefreshToken': 'MTQ0NjJkZmQ5OTM2NDE1ZTZjNGZmZjI3',
-                'ip': '127.0.0.1',
-                'osCode': 'Mac',
-                'osName': 'Mac',
-                'osVersion': 'Mac',
-                'clientType': 'browser',
-                'clientCode': 'CM',
-                'clientName': 'Chrome Mobile iOS',
-                'clientVersion': '84.0',
-                'clientEngine': 'WebKit',
-                'clientEngineVersion': '605.1.15',
-                'deviceName': 'smartphone',
-                'deviceBrand': 'Google',
-                'deviceModel': 'Nexus 5',
-                'countryCode': 'US',
-                'countryName': 'United States',
-                'current': true,};
-
-
-            when(client.call(
-                HttpMethod.post,
-            )).thenAnswer((_) async => Response(data: data));
-
-
-            final response = await account.createSession(
-                email: 'email@example.com',
-                password: 'password',
-            );
-            expect(response, isA<models.Session>());
 
         });
 
@@ -377,12 +379,13 @@ void main() {
         test('test method createAnonymousSession()', () async {
             final Map<String, dynamic> data = {
                 '\$id': '5e5ea5c16897e',
+                '\$createdAt': '2020-10-15T06:38:00.000+00:00',
                 'userId': '5e5bb8c16897e',
-                'expire': 1592981250,
+                'expire': '2020-10-15T06:38:00.000+00:00',
                 'provider': 'email',
                 'providerUid': 'user@example.com',
                 'providerAccessToken': 'MTQ0NjJkZmQ5OTM2NDE1ZTZjNGZmZjI3',
-                'providerAccessTokenExpiry': 1592981250,
+                'providerAccessTokenExpiry': '2020-10-15T06:38:00.000+00:00',
                 'providerRefreshToken': 'MTQ0NjJkZmQ5OTM2NDE1ZTZjNGZmZjI3',
                 'ip': '127.0.0.1',
                 'osCode': 'Mac',
@@ -413,12 +416,55 @@ void main() {
 
         });
 
+        test('test method createEmailSession()', () async {
+            final Map<String, dynamic> data = {
+                '\$id': '5e5ea5c16897e',
+                '\$createdAt': '2020-10-15T06:38:00.000+00:00',
+                'userId': '5e5bb8c16897e',
+                'expire': '2020-10-15T06:38:00.000+00:00',
+                'provider': 'email',
+                'providerUid': 'user@example.com',
+                'providerAccessToken': 'MTQ0NjJkZmQ5OTM2NDE1ZTZjNGZmZjI3',
+                'providerAccessTokenExpiry': '2020-10-15T06:38:00.000+00:00',
+                'providerRefreshToken': 'MTQ0NjJkZmQ5OTM2NDE1ZTZjNGZmZjI3',
+                'ip': '127.0.0.1',
+                'osCode': 'Mac',
+                'osName': 'Mac',
+                'osVersion': 'Mac',
+                'clientType': 'browser',
+                'clientCode': 'CM',
+                'clientName': 'Chrome Mobile iOS',
+                'clientVersion': '84.0',
+                'clientEngine': 'WebKit',
+                'clientEngineVersion': '605.1.15',
+                'deviceName': 'smartphone',
+                'deviceBrand': 'Google',
+                'deviceModel': 'Nexus 5',
+                'countryCode': 'US',
+                'countryName': 'United States',
+                'current': true,};
+
+
+            when(client.call(
+                HttpMethod.post,
+            )).thenAnswer((_) async => Response(data: data));
+
+
+            final response = await account.createEmailSession(
+                email: 'email@example.com',
+                password: 'password',
+            );
+            expect(response, isA<models.Session>());
+
+        });
+
         test('test method createMagicURLSession()', () async {
             final Map<String, dynamic> data = {
                 '\$id': 'bb8ea5c16897e',
+                '\$createdAt': '2020-10-15T06:38:00.000+00:00',
                 'userId': '5e5ea5c168bb8',
                 'secret': '',
-                'expire': 1592981250,};
+                'expire': '2020-10-15T06:38:00.000+00:00',};
 
 
             when(client.call(
@@ -437,12 +483,13 @@ void main() {
         test('test method updateMagicURLSession()', () async {
             final Map<String, dynamic> data = {
                 '\$id': '5e5ea5c16897e',
+                '\$createdAt': '2020-10-15T06:38:00.000+00:00',
                 'userId': '5e5bb8c16897e',
-                'expire': 1592981250,
+                'expire': '2020-10-15T06:38:00.000+00:00',
                 'provider': 'email',
                 'providerUid': 'user@example.com',
                 'providerAccessToken': 'MTQ0NjJkZmQ5OTM2NDE1ZTZjNGZmZjI3',
-                'providerAccessTokenExpiry': 1592981250,
+                'providerAccessTokenExpiry': '2020-10-15T06:38:00.000+00:00',
                 'providerRefreshToken': 'MTQ0NjJkZmQ5OTM2NDE1ZTZjNGZmZjI3',
                 'ip': '127.0.0.1',
                 'osCode': 'Mac',
@@ -487,15 +534,80 @@ void main() {
             );
         });
 
-        test('test method getSession()', () async {
+        test('test method createPhoneSession()', () async {
+            final Map<String, dynamic> data = {
+                '\$id': 'bb8ea5c16897e',
+                '\$createdAt': '2020-10-15T06:38:00.000+00:00',
+                'userId': '5e5ea5c168bb8',
+                'secret': '',
+                'expire': '2020-10-15T06:38:00.000+00:00',};
+
+
+            when(client.call(
+                HttpMethod.post,
+            )).thenAnswer((_) async => Response(data: data));
+
+
+            final response = await account.createPhoneSession(
+                userId: '[USER_ID]',
+                phone: '+12065550100',
+            );
+            expect(response, isA<models.Token>());
+
+        });
+
+        test('test method updatePhoneSession()', () async {
             final Map<String, dynamic> data = {
                 '\$id': '5e5ea5c16897e',
+                '\$createdAt': '2020-10-15T06:38:00.000+00:00',
                 'userId': '5e5bb8c16897e',
-                'expire': 1592981250,
+                'expire': '2020-10-15T06:38:00.000+00:00',
                 'provider': 'email',
                 'providerUid': 'user@example.com',
                 'providerAccessToken': 'MTQ0NjJkZmQ5OTM2NDE1ZTZjNGZmZjI3',
-                'providerAccessTokenExpiry': 1592981250,
+                'providerAccessTokenExpiry': '2020-10-15T06:38:00.000+00:00',
+                'providerRefreshToken': 'MTQ0NjJkZmQ5OTM2NDE1ZTZjNGZmZjI3',
+                'ip': '127.0.0.1',
+                'osCode': 'Mac',
+                'osName': 'Mac',
+                'osVersion': 'Mac',
+                'clientType': 'browser',
+                'clientCode': 'CM',
+                'clientName': 'Chrome Mobile iOS',
+                'clientVersion': '84.0',
+                'clientEngine': 'WebKit',
+                'clientEngineVersion': '605.1.15',
+                'deviceName': 'smartphone',
+                'deviceBrand': 'Google',
+                'deviceModel': 'Nexus 5',
+                'countryCode': 'US',
+                'countryName': 'United States',
+                'current': true,};
+
+
+            when(client.call(
+                HttpMethod.put,
+            )).thenAnswer((_) async => Response(data: data));
+
+
+            final response = await account.updatePhoneSession(
+                userId: '[USER_ID]',
+                secret: '[SECRET]',
+            );
+            expect(response, isA<models.Session>());
+
+        });
+
+        test('test method getSession()', () async {
+            final Map<String, dynamic> data = {
+                '\$id': '5e5ea5c16897e',
+                '\$createdAt': '2020-10-15T06:38:00.000+00:00',
+                'userId': '5e5bb8c16897e',
+                'expire': '2020-10-15T06:38:00.000+00:00',
+                'provider': 'email',
+                'providerUid': 'user@example.com',
+                'providerAccessToken': 'MTQ0NjJkZmQ5OTM2NDE1ZTZjNGZmZjI3',
+                'providerAccessTokenExpiry': '2020-10-15T06:38:00.000+00:00',
                 'providerRefreshToken': 'MTQ0NjJkZmQ5OTM2NDE1ZTZjNGZmZjI3',
                 'ip': '127.0.0.1',
                 'osCode': 'Mac',
@@ -530,12 +642,13 @@ void main() {
         test('test method updateSession()', () async {
             final Map<String, dynamic> data = {
                 '\$id': '5e5ea5c16897e',
+                '\$createdAt': '2020-10-15T06:38:00.000+00:00',
                 'userId': '5e5bb8c16897e',
-                'expire': 1592981250,
+                'expire': '2020-10-15T06:38:00.000+00:00',
                 'provider': 'email',
                 'providerUid': 'user@example.com',
                 'providerAccessToken': 'MTQ0NjJkZmQ5OTM2NDE1ZTZjNGZmZjI3',
-                'providerAccessTokenExpiry': 1592981250,
+                'providerAccessTokenExpiry': '2020-10-15T06:38:00.000+00:00',
                 'providerRefreshToken': 'MTQ0NjJkZmQ5OTM2NDE1ZTZjNGZmZjI3',
                 'ip': '127.0.0.1',
                 'osCode': 'Mac',
@@ -580,12 +693,40 @@ void main() {
             );
         });
 
+        test('test method updateStatus()', () async {
+            final Map<String, dynamic> data = {
+                '\$id': '5e5ea5c16897e',
+                '\$createdAt': '2020-10-15T06:38:00.000+00:00',
+                '\$updatedAt': '2020-10-15T06:38:00.000+00:00',
+                'name': 'John Doe',
+                'registration': '2020-10-15T06:38:00.000+00:00',
+                'status': true,
+                'passwordUpdate': '2020-10-15T06:38:00.000+00:00',
+                'email': 'john@appwrite.io',
+                'phone': '+4930901820',
+                'emailVerification': true,
+                'phoneVerification': true,
+                'prefs': <String, dynamic>{},};
+
+
+            when(client.call(
+                HttpMethod.patch,
+            )).thenAnswer((_) async => Response(data: data));
+
+
+            final response = await account.updateStatus(
+            );
+            expect(response, isA<models.User>());
+
+        });
+
         test('test method createVerification()', () async {
             final Map<String, dynamic> data = {
                 '\$id': 'bb8ea5c16897e',
+                '\$createdAt': '2020-10-15T06:38:00.000+00:00',
                 'userId': '5e5ea5c168bb8',
                 'secret': '',
-                'expire': 1592981250,};
+                'expire': '2020-10-15T06:38:00.000+00:00',};
 
 
             when(client.call(
@@ -603,9 +744,10 @@ void main() {
         test('test method updateVerification()', () async {
             final Map<String, dynamic> data = {
                 '\$id': 'bb8ea5c16897e',
+                '\$createdAt': '2020-10-15T06:38:00.000+00:00',
                 'userId': '5e5ea5c168bb8',
                 'secret': '',
-                'expire': 1592981250,};
+                'expire': '2020-10-15T06:38:00.000+00:00',};
 
 
             when(client.call(
@@ -614,6 +756,48 @@ void main() {
 
 
             final response = await account.updateVerification(
+                userId: '[USER_ID]',
+                secret: '[SECRET]',
+            );
+            expect(response, isA<models.Token>());
+
+        });
+
+        test('test method createPhoneVerification()', () async {
+            final Map<String, dynamic> data = {
+                '\$id': 'bb8ea5c16897e',
+                '\$createdAt': '2020-10-15T06:38:00.000+00:00',
+                'userId': '5e5ea5c168bb8',
+                'secret': '',
+                'expire': '2020-10-15T06:38:00.000+00:00',};
+
+
+            when(client.call(
+                HttpMethod.post,
+            )).thenAnswer((_) async => Response(data: data));
+
+
+            final response = await account.createPhoneVerification(
+            );
+            expect(response, isA<models.Token>());
+
+        });
+
+        test('test method updatePhoneVerification()', () async {
+            final Map<String, dynamic> data = {
+                '\$id': 'bb8ea5c16897e',
+                '\$createdAt': '2020-10-15T06:38:00.000+00:00',
+                'userId': '5e5ea5c168bb8',
+                'secret': '',
+                'expire': '2020-10-15T06:38:00.000+00:00',};
+
+
+            when(client.call(
+                HttpMethod.put,
+            )).thenAnswer((_) async => Response(data: data));
+
+
+            final response = await account.updatePhoneVerification(
                 userId: '[USER_ID]',
                 secret: '[SECRET]',
             );

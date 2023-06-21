@@ -74,9 +74,11 @@ void main() {
         test('test method create()', () async {
             final Map<String, dynamic> data = {
                 '\$id': '5e5ea5c16897e',
+                '\$createdAt': '2020-10-15T06:38:00.000+00:00',
+                '\$updatedAt': '2020-10-15T06:38:00.000+00:00',
                 'name': 'VIP',
-                'dateCreated': 1592981250,
-                'total': 7,};
+                'total': 7,
+                'prefs': <String, dynamic>{},};
 
 
             when(client.call(
@@ -95,9 +97,11 @@ void main() {
         test('test method get()', () async {
             final Map<String, dynamic> data = {
                 '\$id': '5e5ea5c16897e',
+                '\$createdAt': '2020-10-15T06:38:00.000+00:00',
+                '\$updatedAt': '2020-10-15T06:38:00.000+00:00',
                 'name': 'VIP',
-                'dateCreated': 1592981250,
-                'total': 7,};
+                'total': 7,
+                'prefs': <String, dynamic>{},};
 
 
             when(client.call(
@@ -112,12 +116,14 @@ void main() {
 
         });
 
-        test('test method update()', () async {
+        test('test method updateName()', () async {
             final Map<String, dynamic> data = {
                 '\$id': '5e5ea5c16897e',
+                '\$createdAt': '2020-10-15T06:38:00.000+00:00',
+                '\$updatedAt': '2020-10-15T06:38:00.000+00:00',
                 'name': 'VIP',
-                'dateCreated': 1592981250,
-                'total': 7,};
+                'total': 7,
+                'prefs': <String, dynamic>{},};
 
 
             when(client.call(
@@ -125,7 +131,7 @@ void main() {
             )).thenAnswer((_) async => Response(data: data));
 
 
-            final response = await teams.update(
+            final response = await teams.updateName(
                 teamId: '[TEAM_ID]',
                 name: '[NAME]',
             );
@@ -146,7 +152,7 @@ void main() {
             );
         });
 
-        test('test method getMemberships()', () async {
+        test('test method listMemberships()', () async {
             final Map<String, dynamic> data = {
                 'total': 5,
                 'memberships': [],};
@@ -157,7 +163,7 @@ void main() {
             )).thenAnswer((_) async => Response(data: data));
 
 
-            final response = await teams.getMemberships(
+            final response = await teams.listMemberships(
                 teamId: '[TEAM_ID]',
             );
             expect(response, isA<models.MembershipList>());
@@ -167,12 +173,15 @@ void main() {
         test('test method createMembership()', () async {
             final Map<String, dynamic> data = {
                 '\$id': '5e5ea5c16897e',
+                '\$createdAt': '2020-10-15T06:38:00.000+00:00',
+                '\$updatedAt': '2020-10-15T06:38:00.000+00:00',
                 'userId': '5e5ea5c16897e',
+                'userName': 'John Doe',
+                'userEmail': 'john@appwrite.io',
                 'teamId': '5e5ea5c16897e',
-                'name': 'VIP',
-                'email': 'john@appwrite.io',
-                'invited': 1592981250,
-                'joined': 1592981250,
+                'teamName': 'VIP',
+                'invited': '2020-10-15T06:38:00.000+00:00',
+                'joined': '2020-10-15T06:38:00.000+00:00',
                 'confirm': true,
                 'roles': [],};
 
@@ -184,7 +193,6 @@ void main() {
 
             final response = await teams.createMembership(
                 teamId: '[TEAM_ID]',
-                email: 'email@example.com',
                 roles: [],
                 url: 'https://example.com',
             );
@@ -194,8 +202,18 @@ void main() {
 
         test('test method getMembership()', () async {
             final Map<String, dynamic> data = {
-                'total': 5,
-                'memberships': [],};
+                '\$id': '5e5ea5c16897e',
+                '\$createdAt': '2020-10-15T06:38:00.000+00:00',
+                '\$updatedAt': '2020-10-15T06:38:00.000+00:00',
+                'userId': '5e5ea5c16897e',
+                'userName': 'John Doe',
+                'userEmail': 'john@appwrite.io',
+                'teamId': '5e5ea5c16897e',
+                'teamName': 'VIP',
+                'invited': '2020-10-15T06:38:00.000+00:00',
+                'joined': '2020-10-15T06:38:00.000+00:00',
+                'confirm': true,
+                'roles': [],};
 
 
             when(client.call(
@@ -207,19 +225,22 @@ void main() {
                 teamId: '[TEAM_ID]',
                 membershipId: '[MEMBERSHIP_ID]',
             );
-            expect(response, isA<models.MembershipList>());
+            expect(response, isA<models.Membership>());
 
         });
 
         test('test method updateMembershipRoles()', () async {
             final Map<String, dynamic> data = {
                 '\$id': '5e5ea5c16897e',
+                '\$createdAt': '2020-10-15T06:38:00.000+00:00',
+                '\$updatedAt': '2020-10-15T06:38:00.000+00:00',
                 'userId': '5e5ea5c16897e',
+                'userName': 'John Doe',
+                'userEmail': 'john@appwrite.io',
                 'teamId': '5e5ea5c16897e',
-                'name': 'VIP',
-                'email': 'john@appwrite.io',
-                'invited': 1592981250,
-                'joined': 1592981250,
+                'teamName': 'VIP',
+                'invited': '2020-10-15T06:38:00.000+00:00',
+                'joined': '2020-10-15T06:38:00.000+00:00',
                 'confirm': true,
                 'roles': [],};
 
@@ -255,12 +276,15 @@ void main() {
         test('test method updateMembershipStatus()', () async {
             final Map<String, dynamic> data = {
                 '\$id': '5e5ea5c16897e',
+                '\$createdAt': '2020-10-15T06:38:00.000+00:00',
+                '\$updatedAt': '2020-10-15T06:38:00.000+00:00',
                 'userId': '5e5ea5c16897e',
+                'userName': 'John Doe',
+                'userEmail': 'john@appwrite.io',
                 'teamId': '5e5ea5c16897e',
-                'name': 'VIP',
-                'email': 'john@appwrite.io',
-                'invited': 1592981250,
-                'joined': 1592981250,
+                'teamName': 'VIP',
+                'invited': '2020-10-15T06:38:00.000+00:00',
+                'joined': '2020-10-15T06:38:00.000+00:00',
                 'confirm': true,
                 'roles': [],};
 
@@ -277,6 +301,39 @@ void main() {
                 secret: '[SECRET]',
             );
             expect(response, isA<models.Membership>());
+
+        });
+
+        test('test method getPrefs()', () async {
+            final Map<String, dynamic> data = {};
+
+
+            when(client.call(
+                HttpMethod.get,
+            )).thenAnswer((_) async => Response(data: data));
+
+
+            final response = await teams.getPrefs(
+                teamId: '[TEAM_ID]',
+            );
+            expect(response, isA<models.Preferences>());
+
+        });
+
+        test('test method updatePrefs()', () async {
+            final Map<String, dynamic> data = {};
+
+
+            when(client.call(
+                HttpMethod.put,
+            )).thenAnswer((_) async => Response(data: data));
+
+
+            final response = await teams.updatePrefs(
+                teamId: '[TEAM_ID]',
+                prefs: {},
+            );
+            expect(response, isA<models.Preferences>());
 
         });
 

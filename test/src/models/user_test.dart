@@ -7,12 +7,16 @@ void main() {
     test('model', () {
       final model = User(
         $id: '5e5ea5c16897e',
+        $createdAt: '2020-10-15T06:38:00.000+00:00',
+        $updatedAt: '2020-10-15T06:38:00.000+00:00',
         name: 'John Doe',
-        registration: 1592981250,
+        registration: '2020-10-15T06:38:00.000+00:00',
         status: true,
-        passwordUpdate: 1592981250,
+        passwordUpdate: '2020-10-15T06:38:00.000+00:00',
         email: 'john@appwrite.io',
+        phone: '+4930901820',
         emailVerification: true,
+        phoneVerification: true,
         prefs: Preferences(data: {}),
       );
 
@@ -20,12 +24,16 @@ void main() {
       final result = User.fromMap(map);
 
       expect(result.$id, '5e5ea5c16897e');
+      expect(result.$createdAt, '2020-10-15T06:38:00.000+00:00');
+      expect(result.$updatedAt, '2020-10-15T06:38:00.000+00:00');
       expect(result.name, 'John Doe');
-      expect(result.registration, 1592981250);
+      expect(result.registration, '2020-10-15T06:38:00.000+00:00');
       expect(result.status, true);
-      expect(result.passwordUpdate, 1592981250);
+      expect(result.passwordUpdate, '2020-10-15T06:38:00.000+00:00');
       expect(result.email, 'john@appwrite.io');
+      expect(result.phone, '+4930901820');
       expect(result.emailVerification, true);
+      expect(result.phoneVerification, true);
       expect(result.prefs.data, {"data": {}});
     });
   });

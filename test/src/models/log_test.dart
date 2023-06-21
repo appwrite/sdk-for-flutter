@@ -12,7 +12,7 @@ void main() {
         userName: 'John Doe',
         mode: 'admin',
         ip: '127.0.0.1',
-        time: 1592981250,
+        time: '2020-10-15T06:38:00.000+00:00',
         osCode: 'Mac',
         osName: 'Mac',
         osVersion: 'Mac',
@@ -38,7 +38,7 @@ void main() {
       expect(result.userName, 'John Doe');
       expect(result.mode, 'admin');
       expect(result.ip, '127.0.0.1');
-      expect(result.time, 1592981250);
+      expect(result.time, '2020-10-15T06:38:00.000+00:00');
       expect(result.osCode, 'Mac');
       expect(result.osName, 'Mac');
       expect(result.osVersion, 'Mac');

@@ -76,7 +76,7 @@ void main() {
 
         });
 
-        test('test method getContinents()', () async {
+        test('test method listContinents()', () async {
             final Map<String, dynamic> data = {
                 'total': 5,
                 'continents': [],};
@@ -87,13 +87,13 @@ void main() {
             )).thenAnswer((_) async => Response(data: data));
 
 
-            final response = await locale.getContinents(
+            final response = await locale.listContinents(
             );
             expect(response, isA<models.ContinentList>());
 
         });
 
-        test('test method getCountries()', () async {
+        test('test method listCountries()', () async {
             final Map<String, dynamic> data = {
                 'total': 5,
                 'countries': [],};
@@ -104,13 +104,13 @@ void main() {
             )).thenAnswer((_) async => Response(data: data));
 
 
-            final response = await locale.getCountries(
+            final response = await locale.listCountries(
             );
             expect(response, isA<models.CountryList>());
 
         });
 
-        test('test method getCountriesEU()', () async {
+        test('test method listCountriesEU()', () async {
             final Map<String, dynamic> data = {
                 'total': 5,
                 'countries': [],};
@@ -121,13 +121,13 @@ void main() {
             )).thenAnswer((_) async => Response(data: data));
 
 
-            final response = await locale.getCountriesEU(
+            final response = await locale.listCountriesEU(
             );
             expect(response, isA<models.CountryList>());
 
         });
 
-        test('test method getCountriesPhones()', () async {
+        test('test method listCountriesPhones()', () async {
             final Map<String, dynamic> data = {
                 'total': 5,
                 'phones': [],};
@@ -138,13 +138,13 @@ void main() {
             )).thenAnswer((_) async => Response(data: data));
 
 
-            final response = await locale.getCountriesPhones(
+            final response = await locale.listCountriesPhones(
             );
             expect(response, isA<models.PhoneList>());
 
         });
 
-        test('test method getCurrencies()', () async {
+        test('test method listCurrencies()', () async {
             final Map<String, dynamic> data = {
                 'total': 5,
                 'currencies': [],};
@@ -155,13 +155,13 @@ void main() {
             )).thenAnswer((_) async => Response(data: data));
 
 
-            final response = await locale.getCurrencies(
+            final response = await locale.listCurrencies(
             );
             expect(response, isA<models.CurrencyList>());
 
         });
 
-        test('test method getLanguages()', () async {
+        test('test method listLanguages()', () async {
             final Map<String, dynamic> data = {
                 'total': 5,
                 'languages': [],};
@@ -172,7 +172,7 @@ void main() {
             )).thenAnswer((_) async => Response(data: data));
 
 
-            final response = await locale.getLanguages(
+            final response = await locale.listLanguages(
             );
             expect(response, isA<models.LanguageList>());
 

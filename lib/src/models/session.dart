@@ -4,18 +4,20 @@ part of appwrite.models;
 class Session implements Model {
     /// Session ID.
     final String $id;
+    /// Session creation date in ISO 8601 format.
+    final String $createdAt;
     /// User ID.
     final String userId;
-    /// Session expiration date in Unix timestamp.
-    final int expire;
+    /// Session expiration date in ISO 8601 format.
+    final String expire;
     /// Session Provider.
     final String provider;
     /// Session Provider User ID.
     final String providerUid;
     /// Session Provider Access Token.
     final String providerAccessToken;
-    /// Date, the Unix timestamp of when the access token expires.
-    final int providerAccessTokenExpiry;
+    /// The date of when the access token expires in ISO 8601 format.
+    final String providerAccessTokenExpiry;
     /// Session Provider Refresh Token.
     final String providerRefreshToken;
     /// IP in use when the session was created.
@@ -53,6 +55,7 @@ class Session implements Model {
 
     Session({
         required this.$id,
+        required this.$createdAt,
         required this.userId,
         required this.expire,
         required this.provider,
@@ -81,12 +84,13 @@ class Session implements Model {
     factory Session.fromMap(Map<String, dynamic> map) {
         return Session(
             $id: map['\$id'].toString(),
+            $createdAt: map['\$createdAt'].toString(),
             userId: map['userId'].toString(),
-            expire: map['expire'],
+            expire: map['expire'].toString(),
             provider: map['provider'].toString(),
             providerUid: map['providerUid'].toString(),
             providerAccessToken: map['providerAccessToken'].toString(),
-            providerAccessTokenExpiry: map['providerAccessTokenExpiry'],
+            providerAccessTokenExpiry: map['providerAccessTokenExpiry'].toString(),
             providerRefreshToken: map['providerRefreshToken'].toString(),
             ip: map['ip'].toString(),
             osCode: map['osCode'].toString(),
@@ -110,6 +114,7 @@ class Session implements Model {
     Map<String, dynamic> toMap() {
         return {
             "\$id": $id,
+            "\$createdAt": $createdAt,
             "userId": userId,
             "expire": expire,
             "provider": provider,

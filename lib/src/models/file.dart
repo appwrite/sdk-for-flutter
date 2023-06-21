@@ -6,14 +6,14 @@ class File implements Model {
     final String $id;
     /// Bucket ID.
     final String bucketId;
-    /// File read permissions.
-    final List $read;
-    /// File write permissions.
-    final List $write;
+    /// File creation date in ISO 8601 format.
+    final String $createdAt;
+    /// File update date in ISO 8601 format.
+    final String $updatedAt;
+    /// File permissions. [Learn more about permissions](/docs/permissions).
+    final List $permissions;
     /// File name.
     final String name;
-    /// File creation date in Unix timestamp.
-    final int dateCreated;
     /// File MD5 signature.
     final String signature;
     /// File mime type.
@@ -28,10 +28,10 @@ class File implements Model {
     File({
         required this.$id,
         required this.bucketId,
-        required this.$read,
-        required this.$write,
+        required this.$createdAt,
+        required this.$updatedAt,
+        required this.$permissions,
         required this.name,
-        required this.dateCreated,
         required this.signature,
         required this.mimeType,
         required this.sizeOriginal,
@@ -43,10 +43,10 @@ class File implements Model {
         return File(
             $id: map['\$id'].toString(),
             bucketId: map['bucketId'].toString(),
-            $read: map['\$read'],
-            $write: map['\$write'],
+            $createdAt: map['\$createdAt'].toString(),
+            $updatedAt: map['\$updatedAt'].toString(),
+            $permissions: map['\$permissions'],
             name: map['name'].toString(),
-            dateCreated: map['dateCreated'],
             signature: map['signature'].toString(),
             mimeType: map['mimeType'].toString(),
             sizeOriginal: map['sizeOriginal'],
@@ -59,10 +59,10 @@ class File implements Model {
         return {
             "\$id": $id,
             "bucketId": bucketId,
-            "\$read": $read,
-            "\$write": $write,
+            "\$createdAt": $createdAt,
+            "\$updatedAt": $updatedAt,
+            "\$permissions": $permissions,
             "name": name,
-            "dateCreated": dateCreated,
             "signature": signature,
             "mimeType": mimeType,
             "sizeOriginal": sizeOriginal,

@@ -8,18 +8,13 @@ class Storage extends Service {
     /// List Files
     ///
     /// Get a list of all the user files. You can use the query params to filter
-    /// your results. On admin mode, this endpoint will return a list of all of the
-    /// project's files. [Learn more about different API modes](/docs/admin).
-    Future<models.FileList> listFiles({required String bucketId, String? search, int? limit, int? offset, String? cursor, String? cursorDirection, String? orderType}) async {
+    /// your results.
+    Future<models.FileList> listFiles({required String bucketId, List<String>? queries, String? search}) async {
         final String path = '/storage/buckets/{bucketId}/files'.replaceAll('{bucketId}', bucketId);
 
         final Map<String, dynamic> params = {
+            'queries': queries,
             'search': search,
-            'limit': limit,
-            'offset': offset,
-            'cursor': cursor,
-            'cursorDirection': cursorDirection,
-            'orderType': orderType,
         };
 
         final Map<String, String> headers = {
@@ -36,8 +31,8 @@ class Storage extends Service {
     ///
     /// Create a new file. Before using this route, you should create a new bucket
     /// resource using either a [server
-    /// integration](/docs/server/database#storageCreateBucket) API or directly
-    /// from your Appwrite console.
+    /// integration](/docs/server/storage#storageCreateBucket) API or directly from
+    /// your Appwrite console.
     /// 
     /// Larger files should be uploaded using multiple requests with the
     /// [content-range](https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Range)
@@ -52,7 +47,7 @@ class Storage extends Service {
     /// If you're creating a new file using one of the Appwrite SDKs, all the
     /// chunking logic will be managed by the SDK internally.
     /// 
-    Future<models.File> createFile({required String bucketId, required String fileId, required InputFile file, List<String>? read, List<String>? write, Function(UploadProgress)? onProgress}) async {
+    Future<models.File> createFile({required String bucketId, required String fileId, required InputFile file, List<String>? permissions, Function(UploadProgress)? onProgress}) async {
         final String path = '/storage/buckets/{bucketId}/files'.replaceAll('{bucketId}', bucketId);
 
         final Map<String, dynamic> params = {
@@ -60,8 +55,7 @@ class Storage extends Service {
 
             'fileId': fileId,
             'file': file,
-            'read': read,
-            'write': write,
+            'permissions': permissions,
         };
 
         final Map<String, String> headers = {
@@ -108,12 +102,11 @@ class Storage extends Service {
     ///
     /// Update a file by its unique ID. Only users with write permissions have
     /// access to update this resource.
-    Future<models.File> updateFile({required String bucketId, required String fileId, List<String>? read, List<String>? write}) async {
+    Future<models.File> updateFile({required String bucketId, required String fileId, List<String>? permissions}) async {
         final String path = '/storage/buckets/{bucketId}/files/{fileId}'.replaceAll('{bucketId}', bucketId).replaceAll('{fileId}', fileId);
 
         final Map<String, dynamic> params = {
-            'read': read,
-            'write': write,
+            'permissions': permissions,
         };
 
         final Map<String, String> headers = {

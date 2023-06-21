@@ -8,10 +8,10 @@ void main() {
       final model = File(
         $id: '5e5ea5c16897e',
         bucketId: '5e5ea5c16897e',
-        $read: [],
-        $write: [],
+        $createdAt: '2020-10-15T06:38:00.000+00:00',
+        $updatedAt: '2020-10-15T06:38:00.000+00:00',
+        $permissions: [],
         name: 'Pink.png',
-        dateCreated: 1592981250,
         signature: '5d529fd02b544198ae075bd57c1762bb',
         mimeType: 'image/png',
         sizeOriginal: 17890,
@@ -24,10 +24,10 @@ void main() {
 
       expect(result.$id, '5e5ea5c16897e');
       expect(result.bucketId, '5e5ea5c16897e');
-      expect(result.$read, []);
-      expect(result.$write, []);
+      expect(result.$createdAt, '2020-10-15T06:38:00.000+00:00');
+      expect(result.$updatedAt, '2020-10-15T06:38:00.000+00:00');
+      expect(result.$permissions, []);
       expect(result.name, 'Pink.png');
-      expect(result.dateCreated, 1592981250);
       expect(result.signature, '5d529fd02b544198ae075bd57c1762bb');
       expect(result.mimeType, 'image/png');
       expect(result.sizeOriginal, 17890);
