@@ -1,13 +1,13 @@
 part of appwrite;
 
-    /// The Account service allows you to authenticate and manage a user account.
+/// The Account service allows you to authenticate and manage a user account.
 class Account extends Service {
+    /// Initializes a [Account] service
     Account(super.client);
 
     /// Get Account
     ///
     /// Get currently logged in user data as JSON object.
-    ///
     Future<models.User> get() async {
         const String path = '/account';
 
@@ -32,7 +32,6 @@ class Account extends Service {
     /// route to start verifying the user email address. To allow the new user to
     /// login to their new account, you need to create a new [account
     /// session](/docs/client/account#accountCreateSession).
-    ///
     Future<models.User> create({required String userId, required String email, required String password, String? name}) async {
         const String path = '/account';
 
@@ -63,7 +62,6 @@ class Account extends Service {
     /// This endpoint can also be used to convert an anonymous account to a normal
     /// one, by passing an email address and a new password.
     /// 
-    ///
     Future<models.User> updateEmail({required String email, required String password}) async {
         const String path = '/account/email';
 
@@ -89,7 +87,6 @@ class Account extends Service {
     /// Appwrite server-side API and SDKs. The JWT secret is valid for 15 minutes
     /// from its creation and will be invalid if the user will logout in that time
     /// frame.
-    ///
     Future<models.Jwt> createJWT() async {
         const String path = '/account/jwt';
 
@@ -110,7 +107,6 @@ class Account extends Service {
     ///
     /// Get currently logged in user list of latest security activity logs. Each
     /// log returns user IP address, location and date and time of log.
-    ///
     Future<models.LogList> listLogs({List<String>? queries}) async {
         const String path = '/account/logs';
 
@@ -131,7 +127,6 @@ class Account extends Service {
     /// Update Name
     ///
     /// Update currently logged in user account name.
-    ///
     Future<models.User> updateName({required String name}) async {
         const String path = '/account/name';
 
@@ -154,7 +149,6 @@ class Account extends Service {
     /// Update currently logged in user password. For validation, user is required
     /// to pass in the new password, and the old password. For users created with
     /// OAuth, Team Invites and Magic URL, oldPassword is optional.
-    ///
     Future<models.User> updatePassword({required String password, String? oldPassword}) async {
         const String path = '/account/password';
 
@@ -180,7 +174,6 @@ class Account extends Service {
     /// SMS is not sent automatically, however you can use the [POST
     /// /account/verification/phone](/docs/client/account#accountCreatePhoneVerification)
     /// endpoint to send a confirmation SMS.
-    ///
     Future<models.User> updatePhone({required String phone, required String password}) async {
         const String path = '/account/phone';
 
@@ -202,7 +195,6 @@ class Account extends Service {
     /// Get Account Preferences
     ///
     /// Get currently logged in user preferences as a key-value object.
-    ///
     Future<models.Preferences> getPrefs() async {
         const String path = '/account/prefs';
 
@@ -224,7 +216,6 @@ class Account extends Service {
     /// Update currently logged in user account preferences. The object you pass is
     /// stored as is, and replaces any previous value. The maximum allowed prefs
     /// size is 64kB and throws error if exceeded.
-    ///
     Future<models.User> updatePrefs({required Map prefs}) async {
         const String path = '/account/prefs';
 
@@ -252,7 +243,6 @@ class Account extends Service {
     /// /account/recovery](/docs/client/account#accountUpdateRecovery) endpoint to
     /// complete the process. The verification link sent to the user's email
     /// address is valid for 1 hour.
-    ///
     Future<models.Token> createRecovery({required String email, required String url}) async {
         const String path = '/account/recovery';
 
@@ -282,7 +272,6 @@ class Account extends Service {
     /// Attack](https://github.com/OWASP/CheatSheetSeries/blob/master/cheatsheets/Unvalidated_Redirects_and_Forwards_Cheat_Sheet.md)
     /// the only valid redirect URLs are the ones from domains you have set when
     /// adding your platforms in the console interface.
-    ///
     Future<models.Token> updateRecovery({required String userId, required String secret, required String password, required String passwordAgain}) async {
         const String path = '/account/recovery';
 
@@ -307,7 +296,6 @@ class Account extends Service {
     ///
     /// Get currently logged in user list of active sessions across different
     /// devices.
-    ///
     Future<models.SessionList> listSessions() async {
         const String path = '/account/sessions';
 
@@ -328,7 +316,6 @@ class Account extends Service {
     ///
     /// Delete all sessions from the user account and remove any sessions cookies
     /// from the end client.
-    ///
     Future deleteSessions() async {
         const String path = '/account/sessions';
 
@@ -353,7 +340,6 @@ class Account extends Service {
     /// need to update its [email and
     /// password](/docs/client/account#accountUpdateEmail) or create an [OAuth2
     /// session](/docs/client/account#accountCreateOAuth2Session).
-    ///
     Future<models.Session> createAnonymousSession() async {
         const String path = '/account/sessions/anonymous';
 
@@ -377,7 +363,6 @@ class Account extends Service {
     /// 
     /// A user is limited to 10 active sessions at a time by default. [Learn more
     /// about session limits](/docs/authentication-security#limits).
-    ///
     Future<models.Session> createEmailSession({required String email, required String password}) async {
         const String path = '/account/sessions/email';
 
@@ -412,7 +397,6 @@ class Account extends Service {
     /// 
     /// A user is limited to 10 active sessions at a time by default. [Learn more
     /// about session limits](/docs/authentication-security#limits).
-    ///
     Future<models.Token> createMagicURLSession({required String userId, required String email, String? url}) async {
         const String path = '/account/sessions/magic-url';
 
@@ -445,7 +429,6 @@ class Account extends Service {
     /// Attack](https://github.com/OWASP/CheatSheetSeries/blob/master/cheatsheets/Unvalidated_Redirects_and_Forwards_Cheat_Sheet.md)
     /// the only valid redirect URLs are the ones from domains you have set when
     /// adding your platforms in the console interface.
-    ///
     Future<models.Session> updateMagicURLSession({required String userId, required String secret}) async {
         const String path = '/account/sessions/magic-url';
 
@@ -481,7 +464,6 @@ class Account extends Service {
     /// A user is limited to 10 active sessions at a time by default. [Learn more
     /// about session limits](/docs/authentication-security#limits).
     /// 
-    ///
     Future createOAuth2Session({required String provider, String? success, String? failure, List<String>? scopes}) async {
         final String path = '/account/sessions/oauth2/{provider}'.replaceAll('{provider}', provider);
 
@@ -528,7 +510,6 @@ class Account extends Service {
     /// 
     /// A user is limited to 10 active sessions at a time by default. [Learn more
     /// about session limits](/docs/authentication-security#limits).
-    ///
     Future<models.Token> createPhoneSession({required String userId, required String phone}) async {
         const String path = '/account/sessions/phone';
 
@@ -554,7 +535,6 @@ class Account extends Service {
     /// [createPhoneSession](/docs/client/account#accountCreatePhoneSession)
     /// endpoint and the **secret** received via SMS to successfully update and
     /// confirm the phone session.
-    ///
     Future<models.Session> updatePhoneSession({required String userId, required String secret}) async {
         const String path = '/account/sessions/phone';
 
@@ -577,7 +557,6 @@ class Account extends Service {
     ///
     /// Use this endpoint to get a logged in user's session using a Session ID.
     /// Inputting 'current' will return the current session being used.
-    ///
     Future<models.Session> getSession({required String sessionId}) async {
         final String path = '/account/sessions/{sessionId}'.replaceAll('{sessionId}', sessionId);
 
@@ -599,7 +578,6 @@ class Account extends Service {
     /// Access tokens have limited lifespan and expire to mitigate security risks.
     /// If session was created using an OAuth provider, this route can be used to
     /// "refresh" the access token.
-    ///
     Future<models.Session> updateSession({required String sessionId}) async {
         final String path = '/account/sessions/{sessionId}'.replaceAll('{sessionId}', sessionId);
 
@@ -622,7 +600,6 @@ class Account extends Service {
     /// account sessions across all of their different devices. When using the
     /// Session ID argument, only the unique session ID provided is deleted.
     /// 
-    ///
     Future deleteSession({required String sessionId}) async {
         final String path = '/account/sessions/{sessionId}'.replaceAll('{sessionId}', sessionId);
 
@@ -644,7 +621,6 @@ class Account extends Service {
     /// Block the currently logged in user account. Behind the scene, the user
     /// record is not deleted but permanently blocked from any access. To
     /// completely delete a user, use the Users API instead.
-    ///
     Future<models.User> updateStatus() async {
         const String path = '/account/status';
 
@@ -678,7 +654,6 @@ class Account extends Service {
     /// the only valid redirect URLs are the ones from domains you have set when
     /// adding your platforms in the console interface.
     /// 
-    ///
     Future<models.Token> createVerification({required String url}) async {
         const String path = '/account/verification';
 
@@ -702,7 +677,6 @@ class Account extends Service {
     /// the **userId** and **secret** parameters that were attached to your app URL
     /// to verify the user email ownership. If confirmed this route will return a
     /// 200 status code.
-    ///
     Future<models.Token> updateVerification({required String userId, required String secret}) async {
         const String path = '/account/verification';
 
@@ -729,7 +703,6 @@ class Account extends Service {
     /// endpoint. Learn more about how to [complete the verification
     /// process](/docs/client/account#accountUpdatePhoneVerification). The
     /// verification code sent to the user's phone number is valid for 15 minutes.
-    ///
     Future<models.Token> createPhoneVerification() async {
         const String path = '/account/verification/phone';
 
@@ -752,7 +725,6 @@ class Account extends Service {
     /// **userId** and **secret** that were sent to your user's phone number to
     /// verify the user email ownership. If confirmed this route will return a 200
     /// status code.
-    ///
     Future<models.Token> updatePhoneVerification({required String userId, required String secret}) async {
         const String path = '/account/verification/phone';
 

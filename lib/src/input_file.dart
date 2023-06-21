@@ -1,5 +1,6 @@
 import 'exception.dart';
 
+/// Helper class to handle files.
 class InputFile {
   late final String? path;
   late final List<int>? bytes;
@@ -9,13 +10,13 @@ class InputFile {
   @Deprecated('Use `InputFile.fromPath` or `InputFile.fromBytes` instead.')
   InputFile({this.path, this.filename, this.contentType, this.bytes}) {
     if (path == null && bytes == null) {
-      throw AppwriteException('One of `path` or `bytes`  is required');
+      throw AppwriteException('One of `path` or `bytes` is required');
     }
   }
 
   InputFile._({this.path, this.filename, this.contentType, this.bytes}) {
     if (path == null && bytes == null) {
-      throw AppwriteException('One of `path` or `bytes`  is required');
+      throw AppwriteException('One of `path` or `bytes` is required');
     }
   }
 

@@ -1,8 +1,9 @@
 part of appwrite;
 
-    /// The Avatars service aims to help you complete everyday tasks related to
-    /// your app image, icons, and avatars.
+/// The Avatars service aims to help you complete everyday tasks related to
+/// your app image, icons, and avatars.
 class Avatars extends Service {
+    /// Initializes a [Avatars] service
     Avatars(super.client);
 
     /// Get Browser Icon
@@ -16,7 +17,6 @@ class Avatars extends Service {
     /// with preserved aspect ratio. If both dimensions are 0, the API provides an
     /// image at source quality. If dimensions are not specified, the default size
     /// of image returned is 100x100px.
-    ///
     Future<Uint8List> getBrowser({required String code, int? width, int? height, int? quality}) async {
         final String path = '/avatars/browsers/{code}'.replaceAll('{code}', code);
 
@@ -44,7 +44,6 @@ class Avatars extends Service {
     /// image at source quality. If dimensions are not specified, the default size
     /// of image returned is 100x100px.
     /// 
-    ///
     Future<Uint8List> getCreditCard({required String code, int? width, int? height, int? quality}) async {
         final String path = '/avatars/credit-cards/{code}'.replaceAll('{code}', code);
 
@@ -66,7 +65,6 @@ class Avatars extends Service {
     /// Use this endpoint to fetch the favorite icon (AKA favicon) of any remote
     /// website URL.
     /// 
-    ///
     Future<Uint8List> getFavicon({required String url}) async {
         const String path = '/avatars/favicon';
 
@@ -93,7 +91,6 @@ class Avatars extends Service {
     /// image at source quality. If dimensions are not specified, the default size
     /// of image returned is 100x100px.
     /// 
-    ///
     Future<Uint8List> getFlag({required String code, int? width, int? height, int? quality}) async {
         final String path = '/avatars/flags/{code}'.replaceAll('{code}', code);
 
@@ -122,7 +119,6 @@ class Avatars extends Service {
     /// image at source quality. If dimensions are not specified, the default size
     /// of image returned is 400x400px.
     /// 
-    ///
     Future<Uint8List> getImage({required String url, int? width, int? height}) async {
         const String path = '/avatars/image';
 
@@ -157,7 +153,6 @@ class Avatars extends Service {
     /// image at source quality. If dimensions are not specified, the default size
     /// of image returned is 100x100px.
     /// 
-    ///
     Future<Uint8List> getInitials({String? name, int? width, int? height, String? background}) async {
         const String path = '/avatars/initials';
 
@@ -180,7 +175,6 @@ class Avatars extends Service {
     /// Converts a given plain text to a QR code image. You can use the query
     /// parameters to change the size and style of the resulting image.
     /// 
-    ///
     Future<Uint8List> getQR({required String text, int? size, int? margin, bool? download}) async {
         const String path = '/avatars/qr';
 
