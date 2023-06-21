@@ -1,3 +1,4 @@
+/// Appwrite Models
 library appwrite.models;
 
 part 'src/models/model.dart';
@@ -16,13 +17,6 @@ part 'src/models/phone_list.dart';
 part 'src/models/document.dart';
 part 'src/models/log.dart';
 part 'src/models/user.dart';
-part 'src/models/algo_md5.dart';
-part 'src/models/algo_sha.dart';
-part 'src/models/algo_phpass.dart';
-part 'src/models/algo_bcrypt.dart';
-part 'src/models/algo_scrypt.dart';
-part 'src/models/algo_scrypt_modified.dart';
-part 'src/models/algo_argon2.dart';
 part 'src/models/preferences.dart';
 part 'src/models/session.dart';
 part 'src/models/token.dart';

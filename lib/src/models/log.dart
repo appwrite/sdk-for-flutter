@@ -14,8 +14,8 @@ class Log implements Model {
     final String mode;
     /// IP session in use when the session was created.
     final String ip;
-    /// Log creation date in ISO 8601 format.
-    final String time;
+    /// Log creation time in Unix timestamp.
+    final int time;
     /// Operating system code name. View list of [available options](https://github.com/appwrite/appwrite/blob/master/docs/lists/os.json).
     final String osCode;
     /// Operating system name.
@@ -77,7 +77,7 @@ class Log implements Model {
             userName: map['userName'].toString(),
             mode: map['mode'].toString(),
             ip: map['ip'].toString(),
-            time: map['time'].toString(),
+            time: map['time'],
             osCode: map['osCode'].toString(),
             osName: map['osName'].toString(),
             osVersion: map['osVersion'].toString(),

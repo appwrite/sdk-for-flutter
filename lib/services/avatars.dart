@@ -1,22 +1,17 @@
 part of appwrite;
 
-    /// The Avatars service aims to help you complete everyday tasks related to
-    /// your app image, icons, and avatars.
+/// The Avatars service aims to help you complete everyday tasks related to
+/// your app image, icons, and avatars.
 class Avatars extends Service {
+    /// Initializes a [Avatars] service
     Avatars(super.client);
 
     /// Get Browser Icon
     ///
     /// You can use this endpoint to show different browser icons to your users.
-    /// The code argument receives the browser code as it appears in your user [GET
-    /// /account/sessions](/docs/client/account#accountGetSessions) endpoint. Use
-    /// width, height and quality arguments to change the output settings.
-    /// 
-    /// When one dimension is specified and the other is 0, the image is scaled
-    /// with preserved aspect ratio. If both dimensions are 0, the API provides an
-    /// image at source quality. If dimensions are not specified, the default size
-    /// of image returned is 100x100px.
-    ///
+    /// The code argument receives the browser code as it appears in your user
+    /// /account/sessions endpoint. Use width, height and quality arguments to
+    /// change the output settings.
     Future<Uint8List> getBrowser({required String code, int? width, int? height, int? quality}) async {
         final String path = '/avatars/browsers/{code}'.replaceAll('{code}', code);
 
@@ -38,13 +33,6 @@ class Avatars extends Service {
     /// The credit card endpoint will return you the icon of the credit card
     /// provider you need. Use width, height and quality arguments to change the
     /// output settings.
-    /// 
-    /// When one dimension is specified and the other is 0, the image is scaled
-    /// with preserved aspect ratio. If both dimensions are 0, the API provides an
-    /// image at source quality. If dimensions are not specified, the default size
-    /// of image returned is 100x100px.
-    /// 
-    ///
     Future<Uint8List> getCreditCard({required String code, int? width, int? height, int? quality}) async {
         final String path = '/avatars/credit-cards/{code}'.replaceAll('{code}', code);
 
@@ -66,7 +54,6 @@ class Avatars extends Service {
     /// Use this endpoint to fetch the favorite icon (AKA favicon) of any remote
     /// website URL.
     /// 
-    ///
     Future<Uint8List> getFavicon({required String url}) async {
         const String path = '/avatars/favicon';
 
@@ -85,15 +72,7 @@ class Avatars extends Service {
     ///
     /// You can use this endpoint to show different country flags icons to your
     /// users. The code argument receives the 2 letter country code. Use width,
-    /// height and quality arguments to change the output settings. Country codes
-    /// follow the [ISO 3166-1](http://en.wikipedia.org/wiki/ISO_3166-1) standard.
-    /// 
-    /// When one dimension is specified and the other is 0, the image is scaled
-    /// with preserved aspect ratio. If both dimensions are 0, the API provides an
-    /// image at source quality. If dimensions are not specified, the default size
-    /// of image returned is 100x100px.
-    /// 
-    ///
+    /// height and quality arguments to change the output settings.
     Future<Uint8List> getFlag({required String code, int? width, int? height, int? quality}) async {
         final String path = '/avatars/flags/{code}'.replaceAll('{code}', code);
 
@@ -116,13 +95,6 @@ class Avatars extends Service {
     /// you want. This endpoint is very useful if you need to crop and display
     /// remote images in your app or in case you want to make sure a 3rd party
     /// image is properly served using a TLS protocol.
-    /// 
-    /// When one dimension is specified and the other is 0, the image is scaled
-    /// with preserved aspect ratio. If both dimensions are 0, the API provides an
-    /// image at source quality. If dimensions are not specified, the default size
-    /// of image returned is 400x400px.
-    /// 
-    ///
     Future<Uint8List> getImage({required String url, int? width, int? height}) async {
         const String path = '/avatars/image';
 
@@ -151,14 +123,7 @@ class Avatars extends Service {
     /// default, a random theme will be selected. The random theme will persist for
     /// the user's initials when reloading the same theme will always return for
     /// the same initials.
-    /// 
-    /// When one dimension is specified and the other is 0, the image is scaled
-    /// with preserved aspect ratio. If both dimensions are 0, the API provides an
-    /// image at source quality. If dimensions are not specified, the default size
-    /// of image returned is 100x100px.
-    /// 
-    ///
-    Future<Uint8List> getInitials({String? name, int? width, int? height, String? background}) async {
+    Future<Uint8List> getInitials({String? name, int? width, int? height, String? color, String? background}) async {
         const String path = '/avatars/initials';
 
         final Map<String, dynamic> params = {
@@ -166,6 +131,7 @@ class Avatars extends Service {
             'name': name,
             'width': width,
             'height': height,
+            'color': color,
             'background': background,
             
             'project': client.config['project'],
@@ -179,8 +145,6 @@ class Avatars extends Service {
     ///
     /// Converts a given plain text to a QR code image. You can use the query
     /// parameters to change the size and style of the resulting image.
-    /// 
-    ///
     Future<Uint8List> getQR({required String text, int? size, int? margin, bool? download}) async {
         const String path = '/avatars/qr';
 

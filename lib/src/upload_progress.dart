@@ -1,11 +1,23 @@
 import 'dart:convert';
 
+/// Progress of a File Upload
 class UploadProgress {
+  /// ID of the file.
   final String $id;
+
+  /// Progress percentage.
   final double progress;
+
+  /// Size uploaded in bytes.
   final int sizeUploaded;
+
+  /// Total number of chunks.
   final int chunksTotal;
+
+  /// Number of chunks uploaded.
   final int chunksUploaded;
+
+  /// Initializes an [UploadProgress]
   UploadProgress({
     required this.$id,
     required this.progress,
@@ -14,6 +26,7 @@ class UploadProgress {
     required this.chunksUploaded,
   });
 
+  /// Initializes an [UploadProgress] from a [Map<String, dynamic>]
   factory UploadProgress.fromMap(Map<String, dynamic> map) {
     return UploadProgress(
       $id: map['\$id'] ?? '',
@@ -24,6 +37,7 @@ class UploadProgress {
     );
   }
 
+  /// Converts an [UploadProgress] to a [Map<String, dynamic>]
   Map<String, dynamic> toMap() {
     return {
       "\$id": $id,
@@ -34,11 +48,14 @@ class UploadProgress {
     };
   }
 
+  /// Converts an [UploadProgress] to a JSON [String]
   String toJson() => json.encode(toMap());
 
+  /// Initializes an [UploadProgress] from a JSON [String]
   factory UploadProgress.fromJson(String source) =>
       UploadProgress.fromMap(json.decode(source));
 
+  /// Returns a string representation of an [UploadProgress]
   @override
   String toString() {
     return 'UploadProgress(\$id: ${$id}, progress: $progress, sizeUploaded: $sizeUploaded, chunksTotal: $chunksTotal, chunksUploaded: $chunksUploaded)';

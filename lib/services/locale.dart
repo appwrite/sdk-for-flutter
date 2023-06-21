@@ -1,8 +1,9 @@
 part of appwrite;
 
-    /// The Locale service allows you to customize your app based on your users'
-    /// location.
+/// The Locale service allows you to customize your app based on your users&#039;
+/// location.
 class Locale extends Service {
+    /// Initializes a [Locale] service
     Locale(super.client);
 
     /// Get User Locale
@@ -13,7 +14,6 @@ class Locale extends Service {
     /// supported language.
     /// 
     /// ([IP Geolocation by DB-IP](https://db-ip.com))
-    ///
     Future<models.Locale> get() async {
         const String path = '/locale';
 
@@ -34,8 +34,7 @@ class Locale extends Service {
     ///
     /// List of all continents. You can use the locale header to get the data in a
     /// supported language.
-    ///
-    Future<models.ContinentList> listContinents() async {
+    Future<models.ContinentList> getContinents() async {
         const String path = '/locale/continents';
 
         final Map<String, dynamic> params = {
@@ -55,8 +54,7 @@ class Locale extends Service {
     ///
     /// List of all countries. You can use the locale header to get the data in a
     /// supported language.
-    ///
-    Future<models.CountryList> listCountries() async {
+    Future<models.CountryList> getCountries() async {
         const String path = '/locale/countries';
 
         final Map<String, dynamic> params = {
@@ -76,8 +74,7 @@ class Locale extends Service {
     ///
     /// List of all countries that are currently members of the EU. You can use the
     /// locale header to get the data in a supported language.
-    ///
-    Future<models.CountryList> listCountriesEU() async {
+    Future<models.CountryList> getCountriesEU() async {
         const String path = '/locale/countries/eu';
 
         final Map<String, dynamic> params = {
@@ -97,8 +94,7 @@ class Locale extends Service {
     ///
     /// List of all countries phone codes. You can use the locale header to get the
     /// data in a supported language.
-    ///
-    Future<models.PhoneList> listCountriesPhones() async {
+    Future<models.PhoneList> getCountriesPhones() async {
         const String path = '/locale/countries/phones';
 
         final Map<String, dynamic> params = {
@@ -119,8 +115,7 @@ class Locale extends Service {
     /// List of all currencies, including currency symbol, name, plural, and
     /// decimal digits for all major and minor currencies. You can use the locale
     /// header to get the data in a supported language.
-    ///
-    Future<models.CurrencyList> listCurrencies() async {
+    Future<models.CurrencyList> getCurrencies() async {
         const String path = '/locale/currencies';
 
         final Map<String, dynamic> params = {
@@ -140,8 +135,7 @@ class Locale extends Service {
     ///
     /// List of all languages classified by ISO 639-1 including 2-letter code, name
     /// in English, and name in the respective language.
-    ///
-    Future<models.LanguageList> listLanguages() async {
+    Future<models.LanguageList> getLanguages() async {
         const String path = '/locale/languages';
 
         final Map<String, dynamic> params = {

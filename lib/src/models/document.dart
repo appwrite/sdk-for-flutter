@@ -5,35 +5,27 @@ class Document implements Model {
     /// Document ID.
     final String $id;
     /// Collection ID.
-    final String $collectionId;
-    /// Database ID.
-    final String $databaseId;
-    /// Document creation date in ISO 8601 format.
-    final String $createdAt;
-    /// Document update date in ISO 8601 format.
-    final String $updatedAt;
-    /// Document permissions. [Learn more about permissions](/docs/permissions).
-    final List $permissions;
+    final String $collection;
+    /// Document read permissions.
+    final List $read;
+    /// Document write permissions.
+    final List $write;
     final Map<String, dynamic> data;
 
     Document({
         required this.$id,
-        required this.$collectionId,
-        required this.$databaseId,
-        required this.$createdAt,
-        required this.$updatedAt,
-        required this.$permissions,
+        required this.$collection,
+        required this.$read,
+        required this.$write,
         required this.data,
     });
 
     factory Document.fromMap(Map<String, dynamic> map) {
         return Document(
             $id: map['\$id'].toString(),
-            $collectionId: map['\$collectionId'].toString(),
-            $databaseId: map['\$databaseId'].toString(),
-            $createdAt: map['\$createdAt'].toString(),
-            $updatedAt: map['\$updatedAt'].toString(),
-            $permissions: map['\$permissions'],
+            $collection: map['\$collection'].toString(),
+            $read: map['\$read'],
+            $write: map['\$write'],
             data: map,
         );
     }
@@ -41,11 +33,9 @@ class Document implements Model {
     Map<String, dynamic> toMap() {
         return {
             "\$id": $id,
-            "\$collectionId": $collectionId,
-            "\$databaseId": $databaseId,
-            "\$createdAt": $createdAt,
-            "\$updatedAt": $updatedAt,
-            "\$permissions": $permissions,
+            "\$collection": $collection,
+            "\$read": $read,
+            "\$write": $write,
             "data": data,
         };
     }

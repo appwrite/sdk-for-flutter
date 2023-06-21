@@ -4,24 +4,18 @@ part of appwrite.models;
 class Membership implements Model {
     /// Membership ID.
     final String $id;
-    /// Membership creation date in ISO 8601 format.
-    final String $createdAt;
-    /// Membership update date in ISO 8601 format.
-    final String $updatedAt;
     /// User ID.
     final String userId;
-    /// User name.
-    final String userName;
-    /// User email address.
-    final String userEmail;
     /// Team ID.
     final String teamId;
-    /// Team name.
-    final String teamName;
-    /// Date, the user has been invited to join the team in ISO 8601 format.
-    final String invited;
-    /// Date, the user has accepted the invitation to join the team in ISO 8601 format.
-    final String joined;
+    /// User name.
+    final String name;
+    /// User email address.
+    final String email;
+    /// Date, the user has been invited to join the team in Unix timestamp.
+    final int invited;
+    /// Date, the user has accepted the invitation to join the team in Unix timestamp.
+    final int joined;
     /// User confirmation status, true if the user has joined the team or false otherwise.
     final bool confirm;
     /// User list of roles
@@ -29,13 +23,10 @@ class Membership implements Model {
 
     Membership({
         required this.$id,
-        required this.$createdAt,
-        required this.$updatedAt,
         required this.userId,
-        required this.userName,
-        required this.userEmail,
         required this.teamId,
-        required this.teamName,
+        required this.name,
+        required this.email,
         required this.invited,
         required this.joined,
         required this.confirm,
@@ -45,15 +36,12 @@ class Membership implements Model {
     factory Membership.fromMap(Map<String, dynamic> map) {
         return Membership(
             $id: map['\$id'].toString(),
-            $createdAt: map['\$createdAt'].toString(),
-            $updatedAt: map['\$updatedAt'].toString(),
             userId: map['userId'].toString(),
-            userName: map['userName'].toString(),
-            userEmail: map['userEmail'].toString(),
             teamId: map['teamId'].toString(),
-            teamName: map['teamName'].toString(),
-            invited: map['invited'].toString(),
-            joined: map['joined'].toString(),
+            name: map['name'].toString(),
+            email: map['email'].toString(),
+            invited: map['invited'],
+            joined: map['joined'],
             confirm: map['confirm'],
             roles: map['roles'],
         );
@@ -62,13 +50,10 @@ class Membership implements Model {
     Map<String, dynamic> toMap() {
         return {
             "\$id": $id,
-            "\$createdAt": $createdAt,
-            "\$updatedAt": $updatedAt,
             "userId": userId,
-            "userName": userName,
-            "userEmail": userEmail,
             "teamId": teamId,
-            "teamName": teamName,
+            "name": name,
+            "email": email,
             "invited": invited,
             "joined": joined,
             "confirm": confirm,
