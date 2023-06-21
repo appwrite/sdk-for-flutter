@@ -1,15 +1,15 @@
 part of appwrite;
 
-    /// The Functions Service allows you view, create and manage your Cloud
-    /// Functions.
+/// The Functions Service allows you view, create and manage your Cloud
+/// Functions.
 class Functions extends Service {
+    /// Initializes a [Functions] service
     Functions(super.client);
 
     /// List Executions
     ///
     /// Get a list of all the current user function execution logs. You can use the
     /// query params to filter your results.
-    ///
     Future<models.ExecutionList> listExecutions({required String functionId, List<String>? queries, String? search}) async {
         final String path = '/functions/{functionId}/executions'.replaceAll('{functionId}', functionId);
 
@@ -34,7 +34,6 @@ class Functions extends Service {
     /// current execution status. You can ping the `Get Execution` endpoint to get
     /// updates on the current execution status. Once this endpoint is called, your
     /// function execution process will start asynchronously.
-    ///
     Future<models.Execution> createExecution({required String functionId, String? data, bool? xasync}) async {
         final String path = '/functions/{functionId}/executions'.replaceAll('{functionId}', functionId);
 
@@ -56,7 +55,6 @@ class Functions extends Service {
     /// Get Execution
     ///
     /// Get a function execution log by its unique ID.
-    ///
     Future<models.Execution> getExecution({required String functionId, required String executionId}) async {
         final String path = '/functions/{functionId}/executions/{executionId}'.replaceAll('{functionId}', functionId).replaceAll('{executionId}', executionId);
 

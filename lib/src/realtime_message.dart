@@ -1,11 +1,24 @@
 import 'dart:convert';
 import 'package:flutter/foundation.dart';
 
+/// Realtime Message
 class RealtimeMessage {
+  /// All permutations of the system event that triggered this message
+  /// 
+  /// The first event in the list is the most specfic event without wildcards.
   final List<String> events;
+
+  /// The data related to the event
   final Map<String, dynamic> payload;
+
+  /// All channels that match this event
   final List<String> channels;
+
+  /// ISO 8601 formatted timestamp in UTC timezone in
+  /// which the event was sent from Appwrite
   final String timestamp;
+
+  /// Initializes a [RealtimeMessage]
   RealtimeMessage({
     required this.events,
     required this.payload,
@@ -13,6 +26,7 @@ class RealtimeMessage {
     required this.timestamp,
   });
 
+  /// Returns a copy of this [RealtimeMessage] with specified attributes overridden.
   RealtimeMessage copyWith({
     List<String>? events,
     Map<String, dynamic>? payload,
@@ -27,6 +41,7 @@ class RealtimeMessage {
     );
   }
 
+  /// Returns a [Map<String, dynamic>] representation of this [RealtimeMessage].
   Map<String, dynamic> toMap() {
     return {
       'events': events,
@@ -36,6 +51,7 @@ class RealtimeMessage {
     };
   }
 
+  /// Initializes a [RealtimeMessage] from a [Map<String, dynamic>].
   factory RealtimeMessage.fromMap(Map<String, dynamic> map) {
     return RealtimeMessage(
       events: List<String>.from(map['events'] ?? []),
@@ -45,11 +61,14 @@ class RealtimeMessage {
     );
   }
 
+  /// Converts a [RealtimeMessage] to a JSON [String].
   String toJson() => json.encode(toMap());
 
+  /// Initializes a [RealtimeMessage] from a JSON [String].
   factory RealtimeMessage.fromJson(String source) =>
       RealtimeMessage.fromMap(json.decode(source));
 
+  /// Returns a string representation of this [RealtimeMessage].
   @override
   String toString() {
     return 'RealtimeMessage(events: $events, payload: $payload, channels: $channels, timestamp: $timestamp)';
