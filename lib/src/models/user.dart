@@ -20,6 +20,8 @@ class User implements Model {
     final String registration;
     /// User status. Pass `true` for enabled and `false` for disabled.
     final bool status;
+    /// Labels for the user.
+    final List labels;
     /// Password update time in ISO 8601 format.
     final String passwordUpdate;
     /// User email address.
@@ -32,6 +34,8 @@ class User implements Model {
     final bool phoneVerification;
     /// User preferences as a key-value object
     final Preferences prefs;
+    /// Most recent access date in ISO 8601 format. This attribute is only updated again after 24 hours.
+    final String accessedAt;
 
     User({
         required this.$id,
@@ -43,12 +47,14 @@ class User implements Model {
         this.hashOptions,
         required this.registration,
         required this.status,
+        required this.labels,
         required this.passwordUpdate,
         required this.email,
         required this.phone,
         required this.emailVerification,
         required this.phoneVerification,
         required this.prefs,
+        required this.accessedAt,
     });
 
     factory User.fromMap(Map<String, dynamic> map) {
@@ -62,12 +68,14 @@ class User implements Model {
             hashOptions: map['hashOptions'],
             registration: map['registration'].toString(),
             status: map['status'],
+            labels: map['labels'],
             passwordUpdate: map['passwordUpdate'].toString(),
             email: map['email'].toString(),
             phone: map['phone'].toString(),
             emailVerification: map['emailVerification'],
             phoneVerification: map['phoneVerification'],
             prefs: Preferences.fromMap(map['prefs']),
+            accessedAt: map['accessedAt'].toString(),
         );
     }
 
@@ -82,12 +90,14 @@ class User implements Model {
             "hashOptions": hashOptions,
             "registration": registration,
             "status": status,
+            "labels": labels,
             "passwordUpdate": passwordUpdate,
             "email": email,
             "phone": phone,
             "emailVerification": emailVerification,
             "phoneVerification": phoneVerification,
             "prefs": prefs.toMap(),
+            "accessedAt": accessedAt,
         };
     }
 }

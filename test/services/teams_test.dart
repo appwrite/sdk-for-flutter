@@ -229,7 +229,7 @@ void main() {
 
         });
 
-        test('test method updateMembershipRoles()', () async {
+        test('test method updateMembership()', () async {
             final Map<String, dynamic> data = {
                 '\$id': '5e5ea5c16897e',
                 '\$createdAt': '2020-10-15T06:38:00.000+00:00',
@@ -250,7 +250,7 @@ void main() {
             )).thenAnswer((_) async => Response(data: data));
 
 
-            final response = await teams.updateMembershipRoles(
+            final response = await teams.updateMembership(
                 teamId: '[TEAM_ID]',
                 membershipId: '[MEMBERSHIP_ID]',
                 roles: [],

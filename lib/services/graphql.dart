@@ -10,7 +10,7 @@ class Graphql extends Service {
     ///
     /// Execute a GraphQL mutation.
     Future query({required Map query}) async {
-        const String path = '/graphql';
+        const String apiPath = '/graphql';
 
         final Map<String, dynamic> params = {
             'query': query,
@@ -20,7 +20,7 @@ class Graphql extends Service {
             'x-sdk-graphql': 'true',            'content-type': 'application/json',
         };
 
-        final res = await client.call(HttpMethod.post, path: path, params: params, headers: headers);
+        final res = await client.call(HttpMethod.post, path: apiPath, params: params, headers: headers);
 
         return  res.data;
 
@@ -30,7 +30,7 @@ class Graphql extends Service {
     ///
     /// Execute a GraphQL mutation.
     Future mutation({required Map query}) async {
-        const String path = '/graphql/mutation';
+        const String apiPath = '/graphql/mutation';
 
         final Map<String, dynamic> params = {
             'query': query,
@@ -40,7 +40,7 @@ class Graphql extends Service {
             'x-sdk-graphql': 'true',            'content-type': 'application/json',
         };
 
-        final res = await client.call(HttpMethod.post, path: path, params: params, headers: headers);
+        final res = await client.call(HttpMethod.post, path: apiPath, params: params, headers: headers);
 
         return  res.data;
 

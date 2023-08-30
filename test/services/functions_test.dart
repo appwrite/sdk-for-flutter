@@ -81,10 +81,14 @@ void main() {
                 'functionId': '5e5ea6g16897e',
                 'trigger': 'http',
                 'status': 'processing',
-                'statusCode': 0,
-                'response': '',
-                'stdout': '',
-                'stderr': '',
+                'requestMethod': 'GET',
+                'requestPath': '/articles?id=5',
+                'requestHeaders': [],
+                'responseStatusCode': 200,
+                'responseBody': 'Developers are awesome.',
+                'responseHeaders': [],
+                'logs': '',
+                'errors': '',
                 'duration': 0.4,};
 
 
@@ -109,10 +113,14 @@ void main() {
                 'functionId': '5e5ea6g16897e',
                 'trigger': 'http',
                 'status': 'processing',
-                'statusCode': 0,
-                'response': '',
-                'stdout': '',
-                'stderr': '',
+                'requestMethod': 'GET',
+                'requestPath': '/articles?id=5',
+                'requestHeaders': [],
+                'responseStatusCode': 200,
+                'responseBody': 'Developers are awesome.',
+                'responseHeaders': [],
+                'logs': '',
+                'errors': '',
                 'duration': 0.4,};
 
 

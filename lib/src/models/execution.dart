@@ -16,15 +16,23 @@ class Execution implements Model {
     final String trigger;
     /// The status of the function execution. Possible values can be: `waiting`, `processing`, `completed`, or `failed`.
     final String status;
-    /// The script status code.
-    final int statusCode;
-    /// The script response output string. Logs the last 4,000 characters of the execution response output.
-    final String response;
-    /// The script stdout output string. Logs the last 4,000 characters of the execution stdout output. This will return an empty string unless the response is returned using an API key or as part of a webhook payload.
-    final String stdout;
-    /// The script stderr output string. Logs the last 4,000 characters of the execution stderr output. This will return an empty string unless the response is returned using an API key or as part of a webhook payload.
-    final String stderr;
-    /// The script execution duration in seconds.
+    /// HTTP request method type.
+    final String requestMethod;
+    /// HTTP request path and query.
+    final String requestPath;
+    /// HTTP response headers as a key-value object. This will return only whitelisted headers. All headers are returned if execution is created as synchronous.
+    final List<Headers> requestHeaders;
+    /// HTTP response status code.
+    final int responseStatusCode;
+    /// HTTP response body. This will return empty unless execution is created as synchronous.
+    final String responseBody;
+    /// HTTP response headers as a key-value object. This will return only whitelisted headers. All headers are returned if execution is created as synchronous.
+    final List<Headers> responseHeaders;
+    /// Function logs. Includes the last 4,000 characters. This will return an empty string unless the response is returned using an API key or as part of a webhook payload.
+    final String logs;
+    /// Function errors. Includes the last 4,000 characters. This will return an empty string unless the response is returned using an API key or as part of a webhook payload.
+    final String errors;
+    /// Function execution duration in seconds.
     final double duration;
 
     Execution({
@@ -35,10 +43,14 @@ class Execution implements Model {
         required this.functionId,
         required this.trigger,
         required this.status,
-        required this.statusCode,
-        required this.response,
-        required this.stdout,
-        required this.stderr,
+        required this.requestMethod,
+        required this.requestPath,
+        required this.requestHeaders,
+        required this.responseStatusCode,
+        required this.responseBody,
+        required this.responseHeaders,
+        required this.logs,
+        required this.errors,
         required this.duration,
     });
 
@@ -51,10 +63,14 @@ class Execution implements Model {
             functionId: map['functionId'].toString(),
             trigger: map['trigger'].toString(),
             status: map['status'].toString(),
-            statusCode: map['statusCode'],
-            response: map['response'].toString(),
-            stdout: map['stdout'].toString(),
-            stderr: map['stderr'].toString(),
+            requestMethod: map['requestMethod'].toString(),
+            requestPath: map['requestPath'].toString(),
+            requestHeaders: List<Headers>.from(map['requestHeaders'].map((p) => Headers.fromMap(p))),
+            responseStatusCode: map['responseStatusCode'],
+            responseBody: map['responseBody'].toString(),
+            responseHeaders: List<Headers>.from(map['responseHeaders'].map((p) => Headers.fromMap(p))),
+            logs: map['logs'].toString(),
+            errors: map['errors'].toString(),
             duration: map['duration'].toDouble(),
         );
     }
@@ -68,10 +84,14 @@ class Execution implements Model {
             "functionId": functionId,
             "trigger": trigger,
             "status": status,
-            "statusCode": statusCode,
-            "response": response,
-            "stdout": stdout,
-            "stderr": stderr,
+            "requestMethod": requestMethod,
+            "requestPath": requestPath,
+            "requestHeaders": requestHeaders.map((p) => p.toMap()).toList(),
+            "responseStatusCode": responseStatusCode,
+            "responseBody": responseBody,
+            "responseHeaders": responseHeaders.map((p) => p.toMap()).toList(),
+            "logs": logs,
+            "errors": errors,
             "duration": duration,
         };
     }
