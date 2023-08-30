@@ -1,9 +1,3 @@
-## 9.0.1
-
-* Added documentation comments
-* Added unit tests
-* Upgraded dependencies
-
 ## 9.0.0
 
 * Added relationships support

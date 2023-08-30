@@ -2,12 +2,12 @@
 
 [![pub package](https://img.shields.io/pub/v/appwrite?style=flat-square)](https://pub.dartlang.org/packages/appwrite)
 ![License](https://img.shields.io/github/license/appwrite/sdk-for-flutter.svg?style=flat-square)
-![Version](https://img.shields.io/badge/api%20version-1.3.x-blue.svg?style=flat-square)
+![Version](https://img.shields.io/badge/api%20version-1.4.x-blue.svg?style=flat-square)
 [![Build Status](https://img.shields.io/travis/com/appwrite/sdk-generator?style=flat-square)](https://travis-ci.com/appwrite/sdk-generator)
 [![Twitter Account](https://img.shields.io/twitter/follow/appwrite?color=00acee&label=twitter&style=flat-square)](https://twitter.com/appwrite)
 [![Discord](https://img.shields.io/discord/564160730845151244?label=discord&style=flat-square)](https://appwrite.io/discord)
 
-**This SDK is compatible with Appwrite server version 1.3.x. For older versions, please check [previous releases](https://github.com/appwrite/sdk-for-flutter/releases).**
+**This SDK is compatible with Appwrite server version latest. For older versions, please check [previous releases](https://github.com/appwrite/sdk-for-flutter/releases).**
 
 Appwrite is an open-source backend as a service server that abstract and simplify complex and repetitive development tasks behind a very simple to use REST API. Appwrite aims to help you develop your apps faster and in a more secure way. Use the Flutter SDK to integrate your app with the Appwrite server to easily start interacting with all of Appwrite backend APIs and tools. For full API documentation and tutorials go to [https://appwrite.io/docs](https://appwrite.io/docs)
 
@@ -21,7 +21,7 @@ Add this to your package's `pubspec.yaml` file:
 
 ```yml
 dependencies:
-  appwrite: ^9.0.1
+  appwrite: ^10.0.0
 ```
 
 You can install packages from the command line:
@@ -78,6 +78,8 @@ For **Linux** add your app <u>name</u> and <u>package name</u>, Your package nam
 
 ### Mac OS
 For **Mac OS** add your app name and Bundle ID, You can find your Bundle Identifier in the General tab for your app's primary target in Xcode.
+
+The Appwrite SDK uses ASWebAuthenticationSession on macOS 10.15+ to allow OAuth authentication. You have to change your macOS Deployment Target in Xcode to be macOS >= 10.15 to be able to build your app for macOS.
 
 ### Web
 Appwrite 0.7, and the Appwrite Flutter SDK 0.3.0 have added support for Flutter Web. To build web apps that integrate with Appwrite successfully, all you have to do is add a web platform on your Appwrite project's dashboard and list the domain your website will use to allow communication to the Appwrite API.

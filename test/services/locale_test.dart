@@ -76,6 +76,23 @@ void main() {
 
         });
 
+        test('test method listCodes()', () async {
+            final Map<String, dynamic> data = {
+                'total': 5,
+                'localeCodes': [],};
+
+
+            when(client.call(
+                HttpMethod.get,
+            )).thenAnswer((_) async => Response(data: data));
+
+
+            final response = await locale.listCodes(
+            );
+            expect(response, isA<models.LocaleCodeList>());
+
+        });
+
         test('test method listContinents()', () async {
             final Map<String, dynamic> data = {
                 'total': 5,
