@@ -58,4 +58,9 @@ class Role {
     static String member(String id) {
         return 'member:$id';
     }
+
+    /// Grants access to a user with the specified label.
+    static String label(String name) {
+        return 'label:$name';
+    }
 }

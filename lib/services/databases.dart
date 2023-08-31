@@ -13,15 +13,15 @@ class Databases extends Service {
     Future<models.DocumentList> listDocuments({required String databaseId, required String collectionId, List<String>? queries}) async {
         final String apiPath = '/databases/{databaseId}/collections/{collectionId}/documents'.replaceAll('{databaseId}', databaseId).replaceAll('{collectionId}', collectionId);
 
-        final Map<String, dynamic> params = {
+        final Map<String, dynamic> apiParams = {
             'queries': queries,
         };
 
-        final Map<String, String> headers = {
+        final Map<String, String> apiHeaders = {
             'content-type': 'application/json',
         };
 
-        final res = await client.call(HttpMethod.get, path: apiPath, params: params, headers: headers);
+        final res = await client.call(HttpMethod.get, path: apiPath, params: apiParams, headers: apiHeaders);
 
         return models.DocumentList.fromMap(res.data);
 
@@ -36,17 +36,17 @@ class Databases extends Service {
     Future<models.Document> createDocument({required String databaseId, required String collectionId, required String documentId, required Map data, List<String>? permissions}) async {
         final String apiPath = '/databases/{databaseId}/collections/{collectionId}/documents'.replaceAll('{databaseId}', databaseId).replaceAll('{collectionId}', collectionId);
 
-        final Map<String, dynamic> params = {
+        final Map<String, dynamic> apiParams = {
             'documentId': documentId,
             'data': data,
             'permissions': permissions,
         };
 
-        final Map<String, String> headers = {
+        final Map<String, String> apiHeaders = {
             'content-type': 'application/json',
         };
 
-        final res = await client.call(HttpMethod.post, path: apiPath, params: params, headers: headers);
+        final res = await client.call(HttpMethod.post, path: apiPath, params: apiParams, headers: apiHeaders);
 
         return models.Document.fromMap(res.data);
 
@@ -59,15 +59,15 @@ class Databases extends Service {
     Future<models.Document> getDocument({required String databaseId, required String collectionId, required String documentId, List<String>? queries}) async {
         final String apiPath = '/databases/{databaseId}/collections/{collectionId}/documents/{documentId}'.replaceAll('{databaseId}', databaseId).replaceAll('{collectionId}', collectionId).replaceAll('{documentId}', documentId);
 
-        final Map<String, dynamic> params = {
+        final Map<String, dynamic> apiParams = {
             'queries': queries,
         };
 
-        final Map<String, String> headers = {
+        final Map<String, String> apiHeaders = {
             'content-type': 'application/json',
         };
 
-        final res = await client.call(HttpMethod.get, path: apiPath, params: params, headers: headers);
+        final res = await client.call(HttpMethod.get, path: apiPath, params: apiParams, headers: apiHeaders);
 
         return models.Document.fromMap(res.data);
 
@@ -80,16 +80,16 @@ class Databases extends Service {
     Future<models.Document> updateDocument({required String databaseId, required String collectionId, required String documentId, Map? data, List<String>? permissions}) async {
         final String apiPath = '/databases/{databaseId}/collections/{collectionId}/documents/{documentId}'.replaceAll('{databaseId}', databaseId).replaceAll('{collectionId}', collectionId).replaceAll('{documentId}', documentId);
 
-        final Map<String, dynamic> params = {
+        final Map<String, dynamic> apiParams = {
             'data': data,
             'permissions': permissions,
         };
 
-        final Map<String, String> headers = {
+        final Map<String, String> apiHeaders = {
             'content-type': 'application/json',
         };
 
-        final res = await client.call(HttpMethod.patch, path: apiPath, params: params, headers: headers);
+        final res = await client.call(HttpMethod.patch, path: apiPath, params: apiParams, headers: apiHeaders);
 
         return models.Document.fromMap(res.data);
 
@@ -101,14 +101,14 @@ class Databases extends Service {
     Future deleteDocument({required String databaseId, required String collectionId, required String documentId}) async {
         final String apiPath = '/databases/{databaseId}/collections/{collectionId}/documents/{documentId}'.replaceAll('{databaseId}', databaseId).replaceAll('{collectionId}', collectionId).replaceAll('{documentId}', documentId);
 
-        final Map<String, dynamic> params = {
+        final Map<String, dynamic> apiParams = {
         };
 
-        final Map<String, String> headers = {
+        final Map<String, String> apiHeaders = {
             'content-type': 'application/json',
         };
 
-        final res = await client.call(HttpMethod.delete, path: apiPath, params: params, headers: headers);
+        final res = await client.call(HttpMethod.delete, path: apiPath, params: apiParams, headers: apiHeaders);
 
         return  res.data;
 

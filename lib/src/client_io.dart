@@ -64,7 +64,7 @@ class ClientIO extends ClientBase with ClientMixin {
       'x-sdk-name': 'Flutter',
       'x-sdk-platform': 'client',
       'x-sdk-language': 'flutter',
-      'x-sdk-version': '10.0.0',
+      'x-sdk-version': '10.0.1',
       'X-Appwrite-Response-Format' : '1.4.0',
     };
 
@@ -270,7 +270,7 @@ class ClientIO extends ClientBase with ClientMixin {
           headers: headers,
         );
         final int chunksUploaded = res.data['chunksUploaded'] as int;
-        offset = min(size, chunksUploaded * CHUNK_SIZE);
+        offset = chunksUploaded * CHUNK_SIZE;
       } on AppwriteException catch (_) {}
     }
 
@@ -283,7 +283,7 @@ class ClientIO extends ClientBase with ClientMixin {
     while (offset < size) {
       List<int> chunk = [];
       if (file.bytes != null) {
-        final end = min(offset + CHUNK_SIZE-1, size-1);
+        final end = min(offset + CHUNK_SIZE - 1, size - 1);
         chunk = file.bytes!.getRange(offset, end).toList();
       } else {
         raf!.setPositionSync(offset);
@@ -292,7 +292,7 @@ class ClientIO extends ClientBase with ClientMixin {
       params[paramName] =
           http.MultipartFile.fromBytes(paramName, chunk, filename: file.filename);
       headers['content-range'] =
-          'bytes $offset-${min<int>(((offset + CHUNK_SIZE) - 1), size)}/$size';
+          'bytes $offset-${min<int>((offset + CHUNK_SIZE - 1), size - 1)}/$size';
       res = await call(HttpMethod.post,
           path: path, headers: headers, params: params);
       offset += CHUNK_SIZE;
@@ -301,8 +301,8 @@ class ClientIO extends ClientBase with ClientMixin {
       }
       final progress = UploadProgress(
         $id: res.data['\$id'] ?? '',
-        progress: min(offset - 1, size) / size * 100,
-        sizeUploaded: min(offset - 1, size),
+        progress: min(offset, size) / size * 100,
+        sizeUploaded: min(offset, size),
         chunksTotal: res.data['chunksTotal'] ?? 0,
         chunksUploaded: res.data['chunksUploaded'] ?? 0,
       );

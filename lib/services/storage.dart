@@ -12,16 +12,16 @@ class Storage extends Service {
     Future<models.FileList> listFiles({required String bucketId, List<String>? queries, String? search}) async {
         final String apiPath = '/storage/buckets/{bucketId}/files'.replaceAll('{bucketId}', bucketId);
 
-        final Map<String, dynamic> params = {
+        final Map<String, dynamic> apiParams = {
             'queries': queries,
             'search': search,
         };
 
-        final Map<String, String> headers = {
+        final Map<String, String> apiHeaders = {
             'content-type': 'application/json',
         };
 
-        final res = await client.call(HttpMethod.get, path: apiPath, params: params, headers: headers);
+        final res = await client.call(HttpMethod.get, path: apiPath, params: apiParams, headers: apiHeaders);
 
         return models.FileList.fromMap(res.data);
 
@@ -50,7 +50,7 @@ class Storage extends Service {
     Future<models.File> createFile({required String bucketId, required String fileId, required InputFile file, List<String>? permissions, Function(UploadProgress)? onProgress}) async {
         final String apiPath = '/storage/buckets/{bucketId}/files'.replaceAll('{bucketId}', bucketId);
 
-        final Map<String, dynamic> params = {
+        final Map<String, dynamic> apiParams = {
 
 
             'fileId': fileId,
@@ -58,7 +58,7 @@ class Storage extends Service {
             'permissions': permissions,
         };
 
-        final Map<String, String> headers = {
+        final Map<String, String> apiHeaders = {
             'content-type': 'multipart/form-data',
         };
 
@@ -67,10 +67,10 @@ class Storage extends Service {
         final paramName = 'file';
         final res = await client.chunkedUpload(
             path: apiPath,
-            params: params,
+            params: apiParams,
             paramName: paramName,
             idParamName: idParamName,
-            headers: headers,
+            headers: apiHeaders,
             onProgress: onProgress,
           );
 
@@ -85,14 +85,14 @@ class Storage extends Service {
     Future<models.File> getFile({required String bucketId, required String fileId}) async {
         final String apiPath = '/storage/buckets/{bucketId}/files/{fileId}'.replaceAll('{bucketId}', bucketId).replaceAll('{fileId}', fileId);
 
-        final Map<String, dynamic> params = {
+        final Map<String, dynamic> apiParams = {
         };
 
-        final Map<String, String> headers = {
+        final Map<String, String> apiHeaders = {
             'content-type': 'application/json',
         };
 
-        final res = await client.call(HttpMethod.get, path: apiPath, params: params, headers: headers);
+        final res = await client.call(HttpMethod.get, path: apiPath, params: apiParams, headers: apiHeaders);
 
         return models.File.fromMap(res.data);
 
@@ -105,16 +105,16 @@ class Storage extends Service {
     Future<models.File> updateFile({required String bucketId, required String fileId, String? name, List<String>? permissions}) async {
         final String apiPath = '/storage/buckets/{bucketId}/files/{fileId}'.replaceAll('{bucketId}', bucketId).replaceAll('{fileId}', fileId);
 
-        final Map<String, dynamic> params = {
+        final Map<String, dynamic> apiParams = {
             'name': name,
             'permissions': permissions,
         };
 
-        final Map<String, String> headers = {
+        final Map<String, String> apiHeaders = {
             'content-type': 'application/json',
         };
 
-        final res = await client.call(HttpMethod.put, path: apiPath, params: params, headers: headers);
+        final res = await client.call(HttpMethod.put, path: apiPath, params: apiParams, headers: apiHeaders);
 
         return models.File.fromMap(res.data);
 
@@ -127,14 +127,14 @@ class Storage extends Service {
     Future deleteFile({required String bucketId, required String fileId}) async {
         final String apiPath = '/storage/buckets/{bucketId}/files/{fileId}'.replaceAll('{bucketId}', bucketId).replaceAll('{fileId}', fileId);
 
-        final Map<String, dynamic> params = {
+        final Map<String, dynamic> apiParams = {
         };
 
-        final Map<String, String> headers = {
+        final Map<String, String> apiHeaders = {
             'content-type': 'application/json',
         };
 
-        final res = await client.call(HttpMethod.delete, path: apiPath, params: params, headers: headers);
+        final res = await client.call(HttpMethod.delete, path: apiPath, params: apiParams, headers: apiHeaders);
 
         return  res.data;
 
