@@ -13,16 +13,16 @@ class Teams extends Service {
     Future<models.TeamList> list({List<String>? queries, String? search}) async {
         const String apiPath = '/teams';
 
-        final Map<String, dynamic> params = {
+        final Map<String, dynamic> apiParams = {
             'queries': queries,
             'search': search,
         };
 
-        final Map<String, String> headers = {
+        final Map<String, String> apiHeaders = {
             'content-type': 'application/json',
         };
 
-        final res = await client.call(HttpMethod.get, path: apiPath, params: params, headers: headers);
+        final res = await client.call(HttpMethod.get, path: apiPath, params: apiParams, headers: apiHeaders);
 
         return models.TeamList.fromMap(res.data);
 
@@ -36,17 +36,17 @@ class Teams extends Service {
     Future<models.Team> create({required String teamId, required String name, List<String>? roles}) async {
         const String apiPath = '/teams';
 
-        final Map<String, dynamic> params = {
+        final Map<String, dynamic> apiParams = {
             'teamId': teamId,
             'name': name,
             'roles': roles,
         };
 
-        final Map<String, String> headers = {
+        final Map<String, String> apiHeaders = {
             'content-type': 'application/json',
         };
 
-        final res = await client.call(HttpMethod.post, path: apiPath, params: params, headers: headers);
+        final res = await client.call(HttpMethod.post, path: apiPath, params: apiParams, headers: apiHeaders);
 
         return models.Team.fromMap(res.data);
 
@@ -58,14 +58,14 @@ class Teams extends Service {
     Future<models.Team> get({required String teamId}) async {
         final String apiPath = '/teams/{teamId}'.replaceAll('{teamId}', teamId);
 
-        final Map<String, dynamic> params = {
+        final Map<String, dynamic> apiParams = {
         };
 
-        final Map<String, String> headers = {
+        final Map<String, String> apiHeaders = {
             'content-type': 'application/json',
         };
 
-        final res = await client.call(HttpMethod.get, path: apiPath, params: params, headers: headers);
+        final res = await client.call(HttpMethod.get, path: apiPath, params: apiParams, headers: apiHeaders);
 
         return models.Team.fromMap(res.data);
 
@@ -77,15 +77,15 @@ class Teams extends Service {
     Future<models.Team> updateName({required String teamId, required String name}) async {
         final String apiPath = '/teams/{teamId}'.replaceAll('{teamId}', teamId);
 
-        final Map<String, dynamic> params = {
+        final Map<String, dynamic> apiParams = {
             'name': name,
         };
 
-        final Map<String, String> headers = {
+        final Map<String, String> apiHeaders = {
             'content-type': 'application/json',
         };
 
-        final res = await client.call(HttpMethod.put, path: apiPath, params: params, headers: headers);
+        final res = await client.call(HttpMethod.put, path: apiPath, params: apiParams, headers: apiHeaders);
 
         return models.Team.fromMap(res.data);
 
@@ -98,14 +98,14 @@ class Teams extends Service {
     Future delete({required String teamId}) async {
         final String apiPath = '/teams/{teamId}'.replaceAll('{teamId}', teamId);
 
-        final Map<String, dynamic> params = {
+        final Map<String, dynamic> apiParams = {
         };
 
-        final Map<String, String> headers = {
+        final Map<String, String> apiHeaders = {
             'content-type': 'application/json',
         };
 
-        final res = await client.call(HttpMethod.delete, path: apiPath, params: params, headers: headers);
+        final res = await client.call(HttpMethod.delete, path: apiPath, params: apiParams, headers: apiHeaders);
 
         return  res.data;
 
@@ -118,16 +118,16 @@ class Teams extends Service {
     Future<models.MembershipList> listMemberships({required String teamId, List<String>? queries, String? search}) async {
         final String apiPath = '/teams/{teamId}/memberships'.replaceAll('{teamId}', teamId);
 
-        final Map<String, dynamic> params = {
+        final Map<String, dynamic> apiParams = {
             'queries': queries,
             'search': search,
         };
 
-        final Map<String, String> headers = {
+        final Map<String, String> apiHeaders = {
             'content-type': 'application/json',
         };
 
-        final res = await client.call(HttpMethod.get, path: apiPath, params: params, headers: headers);
+        final res = await client.call(HttpMethod.get, path: apiPath, params: apiParams, headers: apiHeaders);
 
         return models.MembershipList.fromMap(res.data);
 
@@ -159,7 +159,7 @@ class Teams extends Service {
     Future<models.Membership> createMembership({required String teamId, required List<String> roles, required String url, String? email, String? userId, String? phone, String? name}) async {
         final String apiPath = '/teams/{teamId}/memberships'.replaceAll('{teamId}', teamId);
 
-        final Map<String, dynamic> params = {
+        final Map<String, dynamic> apiParams = {
             'email': email,
             'userId': userId,
             'phone': phone,
@@ -168,11 +168,11 @@ class Teams extends Service {
             'name': name,
         };
 
-        final Map<String, String> headers = {
+        final Map<String, String> apiHeaders = {
             'content-type': 'application/json',
         };
 
-        final res = await client.call(HttpMethod.post, path: apiPath, params: params, headers: headers);
+        final res = await client.call(HttpMethod.post, path: apiPath, params: apiParams, headers: apiHeaders);
 
         return models.Membership.fromMap(res.data);
 
@@ -185,14 +185,14 @@ class Teams extends Service {
     Future<models.Membership> getMembership({required String teamId, required String membershipId}) async {
         final String apiPath = '/teams/{teamId}/memberships/{membershipId}'.replaceAll('{teamId}', teamId).replaceAll('{membershipId}', membershipId);
 
-        final Map<String, dynamic> params = {
+        final Map<String, dynamic> apiParams = {
         };
 
-        final Map<String, String> headers = {
+        final Map<String, String> apiHeaders = {
             'content-type': 'application/json',
         };
 
-        final res = await client.call(HttpMethod.get, path: apiPath, params: params, headers: headers);
+        final res = await client.call(HttpMethod.get, path: apiPath, params: apiParams, headers: apiHeaders);
 
         return models.Membership.fromMap(res.data);
 
@@ -207,15 +207,15 @@ class Teams extends Service {
     Future<models.Membership> updateMembership({required String teamId, required String membershipId, required List<String> roles}) async {
         final String apiPath = '/teams/{teamId}/memberships/{membershipId}'.replaceAll('{teamId}', teamId).replaceAll('{membershipId}', membershipId);
 
-        final Map<String, dynamic> params = {
+        final Map<String, dynamic> apiParams = {
             'roles': roles,
         };
 
-        final Map<String, String> headers = {
+        final Map<String, String> apiHeaders = {
             'content-type': 'application/json',
         };
 
-        final res = await client.call(HttpMethod.patch, path: apiPath, params: params, headers: headers);
+        final res = await client.call(HttpMethod.patch, path: apiPath, params: apiParams, headers: apiHeaders);
 
         return models.Membership.fromMap(res.data);
 
@@ -229,14 +229,14 @@ class Teams extends Service {
     Future deleteMembership({required String teamId, required String membershipId}) async {
         final String apiPath = '/teams/{teamId}/memberships/{membershipId}'.replaceAll('{teamId}', teamId).replaceAll('{membershipId}', membershipId);
 
-        final Map<String, dynamic> params = {
+        final Map<String, dynamic> apiParams = {
         };
 
-        final Map<String, String> headers = {
+        final Map<String, String> apiHeaders = {
             'content-type': 'application/json',
         };
 
-        final res = await client.call(HttpMethod.delete, path: apiPath, params: params, headers: headers);
+        final res = await client.call(HttpMethod.delete, path: apiPath, params: apiParams, headers: apiHeaders);
 
         return  res.data;
 
@@ -254,16 +254,16 @@ class Teams extends Service {
     Future<models.Membership> updateMembershipStatus({required String teamId, required String membershipId, required String userId, required String secret}) async {
         final String apiPath = '/teams/{teamId}/memberships/{membershipId}/status'.replaceAll('{teamId}', teamId).replaceAll('{membershipId}', membershipId);
 
-        final Map<String, dynamic> params = {
+        final Map<String, dynamic> apiParams = {
             'userId': userId,
             'secret': secret,
         };
 
-        final Map<String, String> headers = {
+        final Map<String, String> apiHeaders = {
             'content-type': 'application/json',
         };
 
-        final res = await client.call(HttpMethod.patch, path: apiPath, params: params, headers: headers);
+        final res = await client.call(HttpMethod.patch, path: apiPath, params: apiParams, headers: apiHeaders);
 
         return models.Membership.fromMap(res.data);
 
@@ -277,14 +277,14 @@ class Teams extends Service {
     Future<models.Preferences> getPrefs({required String teamId}) async {
         final String apiPath = '/teams/{teamId}/prefs'.replaceAll('{teamId}', teamId);
 
-        final Map<String, dynamic> params = {
+        final Map<String, dynamic> apiParams = {
         };
 
-        final Map<String, String> headers = {
+        final Map<String, String> apiHeaders = {
             'content-type': 'application/json',
         };
 
-        final res = await client.call(HttpMethod.get, path: apiPath, params: params, headers: headers);
+        final res = await client.call(HttpMethod.get, path: apiPath, params: apiParams, headers: apiHeaders);
 
         return models.Preferences.fromMap(res.data);
 
@@ -298,15 +298,15 @@ class Teams extends Service {
     Future<models.Preferences> updatePrefs({required String teamId, required Map prefs}) async {
         final String apiPath = '/teams/{teamId}/prefs'.replaceAll('{teamId}', teamId);
 
-        final Map<String, dynamic> params = {
+        final Map<String, dynamic> apiParams = {
             'prefs': prefs,
         };
 
-        final Map<String, String> headers = {
+        final Map<String, String> apiHeaders = {
             'content-type': 'application/json',
         };
 
-        final res = await client.call(HttpMethod.put, path: apiPath, params: params, headers: headers);
+        final res = await client.call(HttpMethod.put, path: apiPath, params: apiParams, headers: apiHeaders);
 
         return models.Preferences.fromMap(res.data);
 

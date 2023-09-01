@@ -17,14 +17,14 @@ class Locale extends Service {
     Future<models.Locale> get() async {
         const String apiPath = '/locale';
 
-        final Map<String, dynamic> params = {
+        final Map<String, dynamic> apiParams = {
         };
 
-        final Map<String, String> headers = {
+        final Map<String, String> apiHeaders = {
             'content-type': 'application/json',
         };
 
-        final res = await client.call(HttpMethod.get, path: apiPath, params: params, headers: headers);
+        final res = await client.call(HttpMethod.get, path: apiPath, params: apiParams, headers: apiHeaders);
 
         return models.Locale.fromMap(res.data);
 
@@ -37,14 +37,14 @@ class Locale extends Service {
     Future<models.LocaleCodeList> listCodes() async {
         const String apiPath = '/locale/codes';
 
-        final Map<String, dynamic> params = {
+        final Map<String, dynamic> apiParams = {
         };
 
-        final Map<String, String> headers = {
+        final Map<String, String> apiHeaders = {
             'content-type': 'application/json',
         };
 
-        final res = await client.call(HttpMethod.get, path: apiPath, params: params, headers: headers);
+        final res = await client.call(HttpMethod.get, path: apiPath, params: apiParams, headers: apiHeaders);
 
         return models.LocaleCodeList.fromMap(res.data);
 
@@ -57,14 +57,14 @@ class Locale extends Service {
     Future<models.ContinentList> listContinents() async {
         const String apiPath = '/locale/continents';
 
-        final Map<String, dynamic> params = {
+        final Map<String, dynamic> apiParams = {
         };
 
-        final Map<String, String> headers = {
+        final Map<String, String> apiHeaders = {
             'content-type': 'application/json',
         };
 
-        final res = await client.call(HttpMethod.get, path: apiPath, params: params, headers: headers);
+        final res = await client.call(HttpMethod.get, path: apiPath, params: apiParams, headers: apiHeaders);
 
         return models.ContinentList.fromMap(res.data);
 
@@ -77,14 +77,14 @@ class Locale extends Service {
     Future<models.CountryList> listCountries() async {
         const String apiPath = '/locale/countries';
 
-        final Map<String, dynamic> params = {
+        final Map<String, dynamic> apiParams = {
         };
 
-        final Map<String, String> headers = {
+        final Map<String, String> apiHeaders = {
             'content-type': 'application/json',
         };
 
-        final res = await client.call(HttpMethod.get, path: apiPath, params: params, headers: headers);
+        final res = await client.call(HttpMethod.get, path: apiPath, params: apiParams, headers: apiHeaders);
 
         return models.CountryList.fromMap(res.data);
 
@@ -97,14 +97,14 @@ class Locale extends Service {
     Future<models.CountryList> listCountriesEU() async {
         const String apiPath = '/locale/countries/eu';
 
-        final Map<String, dynamic> params = {
+        final Map<String, dynamic> apiParams = {
         };
 
-        final Map<String, String> headers = {
+        final Map<String, String> apiHeaders = {
             'content-type': 'application/json',
         };
 
-        final res = await client.call(HttpMethod.get, path: apiPath, params: params, headers: headers);
+        final res = await client.call(HttpMethod.get, path: apiPath, params: apiParams, headers: apiHeaders);
 
         return models.CountryList.fromMap(res.data);
 
@@ -117,14 +117,14 @@ class Locale extends Service {
     Future<models.PhoneList> listCountriesPhones() async {
         const String apiPath = '/locale/countries/phones';
 
-        final Map<String, dynamic> params = {
+        final Map<String, dynamic> apiParams = {
         };
 
-        final Map<String, String> headers = {
+        final Map<String, String> apiHeaders = {
             'content-type': 'application/json',
         };
 
-        final res = await client.call(HttpMethod.get, path: apiPath, params: params, headers: headers);
+        final res = await client.call(HttpMethod.get, path: apiPath, params: apiParams, headers: apiHeaders);
 
         return models.PhoneList.fromMap(res.data);
 
@@ -138,14 +138,14 @@ class Locale extends Service {
     Future<models.CurrencyList> listCurrencies() async {
         const String apiPath = '/locale/currencies';
 
-        final Map<String, dynamic> params = {
+        final Map<String, dynamic> apiParams = {
         };
 
-        final Map<String, String> headers = {
+        final Map<String, String> apiHeaders = {
             'content-type': 'application/json',
         };
 
-        final res = await client.call(HttpMethod.get, path: apiPath, params: params, headers: headers);
+        final res = await client.call(HttpMethod.get, path: apiPath, params: apiParams, headers: apiHeaders);
 
         return models.CurrencyList.fromMap(res.data);
 
@@ -158,14 +158,14 @@ class Locale extends Service {
     Future<models.LanguageList> listLanguages() async {
         const String apiPath = '/locale/languages';
 
-        final Map<String, dynamic> params = {
+        final Map<String, dynamic> apiParams = {
         };
 
-        final Map<String, String> headers = {
+        final Map<String, String> apiHeaders = {
             'content-type': 'application/json',
         };
 
-        final res = await client.call(HttpMethod.get, path: apiPath, params: params, headers: headers);
+        final res = await client.call(HttpMethod.get, path: apiPath, params: apiParams, headers: apiHeaders);
 
         return models.LanguageList.fromMap(res.data);
 

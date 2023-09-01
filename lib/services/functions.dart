@@ -13,16 +13,16 @@ class Functions extends Service {
     Future<models.ExecutionList> listExecutions({required String functionId, List<String>? queries, String? search}) async {
         final String apiPath = '/functions/{functionId}/executions'.replaceAll('{functionId}', functionId);
 
-        final Map<String, dynamic> params = {
+        final Map<String, dynamic> apiParams = {
             'queries': queries,
             'search': search,
         };
 
-        final Map<String, String> headers = {
+        final Map<String, String> apiHeaders = {
             'content-type': 'application/json',
         };
 
-        final res = await client.call(HttpMethod.get, path: apiPath, params: params, headers: headers);
+        final res = await client.call(HttpMethod.get, path: apiPath, params: apiParams, headers: apiHeaders);
 
         return models.ExecutionList.fromMap(res.data);
 
@@ -37,7 +37,7 @@ class Functions extends Service {
     Future<models.Execution> createExecution({required String functionId, String? body, bool? xasync, String? path, String? method, Map? headers}) async {
         final String apiPath = '/functions/{functionId}/executions'.replaceAll('{functionId}', functionId);
 
-        final Map<String, dynamic> params = {
+        final Map<String, dynamic> apiParams = {
             'body': body,
             'async': xasync,
             'path': path,
@@ -45,11 +45,11 @@ class Functions extends Service {
             'headers': headers,
         };
 
-        final Map<String, String> headers = {
+        final Map<String, String> apiHeaders = {
             'content-type': 'application/json',
         };
 
-        final res = await client.call(HttpMethod.post, path: apiPath, params: params, headers: headers);
+        final res = await client.call(HttpMethod.post, path: apiPath, params: apiParams, headers: apiHeaders);
 
         return models.Execution.fromMap(res.data);
 
@@ -61,14 +61,14 @@ class Functions extends Service {
     Future<models.Execution> getExecution({required String functionId, required String executionId}) async {
         final String apiPath = '/functions/{functionId}/executions/{executionId}'.replaceAll('{functionId}', functionId).replaceAll('{executionId}', executionId);
 
-        final Map<String, dynamic> params = {
+        final Map<String, dynamic> apiParams = {
         };
 
-        final Map<String, String> headers = {
+        final Map<String, String> apiHeaders = {
             'content-type': 'application/json',
         };
 
-        final res = await client.call(HttpMethod.get, path: apiPath, params: params, headers: headers);
+        final res = await client.call(HttpMethod.get, path: apiPath, params: apiParams, headers: apiHeaders);
 
         return models.Execution.fromMap(res.data);
 

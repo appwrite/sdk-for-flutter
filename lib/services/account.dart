@@ -11,14 +11,14 @@ class Account extends Service {
     Future<models.User> get() async {
         const String apiPath = '/account';
 
-        final Map<String, dynamic> params = {
+        final Map<String, dynamic> apiParams = {
         };
 
-        final Map<String, String> headers = {
+        final Map<String, String> apiHeaders = {
             'content-type': 'application/json',
         };
 
-        final res = await client.call(HttpMethod.get, path: apiPath, params: params, headers: headers);
+        final res = await client.call(HttpMethod.get, path: apiPath, params: apiParams, headers: apiHeaders);
 
         return models.User.fromMap(res.data);
 
@@ -35,18 +35,18 @@ class Account extends Service {
     Future<models.User> create({required String userId, required String email, required String password, String? name}) async {
         const String apiPath = '/account';
 
-        final Map<String, dynamic> params = {
+        final Map<String, dynamic> apiParams = {
             'userId': userId,
             'email': email,
             'password': password,
             'name': name,
         };
 
-        final Map<String, String> headers = {
+        final Map<String, String> apiHeaders = {
             'content-type': 'application/json',
         };
 
-        final res = await client.call(HttpMethod.post, path: apiPath, params: params, headers: headers);
+        final res = await client.call(HttpMethod.post, path: apiPath, params: apiParams, headers: apiHeaders);
 
         return models.User.fromMap(res.data);
 
@@ -65,16 +65,16 @@ class Account extends Service {
     Future<models.User> updateEmail({required String email, required String password}) async {
         const String apiPath = '/account/email';
 
-        final Map<String, dynamic> params = {
+        final Map<String, dynamic> apiParams = {
             'email': email,
             'password': password,
         };
 
-        final Map<String, String> headers = {
+        final Map<String, String> apiHeaders = {
             'content-type': 'application/json',
         };
 
-        final res = await client.call(HttpMethod.patch, path: apiPath, params: params, headers: headers);
+        final res = await client.call(HttpMethod.patch, path: apiPath, params: apiParams, headers: apiHeaders);
 
         return models.User.fromMap(res.data);
 
@@ -86,15 +86,15 @@ class Account extends Service {
     Future<models.IdentityList> listIdentities({String? queries}) async {
         const String apiPath = '/account/identities';
 
-        final Map<String, dynamic> params = {
+        final Map<String, dynamic> apiParams = {
             'queries': queries,
         };
 
-        final Map<String, String> headers = {
+        final Map<String, String> apiHeaders = {
             'content-type': 'application/json',
         };
 
-        final res = await client.call(HttpMethod.get, path: apiPath, params: params, headers: headers);
+        final res = await client.call(HttpMethod.get, path: apiPath, params: apiParams, headers: apiHeaders);
 
         return models.IdentityList.fromMap(res.data);
 
@@ -106,14 +106,14 @@ class Account extends Service {
     Future deleteIdentity({required String identityId}) async {
         final String apiPath = '/account/identities/{identityId}'.replaceAll('{identityId}', identityId);
 
-        final Map<String, dynamic> params = {
+        final Map<String, dynamic> apiParams = {
         };
 
-        final Map<String, String> headers = {
+        final Map<String, String> apiHeaders = {
             'content-type': 'application/json',
         };
 
-        final res = await client.call(HttpMethod.delete, path: apiPath, params: params, headers: headers);
+        final res = await client.call(HttpMethod.delete, path: apiPath, params: apiParams, headers: apiHeaders);
 
         return  res.data;
 
@@ -129,14 +129,14 @@ class Account extends Service {
     Future<models.Jwt> createJWT() async {
         const String apiPath = '/account/jwt';
 
-        final Map<String, dynamic> params = {
+        final Map<String, dynamic> apiParams = {
         };
 
-        final Map<String, String> headers = {
+        final Map<String, String> apiHeaders = {
             'content-type': 'application/json',
         };
 
-        final res = await client.call(HttpMethod.post, path: apiPath, params: params, headers: headers);
+        final res = await client.call(HttpMethod.post, path: apiPath, params: apiParams, headers: apiHeaders);
 
         return models.Jwt.fromMap(res.data);
 
@@ -149,15 +149,15 @@ class Account extends Service {
     Future<models.LogList> listLogs({List<String>? queries}) async {
         const String apiPath = '/account/logs';
 
-        final Map<String, dynamic> params = {
+        final Map<String, dynamic> apiParams = {
             'queries': queries,
         };
 
-        final Map<String, String> headers = {
+        final Map<String, String> apiHeaders = {
             'content-type': 'application/json',
         };
 
-        final res = await client.call(HttpMethod.get, path: apiPath, params: params, headers: headers);
+        final res = await client.call(HttpMethod.get, path: apiPath, params: apiParams, headers: apiHeaders);
 
         return models.LogList.fromMap(res.data);
 
@@ -169,15 +169,15 @@ class Account extends Service {
     Future<models.User> updateName({required String name}) async {
         const String apiPath = '/account/name';
 
-        final Map<String, dynamic> params = {
+        final Map<String, dynamic> apiParams = {
             'name': name,
         };
 
-        final Map<String, String> headers = {
+        final Map<String, String> apiHeaders = {
             'content-type': 'application/json',
         };
 
-        final res = await client.call(HttpMethod.patch, path: apiPath, params: params, headers: headers);
+        final res = await client.call(HttpMethod.patch, path: apiPath, params: apiParams, headers: apiHeaders);
 
         return models.User.fromMap(res.data);
 
@@ -191,16 +191,16 @@ class Account extends Service {
     Future<models.User> updatePassword({required String password, String? oldPassword}) async {
         const String apiPath = '/account/password';
 
-        final Map<String, dynamic> params = {
+        final Map<String, dynamic> apiParams = {
             'password': password,
             'oldPassword': oldPassword,
         };
 
-        final Map<String, String> headers = {
+        final Map<String, String> apiHeaders = {
             'content-type': 'application/json',
         };
 
-        final res = await client.call(HttpMethod.patch, path: apiPath, params: params, headers: headers);
+        final res = await client.call(HttpMethod.patch, path: apiPath, params: apiParams, headers: apiHeaders);
 
         return models.User.fromMap(res.data);
 
@@ -216,16 +216,16 @@ class Account extends Service {
     Future<models.User> updatePhone({required String phone, required String password}) async {
         const String apiPath = '/account/phone';
 
-        final Map<String, dynamic> params = {
+        final Map<String, dynamic> apiParams = {
             'phone': phone,
             'password': password,
         };
 
-        final Map<String, String> headers = {
+        final Map<String, String> apiHeaders = {
             'content-type': 'application/json',
         };
 
-        final res = await client.call(HttpMethod.patch, path: apiPath, params: params, headers: headers);
+        final res = await client.call(HttpMethod.patch, path: apiPath, params: apiParams, headers: apiHeaders);
 
         return models.User.fromMap(res.data);
 
@@ -237,14 +237,14 @@ class Account extends Service {
     Future<models.Preferences> getPrefs() async {
         const String apiPath = '/account/prefs';
 
-        final Map<String, dynamic> params = {
+        final Map<String, dynamic> apiParams = {
         };
 
-        final Map<String, String> headers = {
+        final Map<String, String> apiHeaders = {
             'content-type': 'application/json',
         };
 
-        final res = await client.call(HttpMethod.get, path: apiPath, params: params, headers: headers);
+        final res = await client.call(HttpMethod.get, path: apiPath, params: apiParams, headers: apiHeaders);
 
         return models.Preferences.fromMap(res.data);
 
@@ -258,15 +258,15 @@ class Account extends Service {
     Future<models.User> updatePrefs({required Map prefs}) async {
         const String apiPath = '/account/prefs';
 
-        final Map<String, dynamic> params = {
+        final Map<String, dynamic> apiParams = {
             'prefs': prefs,
         };
 
-        final Map<String, String> headers = {
+        final Map<String, String> apiHeaders = {
             'content-type': 'application/json',
         };
 
-        final res = await client.call(HttpMethod.patch, path: apiPath, params: params, headers: headers);
+        final res = await client.call(HttpMethod.patch, path: apiPath, params: apiParams, headers: apiHeaders);
 
         return models.User.fromMap(res.data);
 
@@ -285,16 +285,16 @@ class Account extends Service {
     Future<models.Token> createRecovery({required String email, required String url}) async {
         const String apiPath = '/account/recovery';
 
-        final Map<String, dynamic> params = {
+        final Map<String, dynamic> apiParams = {
             'email': email,
             'url': url,
         };
 
-        final Map<String, String> headers = {
+        final Map<String, String> apiHeaders = {
             'content-type': 'application/json',
         };
 
-        final res = await client.call(HttpMethod.post, path: apiPath, params: params, headers: headers);
+        final res = await client.call(HttpMethod.post, path: apiPath, params: apiParams, headers: apiHeaders);
 
         return models.Token.fromMap(res.data);
 
@@ -314,18 +314,18 @@ class Account extends Service {
     Future<models.Token> updateRecovery({required String userId, required String secret, required String password, required String passwordAgain}) async {
         const String apiPath = '/account/recovery';
 
-        final Map<String, dynamic> params = {
+        final Map<String, dynamic> apiParams = {
             'userId': userId,
             'secret': secret,
             'password': password,
             'passwordAgain': passwordAgain,
         };
 
-        final Map<String, String> headers = {
+        final Map<String, String> apiHeaders = {
             'content-type': 'application/json',
         };
 
-        final res = await client.call(HttpMethod.put, path: apiPath, params: params, headers: headers);
+        final res = await client.call(HttpMethod.put, path: apiPath, params: apiParams, headers: apiHeaders);
 
         return models.Token.fromMap(res.data);
 
@@ -338,14 +338,14 @@ class Account extends Service {
     Future<models.SessionList> listSessions() async {
         const String apiPath = '/account/sessions';
 
-        final Map<String, dynamic> params = {
+        final Map<String, dynamic> apiParams = {
         };
 
-        final Map<String, String> headers = {
+        final Map<String, String> apiHeaders = {
             'content-type': 'application/json',
         };
 
-        final res = await client.call(HttpMethod.get, path: apiPath, params: params, headers: headers);
+        final res = await client.call(HttpMethod.get, path: apiPath, params: apiParams, headers: apiHeaders);
 
         return models.SessionList.fromMap(res.data);
 
@@ -358,14 +358,14 @@ class Account extends Service {
     Future deleteSessions() async {
         const String apiPath = '/account/sessions';
 
-        final Map<String, dynamic> params = {
+        final Map<String, dynamic> apiParams = {
         };
 
-        final Map<String, String> headers = {
+        final Map<String, String> apiHeaders = {
             'content-type': 'application/json',
         };
 
-        final res = await client.call(HttpMethod.delete, path: apiPath, params: params, headers: headers);
+        final res = await client.call(HttpMethod.delete, path: apiPath, params: apiParams, headers: apiHeaders);
 
         return  res.data;
 
@@ -382,14 +382,14 @@ class Account extends Service {
     Future<models.Session> createAnonymousSession() async {
         const String apiPath = '/account/sessions/anonymous';
 
-        final Map<String, dynamic> params = {
+        final Map<String, dynamic> apiParams = {
         };
 
-        final Map<String, String> headers = {
+        final Map<String, String> apiHeaders = {
             'content-type': 'application/json',
         };
 
-        final res = await client.call(HttpMethod.post, path: apiPath, params: params, headers: headers);
+        final res = await client.call(HttpMethod.post, path: apiPath, params: apiParams, headers: apiHeaders);
 
         return models.Session.fromMap(res.data);
 
@@ -405,16 +405,16 @@ class Account extends Service {
     Future<models.Session> createEmailSession({required String email, required String password}) async {
         const String apiPath = '/account/sessions/email';
 
-        final Map<String, dynamic> params = {
+        final Map<String, dynamic> apiParams = {
             'email': email,
             'password': password,
         };
 
-        final Map<String, String> headers = {
+        final Map<String, String> apiHeaders = {
             'content-type': 'application/json',
         };
 
-        final res = await client.call(HttpMethod.post, path: apiPath, params: params, headers: headers);
+        final res = await client.call(HttpMethod.post, path: apiPath, params: apiParams, headers: apiHeaders);
 
         return models.Session.fromMap(res.data);
 
@@ -440,17 +440,17 @@ class Account extends Service {
     Future<models.Token> createMagicURLSession({required String userId, required String email, String? url}) async {
         const String apiPath = '/account/sessions/magic-url';
 
-        final Map<String, dynamic> params = {
+        final Map<String, dynamic> apiParams = {
             'userId': userId,
             'email': email,
             'url': url,
         };
 
-        final Map<String, String> headers = {
+        final Map<String, String> apiHeaders = {
             'content-type': 'application/json',
         };
 
-        final res = await client.call(HttpMethod.post, path: apiPath, params: params, headers: headers);
+        final res = await client.call(HttpMethod.post, path: apiPath, params: apiParams, headers: apiHeaders);
 
         return models.Token.fromMap(res.data);
 
@@ -472,16 +472,16 @@ class Account extends Service {
     Future<models.Session> updateMagicURLSession({required String userId, required String secret}) async {
         const String apiPath = '/account/sessions/magic-url';
 
-        final Map<String, dynamic> params = {
+        final Map<String, dynamic> apiParams = {
             'userId': userId,
             'secret': secret,
         };
 
-        final Map<String, String> headers = {
+        final Map<String, String> apiHeaders = {
             'content-type': 'application/json',
         };
 
-        final res = await client.call(HttpMethod.put, path: apiPath, params: params, headers: headers);
+        final res = await client.call(HttpMethod.put, path: apiPath, params: apiParams, headers: apiHeaders);
 
         return models.Session.fromMap(res.data);
 
@@ -553,16 +553,16 @@ class Account extends Service {
     Future<models.Token> createPhoneSession({required String userId, required String phone}) async {
         const String apiPath = '/account/sessions/phone';
 
-        final Map<String, dynamic> params = {
+        final Map<String, dynamic> apiParams = {
             'userId': userId,
             'phone': phone,
         };
 
-        final Map<String, String> headers = {
+        final Map<String, String> apiHeaders = {
             'content-type': 'application/json',
         };
 
-        final res = await client.call(HttpMethod.post, path: apiPath, params: params, headers: headers);
+        final res = await client.call(HttpMethod.post, path: apiPath, params: apiParams, headers: apiHeaders);
 
         return models.Token.fromMap(res.data);
 
@@ -578,16 +578,16 @@ class Account extends Service {
     Future<models.Session> updatePhoneSession({required String userId, required String secret}) async {
         const String apiPath = '/account/sessions/phone';
 
-        final Map<String, dynamic> params = {
+        final Map<String, dynamic> apiParams = {
             'userId': userId,
             'secret': secret,
         };
 
-        final Map<String, String> headers = {
+        final Map<String, String> apiHeaders = {
             'content-type': 'application/json',
         };
 
-        final res = await client.call(HttpMethod.put, path: apiPath, params: params, headers: headers);
+        final res = await client.call(HttpMethod.put, path: apiPath, params: apiParams, headers: apiHeaders);
 
         return models.Session.fromMap(res.data);
 
@@ -600,14 +600,14 @@ class Account extends Service {
     Future<models.Session> getSession({required String sessionId}) async {
         final String apiPath = '/account/sessions/{sessionId}'.replaceAll('{sessionId}', sessionId);
 
-        final Map<String, dynamic> params = {
+        final Map<String, dynamic> apiParams = {
         };
 
-        final Map<String, String> headers = {
+        final Map<String, String> apiHeaders = {
             'content-type': 'application/json',
         };
 
-        final res = await client.call(HttpMethod.get, path: apiPath, params: params, headers: headers);
+        final res = await client.call(HttpMethod.get, path: apiPath, params: apiParams, headers: apiHeaders);
 
         return models.Session.fromMap(res.data);
 
@@ -621,14 +621,14 @@ class Account extends Service {
     Future<models.Session> updateSession({required String sessionId}) async {
         final String apiPath = '/account/sessions/{sessionId}'.replaceAll('{sessionId}', sessionId);
 
-        final Map<String, dynamic> params = {
+        final Map<String, dynamic> apiParams = {
         };
 
-        final Map<String, String> headers = {
+        final Map<String, String> apiHeaders = {
             'content-type': 'application/json',
         };
 
-        final res = await client.call(HttpMethod.patch, path: apiPath, params: params, headers: headers);
+        final res = await client.call(HttpMethod.patch, path: apiPath, params: apiParams, headers: apiHeaders);
 
         return models.Session.fromMap(res.data);
 
@@ -643,14 +643,14 @@ class Account extends Service {
     Future deleteSession({required String sessionId}) async {
         final String apiPath = '/account/sessions/{sessionId}'.replaceAll('{sessionId}', sessionId);
 
-        final Map<String, dynamic> params = {
+        final Map<String, dynamic> apiParams = {
         };
 
-        final Map<String, String> headers = {
+        final Map<String, String> apiHeaders = {
             'content-type': 'application/json',
         };
 
-        final res = await client.call(HttpMethod.delete, path: apiPath, params: params, headers: headers);
+        final res = await client.call(HttpMethod.delete, path: apiPath, params: apiParams, headers: apiHeaders);
 
         return  res.data;
 
@@ -664,14 +664,14 @@ class Account extends Service {
     Future<models.User> updateStatus() async {
         const String apiPath = '/account/status';
 
-        final Map<String, dynamic> params = {
+        final Map<String, dynamic> apiParams = {
         };
 
-        final Map<String, String> headers = {
+        final Map<String, String> apiHeaders = {
             'content-type': 'application/json',
         };
 
-        final res = await client.call(HttpMethod.patch, path: apiPath, params: params, headers: headers);
+        final res = await client.call(HttpMethod.patch, path: apiPath, params: apiParams, headers: apiHeaders);
 
         return models.User.fromMap(res.data);
 
@@ -697,15 +697,15 @@ class Account extends Service {
     Future<models.Token> createVerification({required String url}) async {
         const String apiPath = '/account/verification';
 
-        final Map<String, dynamic> params = {
+        final Map<String, dynamic> apiParams = {
             'url': url,
         };
 
-        final Map<String, String> headers = {
+        final Map<String, String> apiHeaders = {
             'content-type': 'application/json',
         };
 
-        final res = await client.call(HttpMethod.post, path: apiPath, params: params, headers: headers);
+        final res = await client.call(HttpMethod.post, path: apiPath, params: apiParams, headers: apiHeaders);
 
         return models.Token.fromMap(res.data);
 
@@ -720,16 +720,16 @@ class Account extends Service {
     Future<models.Token> updateVerification({required String userId, required String secret}) async {
         const String apiPath = '/account/verification';
 
-        final Map<String, dynamic> params = {
+        final Map<String, dynamic> apiParams = {
             'userId': userId,
             'secret': secret,
         };
 
-        final Map<String, String> headers = {
+        final Map<String, String> apiHeaders = {
             'content-type': 'application/json',
         };
 
-        final res = await client.call(HttpMethod.put, path: apiPath, params: params, headers: headers);
+        final res = await client.call(HttpMethod.put, path: apiPath, params: apiParams, headers: apiHeaders);
 
         return models.Token.fromMap(res.data);
 
@@ -746,14 +746,14 @@ class Account extends Service {
     Future<models.Token> createPhoneVerification() async {
         const String apiPath = '/account/verification/phone';
 
-        final Map<String, dynamic> params = {
+        final Map<String, dynamic> apiParams = {
         };
 
-        final Map<String, String> headers = {
+        final Map<String, String> apiHeaders = {
             'content-type': 'application/json',
         };
 
-        final res = await client.call(HttpMethod.post, path: apiPath, params: params, headers: headers);
+        final res = await client.call(HttpMethod.post, path: apiPath, params: apiParams, headers: apiHeaders);
 
         return models.Token.fromMap(res.data);
 
@@ -768,16 +768,16 @@ class Account extends Service {
     Future<models.Token> updatePhoneVerification({required String userId, required String secret}) async {
         const String apiPath = '/account/verification/phone';
 
-        final Map<String, dynamic> params = {
+        final Map<String, dynamic> apiParams = {
             'userId': userId,
             'secret': secret,
         };
 
-        final Map<String, String> headers = {
+        final Map<String, String> apiHeaders = {
             'content-type': 'application/json',
         };
 
-        final res = await client.call(HttpMethod.put, path: apiPath, params: params, headers: headers);
+        final res = await client.call(HttpMethod.put, path: apiPath, params: apiParams, headers: apiHeaders);
 
         return models.Token.fromMap(res.data);
 

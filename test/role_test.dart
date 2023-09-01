@@ -49,4 +49,10 @@ void main() {
       expect(Role.member('custom'), 'member:custom');
     });
   });
+
+  group('label()', () {
+    test('returns label', () {
+      expect(Role.label('admin'), 'label:admin');
+    });
+  });
 }
