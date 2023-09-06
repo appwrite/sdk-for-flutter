@@ -15,12 +15,14 @@ typedef GetFallbackCookie = String? Function();
 
 mixin RealtimeMixin {
   late Client client;
-  final Map<String, List<StreamController<RealtimeMessage>>> _channels = {};
+  final Set<String> _channels = {};
   WebSocketChannel? _websok;
   String? _lastUrl;
   late WebSocketFactory getWebSocket;
   GetFallbackCookie? getFallbackCookie;
   int? get closeCode => _websok?.closeCode;
+  int _subscriptionsCounter = 0;
+  Map<int, RealtimeSubscription> _subscriptions = {};
 
   Future<dynamic> _closeConnection() async {
     await _websok?.sink.close(normalClosure);
@@ -125,31 +127,38 @@ mixin RealtimeMixin {
   }
 
   RealtimeSubscription subscribeTo(List<String> channels) {
+    if(channels.isEmpty) return;
     StreamController<RealtimeMessage> controller = StreamController.broadcast();
-    for(var channel in channels) {
-      if (!_channels.containsKey(channel)) {
-        _channels[channel] = [];
-      }
-      _channels[channel]!.add(controller);
-    }
+    _channels.addAll(channel);
     Future.delayed(Duration.zero, () => _createSocket());
+    _subscriptionsCounter++;
     RealtimeSubscription subscription = RealtimeSubscription(
-        stream: controller.stream,
+        stream: controller,
+        channels: channels,
         close: () async {
+          _subscriptions.removeAt(_subscriptionsCounter);
           controller.close();
-          for(var channel in channels) {
-            _channels[channel]!.remove(controller);
-            if (_channels[channel]!.isEmpty) {
-              _channels.remove(channel);
-            }
-          }
+          _cleanup($channels);
+
           if(_channels.isNotEmpty) {
             await Future.delayed(Duration.zero, () => _createSocket());
           } else {
             await _closeConnection();
           }
         });
+    _subscriptions[_subscriptionsCounter] = subscription;
     return subscription;
+  }
+
+  void _cleanup(List<String> channels) {
+    for(var channel in _channels) {
+      if(channels.contains(channel)) {
+        bool found = _subscriptions.find((k, v) => v.contains(chennel));
+        if(!found) {
+          _channels.remove(channel);
+        }
+      }
+    }
   }
 
   void handleError(RealtimeResponse response) {
