@@ -2,7 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 import 'package:flutter/foundation.dart';
 import 'package:web_socket_channel/web_socket_channel.dart';
-import 'package:web_socket_channel/status.dart';
+import 'package:web_socket_channel/status.dart' as status;
 import 'exception.dart';
 import 'realtime_subscription.dart';
 import 'client.dart';
@@ -23,9 +23,12 @@ mixin RealtimeMixin {
   int? get closeCode => _websok?.closeCode;
   int _subscriptionsCounter = 0;
   Map<int, RealtimeSubscription> _subscriptions = {};
+  bool _notifyDone = true;
+  StreamSubscription? _websocketSubscription;
 
   Future<dynamic> _closeConnection() async {
-    await _websok?.sink.close(normalClosure);
+    await _websocketSubscription?.cancel();
+    await _websok?.sink.close(status.normalClosure, 'Ending session');
     _lastUrl = null;
   }
 
@@ -38,14 +41,16 @@ mixin RealtimeMixin {
       if (_lastUrl == uri.toString() && _websok?.closeCode == null) {
         return;
       }
+      _notifyDone = false;
       await _closeConnection();
       _lastUrl = uri.toString();
       _websok = await getWebSocket(uri);
+      _notifyDone = true;
     }
     debugPrint('subscription: $_lastUrl');
 
     try {
-      _websok?.stream.listen((response) {
+      _websocketSubscription = _websok?.stream.listen((response) {
         final data = RealtimeResponse.fromJson(response);
         switch (data.type) {
           case 'error':
@@ -79,6 +84,7 @@ mixin RealtimeMixin {
             break;
         }
       }, onDone: () {
+        if (!_notifyDone) return;
         for (var subscription in _subscriptions.values) {
           subscription.close();
         }
@@ -126,13 +132,14 @@ mixin RealtimeMixin {
     StreamController<RealtimeMessage> controller = StreamController.broadcast();
     _channels.addAll(channels);
     Future.delayed(Duration.zero, () => _createSocket());
-    _subscriptionsCounter++;
+    int counter = _subscriptionsCounter++;
     RealtimeSubscription subscription = RealtimeSubscription(
         stream: controller.stream,
         controller: controller,
         channels: channels,
         close: () async {
-          _subscriptions.remove(_subscriptionsCounter);
+          _subscriptions.remove(counter);
+          _subscriptionsCounter--;
           controller.close();
           _cleanup(channels);
 
@@ -142,17 +149,16 @@ mixin RealtimeMixin {
             await _closeConnection();
           }
         });
-    _subscriptions[_subscriptionsCounter] = subscription;
+    _subscriptions[counter] = subscription;
     return subscription;
   }
 
   void _cleanup(List<String> channels) {
-    for (var channel in _channels) {
-      if (channels.contains(channel)) {
-        bool found = _subscriptions.values.any((subscription) => subscription.channels.contains(channel));
-        if (!found) {
-          _channels.remove(channel);
-        }
+    for (var channel in channels) {
+      bool found = _subscriptions.values
+          .any((subscription) => subscription.channels.contains(channel));
+      if (!found) {
+        _channels.remove(channel);
       }
     }
   }
