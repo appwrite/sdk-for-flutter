@@ -69,28 +69,24 @@ mixin RealtimeMixin {
             break;
           case 'event':
             final message = RealtimeMessage.fromMap(data.data);
-            for(var channel in message.channels) {
-              if (_channels[channel] != null) {
-                for( var stream in _channels[channel]!) {
-                  stream.sink.add(message);
+            for (var subscription in _subscriptions.values) {
+              for (var channel in message.channels) {
+                if (subscription.channels.contains(channel)) {
+                  subscription.controller.add(message);
                 }
               }
             }
             break;
         }
       }, onDone: () {
-        for (var list in _channels.values) {
-          for (var stream in list) {
-            stream.close();
-          }
+        for (var subscription in _subscriptions.values) {
+          subscription.close();
         }
         _channels.clear();
         _closeConnection();
       }, onError: (err, stack) {
-        for (var list in _channels.values) {
-          for (var stream in list) {
-            stream.sink.addError(err, stack);
-          }
+        for (var subscription in _subscriptions.values) {
+          subscription.controller.addError(err, stack);
         }
         if (_websok?.closeCode != null && _websok?.closeCode != 1008) {
           debugPrint("Reconnecting in one second.");
@@ -120,27 +116,27 @@ mixin RealtimeMixin {
       port: uri.port,
       queryParameters: {
         "project": client.config['project'],
-        "channels[]": _channels.keys.toList(),
+        "channels[]": _channels.toList(),
       },
       path: uri.path + "/realtime",
     );
   }
 
   RealtimeSubscription subscribeTo(List<String> channels) {
-    if(channels.isEmpty) return;
     StreamController<RealtimeMessage> controller = StreamController.broadcast();
-    _channels.addAll(channel);
+    _channels.addAll(channels);
     Future.delayed(Duration.zero, () => _createSocket());
     _subscriptionsCounter++;
     RealtimeSubscription subscription = RealtimeSubscription(
-        stream: controller,
+        stream: controller.stream,
+        controller: controller,
         channels: channels,
         close: () async {
-          _subscriptions.removeAt(_subscriptionsCounter);
+          _subscriptions.remove(_subscriptionsCounter);
           controller.close();
-          _cleanup($channels);
+          _cleanup(channels);
 
-          if(_channels.isNotEmpty) {
+          if (_channels.isNotEmpty) {
             await Future.delayed(Duration.zero, () => _createSocket());
           } else {
             await _closeConnection();
@@ -151,10 +147,10 @@ mixin RealtimeMixin {
   }
 
   void _cleanup(List<String> channels) {
-    for(var channel in _channels) {
-      if(channels.contains(channel)) {
-        bool found = _subscriptions.find((k, v) => v.contains(chennel));
-        if(!found) {
+    for (var channel in _channels) {
+      if (channels.contains(channel)) {
+        bool found = _subscriptions.values.any((subscription) => subscription.channels.contains(channel));
+        if (!found) {
           _channels.remove(channel);
         }
       }
