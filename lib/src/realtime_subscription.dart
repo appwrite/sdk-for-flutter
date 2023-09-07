@@ -17,5 +17,6 @@ class RealtimeSubscription {
 
   /// Initializes a [RealtimeSubscription]
   RealtimeSubscription(
-      {required this.stream, required this.close, required this.channels, required this.controller});
+      {required this.close, required this.channels, required this.controller})
+      : stream = controller.stream;
 }

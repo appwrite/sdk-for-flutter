@@ -134,7 +134,6 @@ mixin RealtimeMixin {
     Future.delayed(Duration.zero, () => _createSocket());
     int counter = _subscriptionsCounter++;
     RealtimeSubscription subscription = RealtimeSubscription(
-        stream: controller.stream,
         controller: controller,
         channels: channels,
         close: () async {
