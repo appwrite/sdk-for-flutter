@@ -1,4 +1,6 @@
-## 10.0.2
+## 11.0.0
+
+* Parameter `url` is now optional in the `createMembership` endpoint
 
 ## 10.0.1
 
