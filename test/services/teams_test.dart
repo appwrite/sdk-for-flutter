@@ -194,7 +194,6 @@ void main() {
             final response = await teams.createMembership(
                 teamId: '[TEAM_ID]',
                 roles: [],
-                url: 'https://example.com',
             );
             expect(response, isA<models.Membership>());
 
