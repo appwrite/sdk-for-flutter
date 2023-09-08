@@ -1,3 +1,7 @@
+## 11.0.0
+
+* Parameter `url` is now optional in the `createMembership` endpoint
+
 ## 10.0.1
 
 * Added a new `label` function to the `Role` helper class
@@ -17,6 +21,12 @@
   * The `createDeployment` method no longer requires an entrypoint.
   * The `updateFile` method now includes the ability to update the file name.
   * The `updateMembershipRoles` method has been renamed to `updateMembership`.
+
+## 9.0.1
+
+* Added documentation comments
+* Added unit tests
+* Upgraded dependencies
 
 ## 9.0.0
 

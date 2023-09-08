@@ -156,7 +156,7 @@ class Teams extends Service {
     /// Appwrite will accept the only redirect URLs under the domains you have
     /// added as a platform on the Appwrite Console.
     /// 
-    Future<models.Membership> createMembership({required String teamId, required List<String> roles, required String url, String? email, String? userId, String? phone, String? name}) async {
+    Future<models.Membership> createMembership({required String teamId, required List<String> roles, String? email, String? userId, String? phone, String? url, String? name}) async {
         final String apiPath = '/teams/{teamId}/memberships'.replaceAll('{teamId}', teamId);
 
         final Map<String, dynamic> apiParams = {
