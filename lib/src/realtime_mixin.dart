@@ -138,9 +138,11 @@ mixin RealtimeMixin {
         close: () async {
           controller.close();
           for(var channel in channels) {
-            _channels[channel]!.remove(controller);
-            if (_channels[channel]!.isEmpty) {
-              _channels.remove(channel);
+            if (_channels.containsKey(channel)) {
+              _channels[channel]!.remove(controller);
+              if (_channels[channel]!.isEmpty) {
+                _channels.remove(channel);
+              }
             }
           }
           if(_channels.isNotEmpty) {
