@@ -37,8 +37,8 @@ mixin RealtimeMixin {
         return;
       }
       await _closeConnection();
-      _lastUrl = uri.toString();
       _websok = await getWebSocket(uri);
+      _lastUrl = uri.toString();
     }
     debugPrint('subscription: $_lastUrl');
 
@@ -136,7 +136,7 @@ mixin RealtimeMixin {
     RealtimeSubscription subscription = RealtimeSubscription(
         stream: controller.stream,
         close: () async {
-          controller.close();
+          await controller.close();
           for(var channel in channels) {
             if (_channels.containsKey(channel)) {
               _channels[channel]!.remove(controller);
