@@ -21,11 +21,11 @@ dependencies:
   cookie_jar: ^4.0.3
   device_info_plus: ^9.0.2
   flutter_web_auth_2: ^2.1.4
-  http: '>=0.13.6 <1.0.1'
   package_info_plus: ^4.0.2
   path_provider: ^2.0.15
   web_socket_channel: ^2.4.0
   universal_html: ^2.2.2
+  http: ^1.1.0
 
 dev_dependencies:
   path_provider_platform_interface: ^2.0.6
