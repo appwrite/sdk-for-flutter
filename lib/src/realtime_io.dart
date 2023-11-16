@@ -2,20 +2,21 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 import 'dart:math';
+
 import 'package:flutter/foundation.dart';
 import 'package:web_socket_channel/io.dart';
 import 'package:web_socket_channel/web_socket_channel.dart';
-import 'cookie_manager.dart';
-import 'realtime_subscription.dart';
-import 'realtime_base.dart';
-import 'realtime_mixin.dart';
+
 import 'client.dart';
 import 'client_io.dart';
+import 'cookie_manager.dart';
+import 'realtime_base.dart';
+import 'realtime_mixin.dart';
+import 'realtime_subscription.dart';
 
 RealtimeBase createRealtime(Client client) => RealtimeIO(client);
 
 class RealtimeIO extends RealtimeBase with RealtimeMixin {
-
   RealtimeIO(Client client) {
     this.client = client;
     getWebSocket = _getWebSocket;
@@ -23,7 +24,8 @@ class RealtimeIO extends RealtimeBase with RealtimeMixin {
 
   Future<WebSocketChannel> _getWebSocket(Uri uri) async {
     Map<String, String>? headers;
-    while (!(client as ClientIO).initialized && (client as ClientIO).initProgress) {
+    while (!(client as ClientIO).initialized &&
+        (client as ClientIO).initProgress) {
       await Future.delayed(Duration(milliseconds: 10));
     }
     if (!(client as ClientIO).initialized) {
@@ -43,7 +45,7 @@ class RealtimeIO extends RealtimeBase with RealtimeMixin {
   /// Use this method to subscribe to a channels and listen to
   /// realtime events on those channels
   @override
-  RealtimeSubscription subscribe(List<String> channels) {
+  Future<RealtimeSubscription> subscribe(List<String> channels) {
     return subscribeTo(channels);
   }
 
