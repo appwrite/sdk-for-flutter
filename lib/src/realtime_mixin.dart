@@ -109,12 +109,17 @@ mixin RealtimeMixin {
               break;
           }
         }, onDone: () async {
-          for (var list in _channels.values) {
-            for (var controller in list) {
-              await controller.close();
-            }
-          }
-          _channels.clear();
+          // ATM we don't understand when this method is actually called
+          // We observer that it might happen asynchronously and close
+          // controllers that we want to keep active.
+          // Current solution is to comment it as close() of RealtimeSubscription
+          // should do the job
+          // for (var list in _channels.values) {
+          //   for (var controller in list) {
+          //     await controller.close();
+          //   }
+          // }
+          // _channels.clear();
         }, onError: (err, stack) {
           for (var list in _channels.values) {
             for (var stream in list) {
