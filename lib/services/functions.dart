@@ -6,7 +6,7 @@ class Functions extends Service {
     /// Initializes a [Functions] service
     Functions(super.client);
 
-    /// List Executions
+    /// List executions
     ///
     /// Get a list of all the current user function execution logs. You can use the
     /// query params to filter your results.
@@ -28,7 +28,7 @@ class Functions extends Service {
 
     }
 
-    /// Create Execution
+    /// Create execution
     ///
     /// Trigger a function execution. The returned object will return you the
     /// current execution status. You can ping the `Get Execution` endpoint to get
@@ -55,7 +55,7 @@ class Functions extends Service {
 
     }
 
-    /// Get Execution
+    /// Get execution
     ///
     /// Get a function execution log by its unique ID.
     Future<models.Execution> getExecution({required String functionId, required String executionId}) async {
