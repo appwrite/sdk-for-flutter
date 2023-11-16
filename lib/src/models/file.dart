@@ -10,7 +10,7 @@ class File implements Model {
     final String $createdAt;
     /// File update date in ISO 8601 format.
     final String $updatedAt;
-    /// File permissions. [Learn more about permissions](/docs/permissions).
+    /// File permissions. [Learn more about permissions](https://appwrite.io/docs/permissions).
     final List $permissions;
     /// File name.
     final String name;

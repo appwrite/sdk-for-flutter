@@ -6,7 +6,7 @@ class Databases extends Service {
     /// Initializes a [Databases] service
     Databases(super.client);
 
-    /// List Documents
+    /// List documents
     ///
     /// Get a list of all the user's documents in a given collection. You can use
     /// the query params to filter your results.
@@ -27,12 +27,12 @@ class Databases extends Service {
 
     }
 
-    /// Create Document
+    /// Create document
     ///
     /// Create a new Document. Before using this route, you should create a new
     /// collection resource using either a [server
-    /// integration](/docs/server/databases#databasesCreateCollection) API or
-    /// directly from your database console.
+    /// integration](https://appwrite.io/docs/server/databases#databasesCreateCollection)
+    /// API or directly from your database console.
     Future<models.Document> createDocument({required String databaseId, required String collectionId, required String documentId, required Map data, List<String>? permissions}) async {
         final String apiPath = '/databases/{databaseId}/collections/{collectionId}/documents'.replaceAll('{databaseId}', databaseId).replaceAll('{collectionId}', collectionId);
 
@@ -52,7 +52,7 @@ class Databases extends Service {
 
     }
 
-    /// Get Document
+    /// Get document
     ///
     /// Get a document by its unique ID. This endpoint response returns a JSON
     /// object with the document data.
@@ -73,7 +73,7 @@ class Databases extends Service {
 
     }
 
-    /// Update Document
+    /// Update document
     ///
     /// Update a document by its unique ID. Using the patch method you can pass
     /// only specific fields that will get updated.
@@ -95,7 +95,7 @@ class Databases extends Service {
 
     }
 
-    /// Delete Document
+    /// Delete document
     ///
     /// Delete a document by its unique ID.
     Future deleteDocument({required String databaseId, required String collectionId, required String documentId}) async {
