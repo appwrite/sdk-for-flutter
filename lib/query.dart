@@ -48,7 +48,7 @@ class Query {
 
   /// Filter resources where [attribute] is between [start] and [end] (inclusive).
   static String between(String attribute, dynamic start, dynamic end) =>
-      _addQuery(attribute, 'between', [start, end]);
+      'between("$attribute", ${_parseValues(start)}, ${_parseValues(end)})';
 
   /// Filter resources where [attribute] starts with [value].
   static String startsWith(String attribute, String value) =>
