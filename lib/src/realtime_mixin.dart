@@ -132,12 +132,12 @@ mixin RealtimeMixin {
     StreamController<RealtimeMessage> controller = StreamController.broadcast();
     _channels.addAll(channels);
     Future.delayed(Duration.zero, () => _createSocket());
-    int counter = _subscriptionsCounter++;
+    int id = DateTime.now().microsecondsSinceEpoch;
     RealtimeSubscription subscription = RealtimeSubscription(
         controller: controller,
         channels: channels,
         close: () async {
-          _subscriptions.remove(counter);
+          _subscriptions.remove(id);
           _subscriptionsCounter--;
           controller.close();
           _cleanup(channels);
@@ -148,7 +148,7 @@ mixin RealtimeMixin {
             await _closeConnection();
           }
         });
-    _subscriptions[counter] = subscription;
+    _subscriptions[id] = subscription;
     return subscription;
   }
 
