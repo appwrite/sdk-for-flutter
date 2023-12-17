@@ -6,7 +6,7 @@ class Graphql extends Service {
     /// Initializes a [Graphql] service
     Graphql(super.client);
 
-    /// GraphQL Endpoint
+    /// GraphQL endpoint
     ///
     /// Execute a GraphQL mutation.
     Future query({required Map query}) async {
@@ -26,7 +26,7 @@ class Graphql extends Service {
 
     }
 
-    /// GraphQL Endpoint
+    /// GraphQL endpoint
     ///
     /// Execute a GraphQL mutation.
     Future mutation({required Map query}) async {
