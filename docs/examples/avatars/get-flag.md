@@ -10,7 +10,7 @@ void main() { // Init SDK
   ;
   // downloading file
   Future result = avatars.getFlag(
-    code: 'af',
+    code: Flag.afghanistan.value,
   ).then((bytes) {
     final file = File('path_to_file/filename.ext');
     file.writeAsBytesSync(bytes)
@@ -22,7 +22,7 @@ void main() { // Init SDK
 //displaying image preview
 FutureBuilder(
   future: avatars.getFlag(
-    code: 'af',
+    code: Flag.afghanistan.value,
   ), //works for both public file and private file, for private files you need to be logged in
   builder: (context, snapshot) {
     return snapshot.hasData && snapshot.data != null

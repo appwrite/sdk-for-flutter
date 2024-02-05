@@ -64,7 +64,7 @@ class ClientIO extends ClientBase with ClientMixin {
       'x-sdk-name': 'Flutter',
       'x-sdk-platform': 'client',
       'x-sdk-language': 'flutter',
-      'x-sdk-version': '11.0.1',
+      'x-sdk-version': '12.0.0-rc.1',
       'X-Appwrite-Response-Format' : '1.4.0',
     };
 
@@ -104,6 +104,13 @@ class ClientIO extends ClientBase with ClientMixin {
     ClientIO setLocale(value) {
         config['locale'] = value;
         addHeader('X-Appwrite-Locale', value);
+        return this;
+    }
+     /// The user session to authenticate with
+    @override
+    ClientIO setSession(value) {
+        config['session'] = value;
+        addHeader('X-Appwrite-Session', value);
         return this;
     }
 
@@ -321,7 +328,9 @@ class ClientIO extends ClientBase with ClientMixin {
       callbackUrlScheme: callbackUrlScheme != null && _customSchemeAllowed
           ? callbackUrlScheme
           : "appwrite-callback-" + config['project']!,
-      preferEphemeral: true,
+      options: const FlutterWebAuth2Options(
+        intentFlags: ephemeralIntentFlags,
+      ),
     ).then((value) async {
       Uri url = Uri.parse(value);
       final key = url.queryParameters['key'];

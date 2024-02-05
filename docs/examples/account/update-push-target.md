@@ -8,9 +8,9 @@ void main() { // Init SDK
     .setEndpoint('https://cloud.appwrite.io/v1') // Your API Endpoint
     .setProject('5df5acd0d48c2') // Your project ID
   ;
-  Future result = account.createEmailSession(
-    email: 'email@example.com',
-    password: 'password',
+  Future result = account.updatePushTarget(
+    targetId:'[TARGET_ID]' ,
+    identifier:'[IDENTIFIER]' ,
   );
 
   result

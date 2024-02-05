@@ -43,3 +43,8 @@ part 'src/models/language.dart';
 part 'src/models/currency.dart';
 part 'src/models/phone.dart';
 part 'src/models/headers.dart';
+part 'src/models/mfa_challenge.dart';
+part 'src/models/mfa_provider.dart';
+part 'src/models/mfa_providers.dart';
+part 'src/models/subscriber.dart';
+part 'src/models/target.dart';

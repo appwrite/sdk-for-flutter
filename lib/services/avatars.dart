@@ -18,7 +18,7 @@ class Avatars extends Service {
     /// with preserved aspect ratio. If both dimensions are 0, the API provides an
     /// image at source quality. If dimensions are not specified, the default size
     /// of image returned is 100x100px.
-    Future<Uint8List> getBrowser({required String code, int? width, int? height, int? quality}) async {
+    Future<Uint8List> getBrowser({required enums.Browser code, int? width, int? height, int? quality}) async {
         final String apiPath = '/avatars/browsers/{code}'.replaceAll('{code}', code);
 
         final Map<String, dynamic> params = {
@@ -45,7 +45,7 @@ class Avatars extends Service {
     /// image at source quality. If dimensions are not specified, the default size
     /// of image returned is 100x100px.
     /// 
-    Future<Uint8List> getCreditCard({required String code, int? width, int? height, int? quality}) async {
+    Future<Uint8List> getCreditCard({required enums.CreditCard code, int? width, int? height, int? quality}) async {
         final String apiPath = '/avatars/credit-cards/{code}'.replaceAll('{code}', code);
 
         final Map<String, dynamic> params = {
@@ -92,7 +92,7 @@ class Avatars extends Service {
     /// image at source quality. If dimensions are not specified, the default size
     /// of image returned is 100x100px.
     /// 
-    Future<Uint8List> getFlag({required String code, int? width, int? height, int? quality}) async {
+    Future<Uint8List> getFlag({required enums.Flag code, int? width, int? height, int? quality}) async {
         final String apiPath = '/avatars/flags/{code}'.replaceAll('{code}', code);
 
         final Map<String, dynamic> params = {

@@ -9,8 +9,8 @@ void main() { // Init SDK
     .setProject('5df5acd0d48c2') // Your project ID
   ;
   Future result = account.createRecovery(
-    email: 'email@example.com',
-    url: 'https://example.com',
+    email:'email@example.com' ,
+    url:'https://example.com' ,
   );
 
   result

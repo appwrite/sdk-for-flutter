@@ -2,15 +2,16 @@ import 'package:appwrite/appwrite.dart';
 
 void main() { // Init SDK
   Client client = Client();
-  Account account = Account(client);
+  Users users = Users(client);
 
   client
     .setEndpoint('https://cloud.appwrite.io/v1') // Your API Endpoint
     .setProject('5df5acd0d48c2') // Your project ID
   ;
-  Future result = account.createMagicURLSession(
-    userId: '[USER_ID]',
-    email: 'email@example.com',
+  Future result = users.deleteAuthenticator(
+    userId:'[USER_ID]' ,
+    provider: AuthenticatorProvider.totp.value,
+    otp:'[OTP]' ,
   );
 
   result
