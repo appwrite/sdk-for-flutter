@@ -38,4 +38,3 @@ part 'services/locale.dart';
 part 'services/messaging.dart';
 part 'services/storage.dart';
 part 'services/teams.dart';
-part 'services/users.dart';

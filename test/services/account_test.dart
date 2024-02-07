@@ -641,7 +641,7 @@ void main() {
                 'countryCode': 'US',
                 'countryName': 'United States',
                 'current': true,
-                'factors': 1,
+                'factors': [],
                 'secret': '5e5bb8c16897e',};
 
 
@@ -683,7 +683,7 @@ void main() {
                 'countryCode': 'US',
                 'countryName': 'United States',
                 'current': true,
-                'factors': 1,
+                'factors': [],
                 'secret': '5e5bb8c16897e',};
 
 
@@ -727,7 +727,7 @@ void main() {
                 'countryCode': 'US',
                 'countryName': 'United States',
                 'current': true,
-                'factors': 1,
+                'factors': [],
                 'secret': '5e5bb8c16897e',};
 
 
@@ -783,7 +783,7 @@ void main() {
                 'countryCode': 'US',
                 'countryName': 'United States',
                 'current': true,
-                'factors': 1,
+                'factors': [],
                 'secret': '5e5bb8c16897e',};
 
 
@@ -827,7 +827,7 @@ void main() {
                 'countryCode': 'US',
                 'countryName': 'United States',
                 'current': true,
-                'factors': 1,
+                'factors': [],
                 'secret': '5e5bb8c16897e',};
 
 
@@ -870,7 +870,7 @@ void main() {
                 'countryCode': 'US',
                 'countryName': 'United States',
                 'current': true,
-                'factors': 1,
+                'factors': [],
                 'secret': '5e5bb8c16897e',};
 
 
