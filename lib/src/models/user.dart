@@ -32,14 +32,8 @@ class User implements Model {
     final bool emailVerification;
     /// Phone verification status.
     final bool phoneVerification;
-    /// Multi factor authentication status.
-    final bool mfa;
-    /// TOTP status.
-    final bool totp;
     /// User preferences as a key-value object
     final Preferences prefs;
-    /// A user-owned message receiver. A single user may have multiple e.g. emails, phones, and a browser. Each target is registered with a single provider.
-    final List<Target> targets;
     /// Most recent access date in ISO 8601 format. This attribute is only updated again after 24 hours.
     final String accessedAt;
 
@@ -59,10 +53,7 @@ class User implements Model {
         required this.phone,
         required this.emailVerification,
         required this.phoneVerification,
-        required this.mfa,
-        required this.totp,
         required this.prefs,
-        required this.targets,
         required this.accessedAt,
     });
 
@@ -77,16 +68,13 @@ class User implements Model {
             hashOptions: map['hashOptions'],
             registration: map['registration'].toString(),
             status: map['status'],
-            labels: map['labels'],
+            labels: map['labels'] ?? [],
             passwordUpdate: map['passwordUpdate'].toString(),
             email: map['email'].toString(),
             phone: map['phone'].toString(),
             emailVerification: map['emailVerification'],
             phoneVerification: map['phoneVerification'],
-            mfa: map['mfa'],
-            totp: map['totp'],
             prefs: Preferences.fromMap(map['prefs']),
-            targets: List<Target>.from(map['targets'].map((p) => Target.fromMap(p))),
             accessedAt: map['accessedAt'].toString(),
         );
     }
@@ -108,10 +96,7 @@ class User implements Model {
             "phone": phone,
             "emailVerification": emailVerification,
             "phoneVerification": phoneVerification,
-            "mfa": mfa,
-            "totp": totp,
             "prefs": prefs.toMap(),
-            "targets": targets.map((p) => p.toMap()).toList(),
             "accessedAt": accessedAt,
         };
     }

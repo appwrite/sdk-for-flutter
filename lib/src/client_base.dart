@@ -11,9 +11,6 @@ abstract class ClientBase implements Client {
   ClientBase setJWT(value);
   @override
   ClientBase setLocale(value);
-  /// The user session to authenticate with
-  @override
-  ClientBase setSession(value);
 
   @override
   ClientBase setSelfSigned({bool status = true});

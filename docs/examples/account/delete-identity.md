@@ -9,7 +9,7 @@ void main() { // Init SDK
     .setProject('5df5acd0d48c2') // Your project ID
   ;
   Future result = account.deleteIdentity(
-    identityId:'[IDENTITY_ID]' ,
+    identityId: '[IDENTITY_ID]',
   );
 
   result

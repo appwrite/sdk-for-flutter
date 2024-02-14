@@ -9,8 +9,8 @@ void main() { // Init SDK
     .setProject('5df5acd0d48c2') // Your project ID
   ;
   Future result = account.updateEmail(
-    email:'email@example.com' ,
-    password:'password' ,
+    email: 'email@example.com',
+    password: 'password',
   );
 
   result

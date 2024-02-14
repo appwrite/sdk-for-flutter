@@ -12,8 +12,6 @@ class Token implements Model {
     final String secret;
     /// Token expiration date in ISO 8601 format.
     final String expire;
-    /// Security phrase of a token. Empty if security phrase was not requested when creating a token. It includes randomly generated phrase which is also sent in the external resource such as email.
-    final String phrase;
 
     Token({
         required this.$id,
@@ -21,7 +19,6 @@ class Token implements Model {
         required this.userId,
         required this.secret,
         required this.expire,
-        required this.phrase,
     });
 
     factory Token.fromMap(Map<String, dynamic> map) {
@@ -31,7 +28,6 @@ class Token implements Model {
             userId: map['userId'].toString(),
             secret: map['secret'].toString(),
             expire: map['expire'].toString(),
-            phrase: map['phrase'].toString(),
         );
     }
 
@@ -42,7 +38,6 @@ class Token implements Model {
             "userId": userId,
             "secret": secret,
             "expire": expire,
-            "phrase": phrase,
         };
     }
 }

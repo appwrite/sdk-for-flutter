@@ -9,8 +9,8 @@ void main() { // Init SDK
     .setProject('5df5acd0d48c2') // Your project ID
   ;
   Future result = teams.createMembership(
-    teamId:'[TEAM_ID]' ,
-    roles:[] ,
+    teamId: '[TEAM_ID]',
+    roles: [],
   );
 
   result

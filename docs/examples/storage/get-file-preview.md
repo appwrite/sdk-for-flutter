@@ -10,8 +10,8 @@ void main() { // Init SDK
   ;
   // downloading file
   Future result = storage.getFilePreview(
-    bucketId:'[BUCKET_ID]' ,
-    fileId:'[FILE_ID]' ,
+    bucketId: '[BUCKET_ID]',
+    fileId: '[FILE_ID]',
   ).then((bytes) {
     final file = File('path_to_file/filename.ext');
     file.writeAsBytesSync(bytes)
@@ -23,8 +23,8 @@ void main() { // Init SDK
 //displaying image preview
 FutureBuilder(
   future: storage.getFilePreview(
-    bucketId:'[BUCKET_ID]' ,
-    fileId:'[FILE_ID]' ,
+    bucketId: '[BUCKET_ID]',
+    fileId: '[FILE_ID]',
   ), //works for both public file and private file, for private files you need to be logged in
   builder: (context, snapshot) {
     return snapshot.hasData && snapshot.data != null

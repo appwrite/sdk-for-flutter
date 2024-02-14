@@ -9,8 +9,8 @@ void main() { // Init SDK
     .setProject('5df5acd0d48c2') // Your project ID
   ;
   Future result = teams.getMembership(
-    teamId:'[TEAM_ID]' ,
-    membershipId:'[MEMBERSHIP_ID]' ,
+    teamId: '[TEAM_ID]',
+    membershipId: '[MEMBERSHIP_ID]',
   );
 
   result

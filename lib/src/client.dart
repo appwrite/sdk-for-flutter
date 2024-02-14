@@ -66,11 +66,6 @@ abstract class Client {
   /// Set Locale.
   Client setLocale(value);
 
-  /// Set Session.
-  ///
-  /// The user session to authenticate with.
-  Client setSession(value);
-
   /// Add headers that should be sent with all API calls.
   Client addHeader(String key, String value);
 

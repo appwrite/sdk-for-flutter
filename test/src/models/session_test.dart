@@ -31,8 +31,6 @@ void main() {
         countryCode: 'US',
         countryName: 'United States',
         current: true,
-        factors: [],
-        secret: '5e5bb8c16897e',
       );
 
       final map = model.toMap();
@@ -63,8 +61,6 @@ void main() {
       expect(result.countryCode, 'US');
       expect(result.countryName, 'United States');
       expect(result.current, true);
-      expect(result.factors, []);
-      expect(result.secret, '5e5bb8c16897e');
     });
   });
 }

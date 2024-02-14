@@ -9,10 +9,10 @@ void main() { // Init SDK
     .setProject('5df5acd0d48c2') // Your project ID
   ;
   Future result = teams.updateMembershipStatus(
-    teamId:'[TEAM_ID]' ,
-    membershipId:'[MEMBERSHIP_ID]' ,
-    userId:'[USER_ID]' ,
-    secret:'[SECRET]' ,
+    teamId: '[TEAM_ID]',
+    membershipId: '[MEMBERSHIP_ID]',
+    userId: '[USER_ID]',
+    secret: '[SECRET]',
   );
 
   result

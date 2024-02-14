@@ -24,8 +24,6 @@ class Membership implements Model {
     final String joined;
     /// User confirmation status, true if the user has joined the team or false otherwise.
     final bool confirm;
-    /// Multi factor authentication status, true if the user has MFA enabled or false otherwise.
-    final bool mfa;
     /// User list of roles
     final List roles;
 
@@ -41,7 +39,6 @@ class Membership implements Model {
         required this.invited,
         required this.joined,
         required this.confirm,
-        required this.mfa,
         required this.roles,
     });
 
@@ -58,8 +55,7 @@ class Membership implements Model {
             invited: map['invited'].toString(),
             joined: map['joined'].toString(),
             confirm: map['confirm'],
-            mfa: map['mfa'],
-            roles: map['roles'],
+            roles: map['roles'] ?? [],
         );
     }
 
@@ -76,7 +72,6 @@ class Membership implements Model {
             "invited": invited,
             "joined": joined,
             "confirm": confirm,
-            "mfa": mfa,
             "roles": roles,
         };
     }

@@ -183,7 +183,6 @@ void main() {
                 'invited': '2020-10-15T06:38:00.000+00:00',
                 'joined': '2020-10-15T06:38:00.000+00:00',
                 'confirm': true,
-                'mfa': true,
                 'roles': [],};
 
 
@@ -213,7 +212,6 @@ void main() {
                 'invited': '2020-10-15T06:38:00.000+00:00',
                 'joined': '2020-10-15T06:38:00.000+00:00',
                 'confirm': true,
-                'mfa': true,
                 'roles': [],};
 
 
@@ -243,7 +241,6 @@ void main() {
                 'invited': '2020-10-15T06:38:00.000+00:00',
                 'joined': '2020-10-15T06:38:00.000+00:00',
                 'confirm': true,
-                'mfa': true,
                 'roles': [],};
 
 
@@ -288,7 +285,6 @@ void main() {
                 'invited': '2020-10-15T06:38:00.000+00:00',
                 'joined': '2020-10-15T06:38:00.000+00:00',
                 'confirm': true,
-                'mfa': true,
                 'roles': [],};
 
 
