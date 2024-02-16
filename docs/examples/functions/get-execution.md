@@ -9,8 +9,8 @@ void main() { // Init SDK
     .setProject('5df5acd0d48c2') // Your project ID
   ;
   Future result = functions.getExecution(
-    functionId: '[FUNCTION_ID]',
-    executionId: '[EXECUTION_ID]',
+    functionId:'[FUNCTION_ID]' ,
+    executionId:'[EXECUTION_ID]' ,
   );
 
   result

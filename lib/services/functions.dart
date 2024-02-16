@@ -34,7 +34,7 @@ class Functions extends Service {
     /// current execution status. You can ping the `Get Execution` endpoint to get
     /// updates on the current execution status. Once this endpoint is called, your
     /// function execution process will start asynchronously.
-    Future<models.Execution> createExecution({required String functionId, String? body, bool? xasync, String? path, String? method, Map? headers}) async {
+    Future<models.Execution> createExecution({required String functionId, String? body, bool? xasync, String? path, enums.ExecutionMethod? method, Map? headers}) async {
         final String apiPath = '/functions/{functionId}/executions'.replaceAll('{functionId}', functionId);
 
         final Map<String, dynamic> apiParams = {

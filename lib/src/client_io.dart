@@ -49,7 +49,7 @@ class ClientIO extends ClientBase with ClientMixin {
   String? get endPointRealtime => _endPointRealtime;
 
   ClientIO({
-    String endPoint = 'https://HOSTNAME/v1',
+    String endPoint = 'https://cloud.appwrite.io/v1',
     this.selfSigned = false,
   }) : _endPoint = endPoint {
     _nativeClient = HttpClient()
@@ -64,7 +64,7 @@ class ClientIO extends ClientBase with ClientMixin {
       'x-sdk-name': 'Flutter',
       'x-sdk-platform': 'client',
       'x-sdk-language': 'flutter',
-      'x-sdk-version': '11.0.1',
+      'x-sdk-version': '12.0.0-rc.2',
       'X-Appwrite-Response-Format' : '1.4.0',
     };
 
@@ -104,6 +104,13 @@ class ClientIO extends ClientBase with ClientMixin {
     ClientIO setLocale(value) {
         config['locale'] = value;
         addHeader('X-Appwrite-Locale', value);
+        return this;
+    }
+     /// The user session to authenticate with
+    @override
+    ClientIO setSession(value) {
+        config['session'] = value;
+        addHeader('X-Appwrite-Session', value);
         return this;
     }
 

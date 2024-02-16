@@ -10,9 +10,9 @@ void main() { // Init SDK
     .setProject('5df5acd0d48c2') // Your project ID
   ;
   Future result = storage.createFile(
-    bucketId: '[BUCKET_ID]',
-    fileId: '[FILE_ID]',
-    file: InputFile(path: './path-to-files/image.jpg', filename: 'image.jpg'),
+    bucketId:'[BUCKET_ID]' ,
+    fileId:'[FILE_ID]' ,
+    file:InputFile(path: './path-to-files/image.jpg', filename: 'image.jpg') ,
   );
 
   result

@@ -84,7 +84,7 @@ class Account extends Service {
     /// List Identities
     ///
     /// Get the list of identities for the currently logged in user.
-    Future<models.IdentityList> listIdentities({String? queries}) async {
+    Future<models.IdentityList> listIdentities({List<String>? queries}) async {
         const String apiPath = '/account/identities';
 
         final Map<String, dynamic> apiParams = {
@@ -101,7 +101,7 @@ class Account extends Service {
 
     }
 
-    /// Delete Identity
+    /// Delete identity
     ///
     /// Delete an identity by its unique ID.
     Future deleteIdentity({required String identityId}) async {
@@ -161,6 +161,138 @@ class Account extends Service {
         final res = await client.call(HttpMethod.get, path: apiPath, params: apiParams, headers: apiHeaders);
 
         return models.LogList.fromMap(res.data);
+
+    }
+
+    /// Update MFA
+    ///
+    Future<models.User> updateMFA({required bool mfa}) async {
+        const String apiPath = '/account/mfa';
+
+        final Map<String, dynamic> apiParams = {
+            'mfa': mfa,
+        };
+
+        final Map<String, String> apiHeaders = {
+            'content-type': 'application/json',
+        };
+
+        final res = await client.call(HttpMethod.patch, path: apiPath, params: apiParams, headers: apiHeaders);
+
+        return models.User.fromMap(res.data);
+
+    }
+
+    /// Create 2FA Challenge
+    ///
+    Future<models.MfaChallenge> create2FAChallenge({required enums.Factor factor}) async {
+        const String apiPath = '/account/mfa/challenge';
+
+        final Map<String, dynamic> apiParams = {
+            'factor': factor,
+        };
+
+        final Map<String, String> apiHeaders = {
+            'content-type': 'application/json',
+        };
+
+        final res = await client.call(HttpMethod.post, path: apiPath, params: apiParams, headers: apiHeaders);
+
+        return models.MfaChallenge.fromMap(res.data);
+
+    }
+
+    /// Create MFA Challenge (confirmation)
+    ///
+    Future updateChallenge({required String challengeId, required String otp}) async {
+        const String apiPath = '/account/mfa/challenge';
+
+        final Map<String, dynamic> apiParams = {
+            'challengeId': challengeId,
+            'otp': otp,
+        };
+
+        final Map<String, String> apiHeaders = {
+            'content-type': 'application/json',
+        };
+
+        final res = await client.call(HttpMethod.put, path: apiPath, params: apiParams, headers: apiHeaders);
+
+        return  res.data;
+
+    }
+
+    /// List Factors
+    ///
+    Future<models.MfaFactors> listFactors() async {
+        const String apiPath = '/account/mfa/factors';
+
+        final Map<String, dynamic> apiParams = {
+        };
+
+        final Map<String, String> apiHeaders = {
+            'content-type': 'application/json',
+        };
+
+        final res = await client.call(HttpMethod.get, path: apiPath, params: apiParams, headers: apiHeaders);
+
+        return models.MfaFactors.fromMap(res.data);
+
+    }
+
+    /// Add Authenticator
+    ///
+    Future<models.MfaType> addAuthenticator({required enums.Type type}) async {
+        final String apiPath = '/account/mfa/{type}'.replaceAll('{type}', type);
+
+        final Map<String, dynamic> apiParams = {
+        };
+
+        final Map<String, String> apiHeaders = {
+            'content-type': 'application/json',
+        };
+
+        final res = await client.call(HttpMethod.post, path: apiPath, params: apiParams, headers: apiHeaders);
+
+        return models.MfaType.fromMap(res.data);
+
+    }
+
+    /// Verify Authenticator
+    ///
+    Future<models.User> verifyAuthenticator({required enums.Type type, required String otp}) async {
+        final String apiPath = '/account/mfa/{type}'.replaceAll('{type}', type);
+
+        final Map<String, dynamic> apiParams = {
+            'otp': otp,
+        };
+
+        final Map<String, String> apiHeaders = {
+            'content-type': 'application/json',
+        };
+
+        final res = await client.call(HttpMethod.put, path: apiPath, params: apiParams, headers: apiHeaders);
+
+        return models.User.fromMap(res.data);
+
+    }
+
+    /// Delete Authenticator
+    ///
+    Future<models.User> deleteAuthenticator({required enums.Type type, required String otp}) async {
+        final String apiPath = '/account/mfa/{type}'.replaceAll('{type}', type);
+
+        final Map<String, dynamic> apiParams = {
+            'otp': otp,
+        };
+
+        final Map<String, String> apiHeaders = {
+            'content-type': 'application/json',
+        };
+
+        final res = await client.call(HttpMethod.delete, path: apiPath, params: apiParams, headers: apiHeaders);
+
+        return models.User.fromMap(res.data);
 
     }
 
@@ -313,14 +445,13 @@ class Account extends Service {
     /// Attack](https://github.com/OWASP/CheatSheetSeries/blob/master/cheatsheets/Unvalidated_Redirects_and_Forwards_Cheat_Sheet.md)
     /// the only valid redirect URLs are the ones from domains you have set when
     /// adding your platforms in the console interface.
-    Future<models.Token> updateRecovery({required String userId, required String secret, required String password, required String passwordAgain}) async {
+    Future<models.Token> updateRecovery({required String userId, required String secret, required String password}) async {
         const String apiPath = '/account/recovery';
 
         final Map<String, dynamic> apiParams = {
             'userId': userId,
             'secret': secret,
             'password': password,
-            'passwordAgain': passwordAgain,
         };
 
         final Map<String, String> apiHeaders = {
@@ -398,7 +529,7 @@ class Account extends Service {
 
     }
 
-    /// Create email session
+    /// Create email password session
     ///
     /// Allow the user to login into their account by providing a valid email and
     /// password combination. This route will create a new session for the user.
@@ -406,7 +537,7 @@ class Account extends Service {
     /// A user is limited to 10 active sessions at a time by default. [Learn more
     /// about session
     /// limits](https://appwrite.io/docs/authentication-security#limits).
-    Future<models.Session> createEmailSession({required String email, required String password}) async {
+    Future<models.Session> createEmailPasswordSession({required String email, required String password}) async {
         const String apiPath = '/account/sessions/email';
 
         final Map<String, dynamic> apiParams = {
@@ -424,56 +555,11 @@ class Account extends Service {
 
     }
 
-    /// Create magic URL session
+    /// Create session (deprecated)
     ///
-    /// Sends the user an email with a secret key for creating a session. If the
-    /// provided user ID has not been registered, a new user will be created. When
-    /// the user clicks the link in the email, the user is redirected back to the
-    /// URL you provided with the secret key and userId values attached to the URL
-    /// query string. Use the query string parameters to submit a request to the
-    /// [PUT
-    /// /account/sessions/magic-url](https://appwrite.io/docs/references/cloud/client-web/account#updateMagicURLSession)
-    /// endpoint to complete the login process. The link sent to the user's email
-    /// address is valid for 1 hour. If you are on a mobile device you can leave
-    /// the URL parameter empty, so that the login completion will be handled by
-    /// your Appwrite instance by default.
-    /// 
-    /// A user is limited to 10 active sessions at a time by default. [Learn more
-    /// about session
-    /// limits](https://appwrite.io/docs/authentication-security#limits).
-    /// 
-    Future<models.Token> createMagicURLSession({required String userId, required String email, String? url}) async {
-        const String apiPath = '/account/sessions/magic-url';
-
-        final Map<String, dynamic> apiParams = {
-            'userId': userId,
-            'email': email,
-            'url': url,
-        };
-
-        final Map<String, String> apiHeaders = {
-            'content-type': 'application/json',
-        };
-
-        final res = await client.call(HttpMethod.post, path: apiPath, params: apiParams, headers: apiHeaders);
-
-        return models.Token.fromMap(res.data);
-
-    }
-
-    /// Create magic URL session (confirmation)
-    ///
-    /// Use this endpoint to complete creating the session with the Magic URL. Both
-    /// the **userId** and **secret** arguments will be passed as query parameters
-    /// to the redirect URL you have provided when sending your request to the
-    /// [POST
-    /// /account/sessions/magic-url](https://appwrite.io/docs/references/cloud/client-web/account#createMagicURLSession)
-    /// endpoint.
-    /// 
-    /// Please note that in order to avoid a [Redirect
-    /// Attack](https://github.com/OWASP/CheatSheetSeries/blob/master/cheatsheets/Unvalidated_Redirects_and_Forwards_Cheat_Sheet.md)
-    /// the only valid redirect URLs are the ones from domains you have set when
-    /// adding your platforms in the console interface.
+    /// Use this endpoint to create a session from token. Provide the **userId**
+    /// and **secret** parameters from the successful response of authentication
+    /// flows initiated by token creation. For example, magic URL and phone login.
     Future<models.Session> updateMagicURLSession({required String userId, required String secret}) async {
         const String apiPath = '/account/sessions/magic-url';
 
@@ -510,13 +596,14 @@ class Account extends Service {
     /// about session
     /// limits](https://appwrite.io/docs/authentication-security#limits).
     /// 
-    Future createOAuth2Session({required String provider, String? success, String? failure, List<String>? scopes}) async {
+    Future createOAuth2Session({required enums.OAuthProvider provider, String? success, String? failure, bool? token, List<String>? scopes}) async {
         final String apiPath = '/account/sessions/oauth2/{provider}'.replaceAll('{provider}', provider);
 
         final Map<String, dynamic> params = {
             
             'success': success,
             'failure': failure,
+            'token': token,
             'scopes': scopes,
             
             'project': client.config['project'],
@@ -545,45 +632,13 @@ class Account extends Service {
       return client.webAuth(url, callbackUrlScheme: success);
     }
 
-    /// Create phone session
+    /// Create session
     ///
-    /// Sends the user an SMS with a secret key for creating a session. If the
-    /// provided user ID has not be registered, a new user will be created. Use the
-    /// returned user ID and secret and submit a request to the [PUT
-    /// /account/sessions/phone](https://appwrite.io/docs/references/cloud/client-web/account#updatePhoneSession)
-    /// endpoint to complete the login process. The secret sent to the user's phone
-    /// is valid for 15 minutes.
-    /// 
-    /// A user is limited to 10 active sessions at a time by default. [Learn more
-    /// about session
-    /// limits](https://appwrite.io/docs/authentication-security#limits).
-    Future<models.Token> createPhoneSession({required String userId, required String phone}) async {
-        const String apiPath = '/account/sessions/phone';
-
-        final Map<String, dynamic> apiParams = {
-            'userId': userId,
-            'phone': phone,
-        };
-
-        final Map<String, String> apiHeaders = {
-            'content-type': 'application/json',
-        };
-
-        final res = await client.call(HttpMethod.post, path: apiPath, params: apiParams, headers: apiHeaders);
-
-        return models.Token.fromMap(res.data);
-
-    }
-
-    /// Create phone session (confirmation)
-    ///
-    /// Use this endpoint to complete creating a session with SMS. Use the
-    /// **userId** from the
-    /// [createPhoneSession](https://appwrite.io/docs/references/cloud/client-web/account#createPhoneSession)
-    /// endpoint and the **secret** received via SMS to successfully update and
-    /// confirm the phone session.
-    Future<models.Session> updatePhoneSession({required String userId, required String secret}) async {
-        const String apiPath = '/account/sessions/phone';
+    /// Use this endpoint to create a session from token. Provide the **userId**
+    /// and **secret** parameters from the successful response of authentication
+    /// flows initiated by token creation. For example, magic URL and phone login.
+    Future<models.Session> createSession({required String userId, required String secret}) async {
+        const String apiPath = '/account/sessions/token';
 
         final Map<String, dynamic> apiParams = {
             'userId': userId,
@@ -594,7 +649,7 @@ class Account extends Service {
             'content-type': 'application/json',
         };
 
-        final res = await client.call(HttpMethod.put, path: apiPath, params: apiParams, headers: apiHeaders);
+        final res = await client.call(HttpMethod.post, path: apiPath, params: apiParams, headers: apiHeaders);
 
         return models.Session.fromMap(res.data);
 
@@ -620,11 +675,10 @@ class Account extends Service {
 
     }
 
-    /// Update OAuth session (refresh tokens)
+    /// Update (or renew) a session
     ///
-    /// Access tokens have limited lifespan and expire to mitigate security risks.
-    /// If session was created using an OAuth provider, this route can be used to
-    /// "refresh" the access token.
+    /// Extend session's expiry to increase it's lifespan. Extending a session is
+    /// useful when session length is short such as 5 minutes.
     Future<models.Session> updateSession({required String sessionId}) async {
         final String apiPath = '/account/sessions/{sessionId}'.replaceAll('{sessionId}', sessionId);
 
@@ -682,6 +736,163 @@ class Account extends Service {
         final res = await client.call(HttpMethod.patch, path: apiPath, params: apiParams, headers: apiHeaders);
 
         return models.User.fromMap(res.data);
+
+    }
+
+    /// Create a push target
+    ///
+    Future<models.Target> createPushTarget({required String targetId, required String identifier, String? providerId}) async {
+        const String apiPath = '/account/targets/push';
+
+        final Map<String, dynamic> apiParams = {
+            'targetId': targetId,
+            'identifier': identifier,
+            'providerId': providerId,
+        };
+
+        final Map<String, String> apiHeaders = {
+            'content-type': 'application/json',
+        };
+
+        final res = await client.call(HttpMethod.post, path: apiPath, params: apiParams, headers: apiHeaders);
+
+        return models.Target.fromMap(res.data);
+
+    }
+
+    /// Update a push target
+    ///
+    Future<models.Target> updatePushTarget({required String targetId, required String identifier}) async {
+        final String apiPath = '/account/targets/{targetId}/push'.replaceAll('{targetId}', targetId);
+
+        final Map<String, dynamic> apiParams = {
+            'identifier': identifier,
+        };
+
+        final Map<String, String> apiHeaders = {
+            'content-type': 'application/json',
+        };
+
+        final res = await client.call(HttpMethod.put, path: apiPath, params: apiParams, headers: apiHeaders);
+
+        return models.Target.fromMap(res.data);
+
+    }
+
+    /// Delete a push target
+    ///
+    Future deletePushTarget({required String targetId}) async {
+        final String apiPath = '/account/targets/{targetId}/push'.replaceAll('{targetId}', targetId);
+
+        final Map<String, dynamic> apiParams = {
+        };
+
+        final Map<String, String> apiHeaders = {
+            'content-type': 'application/json',
+        };
+
+        final res = await client.call(HttpMethod.delete, path: apiPath, params: apiParams, headers: apiHeaders);
+
+        return  res.data;
+
+    }
+
+    /// Create email token (OTP)
+    ///
+    /// Sends the user an email with a secret key for creating a session. If the
+    /// provided user ID has not be registered, a new user will be created. Use the
+    /// returned user ID and secret and submit a request to the [POST
+    /// /v1/account/sessions/token](https://appwrite.io/docs/references/cloud/client-web/account#createSession)
+    /// endpoint to complete the login process. The secret sent to the user's email
+    /// is valid for 15 minutes.
+    /// 
+    /// A user is limited to 10 active sessions at a time by default. [Learn more
+    /// about session
+    /// limits](https://appwrite.io/docs/authentication-security#limits).
+    Future<models.Token> createEmailToken({required String userId, required String email, bool? phrase}) async {
+        const String apiPath = '/account/tokens/email';
+
+        final Map<String, dynamic> apiParams = {
+            'userId': userId,
+            'email': email,
+            'phrase': phrase,
+        };
+
+        final Map<String, String> apiHeaders = {
+            'content-type': 'application/json',
+        };
+
+        final res = await client.call(HttpMethod.post, path: apiPath, params: apiParams, headers: apiHeaders);
+
+        return models.Token.fromMap(res.data);
+
+    }
+
+    /// Create magic URL token
+    ///
+    /// Sends the user an email with a secret key for creating a session. If the
+    /// provided user ID has not been registered, a new user will be created. When
+    /// the user clicks the link in the email, the user is redirected back to the
+    /// URL you provided with the secret key and userId values attached to the URL
+    /// query string. Use the query string parameters to submit a request to the
+    /// [POST
+    /// /v1/account/sessions/token](https://appwrite.io/docs/references/cloud/client-web/account#createSession)
+    /// endpoint to complete the login process. The link sent to the user's email
+    /// address is valid for 1 hour. If you are on a mobile device you can leave
+    /// the URL parameter empty, so that the login completion will be handled by
+    /// your Appwrite instance by default.
+    /// 
+    /// A user is limited to 10 active sessions at a time by default. [Learn more
+    /// about session
+    /// limits](https://appwrite.io/docs/authentication-security#limits).
+    /// 
+    Future<models.Token> createMagicURLToken({required String userId, required String email, String? url, bool? phrase}) async {
+        const String apiPath = '/account/tokens/magic-url';
+
+        final Map<String, dynamic> apiParams = {
+            'userId': userId,
+            'email': email,
+            'url': url,
+            'phrase': phrase,
+        };
+
+        final Map<String, String> apiHeaders = {
+            'content-type': 'application/json',
+        };
+
+        final res = await client.call(HttpMethod.post, path: apiPath, params: apiParams, headers: apiHeaders);
+
+        return models.Token.fromMap(res.data);
+
+    }
+
+    /// Create phone token
+    ///
+    /// Sends the user an SMS with a secret key for creating a session. If the
+    /// provided user ID has not be registered, a new user will be created. Use the
+    /// returned user ID and secret and submit a request to the [POST
+    /// /v1/account/sessions/token](https://appwrite.io/docs/references/cloud/client-web/account#createSession)
+    /// endpoint to complete the login process. The secret sent to the user's phone
+    /// is valid for 15 minutes.
+    /// 
+    /// A user is limited to 10 active sessions at a time by default. [Learn more
+    /// about session
+    /// limits](https://appwrite.io/docs/authentication-security#limits).
+    Future<models.Token> createPhoneToken({required String userId, required String phone}) async {
+        const String apiPath = '/account/tokens/phone';
+
+        final Map<String, dynamic> apiParams = {
+            'userId': userId,
+            'phone': phone,
+        };
+
+        final Map<String, String> apiHeaders = {
+            'content-type': 'application/json',
+        };
+
+        final res = await client.call(HttpMethod.post, path: apiPath, params: apiParams, headers: apiHeaders);
+
+        return models.Token.fromMap(res.data);
 
     }
 

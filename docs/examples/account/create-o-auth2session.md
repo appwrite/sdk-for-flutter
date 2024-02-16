@@ -9,7 +9,7 @@ void main() { // Init SDK
     .setProject('5df5acd0d48c2') // Your project ID
   ;
   Future result = account.createOAuth2Session(
-    provider: 'amazon',
+    provider: OAuthProvider.amazon.value,
   );
 
   result

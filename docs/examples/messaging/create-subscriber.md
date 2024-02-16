@@ -2,15 +2,16 @@ import 'package:appwrite/appwrite.dart';
 
 void main() { // Init SDK
   Client client = Client();
-  Account account = Account(client);
+  Messaging messaging = Messaging(client);
 
   client
     .setEndpoint('https://cloud.appwrite.io/v1') // Your API Endpoint
     .setProject('5df5acd0d48c2') // Your project ID
   ;
-  Future result = account.updatePhoneSession(
-    userId: '[USER_ID]',
-    secret: '[SECRET]',
+  Future result = messaging.createSubscriber(
+    topicId:'[TOPIC_ID]' ,
+    subscriberId:'[SUBSCRIBER_ID]' ,
+    targetId:'[TARGET_ID]' ,
   );
 
   result
