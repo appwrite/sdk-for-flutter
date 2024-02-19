@@ -185,7 +185,7 @@ class Account extends Service {
 
     /// Create 2FA Challenge
     ///
-    Future<models.MfaChallenge> create2FAChallenge({required enums.Factor factor}) async {
+    Future<models.MfaChallenge> create2FAChallenge({required enums.AuthenticationFactor factor}) async {
         const String apiPath = '/account/mfa/challenge';
 
         final Map<String, dynamic> apiParams = {
@@ -242,7 +242,7 @@ class Account extends Service {
 
     /// Add Authenticator
     ///
-    Future<models.MfaType> addAuthenticator({required enums.Type type}) async {
+    Future<models.MfaType> addAuthenticator({required enums.AuthenticatorType type}) async {
         final String apiPath = '/account/mfa/{type}'.replaceAll('{type}', type);
 
         final Map<String, dynamic> apiParams = {
@@ -260,7 +260,7 @@ class Account extends Service {
 
     /// Verify Authenticator
     ///
-    Future<models.User> verifyAuthenticator({required enums.Type type, required String otp}) async {
+    Future<models.User> verifyAuthenticator({required enums.AuthenticatorType type, required String otp}) async {
         final String apiPath = '/account/mfa/{type}'.replaceAll('{type}', type);
 
         final Map<String, dynamic> apiParams = {
@@ -279,7 +279,7 @@ class Account extends Service {
 
     /// Delete Authenticator
     ///
-    Future<models.User> deleteAuthenticator({required enums.Type type, required String otp}) async {
+    Future<models.User> deleteAuthenticator({required enums.AuthenticatorType type, required String otp}) async {
         final String apiPath = '/account/mfa/{type}'.replaceAll('{type}', type);
 
         final Map<String, dynamic> apiParams = {

@@ -1,11 +1,11 @@
 part of appwrite.enums;
 
-enum Factor {
+enum AuthenticationFactor {
     totp(value: 'totp'),
     phone(value: 'phone'),
     email(value: 'email');
 
-    const Factor({
+    const AuthenticationFactor({
         required this.value
     });
 
