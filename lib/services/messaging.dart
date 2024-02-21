@@ -6,8 +6,9 @@ class Messaging extends Service {
     /// Initializes a [Messaging] service
     Messaging(super.client);
 
-    /// Create a subscriber.
+    /// Create a subscriber
     ///
+    /// Create a new subscriber.
     Future<models.Subscriber> createSubscriber({required String topicId, required String subscriberId, required String targetId}) async {
         final String apiPath = '/messaging/topics/{topicId}/subscribers'.replaceAll('{topicId}', topicId);
 
@@ -26,8 +27,9 @@ class Messaging extends Service {
 
     }
 
-    /// Delete a subscriber.
+    /// Delete a subscriber
     ///
+    /// Delete a subscriber by its unique ID.
     Future deleteSubscriber({required String topicId, required String subscriberId}) async {
         final String apiPath = '/messaging/topics/{topicId}/subscribers/{subscriberId}'.replaceAll('{topicId}', topicId).replaceAll('{subscriberId}', subscriberId);
 
