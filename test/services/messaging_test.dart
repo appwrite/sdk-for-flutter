@@ -73,9 +73,9 @@ void main() {
 
 
             final response = await messaging.createSubscriber(
-                topicId: '[TOPIC_ID]',
-                subscriberId: '[SUBSCRIBER_ID]',
-                targetId: '[TARGET_ID]',
+                topicId: '<TOPIC_ID>',
+                subscriberId: '<SUBSCRIBER_ID>',
+                targetId: '<TARGET_ID>',
             );
             expect(response, isA<models.Subscriber>());
 
@@ -90,8 +90,8 @@ void main() {
 
 
             final response = await messaging.deleteSubscriber(
-                topicId: '[TOPIC_ID]',
-                subscriberId: '[SUBSCRIBER_ID]',
+                topicId: '<TOPIC_ID>',
+                subscriberId: '<SUBSCRIBER_ID>',
             );
         });
 

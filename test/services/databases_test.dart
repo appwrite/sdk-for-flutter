@@ -66,8 +66,8 @@ void main() {
 
 
             final response = await databases.listDocuments(
-                databaseId: '[DATABASE_ID]',
-                collectionId: '[COLLECTION_ID]',
+                databaseId: '<DATABASE_ID>',
+                collectionId: '<COLLECTION_ID>',
             );
             expect(response, isA<models.DocumentList>());
 
@@ -89,9 +89,9 @@ void main() {
 
 
             final response = await databases.createDocument(
-                databaseId: '[DATABASE_ID]',
-                collectionId: '[COLLECTION_ID]',
-                documentId: '[DOCUMENT_ID]',
+                databaseId: '<DATABASE_ID>',
+                collectionId: '<COLLECTION_ID>',
+                documentId: '<DOCUMENT_ID>',
                 data: {},
             );
             expect(response, isA<models.Document>());
@@ -114,9 +114,9 @@ void main() {
 
 
             final response = await databases.getDocument(
-                databaseId: '[DATABASE_ID]',
-                collectionId: '[COLLECTION_ID]',
-                documentId: '[DOCUMENT_ID]',
+                databaseId: '<DATABASE_ID>',
+                collectionId: '<COLLECTION_ID>',
+                documentId: '<DOCUMENT_ID>',
             );
             expect(response, isA<models.Document>());
 
@@ -138,9 +138,9 @@ void main() {
 
 
             final response = await databases.updateDocument(
-                databaseId: '[DATABASE_ID]',
-                collectionId: '[COLLECTION_ID]',
-                documentId: '[DOCUMENT_ID]',
+                databaseId: '<DATABASE_ID>',
+                collectionId: '<COLLECTION_ID>',
+                documentId: '<DOCUMENT_ID>',
             );
             expect(response, isA<models.Document>());
 
@@ -155,9 +155,9 @@ void main() {
 
 
             final response = await databases.deleteDocument(
-                databaseId: '[DATABASE_ID]',
-                collectionId: '[COLLECTION_ID]',
-                documentId: '[DOCUMENT_ID]',
+                databaseId: '<DATABASE_ID>',
+                collectionId: '<COLLECTION_ID>',
+                documentId: '<DOCUMENT_ID>',
             );
         });
 

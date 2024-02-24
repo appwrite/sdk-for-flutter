@@ -6,8 +6,11 @@ Client client = Client()
 
 Account account = Account(client);
 
-Future result = account.create2FAChallenge(
-  factor: AuthenticationFactor.totp,
+Future result = account.createOAuth2Token(
+  provider: OAuthProvider.amazon,
+  success: 'https://example.com', // (optional)
+  failure: 'https://example.com', // (optional)
+  scopes: [], // (optional)
 );
 
 result.then((response) {

@@ -185,7 +185,7 @@ class Account extends Service {
 
     /// Create 2FA Challenge
     ///
-    Future<models.MfaChallenge> create2FAChallenge({required enums.AuthenticationFactor factor}) async {
+    Future<models.MfaChallenge> createChallenge({required enums.AuthenticationFactor factor}) async {
         const String apiPath = '/account/mfa/challenge';
 
         final Map<String, dynamic> apiParams = {
@@ -596,14 +596,13 @@ class Account extends Service {
     /// about session
     /// limits](https://appwrite.io/docs/authentication-security#limits).
     /// 
-    Future createOAuth2Session({required enums.OAuthProvider provider, String? success, String? failure, bool? token, List<String>? scopes}) async {
+    Future createOAuth2Session({required enums.OAuthProvider provider, String? success, String? failure, List<String>? scopes}) async {
         final String apiPath = '/account/sessions/oauth2/{provider}'.replaceAll('{provider}', provider.value);
 
         final Map<String, dynamic> params = {
             
             'success': success,
             'failure': failure,
-            'token': token,
             'scopes': scopes,
             
             'project': client.config['project'],
@@ -629,7 +628,7 @@ class Account extends Service {
           query: query.join('&')
         );
 
-      return client.webAuth(url, callbackUrlScheme: success);
+        return client.webAuth(url, callbackUrlScheme: success);
     }
 
     /// Create session
@@ -864,6 +863,57 @@ class Account extends Service {
 
         return models.Token.fromMap(res.data);
 
+    }
+
+    /// Create OAuth2 token
+    ///
+    /// Allow the user to login to their account using the OAuth2 provider of their
+    /// choice. Each OAuth2 provider should be enabled from the Appwrite console
+    /// first. Use the success and failure arguments to provide a redirect URL's
+    /// back to your app when login is completed. 
+    /// 
+    /// If authentication succeeds, `userId` and `secret` of a token will be
+    /// appended to the success URL as query parameters. These can be used to
+    /// create a new session using the [Create
+    /// session](https://appwrite.io/docs/references/cloud/client-web/account#createSession)
+    /// endpoint.
+    /// 
+    /// A user is limited to 10 active sessions at a time by default. [Learn more
+    /// about session
+    /// limits](https://appwrite.io/docs/authentication-security#limits).
+    Future createOAuth2Token({required enums.OAuthProvider provider, String? success, String? failure, List<String>? scopes}) async {
+        final String apiPath = '/account/tokens/oauth2/{provider}'.replaceAll('{provider}', provider.value);
+
+        final Map<String, dynamic> params = {
+            
+            'success': success,
+            'failure': failure,
+            'scopes': scopes,
+            
+            'project': client.config['project'],
+        };
+
+        final List query = [];
+
+        params.forEach((key, value) {
+          if (value is List) { 
+            for (var item in value) {
+              query.add(Uri.encodeComponent(key + '[]') + '=' + Uri.encodeComponent(item));
+            }
+          } else if(value != null) {
+              query.add(Uri.encodeComponent(key) + '=' + Uri.encodeComponent(value));
+          }
+        });
+
+        Uri endpoint = Uri.parse(client.endPoint);
+        Uri url = Uri(scheme: endpoint.scheme,
+          host: endpoint.host,
+          port: endpoint.port,
+          path: endpoint.path + apiPath,
+          query: query.join('&')
+        );
+
+        return client.webAuth(url, callbackUrlScheme: success);
     }
 
     /// Create phone token

@@ -113,7 +113,7 @@ void main() {
 
 
             final response = await account.create(
-                userId: '[USER_ID]',
+                userId: '<USER_ID>',
                 email: 'email@example.com',
                 password: '',
             );
@@ -181,7 +181,7 @@ void main() {
 
 
             final response = await account.deleteIdentity(
-                identityId: '[IDENTITY_ID]',
+                identityId: '<IDENTITY_ID>',
             );
         });
 
@@ -251,7 +251,7 @@ void main() {
 
         });
 
-        test('test method create2FAChallenge()', () async {
+        test('test method createChallenge()', () async {
             final Map<String, dynamic> data = {
                 '\$id': 'bb8ea5c16897e',
                 '\$createdAt': '2020-10-15T06:38:00.000+00:00',
@@ -264,7 +264,7 @@ void main() {
             )).thenAnswer((_) async => Response(data: data));
 
 
-            final response = await account.create2FAChallenge(
+            final response = await account.createChallenge(
                 factor: 'totp',
             );
             expect(response, isA<models.MfaChallenge>());
@@ -280,8 +280,8 @@ void main() {
 
 
             final response = await account.updateChallenge(
-                challengeId: '[CHALLENGE_ID]',
-                otp: '[OTP]',
+                challengeId: '<CHALLENGE_ID>',
+                otp: '<OTP>',
             );
         });
 
@@ -350,7 +350,7 @@ void main() {
 
             final response = await account.verifyAuthenticator(
                 type: 'totp',
-                otp: '[OTP]',
+                otp: '<OTP>',
             );
             expect(response, isA<models.User>());
 
@@ -384,7 +384,7 @@ void main() {
 
             final response = await account.deleteAuthenticator(
                 type: 'totp',
-                otp: '[OTP]',
+                otp: '<OTP>',
             );
             expect(response, isA<models.User>());
 
@@ -417,7 +417,7 @@ void main() {
 
 
             final response = await account.updateName(
-                name: '[NAME]',
+                name: '<NAME>',
             );
             expect(response, isA<models.User>());
 
@@ -577,8 +577,8 @@ void main() {
 
 
             final response = await account.updateRecovery(
-                userId: '[USER_ID]',
-                secret: '[SECRET]',
+                userId: '<USER_ID>',
+                secret: '<SECRET>',
                 password: '',
             );
             expect(response, isA<models.Token>());
@@ -737,8 +737,8 @@ void main() {
 
 
             final response = await account.updateMagicURLSession(
-                userId: '[USER_ID]',
-                secret: '[SECRET]',
+                userId: '<USER_ID>',
+                secret: '<SECRET>',
             );
             expect(response, isA<models.Session>());
 
@@ -793,8 +793,8 @@ void main() {
 
 
             final response = await account.createSession(
-                userId: '[USER_ID]',
-                secret: '[SECRET]',
+                userId: '<USER_ID>',
+                secret: '<SECRET>',
             );
             expect(response, isA<models.Session>());
 
@@ -837,7 +837,7 @@ void main() {
 
 
             final response = await account.getSession(
-                sessionId: '[SESSION_ID]',
+                sessionId: '<SESSION_ID>',
             );
             expect(response, isA<models.Session>());
 
@@ -880,7 +880,7 @@ void main() {
 
 
             final response = await account.updateSession(
-                sessionId: '[SESSION_ID]',
+                sessionId: '<SESSION_ID>',
             );
             expect(response, isA<models.Session>());
 
@@ -895,7 +895,7 @@ void main() {
 
 
             final response = await account.deleteSession(
-                sessionId: '[SESSION_ID]',
+                sessionId: '<SESSION_ID>',
             );
         });
 
@@ -948,8 +948,8 @@ void main() {
 
 
             final response = await account.createPushTarget(
-                targetId: '[TARGET_ID]',
-                identifier: '[IDENTIFIER]',
+                targetId: '<TARGET_ID>',
+                identifier: '<IDENTIFIER>',
             );
             expect(response, isA<models.Target>());
 
@@ -972,8 +972,8 @@ void main() {
 
 
             final response = await account.updatePushTarget(
-                targetId: '[TARGET_ID]',
-                identifier: '[IDENTIFIER]',
+                targetId: '<TARGET_ID>',
+                identifier: '<IDENTIFIER>',
             );
             expect(response, isA<models.Target>());
 
@@ -988,7 +988,7 @@ void main() {
 
 
             final response = await account.deletePushTarget(
-                targetId: '[TARGET_ID]',
+                targetId: '<TARGET_ID>',
             );
         });
 
@@ -1008,7 +1008,7 @@ void main() {
 
 
             final response = await account.createEmailToken(
-                userId: '[USER_ID]',
+                userId: '<USER_ID>',
                 email: 'email@example.com',
             );
             expect(response, isA<models.Token>());
@@ -1031,11 +1031,23 @@ void main() {
 
 
             final response = await account.createMagicURLToken(
-                userId: '[USER_ID]',
+                userId: '<USER_ID>',
                 email: 'email@example.com',
             );
             expect(response, isA<models.Token>());
 
+        });
+
+        test('test method createOAuth2Token()', () async {
+
+            when(client.webAuth(
+                Uri(),
+            )).thenAnswer((_) async => 'done');
+
+
+            final response = await account.createOAuth2Token(
+                provider: 'amazon',
+            );
         });
 
         test('test method createPhoneToken()', () async {
@@ -1054,7 +1066,7 @@ void main() {
 
 
             final response = await account.createPhoneToken(
-                userId: '[USER_ID]',
+                userId: '<USER_ID>',
                 phone: '+12065550100',
             );
             expect(response, isA<models.Token>());
@@ -1099,8 +1111,8 @@ void main() {
 
 
             final response = await account.updateVerification(
-                userId: '[USER_ID]',
-                secret: '[SECRET]',
+                userId: '<USER_ID>',
+                secret: '<SECRET>',
             );
             expect(response, isA<models.Token>());
 
@@ -1143,8 +1155,8 @@ void main() {
 
 
             final response = await account.updatePhoneVerification(
-                userId: '[USER_ID]',
-                secret: '[SECRET]',
+                userId: '<USER_ID>',
+                secret: '<SECRET>',
             );
             expect(response, isA<models.Token>());
 

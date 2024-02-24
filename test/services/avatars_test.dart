@@ -145,7 +145,7 @@ void main() {
 
 
             final response = await avatars.getQR(
-                text: '[TEXT]',
+                text: '<TEXT>',
             );
             expect(response, isA<Uint8List>());
 
