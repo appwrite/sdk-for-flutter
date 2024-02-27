@@ -6,7 +6,7 @@ Client client = Client()
 
 Account account = Account(client);
 
-Target result = await account.updatePushTarget(
-    targetId: '<TARGET_ID>',
-    identifier: '<IDENTIFIER>',
+Session result = await account.updatePhoneSession(
+    userId: '<USER_ID>',
+    secret: '<SECRET>',
 );

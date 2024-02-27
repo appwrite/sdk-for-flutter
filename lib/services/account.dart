@@ -166,6 +166,7 @@ class Account extends Service {
 
     /// Update MFA
     ///
+    /// Enable or disable MFA on an account.
     Future<models.User> updateMFA({required bool mfa}) async {
         const String apiPath = '/account/mfa';
 
@@ -204,6 +205,7 @@ class Account extends Service {
 
     /// Create MFA Challenge (confirmation)
     ///
+    /// Complete the MFA challenge by providing the one-time password.
     Future updateChallenge({required String challengeId, required String otp}) async {
         const String apiPath = '/account/mfa/challenge';
 
@@ -224,6 +226,7 @@ class Account extends Service {
 
     /// List Factors
     ///
+    /// List the factors available on the account to be used as a MFA challange.
     Future<models.MfaFactors> listFactors() async {
         const String apiPath = '/account/mfa/factors';
 
@@ -242,6 +245,10 @@ class Account extends Service {
 
     /// Add Authenticator
     ///
+    /// Add an authenticator app to be used as an MFA factor. Verify the
+    /// authenticator using the [verify
+    /// authenticator](/docs/references/cloud/client-web/account#verifyAuthenticator)
+    /// method.
     Future<models.MfaType> addAuthenticator({required enums.AuthenticatorType type}) async {
         final String apiPath = '/account/mfa/{type}'.replaceAll('{type}', type.value);
 
@@ -260,6 +267,9 @@ class Account extends Service {
 
     /// Verify Authenticator
     ///
+    /// Verify an authenticator app after adding it using the [add
+    /// authenticator](/docs/references/cloud/client-web/account#addAuthenticator)
+    /// method.
     Future<models.User> verifyAuthenticator({required enums.AuthenticatorType type, required String otp}) async {
         final String apiPath = '/account/mfa/{type}'.replaceAll('{type}', type.value);
 
@@ -279,6 +289,7 @@ class Account extends Service {
 
     /// Delete Authenticator
     ///
+    /// Delete an authenticator for a user by ID.
     Future<models.User> deleteAuthenticator({required enums.AuthenticatorType type, required String otp}) async {
         final String apiPath = '/account/mfa/{type}'.replaceAll('{type}', type.value);
 
@@ -555,7 +566,7 @@ class Account extends Service {
 
     }
 
-    /// Create session (deprecated)
+    /// Update magic URL session
     ///
     /// Use this endpoint to create a session from token. Provide the **userId**
     /// and **secret** parameters from the successful response of authentication
@@ -631,6 +642,29 @@ class Account extends Service {
         return client.webAuth(url, callbackUrlScheme: success);
     }
 
+    /// Update phone session
+    ///
+    /// Use this endpoint to create a session from token. Provide the **userId**
+    /// and **secret** parameters from the successful response of authentication
+    /// flows initiated by token creation. For example, magic URL and phone login.
+    Future<models.Session> updatePhoneSession({required String userId, required String secret}) async {
+        const String apiPath = '/account/sessions/phone';
+
+        final Map<String, dynamic> apiParams = {
+            'userId': userId,
+            'secret': secret,
+        };
+
+        final Map<String, String> apiHeaders = {
+            'content-type': 'application/json',
+        };
+
+        final res = await client.call(HttpMethod.put, path: apiPath, params: apiParams, headers: apiHeaders);
+
+        return models.Session.fromMap(res.data);
+
+    }
+
     /// Create session
     ///
     /// Use this endpoint to create a session from token. Provide the **userId**
@@ -674,7 +708,7 @@ class Account extends Service {
 
     }
 
-    /// Update (or renew) a session
+    /// Update (or renew) session
     ///
     /// Extend session's expiry to increase it's lifespan. Extending a session is
     /// useful when session length is short such as 5 minutes.
@@ -738,7 +772,7 @@ class Account extends Service {
 
     }
 
-    /// Create a push target
+    /// Create push target
     ///
     Future<models.Target> createPushTarget({required String targetId, required String identifier, String? providerId}) async {
         const String apiPath = '/account/targets/push';
@@ -759,7 +793,7 @@ class Account extends Service {
 
     }
 
-    /// Update a push target
+    /// Update push target
     ///
     Future<models.Target> updatePushTarget({required String targetId, required String identifier}) async {
         final String apiPath = '/account/targets/{targetId}/push'.replaceAll('{targetId}', targetId);
@@ -778,7 +812,7 @@ class Account extends Service {
 
     }
 
-    /// Delete a push target
+    /// Delete push target
     ///
     Future deletePushTarget({required String targetId}) async {
         final String apiPath = '/account/targets/{targetId}/push'.replaceAll('{targetId}', targetId);
