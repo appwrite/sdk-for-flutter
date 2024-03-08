@@ -31,6 +31,9 @@ void main() {
         countryCode: 'US',
         countryName: 'United States',
         current: true,
+        factors: [],
+        secret: '5e5bb8c16897e',
+        mfaUpdatedAt: '2020-10-15T06:38:00.000+00:00',
       );
 
       final map = model.toMap();
@@ -61,6 +64,9 @@ void main() {
       expect(result.countryCode, 'US');
       expect(result.countryName, 'United States');
       expect(result.current, true);
+      expect(result.factors, []);
+      expect(result.secret, '5e5bb8c16897e');
+      expect(result.mfaUpdatedAt, '2020-10-15T06:38:00.000+00:00');
     });
   });
 }

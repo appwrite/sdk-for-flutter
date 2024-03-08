@@ -1,8 +1,32 @@
 part of appwrite;
 
+
 /// Helper class to generate query strings.
 class Query {
-  Query._();
+  final String method;
+  final String? attribute;
+  final dynamic values;
+
+  Query._(this.method, [this.attribute = null, this.values = null]);
+
+  Map<String, dynamic> toJson() {
+    final map = <String, dynamic>{
+      'method': method,
+    };
+
+    if(attribute != null) {
+      map['attribute'] = attribute;
+    }
+    
+    if(values != null) {
+      map['values'] = values is List ? values : [values];
+    }
+
+    return map;
+  }
+
+  @override
+  String toString() => jsonEncode(toJson());
 
   /// Filter resources where [attribute] is equal to [value].
   /// 
@@ -10,90 +34,90 @@ class Query {
   /// the query will return resources where [attribute] is equal
   /// to any of the values in the list.
   static String equal(String attribute, dynamic value) =>
-      _addQuery(attribute, 'equal', value);
+      Query._('equal', attribute, value).toString();
 
   /// Filter resources where [attribute] is not equal to [value].
-  ///
-  /// [value] can be a single value or a list. If a list is used
-  /// the query will return resources where [attribute] is equal
-  /// to any of the values in the list.
   static String notEqual(String attribute, dynamic value) =>
-      _addQuery(attribute, 'notEqual', value);
+      Query._('notEqual', attribute, [value]).toString();
 
   /// Filter resources where [attribute] is less than [value].
   static String lessThan(String attribute, dynamic value) =>
-      _addQuery(attribute, 'lessThan', value);
+      Query._('lessThan', attribute, value).toString();
 
   /// Filter resources where [attribute] is less than or equal to [value].
   static String lessThanEqual(String attribute, dynamic value) =>
-      _addQuery(attribute, 'lessThanEqual', value);
+      Query._('lessThanEqual', attribute, value).toString();
 
   /// Filter resources where [attribute] is greater than [value].
   static String greaterThan(String attribute, dynamic value) =>
-      _addQuery(attribute, 'greaterThan', value);
+      Query._('greaterThan', attribute, value).toString();
 
   /// Filter resources where [attribute] is greater than or equal to [value].
   static String greaterThanEqual(String attribute, dynamic value) =>
-      _addQuery(attribute, 'greaterThanEqual', value);
+      Query._('greaterThanEqual', attribute, value).toString();
 
   /// Filter resources where by searching [attribute] for [value].
   static String search(String attribute, String value) =>
-      _addQuery(attribute, 'search', value);
+      Query._('search', attribute, value).toString();
 
   /// Filter resources where [attribute] is null.
-  static String isNull(String attribute) => 'isNull("$attribute")';
+  static String isNull(String attribute) => Query._('isNull', attribute).toString();
 
   /// Filter resources where [attribute] is not null.
-  static String isNotNull(String attribute) => 'isNotNull("$attribute")';
+  static String isNotNull(String attribute) => Query._('isNotNull', attribute).toString();
 
   /// Filter resources where [attribute] is between [start] and [end] (inclusive).
   static String between(String attribute, dynamic start, dynamic end) =>
-      'between("$attribute", ${_parseValues(start)}, ${_parseValues(end)})';
+      Query._('between', attribute, [start, end]).toString();
 
   /// Filter resources where [attribute] starts with [value].
   static String startsWith(String attribute, String value) =>
-      _addQuery(attribute, 'startsWith', value);
+      Query._('startsWith', attribute, value).toString();
 
   /// Filter resources where [attribute] ends with [value].
   static String endsWith(String attribute, String value) =>
-      _addQuery(attribute, 'endsWith', value);
+      Query._('endsWith', attribute, value).toString();
+
+  /// Filter resources where [attribute] contains [value]
+  /// [value] can be a single value or a list.
+  static String contains(String attribute, dynamic value) =>
+      Query._('contains', attribute, value).toString();
+
+  static String or(List<String> queries) =>
+    Query._('or', null, queries.map((query) => jsonDecode(query)).toList()).toString();
+
+  static String and(List<String> queries) =>
+      Query._('and', null, queries.map((query) => jsonDecode(query)).toList()).toString();
 
   /// Specify which attributes should be returned by the API call.
   static String select(List<String> attributes) =>
-      'select([${attributes.map((attr) => "\"$attr\"").join(",")}])';
+      Query._('select', null, attributes).toString();
 
   /// Sort results by [attribute] ascending.
-  static String orderAsc(String attribute) => 'orderAsc("$attribute")';
+  static String orderAsc(String attribute) => Query._('orderAsc', attribute).toString();
 
   /// Sort results by [attribute] descending.
-  static String orderDesc(String attribute) => 'orderDesc("$attribute")';
+  static String orderDesc(String attribute) => Query._('orderDesc', attribute).toString();
 
   /// Return results before [id].
   /// 
   /// Refer to the [Cursor Based Pagination](https://appwrite.io/docs/pagination#cursor-pagination)
   /// docs for more information.
-  static String cursorBefore(String id) => 'cursorBefore("$id")';
+  static String cursorBefore(String id) => Query._('cursorBefore', null, id).toString();
 
   /// Return results after [id].
   /// 
   /// Refer to the [Cursor Based Pagination](https://appwrite.io/docs/pagination#cursor-pagination)
   /// docs for more information.
-  static String cursorAfter(String id) => 'cursorAfter("$id")';
+  static String cursorAfter(String id) => Query._('cursorAfter', null, id).toString();
 
   /// Return only [limit] results.
-  static String limit(int limit) => 'limit($limit)';
+  static String limit(int limit) => Query._('limit', null, limit).toString();
 
   /// Return results from [offset].
   /// 
   /// Refer to the [Offset Pagination](https://appwrite.io/docs/pagination#offset-pagination)
   /// docs for more information.
-  static String offset(int offset) => 'offset($offset)';
+  static String offset(int offset) => Query._('offset', null, offset).toString();
 
-  static String _addQuery(String attribute, String method, dynamic value) => (value
-          is List)
-      ? '$method("$attribute", [${value.map((item) => _parseValues(item)).join(",")}])'
-      : '$method("$attribute", [${_parseValues(value)}])';
-
-  static String _parseValues(dynamic value) =>
-      (value is String) ? '"$value"' : '$value';
 }

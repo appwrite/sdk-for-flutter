@@ -2,18 +2,18 @@
 
 [![pub package](https://img.shields.io/pub/v/appwrite?style=flat-square)](https://pub.dartlang.org/packages/appwrite)
 ![License](https://img.shields.io/github/license/appwrite/sdk-for-flutter.svg?style=flat-square)
-![Version](https://img.shields.io/badge/api%20version-1.4.x-blue.svg?style=flat-square)
+![Version](https://img.shields.io/badge/api%20version-1.5.x-blue.svg?style=flat-square)
 [![Build Status](https://img.shields.io/travis/com/appwrite/sdk-generator?style=flat-square)](https://travis-ci.com/appwrite/sdk-generator)
 [![Twitter Account](https://img.shields.io/twitter/follow/appwrite?color=00acee&label=twitter&style=flat-square)](https://twitter.com/appwrite)
 [![Discord](https://img.shields.io/discord/564160730845151244?label=discord&style=flat-square)](https://appwrite.io/discord)
 
-**This SDK is compatible with Appwrite server version 1.4.x. For older versions, please check [previous releases](https://github.com/appwrite/sdk-for-flutter/releases).**
+**This SDK is compatible with Appwrite server version 1.5.x. For older versions, please check [previous releases](https://github.com/appwrite/sdk-for-flutter/releases).**
 
 Appwrite is an open-source backend as a service server that abstract and simplify complex and repetitive development tasks behind a very simple to use REST API. Appwrite aims to help you develop your apps faster and in a more secure way. Use the Flutter SDK to integrate your app with the Appwrite server to easily start interacting with all of Appwrite backend APIs and tools. For full API documentation and tutorials go to [https://appwrite.io/docs](https://appwrite.io/docs)
 
 
 
-![Appwrite](https://appwrite.io/images/github.png)
+![Appwrite](https://github.com/appwrite/appwrite/raw/main/public/images/github.png)
 
 ## Installation
 
@@ -21,7 +21,7 @@ Add this to your package's `pubspec.yaml` file:
 
 ```yml
 dependencies:
-  appwrite: ^11.0.1
+  appwrite: ^12.0.0
 ```
 
 You can install packages from the command line:
@@ -138,10 +138,7 @@ When trying to connect to Appwrite from an emulator or a mobile device, localhos
 Account account = Account(client);
 final user = await account
   .create(
-    userId: ID.unique(),
-    email: 'me@appwrite.io',
-    password: 'password',
-    name: 'My Name'
+    userId: ID.unique(), email: "email@example.com", password: "password", name: "Walter O'Brien"
   );
 ```
 
@@ -166,10 +163,7 @@ void main() {
 
   final user = await account
     .create(
-      userId: ID.unique(),
-      email: 'me@appwrite.io',
-      password: 'password',
-      name: 'My Name'
+      userId: ID.unique(), email: "email@example.com", password: "password", name: "Walter O'Brien"
     );
 }
 ```
@@ -181,7 +175,7 @@ The Appwrite Flutter SDK raises `AppwriteException` object with `message`, `type
 Account account = Account(client);
 
 try {
-  final user = await account.create(userId: ID.unique(), email: ‘email@example.com’,password: ‘password’, name: ‘name’);
+  final user = await account.create(userId: ID.unique(), email: "email@example.com", password: "password", name: "Walter O'Brien");
   print(user.toMap());
 } on AppwriteException catch(e) {
   //show message to user or do other operation based on error as required

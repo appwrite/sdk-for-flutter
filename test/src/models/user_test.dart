@@ -18,7 +18,9 @@ void main() {
         phone: '+4930901820',
         emailVerification: true,
         phoneVerification: true,
+        mfa: true,
         prefs: Preferences(data: {}),
+        targets: [],
         accessedAt: '2020-10-15T06:38:00.000+00:00',
       );
 
@@ -37,7 +39,9 @@ void main() {
       expect(result.phone, '+4930901820');
       expect(result.emailVerification, true);
       expect(result.phoneVerification, true);
+      expect(result.mfa, true);
       expect(result.prefs.data, {"data": {}});
+      expect(result.targets, []);
       expect(result.accessedAt, '2020-10-15T06:38:00.000+00:00');
     });
   });

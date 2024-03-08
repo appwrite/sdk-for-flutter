@@ -1,21 +1,13 @@
 import 'package:appwrite/appwrite.dart';
 
-void main() { // Init SDK
-  Client client = Client();
-  Teams teams = Teams(client);
-
-  client
+Client client = Client()
     .setEndpoint('https://cloud.appwrite.io/v1') // Your API Endpoint
-    .setProject('5df5acd0d48c2') // Your project ID
-  ;
-  Future result = teams.listMemberships(
-    teamId: '[TEAM_ID]',
-  );
+    .setProject('5df5acd0d48c2'); // Your project ID
 
-  result
-    .then((response) {
-      print(response);
-    }).catchError((error) {
-      print(error.response);
-  });
-}
+Teams teams = Teams(client);
+
+MembershipList result = await teams.listMemberships(
+    teamId: '<TEAM_ID>',
+    queries: [], // optional
+    search: '<SEARCH>', // optional
+);

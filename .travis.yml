@@ -24,6 +24,6 @@ install:
 deploy:
   provider: script
   skip_cleanup: true
-  script: cd $TRAVIS_BUILD_DIR && dart format ./lib/ && flutter pub publish -f
+  script: cd $TRAVIS_BUILD_DIR && dart format ./lib/ && dart format ./test/ && flutter pub publish -f
   on:
     tags: true

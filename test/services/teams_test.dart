@@ -87,8 +87,8 @@ void main() {
 
 
             final response = await teams.create(
-                teamId: '[TEAM_ID]',
-                name: '[NAME]',
+                teamId: '<TEAM_ID>',
+                name: '<NAME>',
             );
             expect(response, isA<models.Team>());
 
@@ -110,7 +110,7 @@ void main() {
 
 
             final response = await teams.get(
-                teamId: '[TEAM_ID]',
+                teamId: '<TEAM_ID>',
             );
             expect(response, isA<models.Team>());
 
@@ -132,8 +132,8 @@ void main() {
 
 
             final response = await teams.updateName(
-                teamId: '[TEAM_ID]',
-                name: '[NAME]',
+                teamId: '<TEAM_ID>',
+                name: '<NAME>',
             );
             expect(response, isA<models.Team>());
 
@@ -148,7 +148,7 @@ void main() {
 
 
             final response = await teams.delete(
-                teamId: '[TEAM_ID]',
+                teamId: '<TEAM_ID>',
             );
         });
 
@@ -164,7 +164,7 @@ void main() {
 
 
             final response = await teams.listMemberships(
-                teamId: '[TEAM_ID]',
+                teamId: '<TEAM_ID>',
             );
             expect(response, isA<models.MembershipList>());
 
@@ -183,6 +183,7 @@ void main() {
                 'invited': '2020-10-15T06:38:00.000+00:00',
                 'joined': '2020-10-15T06:38:00.000+00:00',
                 'confirm': true,
+                'mfa': true,
                 'roles': [],};
 
 
@@ -192,7 +193,7 @@ void main() {
 
 
             final response = await teams.createMembership(
-                teamId: '[TEAM_ID]',
+                teamId: '<TEAM_ID>',
                 roles: [],
             );
             expect(response, isA<models.Membership>());
@@ -212,6 +213,7 @@ void main() {
                 'invited': '2020-10-15T06:38:00.000+00:00',
                 'joined': '2020-10-15T06:38:00.000+00:00',
                 'confirm': true,
+                'mfa': true,
                 'roles': [],};
 
 
@@ -221,8 +223,8 @@ void main() {
 
 
             final response = await teams.getMembership(
-                teamId: '[TEAM_ID]',
-                membershipId: '[MEMBERSHIP_ID]',
+                teamId: '<TEAM_ID>',
+                membershipId: '<MEMBERSHIP_ID>',
             );
             expect(response, isA<models.Membership>());
 
@@ -241,6 +243,7 @@ void main() {
                 'invited': '2020-10-15T06:38:00.000+00:00',
                 'joined': '2020-10-15T06:38:00.000+00:00',
                 'confirm': true,
+                'mfa': true,
                 'roles': [],};
 
 
@@ -250,8 +253,8 @@ void main() {
 
 
             final response = await teams.updateMembership(
-                teamId: '[TEAM_ID]',
-                membershipId: '[MEMBERSHIP_ID]',
+                teamId: '<TEAM_ID>',
+                membershipId: '<MEMBERSHIP_ID>',
                 roles: [],
             );
             expect(response, isA<models.Membership>());
@@ -267,8 +270,8 @@ void main() {
 
 
             final response = await teams.deleteMembership(
-                teamId: '[TEAM_ID]',
-                membershipId: '[MEMBERSHIP_ID]',
+                teamId: '<TEAM_ID>',
+                membershipId: '<MEMBERSHIP_ID>',
             );
         });
 
@@ -285,6 +288,7 @@ void main() {
                 'invited': '2020-10-15T06:38:00.000+00:00',
                 'joined': '2020-10-15T06:38:00.000+00:00',
                 'confirm': true,
+                'mfa': true,
                 'roles': [],};
 
 
@@ -294,10 +298,10 @@ void main() {
 
 
             final response = await teams.updateMembershipStatus(
-                teamId: '[TEAM_ID]',
-                membershipId: '[MEMBERSHIP_ID]',
-                userId: '[USER_ID]',
-                secret: '[SECRET]',
+                teamId: '<TEAM_ID>',
+                membershipId: '<MEMBERSHIP_ID>',
+                userId: '<USER_ID>',
+                secret: '<SECRET>',
             );
             expect(response, isA<models.Membership>());
 
@@ -313,7 +317,7 @@ void main() {
 
 
             final response = await teams.getPrefs(
-                teamId: '[TEAM_ID]',
+                teamId: '<TEAM_ID>',
             );
             expect(response, isA<models.Preferences>());
 
@@ -329,7 +333,7 @@ void main() {
 
 
             final response = await teams.updatePrefs(
-                teamId: '[TEAM_ID]',
+                teamId: '<TEAM_ID>',
                 prefs: {},
             );
             expect(response, isA<models.Preferences>());

@@ -31,7 +31,7 @@ class ClientBrowser extends ClientBase with ClientMixin {
   String? get endPointRealtime => _endPointRealtime;
 
   ClientBrowser({
-    String endPoint = 'https://HOSTNAME/v1',
+    String endPoint = 'https://cloud.appwrite.io/v1',
     bool selfSigned = false,
   }) : _endPoint = endPoint {
     _httpClient = BrowserClient();
@@ -43,8 +43,8 @@ class ClientBrowser extends ClientBase with ClientMixin {
       'x-sdk-name': 'Flutter',
       'x-sdk-platform': 'client',
       'x-sdk-language': 'flutter',
-      'x-sdk-version': '11.0.1',
-      'X-Appwrite-Response-Format': '1.4.0',
+      'x-sdk-version': '12.0.0',
+      'X-Appwrite-Response-Format': '1.5.0',
     };
 
     config = {};
@@ -75,6 +75,13 @@ class ClientBrowser extends ClientBase with ClientMixin {
   ClientBrowser setLocale(value) {
     config['locale'] = value;
     addHeader('X-Appwrite-Locale', value);
+    return this;
+  }
+  /// The user session to authenticate with
+  @override
+  ClientBrowser setSession(value) {
+    config['session'] = value;
+    addHeader('X-Appwrite-Session', value);
     return this;
   }
 

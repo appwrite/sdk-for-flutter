@@ -1,34 +1,33 @@
 import 'package:appwrite/appwrite.dart';
 
-void main() { // Init SDK
-  Client client = Client();
-  Avatars avatars = Avatars(client);
-
-  client
+Client client = Client()
     .setEndpoint('https://cloud.appwrite.io/v1') // Your API Endpoint
-    .setProject('5df5acd0d48c2') // Your project ID
-  ;
-  // downloading file
-  Future result = avatars.getCreditCard(
-    code: 'amex',
-  ).then((bytes) {
-    final file = File('path_to_file/filename.ext');
-    file.writeAsBytesSync(bytes)
-  }).catchError((error) {
-      print(error.response);
-  })
-}
+    .setProject('5df5acd0d48c2'); // Your project ID
 
-//displaying image preview
+Avatars avatars = Avatars(client);
+
+// Downloading file
+UInt8List bytes = await avatars.getCreditCard(
+    code: CreditCard.americanExpress,
+    width: 0, // optional
+    height: 0, // optional
+    quality: 0, // optional
+)
+
+final file = File('path_to_file/filename.ext');
+file.writeAsBytesSync(bytes);
+
+// Displaying image preview
 FutureBuilder(
-  future: avatars.getCreditCard(
-    code: 'amex',
-  ), //works for both public file and private file, for private files you need to be logged in
-  builder: (context, snapshot) {
-    return snapshot.hasData && snapshot.data != null
-      ? Image.memory(
-          snapshot.data,
-        )
-      : CircularProgressIndicator();
-  },
+    future: avatars.getCreditCard(
+    code: CreditCard.americanExpress,
+    width:0 , // optional
+    height:0 , // optional
+    quality:0 , // optional
+), // Works for both public file and private file, for private files you need to be logged in
+    builder: (context, snapshot) {
+      return snapshot.hasData && snapshot.data != null
+          ? Image.memory(snapshot.data)
+          : CircularProgressIndicator();
+    }
 );

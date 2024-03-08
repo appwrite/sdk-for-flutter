@@ -52,6 +52,12 @@ class Session implements Model {
     final String countryName;
     /// Returns true if this the current user session.
     final bool current;
+    /// Returns a list of active session factors.
+    final List factors;
+    /// Secret used to authenticate the user. Only included if the request was made with an API key
+    final String secret;
+    /// Most recent date in ISO 8601 format when the session successfully passed MFA challenge.
+    final String mfaUpdatedAt;
 
     Session({
         required this.$id,
@@ -79,6 +85,9 @@ class Session implements Model {
         required this.countryCode,
         required this.countryName,
         required this.current,
+        required this.factors,
+        required this.secret,
+        required this.mfaUpdatedAt,
     });
 
     factory Session.fromMap(Map<String, dynamic> map) {
@@ -108,6 +117,9 @@ class Session implements Model {
             countryCode: map['countryCode'].toString(),
             countryName: map['countryName'].toString(),
             current: map['current'],
+            factors: map['factors'] ?? [],
+            secret: map['secret'].toString(),
+            mfaUpdatedAt: map['mfaUpdatedAt'].toString(),
         );
     }
 
@@ -138,6 +150,9 @@ class Session implements Model {
             "countryCode": countryCode,
             "countryName": countryName,
             "current": current,
+            "factors": factors,
+            "secret": secret,
+            "mfaUpdatedAt": mfaUpdatedAt,
         };
     }
 }

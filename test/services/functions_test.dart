@@ -66,7 +66,7 @@ void main() {
 
 
             final response = await functions.listExecutions(
-                functionId: '[FUNCTION_ID]',
+                functionId: '<FUNCTION_ID>',
             );
             expect(response, isA<models.ExecutionList>());
 
@@ -98,7 +98,7 @@ void main() {
 
 
             final response = await functions.createExecution(
-                functionId: '[FUNCTION_ID]',
+                functionId: '<FUNCTION_ID>',
             );
             expect(response, isA<models.Execution>());
 
@@ -130,8 +130,8 @@ void main() {
 
 
             final response = await functions.getExecution(
-                functionId: '[FUNCTION_ID]',
-                executionId: '[EXECUTION_ID]',
+                functionId: '<FUNCTION_ID>',
+                executionId: '<EXECUTION_ID>',
             );
             expect(response, isA<models.Execution>());
 

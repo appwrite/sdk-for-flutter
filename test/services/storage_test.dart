@@ -66,7 +66,7 @@ void main() {
 
 
             final response = await storage.listFiles(
-                bucketId: '[BUCKET_ID]',
+                bucketId: '<BUCKET_ID>',
             );
             expect(response, isA<models.FileList>());
 
@@ -97,8 +97,8 @@ void main() {
 
 
             final response = await storage.createFile(
-                bucketId: '[BUCKET_ID]',
-                fileId: '[FILE_ID]',
+                bucketId: '<BUCKET_ID>',
+                fileId: '<FILE_ID>',
                 file: InputFile.fromPath(path: './image.png'),
             );
             expect(response, isA<models.File>());
@@ -126,8 +126,8 @@ void main() {
 
 
             final response = await storage.getFile(
-                bucketId: '[BUCKET_ID]',
-                fileId: '[FILE_ID]',
+                bucketId: '<BUCKET_ID>',
+                fileId: '<FILE_ID>',
             );
             expect(response, isA<models.File>());
 
@@ -154,8 +154,8 @@ void main() {
 
 
             final response = await storage.updateFile(
-                bucketId: '[BUCKET_ID]',
-                fileId: '[FILE_ID]',
+                bucketId: '<BUCKET_ID>',
+                fileId: '<FILE_ID>',
             );
             expect(response, isA<models.File>());
 
@@ -170,8 +170,8 @@ void main() {
 
 
             final response = await storage.deleteFile(
-                bucketId: '[BUCKET_ID]',
-                fileId: '[FILE_ID]',
+                bucketId: '<BUCKET_ID>',
+                fileId: '<FILE_ID>',
             );
         });
 
@@ -183,8 +183,8 @@ void main() {
 
 
             final response = await storage.getFileDownload(
-                bucketId: '[BUCKET_ID]',
-                fileId: '[FILE_ID]',
+                bucketId: '<BUCKET_ID>',
+                fileId: '<FILE_ID>',
             );
             expect(response, isA<Uint8List>());
 
@@ -198,8 +198,8 @@ void main() {
 
 
             final response = await storage.getFilePreview(
-                bucketId: '[BUCKET_ID]',
-                fileId: '[FILE_ID]',
+                bucketId: '<BUCKET_ID>',
+                fileId: '<FILE_ID>',
             );
             expect(response, isA<Uint8List>());
 
@@ -213,8 +213,8 @@ void main() {
 
 
             final response = await storage.getFileView(
-                bucketId: '[BUCKET_ID]',
-                fileId: '[FILE_ID]',
+                bucketId: '<BUCKET_ID>',
+                fileId: '<FILE_ID>',
             );
             expect(response, isA<Uint8List>());
 

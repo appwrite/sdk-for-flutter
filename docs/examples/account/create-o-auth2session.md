@@ -1,21 +1,14 @@
 import 'package:appwrite/appwrite.dart';
 
-void main() { // Init SDK
-  Client client = Client();
-  Account account = Account(client);
-
-  client
+Client client = Client()
     .setEndpoint('https://cloud.appwrite.io/v1') // Your API Endpoint
-    .setProject('5df5acd0d48c2') // Your project ID
-  ;
-  Future result = account.createOAuth2Session(
-    provider: 'amazon',
-  );
+    .setProject('5df5acd0d48c2'); // Your project ID
 
-  result
-    .then((response) {
-      print(response);
-    }).catchError((error) {
-      print(error.response);
-  });
-}
+Account account = Account(client);
+
+await account.createOAuth2Session(
+    provider: OAuthProvider.amazon,
+    success: 'https://example.com', // optional
+    failure: 'https://example.com', // optional
+    scopes: [], // optional
+);

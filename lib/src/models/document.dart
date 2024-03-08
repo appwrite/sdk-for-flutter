@@ -33,7 +33,7 @@ class Document implements Model {
             $databaseId: map['\$databaseId'].toString(),
             $createdAt: map['\$createdAt'].toString(),
             $updatedAt: map['\$updatedAt'].toString(),
-            $permissions: map['\$permissions'],
+            $permissions: map['\$permissions'] ?? [],
             data: map,
         );
     }
