@@ -6,7 +6,4 @@ Client client = Client()
 
 Account account = Account(client);
 
-User result = await account.verifyAuthenticator(
-    type: AuthenticatorType.totp,
-    otp: '<OTP>',
-);
+MfaFactors result = await account.listMfaFactors();

@@ -6,7 +6,6 @@ void main() {
 
     test('model', () {
       final model = MfaType(
-        backups: [],
         secret: '1',
         uri: '1',
       );
@@ -14,7 +13,6 @@ void main() {
       final map = model.toMap();
       final result = MfaType.fromMap(map);
 
-      expect(result.backups, []);
       expect(result.secret, '1');
       expect(result.uri, '1');
     });

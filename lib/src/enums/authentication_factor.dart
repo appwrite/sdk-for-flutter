@@ -1,9 +1,10 @@
 part of appwrite.enums;
 
 enum AuthenticationFactor {
-    totp(value: 'totp'),
+    email(value: 'email'),
     phone(value: 'phone'),
-    email(value: 'email');
+    totp(value: 'totp'),
+    recoverycode(value: 'recoverycode');
 
     const AuthenticationFactor({
         required this.value

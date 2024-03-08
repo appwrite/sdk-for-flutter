@@ -184,9 +184,76 @@ class Account extends Service {
 
     }
 
+    /// Add Authenticator
+    ///
+    /// Add an authenticator app to be used as an MFA factor. Verify the
+    /// authenticator using the [verify
+    /// authenticator](/docs/references/cloud/client-web/account#verifyAuthenticator)
+    /// method.
+    Future<models.MfaType> createMfaAuthenticator({required enums.AuthenticatorType type}) async {
+        final String apiPath = '/account/mfa/authenticators/{type}'.replaceAll('{type}', type.value);
+
+        final Map<String, dynamic> apiParams = {
+        };
+
+        final Map<String, String> apiHeaders = {
+            'content-type': 'application/json',
+        };
+
+        final res = await client.call(HttpMethod.post, path: apiPath, params: apiParams, headers: apiHeaders);
+
+        return models.MfaType.fromMap(res.data);
+
+    }
+
+    /// Verify Authenticator
+    ///
+    /// Verify an authenticator app after adding it using the [add
+    /// authenticator](/docs/references/cloud/client-web/account#addAuthenticator)
+    /// method.
+    Future<models.User> updateMfaAuthenticator({required enums.AuthenticatorType type, required String otp}) async {
+        final String apiPath = '/account/mfa/authenticators/{type}'.replaceAll('{type}', type.value);
+
+        final Map<String, dynamic> apiParams = {
+            'otp': otp,
+        };
+
+        final Map<String, String> apiHeaders = {
+            'content-type': 'application/json',
+        };
+
+        final res = await client.call(HttpMethod.put, path: apiPath, params: apiParams, headers: apiHeaders);
+
+        return models.User.fromMap(res.data);
+
+    }
+
+    /// Delete Authenticator
+    ///
+    /// Delete an authenticator for a user by ID.
+    Future<models.User> deleteMfaAuthenticator({required enums.AuthenticatorType type, required String otp}) async {
+        final String apiPath = '/account/mfa/authenticators/{type}'.replaceAll('{type}', type.value);
+
+        final Map<String, dynamic> apiParams = {
+            'otp': otp,
+        };
+
+        final Map<String, String> apiHeaders = {
+            'content-type': 'application/json',
+        };
+
+        final res = await client.call(HttpMethod.delete, path: apiPath, params: apiParams, headers: apiHeaders);
+
+        return models.User.fromMap(res.data);
+
+    }
+
     /// Create 2FA Challenge
     ///
-    Future<models.MfaChallenge> createChallenge({required enums.AuthenticationFactor factor}) async {
+    /// Begin the process of MFA verification after sign-in. Finish the flow with
+    /// [updateMfaChallenge](/docs/references/cloud/client-web/account#updateMfaChallenge)
+    /// method.
+    Future<models.MfaChallenge> createMfaChallenge({required enums.AuthenticationFactor factor}) async {
         const String apiPath = '/account/mfa/challenge';
 
         final Map<String, dynamic> apiParams = {
@@ -205,8 +272,12 @@ class Account extends Service {
 
     /// Create MFA Challenge (confirmation)
     ///
-    /// Complete the MFA challenge by providing the one-time password.
-    Future updateChallenge({required String challengeId, required String otp}) async {
+    /// Complete the MFA challenge by providing the one-time password. Finish the
+    /// process of MFA verification by providing the one-time password. To begin
+    /// the flow, use
+    /// [createMfaChallenge](/docs/references/cloud/client-web/account#createMfaChallenge)
+    /// method.
+    Future updateMfaChallenge({required String challengeId, required String otp}) async {
         const String apiPath = '/account/mfa/challenge';
 
         final Map<String, dynamic> apiParams = {
@@ -227,7 +298,7 @@ class Account extends Service {
     /// List Factors
     ///
     /// List the factors available on the account to be used as a MFA challange.
-    Future<models.MfaFactors> listFactors() async {
+    Future<models.MfaFactors> listMfaFactors() async {
         const String apiPath = '/account/mfa/factors';
 
         final Map<String, dynamic> apiParams = {
@@ -243,14 +314,37 @@ class Account extends Service {
 
     }
 
-    /// Add Authenticator
+    /// Get MFA Recovery Codes
     ///
-    /// Add an authenticator app to be used as an MFA factor. Verify the
-    /// authenticator using the [verify
-    /// authenticator](/docs/references/cloud/client-web/account#verifyAuthenticator)
+    /// Get recovery codes that can be used as backup for MFA flow. Before getting
+    /// codes, they must be generated using
+    /// [createMfaRecoveryCodes](/docs/references/cloud/client-web/account#createMfaRecoveryCodes)
+    /// method. An OTP challenge is required to read recovery codes.
+    Future<models.MfaRecoveryCodes> getMfaRecoveryCodes() async {
+        const String apiPath = '/account/mfa/recovery-codes';
+
+        final Map<String, dynamic> apiParams = {
+        };
+
+        final Map<String, String> apiHeaders = {
+            'content-type': 'application/json',
+        };
+
+        final res = await client.call(HttpMethod.get, path: apiPath, params: apiParams, headers: apiHeaders);
+
+        return models.MfaRecoveryCodes.fromMap(res.data);
+
+    }
+
+    /// Create MFA Recovery Codes
+    ///
+    /// Generate recovery codes as backup for MFA flow. It's recommended to
+    /// generate and show then immediately after user successfully adds their
+    /// authehticator. Recovery codes can be used as a MFA verification type in
+    /// [createMfaChallenge](/docs/references/cloud/client-web/account#createMfaChallenge)
     /// method.
-    Future<models.MfaType> addAuthenticator({required enums.AuthenticatorType type}) async {
-        final String apiPath = '/account/mfa/{type}'.replaceAll('{type}', type.value);
+    Future<models.MfaRecoveryCodes> createMfaRecoveryCodes() async {
+        const String apiPath = '/account/mfa/recovery-codes';
 
         final Map<String, dynamic> apiParams = {
         };
@@ -261,49 +355,29 @@ class Account extends Service {
 
         final res = await client.call(HttpMethod.post, path: apiPath, params: apiParams, headers: apiHeaders);
 
-        return models.MfaType.fromMap(res.data);
+        return models.MfaRecoveryCodes.fromMap(res.data);
 
     }
 
-    /// Verify Authenticator
+    /// Regenerate MFA Recovery Codes
     ///
-    /// Verify an authenticator app after adding it using the [add
-    /// authenticator](/docs/references/cloud/client-web/account#addAuthenticator)
-    /// method.
-    Future<models.User> verifyAuthenticator({required enums.AuthenticatorType type, required String otp}) async {
-        final String apiPath = '/account/mfa/{type}'.replaceAll('{type}', type.value);
+    /// Regenerate recovery codes that can be used as backup for MFA flow. Before
+    /// regenerating codes, they must be first generated using
+    /// [createMfaRecoveryCodes](/docs/references/cloud/client-web/account#createMfaRecoveryCodes)
+    /// method. An OTP challenge is required to regenreate recovery codes.
+    Future<models.MfaRecoveryCodes> updateMfaRecoveryCodes() async {
+        const String apiPath = '/account/mfa/recovery-codes';
 
         final Map<String, dynamic> apiParams = {
-            'otp': otp,
         };
 
         final Map<String, String> apiHeaders = {
             'content-type': 'application/json',
         };
 
-        final res = await client.call(HttpMethod.put, path: apiPath, params: apiParams, headers: apiHeaders);
+        final res = await client.call(HttpMethod.patch, path: apiPath, params: apiParams, headers: apiHeaders);
 
-        return models.User.fromMap(res.data);
-
-    }
-
-    /// Delete Authenticator
-    ///
-    /// Delete an authenticator for a user by ID.
-    Future<models.User> deleteAuthenticator({required enums.AuthenticatorType type, required String otp}) async {
-        final String apiPath = '/account/mfa/{type}'.replaceAll('{type}', type.value);
-
-        final Map<String, dynamic> apiParams = {
-            'otp': otp,
-        };
-
-        final Map<String, String> apiHeaders = {
-            'content-type': 'application/json',
-        };
-
-        final res = await client.call(HttpMethod.delete, path: apiPath, params: apiParams, headers: apiHeaders);
-
-        return models.User.fromMap(res.data);
+        return models.MfaRecoveryCodes.fromMap(res.data);
 
     }
 
@@ -708,10 +782,11 @@ class Account extends Service {
 
     }
 
-    /// Update (or renew) session
+    /// Update session
     ///
-    /// Extend session's expiry to increase it's lifespan. Extending a session is
-    /// useful when session length is short such as 5 minutes.
+    /// Use this endpoint to extend a session's length. Extending a session is
+    /// useful when session expiry is short. If the session was created using an
+    /// OAuth provider, this endpoint refreshes the access token from the provider.
     Future<models.Session> updateSession({required String sessionId}) async {
         final String apiPath = '/account/sessions/{sessionId}'.replaceAll('{sessionId}', sessionId);
 

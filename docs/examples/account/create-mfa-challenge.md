@@ -6,7 +6,6 @@ Client client = Client()
 
 Account account = Account(client);
 
-await account.deleteAuthenticator(
-    type: AuthenticatorType.totp,
-    otp: '<OTP>',
+MfaChallenge result = await account.createMfaChallenge(
+    factor: AuthenticationFactor.email,
 );

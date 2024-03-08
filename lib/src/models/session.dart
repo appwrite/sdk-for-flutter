@@ -56,6 +56,8 @@ class Session implements Model {
     final List factors;
     /// Secret used to authenticate the user. Only included if the request was made with an API key
     final String secret;
+    /// Most recent date in ISO 8601 format when the session successfully passed MFA challenge.
+    final String mfaUpdatedAt;
 
     Session({
         required this.$id,
@@ -85,6 +87,7 @@ class Session implements Model {
         required this.current,
         required this.factors,
         required this.secret,
+        required this.mfaUpdatedAt,
     });
 
     factory Session.fromMap(Map<String, dynamic> map) {
@@ -116,6 +119,7 @@ class Session implements Model {
             current: map['current'],
             factors: map['factors'] ?? [],
             secret: map['secret'].toString(),
+            mfaUpdatedAt: map['mfaUpdatedAt'].toString(),
         );
     }
 
@@ -148,6 +152,7 @@ class Session implements Model {
             "current": current,
             "factors": factors,
             "secret": secret,
+            "mfaUpdatedAt": mfaUpdatedAt,
         };
     }
 }

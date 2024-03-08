@@ -69,7 +69,6 @@ void main() {
                 'emailVerification': true,
                 'phoneVerification': true,
                 'mfa': true,
-                'totp': true,
                 'prefs': <String, dynamic>{},
                 'targets': [],
                 'accessedAt': '2020-10-15T06:38:00.000+00:00',};
@@ -101,7 +100,6 @@ void main() {
                 'emailVerification': true,
                 'phoneVerification': true,
                 'mfa': true,
-                'totp': true,
                 'prefs': <String, dynamic>{},
                 'targets': [],
                 'accessedAt': '2020-10-15T06:38:00.000+00:00',};
@@ -136,7 +134,6 @@ void main() {
                 'emailVerification': true,
                 'phoneVerification': true,
                 'mfa': true,
-                'totp': true,
                 'prefs': <String, dynamic>{},
                 'targets': [],
                 'accessedAt': '2020-10-15T06:38:00.000+00:00',};
@@ -233,7 +230,6 @@ void main() {
                 'emailVerification': true,
                 'phoneVerification': true,
                 'mfa': true,
-                'totp': true,
                 'prefs': <String, dynamic>{},
                 'targets': [],
                 'accessedAt': '2020-10-15T06:38:00.000+00:00',};
@@ -251,7 +247,91 @@ void main() {
 
         });
 
-        test('test method createChallenge()', () async {
+        test('test method createMfaAuthenticator()', () async {
+            final Map<String, dynamic> data = {
+                'secret': '1',
+                'uri': '1',};
+
+
+            when(client.call(
+                HttpMethod.post,
+            )).thenAnswer((_) async => Response(data: data));
+
+
+            final response = await account.createMfaAuthenticator(
+                type: 'totp',
+            );
+            expect(response, isA<models.MfaType>());
+
+        });
+
+        test('test method updateMfaAuthenticator()', () async {
+            final Map<String, dynamic> data = {
+                '\$id': '5e5ea5c16897e',
+                '\$createdAt': '2020-10-15T06:38:00.000+00:00',
+                '\$updatedAt': '2020-10-15T06:38:00.000+00:00',
+                'name': 'John Doe',
+                'registration': '2020-10-15T06:38:00.000+00:00',
+                'status': true,
+                'labels': [],
+                'passwordUpdate': '2020-10-15T06:38:00.000+00:00',
+                'email': 'john@appwrite.io',
+                'phone': '+4930901820',
+                'emailVerification': true,
+                'phoneVerification': true,
+                'mfa': true,
+                'prefs': <String, dynamic>{},
+                'targets': [],
+                'accessedAt': '2020-10-15T06:38:00.000+00:00',};
+
+
+            when(client.call(
+                HttpMethod.put,
+            )).thenAnswer((_) async => Response(data: data));
+
+
+            final response = await account.updateMfaAuthenticator(
+                type: 'totp',
+                otp: '<OTP>',
+            );
+            expect(response, isA<models.User>());
+
+        });
+
+        test('test method deleteMfaAuthenticator()', () async {
+            final Map<String, dynamic> data = {
+                '\$id': '5e5ea5c16897e',
+                '\$createdAt': '2020-10-15T06:38:00.000+00:00',
+                '\$updatedAt': '2020-10-15T06:38:00.000+00:00',
+                'name': 'John Doe',
+                'registration': '2020-10-15T06:38:00.000+00:00',
+                'status': true,
+                'labels': [],
+                'passwordUpdate': '2020-10-15T06:38:00.000+00:00',
+                'email': 'john@appwrite.io',
+                'phone': '+4930901820',
+                'emailVerification': true,
+                'phoneVerification': true,
+                'mfa': true,
+                'prefs': <String, dynamic>{},
+                'targets': [],
+                'accessedAt': '2020-10-15T06:38:00.000+00:00',};
+
+
+            when(client.call(
+                HttpMethod.delete,
+            )).thenAnswer((_) async => Response(data: data));
+
+
+            final response = await account.deleteMfaAuthenticator(
+                type: 'totp',
+                otp: '<OTP>',
+            );
+            expect(response, isA<models.User>());
+
+        });
+
+        test('test method createMfaChallenge()', () async {
             final Map<String, dynamic> data = {
                 '\$id': 'bb8ea5c16897e',
                 '\$createdAt': '2020-10-15T06:38:00.000+00:00',
@@ -264,14 +344,14 @@ void main() {
             )).thenAnswer((_) async => Response(data: data));
 
 
-            final response = await account.createChallenge(
-                factor: 'totp',
+            final response = await account.createMfaChallenge(
+                factor: 'email',
             );
             expect(response, isA<models.MfaChallenge>());
 
         });
 
-        test('test method updateChallenge()', () async {
+        test('test method updateMfaChallenge()', () async {
             final data = '';
 
             when(client.call(
@@ -279,13 +359,13 @@ void main() {
             )).thenAnswer((_) async => Response(data: data));
 
 
-            final response = await account.updateChallenge(
+            final response = await account.updateMfaChallenge(
                 challengeId: '<CHALLENGE_ID>',
                 otp: '<OTP>',
             );
         });
 
-        test('test method listFactors()', () async {
+        test('test method listMfaFactors()', () async {
             final Map<String, dynamic> data = {
                 'totp': true,
                 'phone': true,
@@ -297,17 +377,31 @@ void main() {
             )).thenAnswer((_) async => Response(data: data));
 
 
-            final response = await account.listFactors(
+            final response = await account.listMfaFactors(
             );
             expect(response, isA<models.MfaFactors>());
 
         });
 
-        test('test method addAuthenticator()', () async {
+        test('test method getMfaRecoveryCodes()', () async {
             final Map<String, dynamic> data = {
-                'backups': [],
-                'secret': '1',
-                'uri': '1',};
+                'recoveryCodes': [],};
+
+
+            when(client.call(
+                HttpMethod.get,
+            )).thenAnswer((_) async => Response(data: data));
+
+
+            final response = await account.getMfaRecoveryCodes(
+            );
+            expect(response, isA<models.MfaRecoveryCodes>());
+
+        });
+
+        test('test method createMfaRecoveryCodes()', () async {
+            final Map<String, dynamic> data = {
+                'recoveryCodes': [],};
 
 
             when(client.call(
@@ -315,78 +409,25 @@ void main() {
             )).thenAnswer((_) async => Response(data: data));
 
 
-            final response = await account.addAuthenticator(
-                type: 'totp',
+            final response = await account.createMfaRecoveryCodes(
             );
-            expect(response, isA<models.MfaType>());
+            expect(response, isA<models.MfaRecoveryCodes>());
 
         });
 
-        test('test method verifyAuthenticator()', () async {
+        test('test method updateMfaRecoveryCodes()', () async {
             final Map<String, dynamic> data = {
-                '\$id': '5e5ea5c16897e',
-                '\$createdAt': '2020-10-15T06:38:00.000+00:00',
-                '\$updatedAt': '2020-10-15T06:38:00.000+00:00',
-                'name': 'John Doe',
-                'registration': '2020-10-15T06:38:00.000+00:00',
-                'status': true,
-                'labels': [],
-                'passwordUpdate': '2020-10-15T06:38:00.000+00:00',
-                'email': 'john@appwrite.io',
-                'phone': '+4930901820',
-                'emailVerification': true,
-                'phoneVerification': true,
-                'mfa': true,
-                'totp': true,
-                'prefs': <String, dynamic>{},
-                'targets': [],
-                'accessedAt': '2020-10-15T06:38:00.000+00:00',};
+                'recoveryCodes': [],};
 
 
             when(client.call(
-                HttpMethod.put,
+                HttpMethod.patch,
             )).thenAnswer((_) async => Response(data: data));
 
 
-            final response = await account.verifyAuthenticator(
-                type: 'totp',
-                otp: '<OTP>',
+            final response = await account.updateMfaRecoveryCodes(
             );
-            expect(response, isA<models.User>());
-
-        });
-
-        test('test method deleteAuthenticator()', () async {
-            final Map<String, dynamic> data = {
-                '\$id': '5e5ea5c16897e',
-                '\$createdAt': '2020-10-15T06:38:00.000+00:00',
-                '\$updatedAt': '2020-10-15T06:38:00.000+00:00',
-                'name': 'John Doe',
-                'registration': '2020-10-15T06:38:00.000+00:00',
-                'status': true,
-                'labels': [],
-                'passwordUpdate': '2020-10-15T06:38:00.000+00:00',
-                'email': 'john@appwrite.io',
-                'phone': '+4930901820',
-                'emailVerification': true,
-                'phoneVerification': true,
-                'mfa': true,
-                'totp': true,
-                'prefs': <String, dynamic>{},
-                'targets': [],
-                'accessedAt': '2020-10-15T06:38:00.000+00:00',};
-
-
-            when(client.call(
-                HttpMethod.delete,
-            )).thenAnswer((_) async => Response(data: data));
-
-
-            final response = await account.deleteAuthenticator(
-                type: 'totp',
-                otp: '<OTP>',
-            );
-            expect(response, isA<models.User>());
+            expect(response, isA<models.MfaRecoveryCodes>());
 
         });
 
@@ -405,7 +446,6 @@ void main() {
                 'emailVerification': true,
                 'phoneVerification': true,
                 'mfa': true,
-                'totp': true,
                 'prefs': <String, dynamic>{},
                 'targets': [],
                 'accessedAt': '2020-10-15T06:38:00.000+00:00',};
@@ -438,7 +478,6 @@ void main() {
                 'emailVerification': true,
                 'phoneVerification': true,
                 'mfa': true,
-                'totp': true,
                 'prefs': <String, dynamic>{},
                 'targets': [],
                 'accessedAt': '2020-10-15T06:38:00.000+00:00',};
@@ -471,7 +510,6 @@ void main() {
                 'emailVerification': true,
                 'phoneVerification': true,
                 'mfa': true,
-                'totp': true,
                 'prefs': <String, dynamic>{},
                 'targets': [],
                 'accessedAt': '2020-10-15T06:38:00.000+00:00',};
@@ -520,7 +558,6 @@ void main() {
                 'emailVerification': true,
                 'phoneVerification': true,
                 'mfa': true,
-                'totp': true,
                 'prefs': <String, dynamic>{},
                 'targets': [],
                 'accessedAt': '2020-10-15T06:38:00.000+00:00',};
@@ -642,7 +679,8 @@ void main() {
                 'countryName': 'United States',
                 'current': true,
                 'factors': [],
-                'secret': '5e5bb8c16897e',};
+                'secret': '5e5bb8c16897e',
+                'mfaUpdatedAt': '2020-10-15T06:38:00.000+00:00',};
 
 
             when(client.call(
@@ -684,7 +722,8 @@ void main() {
                 'countryName': 'United States',
                 'current': true,
                 'factors': [],
-                'secret': '5e5bb8c16897e',};
+                'secret': '5e5bb8c16897e',
+                'mfaUpdatedAt': '2020-10-15T06:38:00.000+00:00',};
 
 
             when(client.call(
@@ -728,7 +767,8 @@ void main() {
                 'countryName': 'United States',
                 'current': true,
                 'factors': [],
-                'secret': '5e5bb8c16897e',};
+                'secret': '5e5bb8c16897e',
+                'mfaUpdatedAt': '2020-10-15T06:38:00.000+00:00',};
 
 
             when(client.call(
@@ -784,7 +824,8 @@ void main() {
                 'countryName': 'United States',
                 'current': true,
                 'factors': [],
-                'secret': '5e5bb8c16897e',};
+                'secret': '5e5bb8c16897e',
+                'mfaUpdatedAt': '2020-10-15T06:38:00.000+00:00',};
 
 
             when(client.call(
@@ -828,7 +869,8 @@ void main() {
                 'countryName': 'United States',
                 'current': true,
                 'factors': [],
-                'secret': '5e5bb8c16897e',};
+                'secret': '5e5bb8c16897e',
+                'mfaUpdatedAt': '2020-10-15T06:38:00.000+00:00',};
 
 
             when(client.call(
@@ -872,7 +914,8 @@ void main() {
                 'countryName': 'United States',
                 'current': true,
                 'factors': [],
-                'secret': '5e5bb8c16897e',};
+                'secret': '5e5bb8c16897e',
+                'mfaUpdatedAt': '2020-10-15T06:38:00.000+00:00',};
 
 
             when(client.call(
@@ -915,7 +958,8 @@ void main() {
                 'countryName': 'United States',
                 'current': true,
                 'factors': [],
-                'secret': '5e5bb8c16897e',};
+                'secret': '5e5bb8c16897e',
+                'mfaUpdatedAt': '2020-10-15T06:38:00.000+00:00',};
 
 
             when(client.call(
@@ -958,7 +1002,6 @@ void main() {
                 'emailVerification': true,
                 'phoneVerification': true,
                 'mfa': true,
-                'totp': true,
                 'prefs': <String, dynamic>{},
                 'targets': [],
                 'accessedAt': '2020-10-15T06:38:00.000+00:00',};

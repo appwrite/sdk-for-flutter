@@ -34,7 +34,7 @@ enum Flag {
     switzerland(value: 'ch'),
     chile(value: 'cl'),
     china(value: 'cn'),
-    cTeDIvoire(value: 'ci'),
+    coteDIvoire(value: 'ci'),
     cameroon(value: 'cm'),
     democraticRepublicOfTheCongo(value: 'cd'),
     republicOfTheCongo(value: 'cg'),

@@ -1,8 +1,8 @@
 /// Appwrite Enums
 library appwrite.enums;
 
-part 'src/enums/authentication_factor.dart';
 part 'src/enums/authenticator_type.dart';
+part 'src/enums/authentication_factor.dart';
 part 'src/enums/o_auth_provider.dart';
 part 'src/enums/browser.dart';
 part 'src/enums/credit_card.dart';

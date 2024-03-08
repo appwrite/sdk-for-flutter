@@ -13,7 +13,7 @@ Appwrite is an open-source backend as a service server that abstract and simplif
 
 
 
-![Appwrite](https://appwrite.io/images/github.png)
+![Appwrite](https://github.com/appwrite/appwrite/raw/main/public/images/github.png)
 
 ## Installation
 
@@ -21,7 +21,7 @@ Add this to your package's `pubspec.yaml` file:
 
 ```yml
 dependencies:
-  appwrite: ^12.0.0-rc.6
+  appwrite: ^12.0.0
 ```
 
 You can install packages from the command line:

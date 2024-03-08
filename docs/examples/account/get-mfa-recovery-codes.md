@@ -6,6 +6,4 @@ Client client = Client()
 
 Account account = Account(client);
 
-MfaType result = await account.addAuthenticator(
-    type: AuthenticatorType.totp,
-);
+MfaRecoveryCodes result = await account.getMfaRecoveryCodes();
