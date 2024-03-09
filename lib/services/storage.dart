@@ -172,7 +172,7 @@ class Storage extends Service {
             
             'width': width,
             'height': height,
-            'gravity': gravity,
+            'gravity': gravity?.value,
             'quality': quality,
             'borderWidth': borderWidth,
             'borderColor': borderColor,
@@ -180,7 +180,7 @@ class Storage extends Service {
             'opacity': opacity,
             'rotation': rotation,
             'background': background,
-            'output': output,
+            'output': output?.value,
             
             'project': client.config['project'],
         };

@@ -41,7 +41,7 @@ class Functions extends Service {
             'body': body,
             'async': xasync,
             'path': path,
-            'method': method,
+            'method': method?.value,
             'headers': headers,
         };
 
