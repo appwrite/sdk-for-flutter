@@ -257,7 +257,7 @@ class Account extends Service {
         const String apiPath = '/account/mfa/challenge';
 
         final Map<String, dynamic> apiParams = {
-            'factor': factor,
+            'factor': factor.value,
         };
 
         final Map<String, String> apiHeaders = {
