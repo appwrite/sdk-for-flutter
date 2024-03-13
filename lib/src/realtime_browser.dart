@@ -1,13 +1,15 @@
-import 'dart:convert';
 import 'dart:async';
+import 'dart:convert';
+
 import 'package:universal_html/html.dart' as html;
 import 'package:web_socket_channel/html.dart';
 import 'package:web_socket_channel/web_socket_channel.dart';
-import 'realtime_subscription.dart';
-import 'realtime_base.dart';
+
 import 'client.dart';
 import 'client_browser.dart';
+import 'realtime_base.dart';
 import 'realtime_mixin.dart';
+import 'realtime_subscription.dart';
 
 RealtimeBase createRealtime(Client client) => RealtimeBrowser(client);
 
@@ -35,7 +37,7 @@ class RealtimeBrowser extends RealtimeBase with RealtimeMixin {
   }
 
   @override
-  RealtimeSubscription subscribe(List<String> channels) {
+  Future<RealtimeSubscription> subscribe(List<String> channels) {
     return subscribeTo(channels);
   }
 }

@@ -1,7 +1,7 @@
-import 'realtime_subscription.dart';
 import 'realtime.dart';
+import 'realtime_subscription.dart';
 
 abstract class RealtimeBase implements Realtime {
   @override
-  RealtimeSubscription subscribe(List<String> channels);
+  Future<RealtimeSubscription> subscribe(List<String> channels);
 }
