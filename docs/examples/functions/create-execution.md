@@ -11,6 +11,6 @@ Execution result = await functions.createExecution(
     body: '<BODY>', // optional
     xasync: false, // optional
     path: '<PATH>', // optional
-    method: ExecutionMethod.gET, // optional
+    method: ExecutionMethod.get, // optional
     headers: {}, // optional
 );
