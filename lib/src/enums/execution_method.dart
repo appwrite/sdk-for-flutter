@@ -1,18 +1,16 @@
 part of appwrite.enums;
 
 enum ExecutionMethod {
-    gET(value: 'GET'),
-    pOST(value: 'POST'),
-    pUT(value: 'PUT'),
-    pATCH(value: 'PATCH'),
-    dELETE(value: 'DELETE'),
-    oPTIONS(value: 'OPTIONS');
+  get(value: 'GET'),
+  post(value: 'POST'),
+  put(value: 'PUT'),
+  patch(value: 'PATCH'),
+  delete(value: 'DELETE'),
+  options(value: 'OPTIONS');
 
-    const ExecutionMethod({
-        required this.value
-    });
+  const ExecutionMethod({required this.value});
 
-    final String value;
+  final String value;
 
-    String toJson() => value;
+  String toJson() => value;
 }
