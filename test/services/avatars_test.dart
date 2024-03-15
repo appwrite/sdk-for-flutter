@@ -1,8 +1,7 @@
+import 'package:appwrite/enums.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
-import 'package:appwrite/models.dart' as models;
 import 'package:appwrite/src/enums.dart';
-import 'package:appwrite/src/response.dart';
 import 'dart:typed_data';
 import 'package:appwrite/appwrite.dart';
 
@@ -62,7 +61,7 @@ void main() {
 
 
             final response = await avatars.getBrowser(
-                code: 'aa',
+                code: Browser.chromium,
             );
             expect(response, isA<Uint8List>());
 
@@ -76,7 +75,7 @@ void main() {
 
 
             final response = await avatars.getCreditCard(
-                code: 'amex',
+                code: CreditCard.visa,
             );
             expect(response, isA<Uint8List>());
 
@@ -104,7 +103,7 @@ void main() {
 
 
             final response = await avatars.getFlag(
-                code: 'af',
+                code: Flag.france
             );
             expect(response, isA<Uint8List>());
 

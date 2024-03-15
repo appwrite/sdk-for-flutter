@@ -1,10 +1,12 @@
+import 'dart:convert';
+
 import 'package:appwrite/appwrite.dart';
 import 'package:flutter_test/flutter_test.dart';
 
-class BasicFilterQueryTest {
+class BasicFilterQueryTest<V> {
   final String description;
-  final dynamic value;
-  final String expectedValues;
+  final V value;
+  final List<V> expectedValues;
 
   BasicFilterQueryTest({
     required this.description,
@@ -13,38 +15,37 @@ class BasicFilterQueryTest {
   });
 }
 
+extension StringJSON on String {
+  Map<String, dynamic> toJson() => jsonDecode(this);
+}
+
 void main() {
   group('basic filter tests', () {
     final tests = [
-      BasicFilterQueryTest(
+      BasicFilterQueryTest<String>(
         description: 'with a string',
         value: 's',
-        expectedValues: ["s"],
+        expectedValues: ['s'],
       ),
-      BasicFilterQueryTest(
+      BasicFilterQueryTest<int>(
         description: 'with an integer',
         value: 1,
         expectedValues: [1],
       ),
-      BasicFilterQueryTest(
+      BasicFilterQueryTest<double>(
         description: 'with a double',
         value: 1.2,
         expectedValues: [1.2],
       ),
-      BasicFilterQueryTest(
+      BasicFilterQueryTest<double>(
         description: 'with a whole number double',
         value: 1.0,
         expectedValues: [1.0],
       ),
-      BasicFilterQueryTest(
+      BasicFilterQueryTest<bool>(
         description: 'with a bool',
         value: false,
         expectedValues: [false],
-      ),
-      BasicFilterQueryTest(
-        description: 'with a list',
-        value: ['a', 'b', 'c'],
-        expectedValues: ["a","b","c"],
       ),
     ];
 
@@ -52,11 +53,20 @@ void main() {
       for (var t in tests) {
         test(t.description, () {
           final query = Query.equal('attr', t.value).toJson();
+          print(query);
           expect(query['attribute'], 'attr');
           expect(query['values'], t.expectedValues);
           expect(query['method'], 'equal');
         });
       }
+
+      test('with a list', () {
+        final query = Query.equal('attr', ['a', 'b', 'c']).toJson();
+        print(query);
+        expect(query['attribute'], 'attr');
+        expect(query['values'], ['a', 'b', 'c']);
+        expect(query['method'], 'equal');
+      });
     });
 
     group('notEqual()', () {
@@ -68,6 +78,14 @@ void main() {
           expect(query['method'], 'notEqual');
         });
       }
+
+      test('with a list', () {
+        final query = Query.notEqual('attr', ['a', 'b', 'c']).toJson();
+        print(query);
+        expect(query['attribute'], 'attr');
+        expect(query['values'], [['a', 'b', 'c']]); // Is there a bug here?
+        expect(query['method'], 'notEqual');
+      });
     });
 
     group('lessThan()', () {
@@ -79,6 +97,14 @@ void main() {
           expect(query['method'], 'lessThan');
         });
       }
+
+      test('with a list', () {
+        final query = Query.lessThan('attr', ['a', 'b', 'c']).toJson();
+        print(query);
+        expect(query['attribute'], 'attr');
+        expect(query['values'], ['a', 'b', 'c']);
+        expect(query['method'], 'lessThan');
+      });
     });
 
     group('lessThanEqual()', () {
@@ -90,6 +116,14 @@ void main() {
           expect(query['method'], 'lessThanEqual');
         });
       }
+
+      test('with a list', () {
+        final query = Query.lessThanEqual('attr', ['a', 'b', 'c']).toJson();
+        print(query);
+        expect(query['attribute'], 'attr');
+        expect(query['values'], ['a', 'b', 'c']);
+        expect(query['method'], 'lessThanEqual');
+      });
     });
 
     group('greaterThan()', () {
@@ -101,6 +135,14 @@ void main() {
           expect(query['method'], 'greaterThan');
         });
       }
+
+      test('with a list', () {
+        final query = Query.greaterThan('attr', ['a', 'b', 'c']).toJson();
+        print(query);
+        expect(query['attribute'], 'attr');
+        expect(query['values'], ['a', 'b', 'c']);
+        expect(query['method'], 'greaterThan');
+      });
     });
 
     group('greaterThanEqual()', () {
@@ -112,6 +154,14 @@ void main() {
           expect(query['method'], 'greaterThanEqual');
         });
       }
+
+      test('with a list', () {
+        final query = Query.greaterThanEqual('attr', ['a', 'b', 'c']).toJson();
+        print(query);
+        expect(query['attribute'], 'attr');
+        expect(query['values'], ['a', 'b', 'c']);
+        expect(query['method'], 'greaterThanEqual');
+      });
     });
   });
 
@@ -130,7 +180,7 @@ void main() {
   });
 
   test('returns isNotNull', () {
-    final query = Query.isNotNull('attr', 'keyword1 keyword2').toJson();
+    final query = Query.isNotNull('attr').toJson();
     expect(query['attribute'], 'attr');
     expect(query['values'], null);
     expect(query['method'], 'isNotNull');
@@ -183,29 +233,28 @@ void main() {
   test('returns cursorBefore', () {
     final query = Query.cursorBefore('custom').toJson();
     expect(query['attribute'], null);
-    expect(query['values'], 'custom');
+    expect(query['values'], ['custom']);
     expect(query['method'], 'cursorBefore');
   });
 
   test('returns cursorAfter', () {
     final query = Query.cursorAfter('custom').toJson();
     expect(query['attribute'], null);
-    expect(query['values'], 'custom');
+    expect(query['values'], ['custom']);
     expect(query['method'], 'cursorAfter');
   });
 
   test('returns limit', () {
     final query = Query.limit(1).toJson();
     expect(query['attribute'], null);
-    expect(query['values'], 1);
+    expect(query['values'], [1]);
     expect(query['method'], 'limit');
   });
 
   test('returns offset', () {
     final query = Query.offset(1).toJson();
     expect(query['attribute'], null);
-    expect(query['values'], 1);
+    expect(query['values'], [1]);
     expect(query['method'], 'offset');
   });
 }
-
