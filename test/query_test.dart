@@ -47,6 +47,12 @@ void main() {
         value: false,
         expectedValues: [false],
       ),
+      // FIXME: seems to be not woriking for now... bug?
+      // BasicFilterQueryTest<List<String>>(
+      //   description: 'with a list',
+      //   value: ['a', 'b', 'c'],
+      //   expectedValues: [['a', 'b', 'c']],
+      // ),
     ];
 
     group('equal()', () {
