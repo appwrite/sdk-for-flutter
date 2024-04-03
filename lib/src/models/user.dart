@@ -91,14 +91,14 @@ class User implements Model {
       hash: map['hash'],
       hashOptions: map['hashOptions'],
       registration: map['registration'],
-      status: map['status'],
+      status: map['status'] ?? false,
       labels: map['labels'],
       passwordUpdate: map['passwordUpdate'],
       email: map['email'],
       phone: map['phone'],
-      emailVerification: map['emailVerification'],
-      phoneVerification: map['phoneVerification'],
-      mfa: map['mfa'],
+      emailVerification: map['emailVerification'] ?? false,
+      phoneVerification: map['phoneVerification'] ?? false,
+      mfa: map['mfa'] ?? false,
       prefs: map['prefs'] != null ? Preferences.fromMap(map['prefs']) : null,
       targets: map['targets'] is List
           ? List<Target>.from(
