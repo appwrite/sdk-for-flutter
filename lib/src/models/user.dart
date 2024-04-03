@@ -12,7 +12,7 @@ class User implements Model {
   final String $updatedAt;
 
   /// User name.
-  final String name;
+  final String? name;
 
   /// Hashed user password.
   final String? password;
@@ -33,13 +33,13 @@ class User implements Model {
   final List labels;
 
   /// Password update time in ISO 8601 format.
-  final String passwordUpdate;
+  final String? passwordUpdate;
 
   /// User email address.
   final String email;
 
   /// User phone number in E.164 format.
-  final String phone;
+  final String? phone;
 
   /// Email verification status.
   final bool emailVerification;
@@ -51,10 +51,10 @@ class User implements Model {
   final bool mfa;
 
   /// User preferences as a key-value object
-  final Preferences prefs;
+  final Preferences? prefs;
 
   /// A user-owned message receiver. A single user may have multiple e.g. emails, phones, and a browser. Each target is registered with a single provider.
-  final List<Target> targets;
+  final List<Target>? targets;
 
   /// Most recent access date in ISO 8601 format. This attribute is only updated again after 24 hours.
   final String accessedAt;
@@ -100,7 +100,7 @@ class User implements Model {
       phoneVerification: map['phoneVerification'] ?? false,
       mfa: map['mfa'] ?? false,
       prefs: Preferences.fromMap(map['prefs']),
-      targets: List<Target>.from(map['targets'].map((p) => Target.fromMap(p))),
+      targets: List<Target>.from(map['targets']?.map((p) => Target.fromMap(p))),
       accessedAt: map['accessedAt'].toString(),
     );
   }
@@ -123,8 +123,8 @@ class User implements Model {
       "emailVerification": emailVerification,
       "phoneVerification": phoneVerification,
       "mfa": mfa,
-      "prefs": prefs.toMap(),
-      "targets": targets.map((p) => p.toMap()).toList(),
+      "prefs": prefs?.toMap(),
+      "targets": targets?.map((p) => p.toMap()).toList(),
       "accessedAt": accessedAt,
     };
   }

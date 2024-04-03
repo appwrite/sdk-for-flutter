@@ -1,18 +1,6 @@
 import 'package:appwrite/appwrite.dart';
 import 'package:flutter_test/flutter_test.dart';
 
-class BasicFilterQueryTest {
-  final String description;
-  final dynamic value;
-  final String expectedValues;
-
-  BasicFilterQueryTest({
-    required this.description,
-    required this.value,
-    required this.expectedValues,
-  });
-}
-
 void main() {
   group('basic filter tests', () {
     final tests = [
@@ -44,7 +32,7 @@ void main() {
       BasicFilterQueryTest(
         description: 'with a list',
         value: ['a', 'b', 'c'],
-        expectedValues: ["a","b","c"],
+        expectedValues: ["a", "b", "c"],
       ),
     ];
 
@@ -209,3 +197,14 @@ void main() {
   });
 }
 
+class BasicFilterQueryTest {
+  final String description;
+  final dynamic value;
+  final String expectedValues;
+
+  BasicFilterQueryTest({
+    required this.description,
+    required this.value,
+    required this.expectedValues,
+  });
+}
