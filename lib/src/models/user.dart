@@ -36,7 +36,7 @@ class User implements Model {
   final String? passwordUpdate;
 
   /// User email address.
-  final String email;
+  final String? email;
 
   /// User phone number in E.164 format.
   final String? phone;
@@ -63,19 +63,19 @@ class User implements Model {
     this.$id,
     this.$createdAt,
     this.$updatedAt,
-    required this.name,
+    this.name,
     this.password,
     this.hash,
     this.hashOptions,
-    required this.registration,
-    required this.status,
+    this.registration,
+    this.status = false,
     this.labels,
-    required this.passwordUpdate,
-    required this.email,
+    this.passwordUpdate,
+    this.email,
     this.phone,
-    required this.emailVerification,
-    required this.phoneVerification,
-    required this.mfa,
+    this.emailVerification = false,
+    this.phoneVerification = false,
+    this.mfa = false,
     this.prefs,
     this.targets,
     this.accessedAt,
