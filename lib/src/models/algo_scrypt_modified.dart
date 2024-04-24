@@ -1,4 +1,4 @@
-part of appwrite.models;
+part of '../../models.dart';
 
 /// AlgoScryptModified
 class AlgoScryptModified implements Model {

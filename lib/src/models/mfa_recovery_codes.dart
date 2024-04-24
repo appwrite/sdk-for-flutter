@@ -1,4 +1,4 @@
-part of appwrite.models;
+part of '../../models.dart';
 
 /// MFA Recovery Codes
 class MfaRecoveryCodes implements Model {

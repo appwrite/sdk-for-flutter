@@ -1,4 +1,4 @@
-part of appwrite.models;
+part of '../../models.dart';
 
 /// AlgoArgon2
 class AlgoArgon2 implements Model {

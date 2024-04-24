@@ -1,4 +1,4 @@
-part of appwrite.models;
+part of '../../models.dart';
 
 /// AlgoPHPass
 class AlgoPhpass implements Model {

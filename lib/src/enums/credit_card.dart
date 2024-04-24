@@ -1,4 +1,4 @@
-part of appwrite.enums;
+part of '../../enums.dart';
 
 enum CreditCard {
     americanExpress(value: 'amex'),
