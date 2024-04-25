@@ -299,7 +299,24 @@ void main() {
         });
 
         test('test method deleteMfaAuthenticator()', () async {
-            final data = '';
+            final Map<String, dynamic> data = {
+                '\$id': '5e5ea5c16897e',
+                '\$createdAt': '2020-10-15T06:38:00.000+00:00',
+                '\$updatedAt': '2020-10-15T06:38:00.000+00:00',
+                'name': 'John Doe',
+                'registration': '2020-10-15T06:38:00.000+00:00',
+                'status': true,
+                'labels': [],
+                'passwordUpdate': '2020-10-15T06:38:00.000+00:00',
+                'email': 'john@appwrite.io',
+                'phone': '+4930901820',
+                'emailVerification': true,
+                'phoneVerification': true,
+                'mfa': true,
+                'prefs': <String, dynamic>{},
+                'targets': [],
+                'accessedAt': '2020-10-15T06:38:00.000+00:00',};
+
 
             when(client.call(
                 HttpMethod.delete,
@@ -310,6 +327,8 @@ void main() {
                 type: 'totp',
                 otp: '<OTP>',
             );
+            expect(response, isA<models.User>());
+
         });
 
         test('test method createMfaChallenge()', () async {
@@ -350,8 +369,7 @@ void main() {
             final Map<String, dynamic> data = {
                 'totp': true,
                 'phone': true,
-                'email': true,
-                'recoveryCode': true,};
+                'email': true,};
 
 
             when(client.call(
@@ -637,7 +655,6 @@ void main() {
             final Map<String, dynamic> data = {
                 '\$id': '5e5ea5c16897e',
                 '\$createdAt': '2020-10-15T06:38:00.000+00:00',
-                '\$updatedAt': '2020-10-15T06:38:00.000+00:00',
                 'userId': '5e5bb8c16897e',
                 'expire': '2020-10-15T06:38:00.000+00:00',
                 'provider': 'email',
@@ -681,7 +698,6 @@ void main() {
             final Map<String, dynamic> data = {
                 '\$id': '5e5ea5c16897e',
                 '\$createdAt': '2020-10-15T06:38:00.000+00:00',
-                '\$updatedAt': '2020-10-15T06:38:00.000+00:00',
                 'userId': '5e5bb8c16897e',
                 'expire': '2020-10-15T06:38:00.000+00:00',
                 'provider': 'email',
@@ -727,7 +743,6 @@ void main() {
             final Map<String, dynamic> data = {
                 '\$id': '5e5ea5c16897e',
                 '\$createdAt': '2020-10-15T06:38:00.000+00:00',
-                '\$updatedAt': '2020-10-15T06:38:00.000+00:00',
                 'userId': '5e5bb8c16897e',
                 'expire': '2020-10-15T06:38:00.000+00:00',
                 'provider': 'email',
@@ -785,7 +800,6 @@ void main() {
             final Map<String, dynamic> data = {
                 '\$id': '5e5ea5c16897e',
                 '\$createdAt': '2020-10-15T06:38:00.000+00:00',
-                '\$updatedAt': '2020-10-15T06:38:00.000+00:00',
                 'userId': '5e5bb8c16897e',
                 'expire': '2020-10-15T06:38:00.000+00:00',
                 'provider': 'email',
@@ -831,7 +845,6 @@ void main() {
             final Map<String, dynamic> data = {
                 '\$id': '5e5ea5c16897e',
                 '\$createdAt': '2020-10-15T06:38:00.000+00:00',
-                '\$updatedAt': '2020-10-15T06:38:00.000+00:00',
                 'userId': '5e5bb8c16897e',
                 'expire': '2020-10-15T06:38:00.000+00:00',
                 'provider': 'email',
@@ -877,7 +890,6 @@ void main() {
             final Map<String, dynamic> data = {
                 '\$id': '5e5ea5c16897e',
                 '\$createdAt': '2020-10-15T06:38:00.000+00:00',
-                '\$updatedAt': '2020-10-15T06:38:00.000+00:00',
                 'userId': '5e5bb8c16897e',
                 'expire': '2020-10-15T06:38:00.000+00:00',
                 'provider': 'email',
@@ -922,7 +934,6 @@ void main() {
             final Map<String, dynamic> data = {
                 '\$id': '5e5ea5c16897e',
                 '\$createdAt': '2020-10-15T06:38:00.000+00:00',
-                '\$updatedAt': '2020-10-15T06:38:00.000+00:00',
                 'userId': '5e5bb8c16897e',
                 'expire': '2020-10-15T06:38:00.000+00:00',
                 'provider': 'email',

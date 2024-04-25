@@ -9,7 +9,6 @@ void main() {
         totp: true,
         phone: true,
         email: true,
-        recoveryCode: true,
       );
 
       final map = model.toMap();
@@ -18,7 +17,6 @@ void main() {
       expect(result.totp, true);
       expect(result.phone, true);
       expect(result.email, true);
-      expect(result.recoveryCode, true);
     });
   });
 }
