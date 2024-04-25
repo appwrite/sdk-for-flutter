@@ -1,6 +1,6 @@
 ## 12.0.2
 
-* Fix realtime multiple subscription issues
+* Fixed realtime multiple subscription issues
 
 ## 12.0.1
 

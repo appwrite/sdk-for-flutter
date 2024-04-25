@@ -6,6 +6,8 @@ class Session implements Model {
     final String $id;
     /// Session creation date in ISO 8601 format.
     final String $createdAt;
+    /// Session update date in ISO 8601 format.
+    final String $updatedAt;
     /// User ID.
     final String userId;
     /// Session expiration date in ISO 8601 format.
@@ -62,6 +64,7 @@ class Session implements Model {
     Session({
         required this.$id,
         required this.$createdAt,
+        required this.$updatedAt,
         required this.userId,
         required this.expire,
         required this.provider,
@@ -94,6 +97,7 @@ class Session implements Model {
         return Session(
             $id: map['\$id'].toString(),
             $createdAt: map['\$createdAt'].toString(),
+            $updatedAt: map['\$updatedAt'].toString(),
             userId: map['userId'].toString(),
             expire: map['expire'].toString(),
             provider: map['provider'].toString(),
@@ -127,6 +131,7 @@ class Session implements Model {
         return {
             "\$id": $id,
             "\$createdAt": $createdAt,
+            "\$updatedAt": $updatedAt,
             "userId": userId,
             "expire": expire,
             "provider": provider,

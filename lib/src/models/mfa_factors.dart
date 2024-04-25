@@ -2,17 +2,20 @@ part of '../../models.dart';
 
 /// MFAFactors
 class MfaFactors implements Model {
-    /// TOTP
+    /// Can TOTP be used for MFA challenge for this account.
     final bool totp;
-    /// Phone
+    /// Can phone (SMS) be used for MFA challenge for this account.
     final bool phone;
-    /// Email
+    /// Can email be used for MFA challenge for this account.
     final bool email;
+    /// Can recovery code be used for MFA challenge for this account.
+    final bool recoveryCode;
 
     MfaFactors({
         required this.totp,
         required this.phone,
         required this.email,
+        required this.recoveryCode,
     });
 
     factory MfaFactors.fromMap(Map<String, dynamic> map) {
@@ -20,6 +23,7 @@ class MfaFactors implements Model {
             totp: map['totp'],
             phone: map['phone'],
             email: map['email'],
+            recoveryCode: map['recoveryCode'],
         );
     }
 
@@ -28,6 +32,7 @@ class MfaFactors implements Model {
             "totp": totp,
             "phone": phone,
             "email": email,
+            "recoveryCode": recoveryCode,
         };
     }
 }
