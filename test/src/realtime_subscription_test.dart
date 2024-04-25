@@ -1,20 +1,20 @@
+import 'package:mockito/mockito.dart';
 import 'package:appwrite/src/realtime_message.dart';
 import 'package:appwrite/src/realtime_subscription.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'dart:async';
+
+class MockStream<T> extends Mock implements Stream<T> {}
+
+
 
 void main() {
   group('RealtimeSubscription', () {
-    final mockStream = StreamController<RealtimeMessage>.broadcast();
+    final mockStream = MockStream<RealtimeMessage>();
     final mockCloseFunction = () async {};
-    final subscription = RealtimeSubscription(
-        controller: mockStream,
-        close: mockCloseFunction,
-        channels: ['documents']);
+    final subscription = RealtimeSubscription(stream: mockStream, close: mockCloseFunction);
 
     test('should have the correct stream and close function', () {
-      expect(subscription.controller, equals(mockStream));
-      expect(subscription.stream, equals(mockStream.stream));
+      expect(subscription.stream, equals(mockStream));
       expect(subscription.close, equals(mockCloseFunction));
     });
   });

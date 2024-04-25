@@ -142,6 +142,7 @@ enum Flag {
     palau(value: 'pw'),
     papuaNewGuinea(value: 'pg'),
     poland(value: 'pl'),
+    frenchPolynesia(value: 'pf'),
     northKorea(value: 'kp'),
     portugal(value: 'pt'),
     paraguay(value: 'py'),
