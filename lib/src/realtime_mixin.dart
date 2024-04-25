@@ -21,7 +21,6 @@ mixin RealtimeMixin {
   late WebSocketFactory getWebSocket;
   GetFallbackCookie? getFallbackCookie;
   int? get closeCode => _websok?.closeCode;
-  int _subscriptionsCounter = 0;
   Map<int, RealtimeSubscription> _subscriptions = {};
   bool _notifyDone = true;
   StreamSubscription? _websocketSubscription;
@@ -144,7 +143,6 @@ mixin RealtimeMixin {
         channels: channels,
         close: () async {
           _subscriptions.remove(id);
-          _subscriptionsCounter--;
           controller.close();
           _cleanup(channels);
 
