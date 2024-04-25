@@ -1,4 +1,4 @@
-part of appwrite.models;
+part of '../../models.dart';
 
 /// Token
 class Token implements Model {

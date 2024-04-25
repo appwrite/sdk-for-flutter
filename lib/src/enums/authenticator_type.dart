@@ -1,4 +1,4 @@
-part of appwrite.enums;
+part of '../../enums.dart';
 
 enum AuthenticatorType {
     totp(value: 'totp');

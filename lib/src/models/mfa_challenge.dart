@@ -1,4 +1,4 @@
-part of appwrite.models;
+part of '../../models.dart';
 
 /// MFA Challenge
 class MfaChallenge implements Model {

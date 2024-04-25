@@ -1,4 +1,4 @@
-part of appwrite;
+part of '../appwrite.dart';
 
 /// The GraphQL API allows you to query and mutate your Appwrite server using
 /// GraphQL.

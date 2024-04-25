@@ -1,4 +1,4 @@
-part of appwrite.models;
+part of '../../models.dart';
 
 /// Phones List
 class PhoneList implements Model {

@@ -1,4 +1,4 @@
-part of appwrite.models;
+part of '../../models.dart';
 
 /// Target
 class Target implements Model {

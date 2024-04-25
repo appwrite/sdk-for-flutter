@@ -1,4 +1,4 @@
-part of appwrite.models;
+part of '../../models.dart';
 
 /// AlgoSHA
 class AlgoSha implements Model {

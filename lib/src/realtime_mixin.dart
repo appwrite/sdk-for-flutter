@@ -2,7 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 import 'package:flutter/foundation.dart';
 import 'package:web_socket_channel/web_socket_channel.dart';
-import 'package:web_socket_channel/status.dart';
+import 'package:web_socket_channel/status.dart' as status;
 import 'exception.dart';
 import 'realtime_subscription.dart';
 import 'client.dart';
@@ -15,35 +15,46 @@ typedef GetFallbackCookie = String? Function();
 
 mixin RealtimeMixin {
   late Client client;
-  final Map<String, List<StreamController<RealtimeMessage>>> _channels = {};
+  final Set<String> _channels = {};
   WebSocketChannel? _websok;
   String? _lastUrl;
   late WebSocketFactory getWebSocket;
   GetFallbackCookie? getFallbackCookie;
   int? get closeCode => _websok?.closeCode;
+  int _subscriptionsCounter = 0;
+  Map<int, RealtimeSubscription> _subscriptions = {};
+  bool _notifyDone = true;
+  StreamSubscription? _websocketSubscription;
+  bool _creatingSocket = false;
 
   Future<dynamic> _closeConnection() async {
-    await _websok?.sink.close(normalClosure);
+    await _websocketSubscription?.cancel();
+    await _websok?.sink.close(status.normalClosure, 'Ending session');
     _lastUrl = null;
   }
 
   _createSocket() async {
+    if(_creatingSocket || _channels.isEmpty) return;
+    _creatingSocket = true;
     final uri = _prepareUri();
     if (_websok == null) {
       _websok = await getWebSocket(uri);
       _lastUrl = uri.toString();
     } else {
       if (_lastUrl == uri.toString() && _websok?.closeCode == null) {
+        _creatingSocket = false;
         return;
       }
+      _notifyDone = false;
       await _closeConnection();
       _lastUrl = uri.toString();
       _websok = await getWebSocket(uri);
+      _notifyDone = true;
     }
     debugPrint('subscription: $_lastUrl');
 
     try {
-      _websok?.stream.listen((response) {
+      _websocketSubscription = _websok?.stream.listen((response) {
         final data = RealtimeResponse.fromJson(response);
         switch (data.type) {
           case 'error':
@@ -67,28 +78,25 @@ mixin RealtimeMixin {
             break;
           case 'event':
             final message = RealtimeMessage.fromMap(data.data);
-            for(var channel in message.channels) {
-              if (_channels[channel] != null) {
-                for( var stream in _channels[channel]!) {
-                  stream.sink.add(message);
+            for (var subscription in _subscriptions.values) {
+              for (var channel in message.channels) {
+                if (subscription.channels.contains(channel)) {
+                  subscription.controller.add(message);
                 }
               }
             }
             break;
         }
       }, onDone: () {
-        for (var list in _channels.values) {
-          for (var stream in list) {
-            stream.close();
-          }
+        if (!_notifyDone || _creatingSocket) return;
+        for (var subscription in _subscriptions.values) {
+          subscription.close();
         }
         _channels.clear();
         _closeConnection();
       }, onError: (err, stack) {
-        for (var list in _channels.values) {
-          for (var stream in list) {
-            stream.sink.addError(err, stack);
-          }
+        for (var subscription in _subscriptions.values) {
+          subscription.controller.addError(err, stack);
         }
         if (_websok?.closeCode != null && _websok?.closeCode != 1008) {
           debugPrint("Reconnecting in one second.");
@@ -103,6 +111,8 @@ mixin RealtimeMixin {
         throw AppwriteException(e.message);
       }
       throw AppwriteException(e.toString());
+    } finally {
+      _creatingSocket = false;
     }
   }
 
@@ -118,7 +128,7 @@ mixin RealtimeMixin {
       port: uri.port,
       queryParameters: {
         "project": client.config['project'],
-        "channels[]": _channels.keys.toList(),
+        "channels[]": _channels.toList(),
       },
       path: uri.path + "/realtime",
     );
@@ -126,30 +136,36 @@ mixin RealtimeMixin {
 
   RealtimeSubscription subscribeTo(List<String> channels) {
     StreamController<RealtimeMessage> controller = StreamController.broadcast();
-    for(var channel in channels) {
-      if (!_channels.containsKey(channel)) {
-        _channels[channel] = [];
-      }
-      _channels[channel]!.add(controller);
-    }
+    _channels.addAll(channels);
     Future.delayed(Duration.zero, () => _createSocket());
+    int id = DateTime.now().microsecondsSinceEpoch;
     RealtimeSubscription subscription = RealtimeSubscription(
-        stream: controller.stream,
+        controller: controller,
+        channels: channels,
         close: () async {
+          _subscriptions.remove(id);
+          _subscriptionsCounter--;
           controller.close();
-          for(var channel in channels) {
-            _channels[channel]!.remove(controller);
-            if (_channels[channel]!.isEmpty) {
-              _channels.remove(channel);
-            }
-          }
-          if(_channels.isNotEmpty) {
+          _cleanup(channels);
+
+          if (_channels.isNotEmpty) {
             await Future.delayed(Duration.zero, () => _createSocket());
           } else {
             await _closeConnection();
           }
         });
+    _subscriptions[id] = subscription;
     return subscription;
+  }
+
+  void _cleanup(List<String> channels) {
+    for (var channel in channels) {
+      bool found = _subscriptions.values
+          .any((subscription) => subscription.channels.contains(channel));
+      if (!found) {
+        _channels.remove(channel);
+      }
+    }
   }
 
   void handleError(RealtimeResponse response) {

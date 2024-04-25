@@ -8,6 +8,7 @@ void main() {
       final model = Session(
         $id: '5e5ea5c16897e',
         $createdAt: '2020-10-15T06:38:00.000+00:00',
+        $updatedAt: '2020-10-15T06:38:00.000+00:00',
         userId: '5e5bb8c16897e',
         expire: '2020-10-15T06:38:00.000+00:00',
         provider: 'email',
@@ -41,6 +42,7 @@ void main() {
 
       expect(result.$id, '5e5ea5c16897e');
       expect(result.$createdAt, '2020-10-15T06:38:00.000+00:00');
+      expect(result.$updatedAt, '2020-10-15T06:38:00.000+00:00');
       expect(result.userId, '5e5bb8c16897e');
       expect(result.expire, '2020-10-15T06:38:00.000+00:00');
       expect(result.provider, 'email');

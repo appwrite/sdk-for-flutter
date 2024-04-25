@@ -1,4 +1,4 @@
-part of appwrite.models;
+part of '../../models.dart';
 
 /// AlgoMD5
 class AlgoMd5 implements Model {

@@ -1,4 +1,4 @@
-part of appwrite.models;
+part of '../../models.dart';
 
 /// LocaleCode
 class LocaleCode implements Model {

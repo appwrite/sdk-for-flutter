@@ -1,4 +1,4 @@
-part of appwrite;
+part of 'appwrite.dart';
 
 /// Helper class to generate role strings for [Permission].
 class Role {
