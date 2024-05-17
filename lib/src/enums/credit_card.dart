@@ -4,7 +4,7 @@ enum CreditCard {
     americanExpress(value: 'amex'),
     argencard(value: 'argencard'),
     cabal(value: 'cabal'),
-    consosud(value: 'censosud'),
+    cencosud(value: 'cencosud'),
     dinersClub(value: 'diners'),
     discover(value: 'discover'),
     elo(value: 'elo'),
