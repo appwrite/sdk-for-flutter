@@ -1,0 +1,33 @@
+name: Format and push
+
+# Github action will require permission to write to repo
+on:
+  pull_request:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  format:
+    runs-on: ubuntu-latest
+    container:
+        image:  dart:stable
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          persist-credentials: true
+          ref: ${{ github.event.pull_request.head.ref }}
+
+      - name: Format Dart code
+        run: dart format .
+
+      - name: git config
+        run: git config --global --add safe.directory /__w/sdk-for-flutter/sdk-for-flutter # required to fix dubious ownership
+
+      - name: Add & Commit
+        uses: EndBug/add-and-commit@v9.1.4
+        with:
+            add: lib
+    
