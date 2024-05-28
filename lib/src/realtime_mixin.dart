@@ -33,7 +33,7 @@ mixin RealtimeMixin {
   }
 
   _createSocket() async {
-    if(_creatingSocket || _channels.isEmpty) return;
+    if (_creatingSocket || _channels.isEmpty) return;
     _creatingSocket = true;
     final uri = _prepareUri();
     if (_websok == null) {
@@ -87,8 +87,8 @@ mixin RealtimeMixin {
             break;
         }
       }, onDone: () {
-        if (!_notifyDone || _creatingSocket) return;
-        for (var subscription in _subscriptions.values) {
+        final subscriptions = List.from(_subscriptions.values);
+        for (var subscription in subscriptions) {
           subscription.close();
         }
         _channels.clear();
