@@ -3,12 +3,21 @@ name: Publish to pub.dev
 on:
   push:
     tags:
-      - '[0-9]+\.[0-9]+\.[0-9]+.*'
+      - '[0-9]+\.[0-9]+\.[0-9]+*'
 
 jobs:
   publish:
     permissions:
       id-token: write
-    uses: dart-lang/setup-dart/.github/workflows/publish.yml@v1
-    with:
-      environment: pub.dev
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Install Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          channel: stable
+      - name: Install dependencies
+        run: flutter pub get
+      - uses: dart-lang/setup-dart@v1
+      - name: Publish
+        run: dart pub publish --force
