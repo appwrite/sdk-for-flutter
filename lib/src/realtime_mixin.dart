@@ -33,7 +33,7 @@ mixin RealtimeMixin {
   }
 
   _createSocket() async {
-    if (_creatingSocket || _channels.isEmpty) return;
+    if(_creatingSocket || _channels.isEmpty) return;
     _creatingSocket = true;
     final uri = _prepareUri();
     if (_websok == null) {
