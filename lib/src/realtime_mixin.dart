@@ -122,12 +122,12 @@ mixin RealtimeMixin {
   }
 
   int _getTimeout() {
-  return switch (_retries) {
-    < 5 => 1,
-    < 15 => 5,
-    < 100 => 10,
-    _ => 60,
-  };
+    return switch (_retries) {
+      < 5 => 1,
+      < 15 => 5,
+      < 100 => 10,
+      _ => 60,
+    };
   }
 
   Uri _prepareUri() {
