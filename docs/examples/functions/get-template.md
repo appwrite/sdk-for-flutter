@@ -4,8 +4,8 @@ Client client = Client()
     .setEndpoint('https://cloud.appwrite.io/v1') // Your API Endpoint
     .setProject('&lt;YOUR_PROJECT_ID&gt;'); // Your project ID
 
-Account account = Account(client);
+Functions functions = Functions(client);
 
-await account.deleteMfaAuthenticator(
-    type: AuthenticatorType.totp,
+TemplateFunction result = await functions.getTemplate(
+    templateId: '<TEMPLATE_ID>',
 );

@@ -184,7 +184,7 @@ class Account extends Service {
 
     }
 
-    /// Add Authenticator
+    /// Create Authenticator
     ///
     /// Add an authenticator app to be used as an MFA factor. Verify the
     /// authenticator using the [verify
@@ -231,11 +231,10 @@ class Account extends Service {
     /// Delete Authenticator
     ///
     /// Delete an authenticator for a user by ID.
-    Future deleteMfaAuthenticator({required enums.AuthenticatorType type, required String otp}) async {
+    Future deleteMfaAuthenticator({required enums.AuthenticatorType type}) async {
         final String apiPath = '/account/mfa/authenticators/{type}'.replaceAll('{type}', type.value);
 
         final Map<String, dynamic> apiParams = {
-            'otp': otp,
         };
 
         final Map<String, String> apiHeaders = {
@@ -248,7 +247,7 @@ class Account extends Service {
 
     }
 
-    /// Create 2FA Challenge
+    /// Create MFA Challenge
     ///
     /// Begin the process of MFA verification after sign-in. Finish the flow with
     /// [updateMfaChallenge](/docs/references/cloud/client-web/account#updateMfaChallenge)
@@ -1139,7 +1138,7 @@ class Account extends Service {
 
     }
 
-    /// Create phone verification (confirmation)
+    /// Update phone verification (confirmation)
     ///
     /// Use this endpoint to complete the user phone verification process. Use the
     /// **userId** and **secret** that were sent to your user's phone number to
