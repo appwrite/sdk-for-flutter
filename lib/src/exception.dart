@@ -13,7 +13,7 @@ class AppwriteException implements Exception {
 
   /// Initializes an Appwrite Exception.
   AppwriteException([this.message = "", this.code, this.type, this.response]);
-
+  
   /// Returns the error type, message, and code.
   @override
   String toString() {
