@@ -157,12 +157,8 @@ void main() {
                 'duration': 0.4,};
 
 
-            when(client.chunkedUpload(
-                path: argThat(isNotNull),
-                params: argThat(isNotNull),
-                paramName: argThat(isNotNull),
-                idParamName: argThat(isNotNull),
-                headers: argThat(isNotNull),
+            when(client.call(
+                HttpMethod.post,
             )).thenAnswer((_) async => Response(data: data));
 
 
