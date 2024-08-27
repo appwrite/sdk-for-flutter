@@ -54,54 +54,6 @@ void main() {
             functions = Functions(client);
         });
 
-        test('test method getTemplate()', () async {
-            final Map<String, dynamic> data = {
-                'icon': 'icon-lightning-bolt',
-                'id': 'starter',
-                'name': 'Starter function',
-                'tagline': 'A simple function to get started.',
-                'permissions': [],
-                'events': [],
-                'cron': '0 0 * * *',
-                'timeout': 300,
-                'useCases': [],
-                'runtimes': [],
-                'instructions': 'For documentation and instructions check out <link>.',
-                'vcsProvider': 'github',
-                'providerRepositoryId': 'templates',
-                'providerOwner': 'appwrite',
-                'providerVersion': 'main',
-                'variables': [],
-                'scopes': [],};
-
-
-            when(client.call(
-                HttpMethod.get,
-            )).thenAnswer((_) async => Response(data: data));
-
-
-            final response = await functions.getTemplate(
-                templateId: '<TEMPLATE_ID>',
-            );
-            expect(response, isA<models.TemplateFunction>());
-
-        });
-
-        test('test method getDeploymentDownload()', () async {final Uint8List data = Uint8List.fromList([]);
-
-            when(client.call(
-                HttpMethod.get,
-            )).thenAnswer((_) async => Response(data: data));
-
-
-            final response = await functions.getDeploymentDownload(
-                functionId: '<FUNCTION_ID>',
-                deploymentId: '<DEPLOYMENT_ID>',
-            );
-            expect(response, isA<Uint8List>());
-
-        });
-
         test('test method listExecutions()', () async {
             final Map<String, dynamic> data = {
                 'total': 5,
