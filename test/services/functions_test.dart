@@ -54,23 +54,6 @@ void main() {
             functions = Functions(client);
         });
 
-        test('test method listTemplates()', () async {
-            final Map<String, dynamic> data = {
-                'total': 5,
-                'templates': [],};
-
-
-            when(client.call(
-                HttpMethod.get,
-            )).thenAnswer((_) async => Response(data: data));
-
-
-            final response = await functions.listTemplates(
-            );
-            expect(response, isA<models.TemplateFunctionList>());
-
-        });
-
         test('test method getTemplate()', () async {
             final Map<String, dynamic> data = {
                 'icon': 'icon-lightning-bolt',
