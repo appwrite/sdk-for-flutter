@@ -308,7 +308,6 @@ void main() {
 
             final response = await account.deleteMfaAuthenticator(
                 type: 'totp',
-                otp: '<OTP>',
             );
         });
 

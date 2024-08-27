@@ -2,6 +2,7 @@ import 'package:http/http.dart' as http;
 import 'exception.dart';
 import 'response.dart';
 import 'dart:convert';
+import 'dart:developer';
 import 'enums.dart';
 
 class ClientMixin {
@@ -67,6 +68,12 @@ class ClientMixin {
 
   Response prepareResponse(http.Response res, {ResponseType? responseType}) {
     responseType ??= ResponseType.json;
+
+    String? warnings = res.headers['x-appwrite-warning'];
+    if (warnings != null) {
+      warnings.split(';').forEach((warning) => log('Warning: $warning'));
+    }
+
     if (res.statusCode >= 400) {
       if ((res.headers['content-type'] ?? '').contains('application/json')) {
         final response = json.decode(res.body);

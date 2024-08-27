@@ -50,6 +50,9 @@ class Execution implements Model {
   /// Function execution duration in seconds.
   final double duration;
 
+  /// The scheduled time for execution. If left empty, execution will be queued immediately.
+  final String? scheduledAt;
+
   Execution({
     required this.$id,
     required this.$createdAt,
@@ -67,6 +70,7 @@ class Execution implements Model {
     required this.logs,
     required this.errors,
     required this.duration,
+    this.scheduledAt,
   });
 
   factory Execution.fromMap(Map<String, dynamic> map) {
@@ -89,6 +93,7 @@ class Execution implements Model {
       logs: map['logs'].toString(),
       errors: map['errors'].toString(),
       duration: map['duration'].toDouble(),
+      scheduledAt: map['scheduledAt']?.toString(),
     );
   }
 
@@ -110,6 +115,7 @@ class Execution implements Model {
       "logs": logs,
       "errors": errors,
       "duration": duration,
+      "scheduledAt": scheduledAt,
     };
   }
 }

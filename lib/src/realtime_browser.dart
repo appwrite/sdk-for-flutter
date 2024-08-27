@@ -1,6 +1,6 @@
 import 'dart:convert';
 import 'dart:async';
-import 'package:universal_html/html.dart' as html;
+import 'package:web/web.dart' as web;
 import 'package:web_socket_channel/html.dart';
 import 'package:web_socket_channel/web_socket_channel.dart';
 import 'realtime_subscription.dart';
@@ -26,7 +26,7 @@ class RealtimeBrowser extends RealtimeBase with RealtimeMixin {
   }
 
   String? _getFallbackCookie() {
-    final fallbackCookie = html.window.localStorage['cookieFallback'];
+    final fallbackCookie = web.window.localStorage['cookieFallback'];
     if (fallbackCookie != null) {
       final cookie = Map<String, dynamic>.from(jsonDecode(fallbackCookie));
       return cookie.values.first;

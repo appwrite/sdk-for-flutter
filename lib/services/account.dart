@@ -132,7 +132,7 @@ class Account extends Service {
   /// from its creation and will be invalid if the user will logout in that time
   /// frame.
   Future<models.Jwt> createJWT() async {
-    const String apiPath = '/account/jwt';
+    const String apiPath = '/account/jwts';
 
     final Map<String, dynamic> apiParams = {};
 
@@ -187,7 +187,7 @@ class Account extends Service {
     return models.User.fromMap(res.data);
   }
 
-  /// Add Authenticator
+  /// Create Authenticator
   ///
   /// Add an authenticator app to be used as an MFA factor. Verify the
   /// authenticator using the [verify
@@ -214,7 +214,7 @@ class Account extends Service {
   ///
   /// Verify an authenticator app after adding it using the [add
   /// authenticator](/docs/references/cloud/client-web/account#createMfaAuthenticator)
-  /// method. add
+  /// method.
   Future<models.User> updateMfaAuthenticator(
       {required enums.AuthenticatorType type, required String otp}) async {
     final String apiPath =
@@ -237,14 +237,11 @@ class Account extends Service {
   /// Delete Authenticator
   ///
   /// Delete an authenticator for a user by ID.
-  Future deleteMfaAuthenticator(
-      {required enums.AuthenticatorType type, required String otp}) async {
+  Future deleteMfaAuthenticator({required enums.AuthenticatorType type}) async {
     final String apiPath =
         '/account/mfa/authenticators/{type}'.replaceAll('{type}', type.value);
 
-    final Map<String, dynamic> apiParams = {
-      'otp': otp,
-    };
+    final Map<String, dynamic> apiParams = {};
 
     final Map<String, String> apiHeaders = {
       'content-type': 'application/json',
@@ -256,7 +253,7 @@ class Account extends Service {
     return res.data;
   }
 
-  /// Create 2FA Challenge
+  /// Create MFA Challenge
   ///
   /// Begin the process of MFA verification after sign-in. Finish the flow with
   /// [updateMfaChallenge](/docs/references/cloud/client-web/account#updateMfaChallenge)
@@ -1171,7 +1168,7 @@ class Account extends Service {
     return models.Token.fromMap(res.data);
   }
 
-  /// Create phone verification (confirmation)
+  /// Update phone verification (confirmation)
   ///
   /// Use this endpoint to complete the user phone verification process. Use the
   /// **userId** and **secret** that were sent to your user's phone number to

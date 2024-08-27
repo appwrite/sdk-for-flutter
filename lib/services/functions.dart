@@ -44,7 +44,8 @@ class Functions extends Service {
       bool? xasync,
       String? path,
       enums.ExecutionMethod? method,
-      Map? headers}) async {
+      Map? headers,
+      String? scheduledAt}) async {
     final String apiPath = '/functions/{functionId}/executions'
         .replaceAll('{functionId}', functionId);
 
@@ -54,6 +55,7 @@ class Functions extends Service {
       'path': path,
       'method': method?.value,
       'headers': headers,
+      'scheduledAt': scheduledAt,
     };
 
     final Map<String, String> apiHeaders = {

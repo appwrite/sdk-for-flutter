@@ -3,7 +3,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter_web_auth_2/flutter_web_auth_2.dart';
 import 'package:http/http.dart' as http;
 import 'package:http/browser_client.dart';
-import 'package:universal_html/html.dart' as html;
+import 'package:web/web.dart' as web;
 import 'client_mixin.dart';
 import 'enums.dart';
 import 'exception.dart';
@@ -43,8 +43,8 @@ class ClientBrowser extends ClientBase with ClientMixin {
       'x-sdk-name': 'Flutter',
       'x-sdk-platform': 'client',
       'x-sdk-language': 'flutter',
-      'x-sdk-version': '12.0.4',
-      'X-Appwrite-Response-Format': '1.5.0',
+      'x-sdk-version': '13.0.0',
+      'X-Appwrite-Response-Format': '1.6.0',
     };
 
     config = {};
@@ -116,9 +116,9 @@ class ClientBrowser extends ClientBase with ClientMixin {
   }
 
   Future init() async {
-    if (html.window.localStorage.keys.contains('cookieFallback')) {
-      addHeader('x-fallback-cookies',
-          html.window.localStorage['cookieFallback'] ?? '');
+    final cookieFallback = web.window.localStorage['cookieFallback'];
+    if (cookieFallback != null) {
+      addHeader('x-fallback-cookies', cookieFallback);
     }
     _httpClient.withCredentials = true;
   }
@@ -217,7 +217,7 @@ class ClientBrowser extends ClientBase with ClientMixin {
         debugPrint(
             'Appwrite is using localStorage for session management. Increase your security by adding a custom domain as your API endpoint.');
         addHeader('X-Fallback-Cookies', cookieFallback);
-        html.window.localStorage['cookieFallback'] = cookieFallback;
+        web.window.localStorage['cookieFallback'] = cookieFallback;
       }
       return prepareResponse(res, responseType: responseType);
     } catch (e) {

@@ -1,5 +1,5 @@
 import 'realtime_stub.dart'
-    if (dart.library.html) 'realtime_browser.dart'
+    if (dart.library.js_interop) 'realtime_browser.dart'
     if (dart.library.io) 'realtime_io.dart';
 import 'realtime_subscription.dart';
 import 'service.dart';
