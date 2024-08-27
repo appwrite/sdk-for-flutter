@@ -10,7 +10,8 @@ class ID {
     final now = DateTime.now();
     final sec = (now.millisecondsSinceEpoch / 1000).floor();
     final usec = now.microsecondsSinceEpoch - (sec * 1000000);
-    return sec.toRadixString(16) + usec.toRadixString(16).padLeft(5, '0');
+    return sec.toRadixString(16) +
+        usec.toRadixString(16).padLeft(5, '0');
   }
 
   // Generate a unique ID with padding to have a longer ID
