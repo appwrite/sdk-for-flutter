@@ -1,6 +1,6 @@
 /// Appwrite Flutter SDK
 ///
-/// This SDK is compatible with Appwrite server version 1.5.x.
+/// This SDK is compatible with Appwrite server version 1.6.x. 
 /// For older versions, please check
 /// [previous releases](https://github.com/appwrite/sdk-for-flutter/releases).
 library appwrite;
@@ -12,9 +12,9 @@ import 'dart:convert';
 
 import 'src/enums.dart';
 import 'src/service.dart';
-import 'src/input_file.dart';
 import 'models.dart' as models;
 import 'enums.dart' as enums;
+import 'payload.dart';
 import 'src/upload_progress.dart';
 
 export 'src/response.dart';
@@ -24,7 +24,7 @@ export 'src/realtime.dart';
 export 'src/upload_progress.dart';
 export 'src/realtime_subscription.dart';
 export 'src/realtime_message.dart';
-export 'src/input_file.dart';
+export 'payload.dart';
 
 part 'query.dart';
 part 'permission.dart';

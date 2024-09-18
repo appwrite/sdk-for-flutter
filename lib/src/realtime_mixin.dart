@@ -22,7 +22,8 @@ mixin RealtimeMixin {
   GetFallbackCookie? getFallbackCookie;
   int? get closeCode => _websok?.closeCode;
   Map<int, RealtimeSubscription> _subscriptions = {};
-  bool _notifyDone = true;
+  bool _reconnect = true;
+  int _retries = 0;
   StreamSubscription? _websocketSubscription;
   bool _creatingSocket = false;
 
@@ -30,29 +31,29 @@ mixin RealtimeMixin {
     await _websocketSubscription?.cancel();
     await _websok?.sink.close(status.normalClosure, 'Ending session');
     _lastUrl = null;
+    _retries = 0;
+    _reconnect = false;
   }
 
   _createSocket() async {
-    if (_creatingSocket || _channels.isEmpty) return;
+    if(_creatingSocket || _channels.isEmpty) return;
     _creatingSocket = true;
     final uri = _prepareUri();
-    if (_websok == null) {
-      _websok = await getWebSocket(uri);
-      _lastUrl = uri.toString();
-    } else {
-      if (_lastUrl == uri.toString() && _websok?.closeCode == null) {
-        _creatingSocket = false;
-        return;
-      }
-      _notifyDone = false;
-      await _closeConnection();
-      _lastUrl = uri.toString();
-      _websok = await getWebSocket(uri);
-      _notifyDone = true;
-    }
-    debugPrint('subscription: $_lastUrl');
-
     try {
+      if (_websok == null || _websok?.closeCode != null) {
+        _websok = await getWebSocket(uri);
+        _lastUrl = uri.toString();
+      } else {
+        if (_lastUrl == uri.toString() && _websok?.closeCode == null) {
+          _creatingSocket = false;
+          return;
+        }
+        await _closeConnection();
+        _lastUrl = uri.toString();
+        _websok = await getWebSocket(uri);
+      }
+      debugPrint('subscription: $_lastUrl');
+      _retries = 0;
       _websocketSubscription = _websok?.stream.listen((response) {
         final data = RealtimeResponse.fromJson(response);
         switch (data.type) {
@@ -87,32 +88,42 @@ mixin RealtimeMixin {
             break;
         }
       }, onDone: () {
-        final subscriptions = List.from(_subscriptions.values);
-        for (var subscription in subscriptions) {
-          subscription.close();
-        }
-        _channels.clear();
-        _closeConnection();
+        _retry();
       }, onError: (err, stack) {
         for (var subscription in _subscriptions.values) {
           subscription.controller.addError(err, stack);
         }
-        if (_websok?.closeCode != null && _websok?.closeCode != 1008) {
-          debugPrint("Reconnecting in one second.");
-          Future.delayed(Duration(seconds: 1), _createSocket);
-        }
+        _retry();
       });
     } catch (e) {
       if (e is AppwriteException) {
         rethrow;
       }
-      if (e is WebSocketChannelException) {
-        throw AppwriteException(e.message);
-      }
-      throw AppwriteException(e.toString());
+      debugPrint(e.toString());
+      _retry();
     } finally {
       _creatingSocket = false;
     }
+  }
+
+  void _retry() async {
+    if (!_reconnect || _websok?.closeCode == status.policyViolation) {
+      _reconnect = true;
+      return;
+    }
+    _retries++;
+    debugPrint("Reconnecting in ${_getTimeout()} seconds.");
+    Future.delayed(Duration(seconds: _getTimeout()), _createSocket);
+  }
+
+  int _getTimeout() {
+    return _retries < 5
+        ? 1
+        : _retries < 15
+            ? 5
+            : _retries < 100
+                ? 10
+                : 60;
   }
 
   Uri _prepareUri() {
@@ -167,13 +178,10 @@ mixin RealtimeMixin {
   }
 
   void handleError(RealtimeResponse response) {
-    if (response.data['code'] == 1008) {
+    if (response.data['code'] == status.policyViolation) {
       throw AppwriteException(response.data["message"], response.data["code"]);
     } else {
-      debugPrint("Reconnecting in one second.");
-      Future.delayed(const Duration(seconds: 1), () {
-        _createSocket();
-      });
+      _retry();
     }
   }
 }

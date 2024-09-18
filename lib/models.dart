@@ -1,6 +1,8 @@
 /// Appwrite Models
 library appwrite.models;
 
+import 'payload.dart';
+
 part 'src/models/model.dart';
 part 'src/models/document_list.dart';
 part 'src/models/session_list.dart';

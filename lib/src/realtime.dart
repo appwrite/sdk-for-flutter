@@ -1,5 +1,5 @@
 import 'realtime_stub.dart'
-    if (dart.library.html) 'realtime_browser.dart'
+    if (dart.library.js_interop) 'realtime_browser.dart'
     if (dart.library.io) 'realtime_io.dart';
 import 'realtime_subscription.dart';
 import 'service.dart';
@@ -10,9 +10,9 @@ abstract class Realtime extends Service {
   /// Initializes a [Realtime] service
   factory Realtime(Client client) => createRealtime(client);
 
-  /// Subscribes to Appwrite events and returns a `RealtimeSubscription` object, which can be used
+  /// Subscribes to Appwrite events and returns a `RealtimeSubscription` object, which can be used 
   /// to listen to events on the channels in realtime and to close the subscription to stop listening.
-  ///
+  /// 
   /// Possible channels are:
   /// - account
   /// - collections
@@ -41,7 +41,7 @@ abstract class Realtime extends Service {
   ///
   /// subscription.close();
   /// ```
-  ///
+  /// 
   RealtimeSubscription subscribe(List<String> channels);
 
   /// The [close code](https://datatracker.ietf.org/doc/html/rfc6455#section-7.1.5) set when the WebSocket connection is closed.

@@ -99,7 +99,7 @@ void main() {
             final response = await storage.createFile(
                 bucketId: '<BUCKET_ID>',
                 fileId: '<FILE_ID>',
-                file: InputFile.fromPath(path: './image.png'),
+                file: Payload.fromPath(path: './image.png'),
             );
             expect(response, isA<models.File>());
 
