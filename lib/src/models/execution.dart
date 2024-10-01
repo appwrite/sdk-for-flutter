@@ -25,7 +25,7 @@ class Execution implements Model {
     /// HTTP response status code.
     final int responseStatusCode;
     /// HTTP response body. This will return empty unless execution is created as synchronous.
-    final String responseBody;
+    final Payload responseBody;
     /// HTTP response headers as a key-value object. This will return only whitelisted headers. All headers are returned if execution is created as synchronous.
     final List<Headers> responseHeaders;
     /// Function logs. Includes the last 4,000 characters. This will return an empty string unless the response is returned using an API key or as part of a webhook payload.
@@ -71,7 +71,7 @@ class Execution implements Model {
             requestHeaders: List<Headers>.from(map['requestHeaders'].map((p) => Headers.fromMap(p))),
             responseStatusCode: (map['responseStatusCode'] is String) ?
                         int.tryParse(map['responseStatusCode']) ?? 0:map['responseStatusCode'] ?? 0,
-            responseBody: map['responseBody'].toString(),
+            responseBody: map['responseBody'],
             responseHeaders: List<Headers>.from(map['responseHeaders'].map((p) => Headers.fromMap(p))),
             logs: map['logs'].toString(),
             errors: map['errors'].toString(),

@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'src/exception.dart';
+import 'dart:io';
 
 class Payload {
   late final String? path;
@@ -42,6 +43,15 @@ class Payload {
     } catch (e) {
       throw FormatException('Failed to parse JSON: ${e.toString()}');
     }
+  }
+
+  /// Create a file from the payload
+  void toFile(String path) {
+    if(data == null) {
+      throw AppwriteException('`data` is not defined.');
+    }
+    final file = File(path);
+    file.writeAsBytesSync(data!);
   }
 
   /// Create a Payload from binary data

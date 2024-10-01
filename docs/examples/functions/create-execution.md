@@ -11,7 +11,7 @@ Execution result = await functions.createExecution(
     body: Payload.fromJson({ 'x': 'y' }), // optional
     xasync: false, // optional
     path: '<PATH>', // optional
-    method: ExecutionMethod.gET, // optional
+    method: ExecutionMethod.get, // optional
     headers: {}, // optional
     scheduledAt: '', // optional
 );
