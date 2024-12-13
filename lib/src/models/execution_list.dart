@@ -14,8 +14,7 @@ class ExecutionList implements Model {
 
     factory ExecutionList.fromMap(Map<String, dynamic> map) {
         return ExecutionList(
-            total: (map['total'] is String) ?
-                        int.tryParse(map['total']) ?? 0:map['total'] ?? 0,
+            total: map['total'],
             executions: List<Execution>.from(map['executions'].map((p) => Execution.fromMap(p))),
         );
     }

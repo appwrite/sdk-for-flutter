@@ -8,7 +8,7 @@ import 'client_mixin.dart';
 import 'enums.dart';
 import 'exception.dart';
 import 'client_base.dart';
-import '../payload.dart';
+import 'input_file.dart';
 import 'upload_progress.dart';
 import 'response.dart';
 
@@ -130,15 +130,15 @@ class ClientBrowser extends ClientBase with ClientMixin {
     Function(UploadProgress)? onProgress,
   }) async {
     InputFile file = params[paramName];
-    if (file.data == null) {
-      throw AppwriteException("File data must be provided for Flutter web");
+    if (file.bytes == null) {
+      throw AppwriteException("File bytes must be provided for Flutter web");
     }
 
-    int size = file.data!.length;
+    int size = file.bytes!.length;
 
     late Response res;
     if (size <= CHUNK_SIZE) {
-      params[paramName] = http.MultipartFile.fromBytes(paramName, file.data!, filename: file.filename);
+      params[paramName] = http.MultipartFile.fromBytes(paramName, file.bytes!, filename: file.filename);
       return call(
         HttpMethod.post,
         path: path,
@@ -164,7 +164,7 @@ class ClientBrowser extends ClientBase with ClientMixin {
     while (offset < size) {
       List<int> chunk = [];
       final end = min(offset + CHUNK_SIZE, size);
-      chunk = file.toBinary(offset: offset, length: min(CHUNK_SIZE, size - offset)).toList();
+      chunk = file.bytes!.getRange(offset, end).toList();
       params[paramName] =
           http.MultipartFile.fromBytes(paramName, chunk, filename: file.filename);
       headers['content-range'] =

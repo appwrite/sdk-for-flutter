@@ -8,10 +8,10 @@ Functions functions = Functions(client);
 
 Execution result = await functions.createExecution(
     functionId: '<FUNCTION_ID>',
-    body: Payload.fromJson({ 'x': 'y' }), // optional
+    body: '<BODY>', // optional
     xasync: false, // optional
     path: '<PATH>', // optional
-    method: ExecutionMethod.get, // optional
+    method: ExecutionMethod.gET, // optional
     headers: {}, // optional
     scheduledAt: '', // optional
 );

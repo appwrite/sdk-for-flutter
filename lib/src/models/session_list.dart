@@ -14,8 +14,7 @@ class SessionList implements Model {
 
     factory SessionList.fromMap(Map<String, dynamic> map) {
         return SessionList(
-            total: (map['total'] is String) ?
-                        int.tryParse(map['total']) ?? 0:map['total'] ?? 0,
+            total: map['total'],
             sessions: List<Session>.from(map['sessions'].map((p) => Session.fromMap(p))),
         );
     }

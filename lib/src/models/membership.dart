@@ -27,7 +27,7 @@ class Membership implements Model {
     /// Multi factor authentication status, true if the user has MFA enabled or false otherwise.
     final bool mfa;
     /// User list of roles
-    final List roles;
+    final List<String> roles;
 
     Membership({
         required this.$id,

@@ -14,8 +14,7 @@ class PhoneList implements Model {
 
     factory PhoneList.fromMap(Map<String, dynamic> map) {
         return PhoneList(
-            total: (map['total'] is String) ?
-                        int.tryParse(map['total']) ?? 0:map['total'] ?? 0,
+            total: map['total'],
             phones: List<Phone>.from(map['phones'].map((p) => Phone.fromMap(p))),
         );
     }

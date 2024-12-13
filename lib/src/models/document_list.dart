@@ -14,8 +14,7 @@ class DocumentList implements Model {
 
     factory DocumentList.fromMap(Map<String, dynamic> map) {
         return DocumentList(
-            total: (map['total'] is String) ?
-                        int.tryParse(map['total']) ?? 0:map['total'] ?? 0,
+            total: map['total'],
             documents: List<Document>.from(map['documents'].map((p) => Document.fromMap(p))),
         );
     }

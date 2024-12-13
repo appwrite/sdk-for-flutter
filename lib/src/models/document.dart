@@ -13,7 +13,7 @@ class Document implements Model {
     /// Document update date in ISO 8601 format.
     final String $updatedAt;
     /// Document permissions. [Learn more about permissions](https://appwrite.io/docs/permissions).
-    final List $permissions;
+    final List<String> $permissions;
     final Map<String, dynamic> data;
 
     Document({

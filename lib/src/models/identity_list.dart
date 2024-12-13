@@ -14,8 +14,7 @@ class IdentityList implements Model {
 
     factory IdentityList.fromMap(Map<String, dynamic> map) {
         return IdentityList(
-            total: (map['total'] is String) ?
-                        int.tryParse(map['total']) ?? 0:map['total'] ?? 0,
+            total: map['total'],
             identities: List<Identity>.from(map['identities'].map((p) => Identity.fromMap(p))),
         );
     }

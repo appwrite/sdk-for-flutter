@@ -14,8 +14,7 @@ class LogList implements Model {
 
     factory LogList.fromMap(Map<String, dynamic> map) {
         return LogList(
-            total: (map['total'] is String) ?
-                        int.tryParse(map['total']) ?? 0:map['total'] ?? 0,
+            total: map['total'],
             logs: List<Log>.from(map['logs'].map((p) => Log.fromMap(p))),
         );
     }

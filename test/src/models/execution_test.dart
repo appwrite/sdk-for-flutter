@@ -17,7 +17,7 @@ void main() {
         requestPath: '/articles?id=5',
         requestHeaders: [],
         responseStatusCode: 200,
-        responseBody: ,
+        responseBody: '',
         responseHeaders: [],
         logs: '',
         errors: '',
@@ -38,7 +38,7 @@ void main() {
       expect(result.requestPath, '/articles?id=5');
       expect(result.requestHeaders, []);
       expect(result.responseStatusCode, 200);
-      expect(result.responseBody, );
+      expect(result.responseBody, '');
       expect(result.responseHeaders, []);
       expect(result.logs, '');
       expect(result.errors, '');

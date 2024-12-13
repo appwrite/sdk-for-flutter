@@ -9,7 +9,7 @@ class Execution implements Model {
     /// Execution upate date in ISO 8601 format.
     final String $updatedAt;
     /// Execution roles.
-    final List $permissions;
+    final List<String> $permissions;
     /// Function ID.
     final String functionId;
     /// The trigger that caused the function to execute. Possible values can be: `http`, `schedule`, or `event`.
@@ -25,7 +25,7 @@ class Execution implements Model {
     /// HTTP response status code.
     final int responseStatusCode;
     /// HTTP response body. This will return empty unless execution is created as synchronous.
-    final Payload responseBody;
+    final String responseBody;
     /// HTTP response headers as a key-value object. This will return only whitelisted headers. All headers are returned if execution is created as synchronous.
     final List<Headers> responseHeaders;
     /// Function logs. Includes the last 4,000 characters. This will return an empty string unless the response is returned using an API key or as part of a webhook payload.
@@ -69,9 +69,8 @@ class Execution implements Model {
             requestMethod: map['requestMethod'].toString(),
             requestPath: map['requestPath'].toString(),
             requestHeaders: List<Headers>.from(map['requestHeaders'].map((p) => Headers.fromMap(p))),
-            responseStatusCode: (map['responseStatusCode'] is String) ?
-                        int.tryParse(map['responseStatusCode']) ?? 0:map['responseStatusCode'] ?? 0,
-            responseBody: map['responseBody'],
+            responseStatusCode: map['responseStatusCode'],
+            responseBody: map['responseBody'].toString(),
             responseHeaders: List<Headers>.from(map['responseHeaders'].map((p) => Headers.fromMap(p))),
             logs: map['logs'].toString(),
             errors: map['errors'].toString(),

@@ -9,13 +9,13 @@ enum CreditCard {
     discover(value: 'discover'),
     elo(value: 'elo'),
     hipercard(value: 'hipercard'),
-    jcb(value: 'jcb'),
+    jCB(value: 'jcb'),
     mastercard(value: 'mastercard'),
     naranja(value: 'naranja'),
     tarjetaShopping(value: 'targeta-shopping'),
     unionChinaPay(value: 'union-china-pay'),
     visa(value: 'visa'),
-    mir(value: 'mir'),
+    mIR(value: 'mir'),
     maestro(value: 'maestro');
 
     const CreditCard({

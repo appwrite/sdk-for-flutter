@@ -85,19 +85,15 @@ void main() {
                 'requestPath': '/articles?id=5',
                 'requestHeaders': [],
                 'responseStatusCode': 200,
-                'responseBody': ,
+                'responseBody': '',
                 'responseHeaders': [],
                 'logs': '',
                 'errors': '',
                 'duration': 0.4,};
 
 
-            when(client.chunkedUpload(
-                path: argThat(isNotNull),
-                params: argThat(isNotNull),
-                paramName: argThat(isNotNull),
-                idParamName: argThat(isNotNull),
-                headers: argThat(isNotNull),
+            when(client.call(
+                HttpMethod.post,
             )).thenAnswer((_) async => Response(data: data));
 
 
@@ -121,7 +117,7 @@ void main() {
                 'requestPath': '/articles?id=5',
                 'requestHeaders': [],
                 'responseStatusCode': 200,
-                'responseBody': ,
+                'responseBody': '',
                 'responseHeaders': [],
                 'logs': '',
                 'errors': '',

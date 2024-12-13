@@ -14,8 +14,7 @@ class LanguageList implements Model {
 
     factory LanguageList.fromMap(Map<String, dynamic> map) {
         return LanguageList(
-            total: (map['total'] is String) ?
-                        int.tryParse(map['total']) ?? 0:map['total'] ?? 0,
+            total: map['total'],
             languages: List<Language>.from(map['languages'].map((p) => Language.fromMap(p))),
         );
     }

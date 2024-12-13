@@ -55,7 +55,7 @@ class Session implements Model {
     /// Returns true if this the current user session.
     final bool current;
     /// Returns a list of active session factors.
-    final List factors;
+    final List<String> factors;
     /// Secret used to authenticate the user. Only included if the request was made with an API key
     final String secret;
     /// Most recent date in ISO 8601 format when the session successfully passed MFA challenge.

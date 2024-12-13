@@ -14,8 +14,7 @@ class TeamList implements Model {
 
     factory TeamList.fromMap(Map<String, dynamic> map) {
         return TeamList(
-            total: (map['total'] is String) ?
-                        int.tryParse(map['total']) ?? 0:map['total'] ?? 0,
+            total: map['total'],
             teams: List<Team>.from(map['teams'].map((p) => Team.fromMap(p))),
         );
     }

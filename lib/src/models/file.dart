@@ -11,7 +11,7 @@ class File implements Model {
     /// File update date in ISO 8601 format.
     final String $updatedAt;
     /// File permissions. [Learn more about permissions](https://appwrite.io/docs/permissions).
-    final List $permissions;
+    final List<String> $permissions;
     /// File name.
     final String name;
     /// File MD5 signature.
@@ -49,12 +49,9 @@ class File implements Model {
             name: map['name'].toString(),
             signature: map['signature'].toString(),
             mimeType: map['mimeType'].toString(),
-            sizeOriginal: (map['sizeOriginal'] is String) ?
-                        int.tryParse(map['sizeOriginal']) ?? 0:map['sizeOriginal'] ?? 0,
-            chunksTotal: (map['chunksTotal'] is String) ?
-                        int.tryParse(map['chunksTotal']) ?? 0:map['chunksTotal'] ?? 0,
-            chunksUploaded: (map['chunksUploaded'] is String) ?
-                        int.tryParse(map['chunksUploaded']) ?? 0:map['chunksUploaded'] ?? 0,
+            sizeOriginal: map['sizeOriginal'],
+            chunksTotal: map['chunksTotal'],
+            chunksUploaded: map['chunksUploaded'],
         );
     }
 

@@ -14,8 +14,7 @@ class MembershipList implements Model {
 
     factory MembershipList.fromMap(Map<String, dynamic> map) {
         return MembershipList(
-            total: (map['total'] is String) ?
-                        int.tryParse(map['total']) ?? 0:map['total'] ?? 0,
+            total: map['total'],
             memberships: List<Membership>.from(map['memberships'].map((p) => Membership.fromMap(p))),
         );
     }

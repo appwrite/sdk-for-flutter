@@ -47,7 +47,7 @@ class Storage extends Service {
     /// If you're creating a new file using one of the Appwrite SDKs, all the
     /// chunking logic will be managed by the SDK internally.
     /// 
-    Future<models.File> createFile({required String bucketId, required String fileId, required Payload file, List<String>? permissions, Function(UploadProgress)? onProgress}) async {
+    Future<models.File> createFile({required String bucketId, required String fileId, required InputFile file, List<String>? permissions, Function(UploadProgress)? onProgress}) async {
         final String apiPath = '/storage/buckets/{bucketId}/files'.replaceAll('{bucketId}', bucketId);
 
         final Map<String, dynamic> apiParams = {

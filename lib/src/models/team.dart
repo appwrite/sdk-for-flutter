@@ -30,8 +30,7 @@ class Team implements Model {
             $createdAt: map['\$createdAt'].toString(),
             $updatedAt: map['\$updatedAt'].toString(),
             name: map['name'].toString(),
-            total: (map['total'] is String) ?
-                        int.tryParse(map['total']) ?? 0:map['total'] ?? 0,
+            total: map['total'],
             prefs: Preferences.fromMap(map['prefs']),
         );
     }

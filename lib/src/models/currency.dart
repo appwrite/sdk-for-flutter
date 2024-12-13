@@ -32,8 +32,7 @@ class Currency implements Model {
             symbol: map['symbol'].toString(),
             name: map['name'].toString(),
             symbolNative: map['symbolNative'].toString(),
-            decimalDigits: (map['decimalDigits'] is String) ?
-                        int.tryParse(map['decimalDigits']) ?? 0:map['decimalDigits'] ?? 0,
+            decimalDigits: map['decimalDigits'],
             rounding: map['rounding'].toDouble(),
             code: map['code'].toString(),
             namePlural: map['namePlural'].toString(),

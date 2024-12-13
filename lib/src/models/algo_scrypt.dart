@@ -24,14 +24,10 @@ class AlgoScrypt implements Model {
     factory AlgoScrypt.fromMap(Map<String, dynamic> map) {
         return AlgoScrypt(
             type: map['type'].toString(),
-            costCpu: (map['costCpu'] is String) ?
-                        int.tryParse(map['costCpu']) ?? 0:map['costCpu'] ?? 0,
-            costMemory: (map['costMemory'] is String) ?
-                        int.tryParse(map['costMemory']) ?? 0:map['costMemory'] ?? 0,
-            costParallel: (map['costParallel'] is String) ?
-                        int.tryParse(map['costParallel']) ?? 0:map['costParallel'] ?? 0,
-            length: (map['length'] is String) ?
-                        int.tryParse(map['length']) ?? 0:map['length'] ?? 0,
+            costCpu: map['costCpu'],
+            costMemory: map['costMemory'],
+            costParallel: map['costParallel'],
+            length: map['length'],
         );
     }
 

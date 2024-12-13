@@ -13,7 +13,7 @@ platforms:
   web:
   windows:
 environment:
-  sdk: '>=3.0.0 <4.0.0'
+  sdk: '>=2.17.0 <4.0.0'
 
 dependencies:
   flutter:
@@ -26,9 +26,6 @@ dependencies:
   path_provider: ^2.1.4
   web_socket_channel: ^3.0.1
   web: ^1.0.0
-  http_parser: ^4.0.2
-  mime: ^1.0.6
-  string_scanner: ^1.2.0
 
 dev_dependencies:
   path_provider_platform_interface: ^2.1.2
@@ -36,4 +33,3 @@ dev_dependencies:
   flutter_test:
     sdk: flutter
   mockito: ^5.4.4
-  crypto: ^3.0.1

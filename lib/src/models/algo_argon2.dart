@@ -21,12 +21,9 @@ class AlgoArgon2 implements Model {
     factory AlgoArgon2.fromMap(Map<String, dynamic> map) {
         return AlgoArgon2(
             type: map['type'].toString(),
-            memoryCost: (map['memoryCost'] is String) ?
-                        int.tryParse(map['memoryCost']) ?? 0:map['memoryCost'] ?? 0,
-            timeCost: (map['timeCost'] is String) ?
-                        int.tryParse(map['timeCost']) ?? 0:map['timeCost'] ?? 0,
-            threads: (map['threads'] is String) ?
-                        int.tryParse(map['threads']) ?? 0:map['threads'] ?? 0,
+            memoryCost: map['memoryCost'],
+            timeCost: map['timeCost'],
+            threads: map['threads'],
         );
     }
 

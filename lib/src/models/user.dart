@@ -21,7 +21,7 @@ class User implements Model {
     /// User status. Pass `true` for enabled and `false` for disabled.
     final bool status;
     /// Labels for the user.
-    final List labels;
+    final List<String> labels;
     /// Password update time in ISO 8601 format.
     final String passwordUpdate;
     /// User email address.

@@ -14,8 +14,7 @@ class ContinentList implements Model {
 
     factory ContinentList.fromMap(Map<String, dynamic> map) {
         return ContinentList(
-            total: (map['total'] is String) ?
-                        int.tryParse(map['total']) ?? 0:map['total'] ?? 0,
+            total: map['total'],
             continents: List<Continent>.from(map['continents'].map((p) => Continent.fromMap(p))),
         );
     }

@@ -14,8 +14,7 @@ class CurrencyList implements Model {
 
     factory CurrencyList.fromMap(Map<String, dynamic> map) {
         return CurrencyList(
-            total: (map['total'] is String) ?
-                        int.tryParse(map['total']) ?? 0:map['total'] ?? 0,
+            total: map['total'],
             currencies: List<Currency>.from(map['currencies'].map((p) => Currency.fromMap(p))),
         );
     }

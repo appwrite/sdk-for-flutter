@@ -12,9 +12,9 @@ import 'dart:convert';
 
 import 'src/enums.dart';
 import 'src/service.dart';
+import 'src/input_file.dart';
 import 'models.dart' as models;
 import 'enums.dart' as enums;
-import 'payload.dart';
 import 'src/upload_progress.dart';
 
 export 'src/response.dart';
@@ -24,7 +24,7 @@ export 'src/realtime.dart';
 export 'src/upload_progress.dart';
 export 'src/realtime_subscription.dart';
 export 'src/realtime_message.dart';
-export 'payload.dart';
+export 'src/input_file.dart';
 
 part 'query.dart';
 part 'permission.dart';

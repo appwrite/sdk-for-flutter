@@ -14,8 +14,7 @@ class LocaleCodeList implements Model {
 
     factory LocaleCodeList.fromMap(Map<String, dynamic> map) {
         return LocaleCodeList(
-            total: (map['total'] is String) ?
-                        int.tryParse(map['total']) ?? 0:map['total'] ?? 0,
+            total: map['total'],
             localeCodes: List<LocaleCode>.from(map['localeCodes'].map((p) => LocaleCode.fromMap(p))),
         );
     }

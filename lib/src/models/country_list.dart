@@ -14,8 +14,7 @@ class CountryList implements Model {
 
     factory CountryList.fromMap(Map<String, dynamic> map) {
         return CountryList(
-            total: (map['total'] is String) ?
-                        int.tryParse(map['total']) ?? 0:map['total'] ?? 0,
+            total: map['total'],
             countries: List<Country>.from(map['countries'].map((p) => Country.fromMap(p))),
         );
     }
