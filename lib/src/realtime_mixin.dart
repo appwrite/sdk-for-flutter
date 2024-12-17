@@ -27,8 +27,10 @@ mixin RealtimeMixin {
   int _retries = 0;
   StreamSubscription? _websocketSubscription;
   bool _creatingSocket = false;
+  Timer? _heartbeatTimer;
 
   Future<dynamic> _closeConnection() async {
+    _stopHeartbeat();
     await _websocketSubscription?.cancel();
     await _websok?.sink.close(status.normalClosure, 'Ending session');
     _lastUrl = null;
@@ -36,8 +38,24 @@ mixin RealtimeMixin {
     _reconnect = false;
   }
 
+  void _startHeartbeat() {
+    _stopHeartbeat();
+    _heartbeatTimer = Timer.periodic(Duration(seconds: 20), (_) {
+      if (_websok != null) {
+        _websok!.sink.add(jsonEncode({
+          "type": "ping"
+        }));
+      }
+    });
+  }
+
+  void _stopHeartbeat() {
+    _heartbeatTimer?.cancel();
+    _heartbeatTimer = null;
+  }
+
   _createSocket() async {
-    if (_creatingSocket || _channels.isEmpty) return;
+    if(_creatingSocket || _channels.isEmpty) return;
     _creatingSocket = true;
     final uri = _prepareUri();
     try {
@@ -78,6 +96,10 @@ mixin RealtimeMixin {
                 }));
               }
             }
+            _startHeartbeat(); // Start heartbeat after successful connection
+            break;
+          case 'pong':
+            debugPrint('Received heartbeat response from realtime server');
             break;
           case 'event':
             final message = RealtimeMessage.fromMap(data.data);
@@ -91,8 +113,10 @@ mixin RealtimeMixin {
             break;
         }
       }, onDone: () {
+        _stopHeartbeat();
         _retry();
       }, onError: (err, stack) {
+        _stopHeartbeat();
         for (var subscription in _subscriptions.values) {
           subscription.controller.addError(err, stack);
         }
