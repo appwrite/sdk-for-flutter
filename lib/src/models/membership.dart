@@ -14,10 +14,10 @@ class Membership implements Model {
   /// User ID.
   final String userId;
 
-  /// User name.
+  /// User name. Hide this attribute by toggling membership privacy in the Console.
   final String userName;
 
-  /// User email address.
+  /// User email address. Hide this attribute by toggling membership privacy in the Console.
   final String userEmail;
 
   /// Team ID.
@@ -35,11 +35,11 @@ class Membership implements Model {
   /// User confirmation status, true if the user has joined the team or false otherwise.
   final bool confirm;
 
-  /// Multi factor authentication status, true if the user has MFA enabled or false otherwise.
+  /// Multi factor authentication status, true if the user has MFA enabled or false otherwise. Hide this attribute by toggling membership privacy in the Console.
   final bool mfa;
 
   /// User list of roles
-  final List roles;
+  final List<String> roles;
 
   Membership({
     required this.$id,

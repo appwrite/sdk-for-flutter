@@ -30,7 +30,7 @@ class User implements Model {
   final bool status;
 
   /// Labels for the user.
-  final List labels;
+  final List<String> labels;
 
   /// Password update time in ISO 8601 format.
   final String passwordUpdate;

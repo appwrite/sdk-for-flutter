@@ -26,6 +26,9 @@ class Target implements Model {
   /// The target identifier.
   final String identifier;
 
+  /// Is the target expired.
+  final bool expired;
+
   Target({
     required this.$id,
     required this.$createdAt,
@@ -35,6 +38,7 @@ class Target implements Model {
     this.providerId,
     required this.providerType,
     required this.identifier,
+    required this.expired,
   });
 
   factory Target.fromMap(Map<String, dynamic> map) {
@@ -47,6 +51,7 @@ class Target implements Model {
       providerId: map['providerId']?.toString(),
       providerType: map['providerType'].toString(),
       identifier: map['identifier'].toString(),
+      expired: map['expired'],
     );
   }
 
@@ -60,6 +65,7 @@ class Target implements Model {
       "providerId": providerId,
       "providerType": providerType,
       "identifier": identifier,
+      "expired": expired,
     };
   }
 }

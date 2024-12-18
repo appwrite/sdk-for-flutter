@@ -18,7 +18,7 @@ class Document implements Model {
   final String $updatedAt;
 
   /// Document permissions. [Learn more about permissions](https://appwrite.io/docs/permissions).
-  final List $permissions;
+  final List<String> $permissions;
   final Map<String, dynamic> data;
 
   Document({

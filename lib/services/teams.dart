@@ -116,7 +116,8 @@ class Teams extends Service {
   /// List team memberships
   ///
   /// Use this endpoint to list a team's members using the team's ID. All team
-  /// members have read access to this endpoint.
+  /// members have read access to this endpoint. Hide sensitive attributes from
+  /// the response by toggling membership privacy in the Console.
   Future<models.MembershipList> listMemberships(
       {required String teamId, List<String>? queries, String? search}) async {
     final String apiPath =
@@ -193,7 +194,8 @@ class Teams extends Service {
   /// Get team membership
   ///
   /// Get a team member by the membership unique id. All team members have read
-  /// access for this resource.
+  /// access for this resource. Hide sensitive attributes from the response by
+  /// toggling membership privacy in the Console.
   Future<models.Membership> getMembership(
       {required String teamId, required String membershipId}) async {
     final String apiPath = '/teams/{teamId}/memberships/{membershipId}'

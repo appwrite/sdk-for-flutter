@@ -3,7 +3,7 @@ part of '../../models.dart';
 /// MFA Recovery Codes
 class MfaRecoveryCodes implements Model {
   /// Recovery codes.
-  final List recoveryCodes;
+  final List<String> recoveryCodes;
 
   MfaRecoveryCodes({
     required this.recoveryCodes,

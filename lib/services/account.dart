@@ -85,7 +85,7 @@ class Account extends Service {
     return models.User.fromMap(res.data);
   }
 
-  /// List Identities
+  /// List identities
   ///
   /// Get the list of identities for the currently logged in user.
   Future<models.IdentityList> listIdentities({List<String>? queries}) async {
@@ -187,7 +187,7 @@ class Account extends Service {
     return models.User.fromMap(res.data);
   }
 
-  /// Create Authenticator
+  /// Create authenticator
   ///
   /// Add an authenticator app to be used as an MFA factor. Verify the
   /// authenticator using the [verify
@@ -210,7 +210,7 @@ class Account extends Service {
     return models.MfaType.fromMap(res.data);
   }
 
-  /// Verify Authenticator
+  /// Verify authenticator
   ///
   /// Verify an authenticator app after adding it using the [add
   /// authenticator](/docs/references/cloud/client-web/account#createMfaAuthenticator)
@@ -234,7 +234,7 @@ class Account extends Service {
     return models.User.fromMap(res.data);
   }
 
-  /// Delete Authenticator
+  /// Delete authenticator
   ///
   /// Delete an authenticator for a user by ID.
   Future deleteMfaAuthenticator({required enums.AuthenticatorType type}) async {
@@ -253,7 +253,7 @@ class Account extends Service {
     return res.data;
   }
 
-  /// Create MFA Challenge
+  /// Create MFA challenge
   ///
   /// Begin the process of MFA verification after sign-in. Finish the flow with
   /// [updateMfaChallenge](/docs/references/cloud/client-web/account#updateMfaChallenge)
@@ -276,7 +276,7 @@ class Account extends Service {
     return models.MfaChallenge.fromMap(res.data);
   }
 
-  /// Create MFA Challenge (confirmation)
+  /// Create MFA challenge (confirmation)
   ///
   /// Complete the MFA challenge by providing the one-time password. Finish the
   /// process of MFA verification by providing the one-time password. To begin
@@ -302,7 +302,7 @@ class Account extends Service {
     return res.data;
   }
 
-  /// List Factors
+  /// List factors
   ///
   /// List the factors available on the account to be used as a MFA challange.
   Future<models.MfaFactors> listMfaFactors() async {
@@ -320,7 +320,7 @@ class Account extends Service {
     return models.MfaFactors.fromMap(res.data);
   }
 
-  /// Get MFA Recovery Codes
+  /// Get MFA recovery codes
   ///
   /// Get recovery codes that can be used as backup for MFA flow. Before getting
   /// codes, they must be generated using
@@ -341,7 +341,7 @@ class Account extends Service {
     return models.MfaRecoveryCodes.fromMap(res.data);
   }
 
-  /// Create MFA Recovery Codes
+  /// Create MFA recovery codes
   ///
   /// Generate recovery codes as backup for MFA flow. It's recommended to
   /// generate and show then immediately after user successfully adds their
@@ -363,7 +363,7 @@ class Account extends Service {
     return models.MfaRecoveryCodes.fromMap(res.data);
   }
 
-  /// Regenerate MFA Recovery Codes
+  /// Regenerate MFA recovery codes
   ///
   /// Regenerate recovery codes that can be used as backup for MFA flow. Before
   /// regenerating codes, they must be first generated using

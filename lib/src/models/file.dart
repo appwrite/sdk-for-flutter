@@ -15,7 +15,7 @@ class File implements Model {
   final String $updatedAt;
 
   /// File permissions. [Learn more about permissions](https://appwrite.io/docs/permissions).
-  final List $permissions;
+  final List<String> $permissions;
 
   /// File name.
   final String name;

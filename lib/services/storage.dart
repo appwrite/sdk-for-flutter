@@ -133,7 +133,7 @@ class Storage extends Service {
     return models.File.fromMap(res.data);
   }
 
-  /// Delete File
+  /// Delete file
   ///
   /// Delete a file by its unique ID. Only users with write permissions have
   /// access to delete this resource.

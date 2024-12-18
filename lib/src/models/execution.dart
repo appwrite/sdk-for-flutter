@@ -12,7 +12,7 @@ class Execution implements Model {
   final String $updatedAt;
 
   /// Execution roles.
-  final List $permissions;
+  final List<String> $permissions;
 
   /// Function ID.
   final String functionId;
