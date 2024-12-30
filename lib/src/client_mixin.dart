@@ -40,7 +40,7 @@ class ClientMixin {
       }
     } else if (method == HttpMethod.get) {
       if (params.isNotEmpty) {
-        params = params.map((key, value){
+        params = params.map((key, value) {
           if (value is int || value is double) {
             return MapEntry(key, value.toString());
           }
@@ -106,18 +106,23 @@ class ClientMixin {
     return Response(data: data);
   }
 
-  Future<http.Response> toResponse(http.StreamedResponse streamedResponse) async {
-    if(streamedResponse.statusCode == 204) {
-        return http.Response('',
-          streamedResponse.statusCode,
-          headers: streamedResponse.headers.map((k,v) => k.toLowerCase()=='content-type' ? MapEntry(k, 'text/plain') : MapEntry(k,v)),
-          request: streamedResponse.request,
-          isRedirect: streamedResponse.isRedirect,
-          persistentConnection: streamedResponse.persistentConnection,
-          reasonPhrase: streamedResponse.reasonPhrase,
-        );
-      } else {
-        return await http.Response.fromStream(streamedResponse);
-      }
+  Future<http.Response> toResponse(
+      http.StreamedResponse streamedResponse) async {
+    if (streamedResponse.statusCode == 204) {
+      return http.Response(
+        '',
+        streamedResponse.statusCode,
+        headers: streamedResponse.headers.map((k, v) =>
+            k.toLowerCase() == 'content-type'
+                ? MapEntry(k, 'text/plain')
+                : MapEntry(k, v)),
+        request: streamedResponse.request,
+        isRedirect: streamedResponse.isRedirect,
+        persistentConnection: streamedResponse.persistentConnection,
+        reasonPhrase: streamedResponse.reasonPhrase,
+      );
+    } else {
+      return await http.Response.fromStream(streamedResponse);
+    }
   }
 }

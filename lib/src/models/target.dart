@@ -2,62 +2,70 @@ part of '../../models.dart';
 
 /// Target
 class Target implements Model {
-    /// Target ID.
-    final String $id;
-    /// Target creation time in ISO 8601 format.
-    final String $createdAt;
-    /// Target update date in ISO 8601 format.
-    final String $updatedAt;
-    /// Target Name.
-    final String name;
-    /// User ID.
-    final String userId;
-    /// Provider ID.
-    final String? providerId;
-    /// The target provider type. Can be one of the following: `email`, `sms` or `push`.
-    final String providerType;
-    /// The target identifier.
-    final String identifier;
-    /// Is the target expired.
-    final bool expired;
+  /// Target ID.
+  final String $id;
 
-    Target({
-        required this.$id,
-        required this.$createdAt,
-        required this.$updatedAt,
-        required this.name,
-        required this.userId,
-        this.providerId,
-        required this.providerType,
-        required this.identifier,
-        required this.expired,
-    });
+  /// Target creation time in ISO 8601 format.
+  final String $createdAt;
 
-    factory Target.fromMap(Map<String, dynamic> map) {
-        return Target(
-            $id: map['\$id'].toString(),
-            $createdAt: map['\$createdAt'].toString(),
-            $updatedAt: map['\$updatedAt'].toString(),
-            name: map['name'].toString(),
-            userId: map['userId'].toString(),
-            providerId: map['providerId']?.toString(),
-            providerType: map['providerType'].toString(),
-            identifier: map['identifier'].toString(),
-            expired: map['expired'],
-        );
-    }
+  /// Target update date in ISO 8601 format.
+  final String $updatedAt;
 
-    Map<String, dynamic> toMap() {
-        return {
-            "\$id": $id,
-            "\$createdAt": $createdAt,
-            "\$updatedAt": $updatedAt,
-            "name": name,
-            "userId": userId,
-            "providerId": providerId,
-            "providerType": providerType,
-            "identifier": identifier,
-            "expired": expired,
-        };
-    }
+  /// Target Name.
+  final String name;
+
+  /// User ID.
+  final String userId;
+
+  /// Provider ID.
+  final String? providerId;
+
+  /// The target provider type. Can be one of the following: `email`, `sms` or `push`.
+  final String providerType;
+
+  /// The target identifier.
+  final String identifier;
+
+  /// Is the target expired.
+  final bool expired;
+
+  Target({
+    required this.$id,
+    required this.$createdAt,
+    required this.$updatedAt,
+    required this.name,
+    required this.userId,
+    this.providerId,
+    required this.providerType,
+    required this.identifier,
+    required this.expired,
+  });
+
+  factory Target.fromMap(Map<String, dynamic> map) {
+    return Target(
+      $id: map['\$id'].toString(),
+      $createdAt: map['\$createdAt'].toString(),
+      $updatedAt: map['\$updatedAt'].toString(),
+      name: map['name'].toString(),
+      userId: map['userId'].toString(),
+      providerId: map['providerId']?.toString(),
+      providerType: map['providerType'].toString(),
+      identifier: map['identifier'].toString(),
+      expired: map['expired'],
+    );
+  }
+
+  Map<String, dynamic> toMap() {
+    return {
+      "\$id": $id,
+      "\$createdAt": $createdAt,
+      "\$updatedAt": $updatedAt,
+      "name": name,
+      "userId": userId,
+      "providerId": providerId,
+      "providerType": providerType,
+      "identifier": identifier,
+      "expired": expired,
+    };
+  }
 }
