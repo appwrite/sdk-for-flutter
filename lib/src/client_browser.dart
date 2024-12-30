@@ -19,7 +19,7 @@ ClientBase createClient({
     ClientBrowser(endPoint: endPoint, selfSigned: selfSigned);
 
 class ClientBrowser extends ClientBase with ClientMixin {
-  static const int CHUNK_SIZE = 5 * 1024 * 1024;
+  static const int CHUNK_SIZE = 5*1024*1024;
   String _endPoint;
   Map<String, String>? _headers;
   @override
@@ -43,7 +43,7 @@ class ClientBrowser extends ClientBase with ClientMixin {
       'x-sdk-name': 'Flutter',
       'x-sdk-platform': 'client',
       'x-sdk-language': 'flutter',
-      'x-sdk-version': '13.1.0',
+      'x-sdk-version': '13.1.1',
       'X-Appwrite-Response-Format': '1.6.0',
     };
 
@@ -64,7 +64,6 @@ class ClientBrowser extends ClientBase with ClientMixin {
     addHeader('X-Appwrite-Project', value);
     return this;
   }
-
   /// Your secret JSON Web Token
   @override
   ClientBrowser setJWT(value) {
@@ -72,14 +71,12 @@ class ClientBrowser extends ClientBase with ClientMixin {
     addHeader('X-Appwrite-JWT', value);
     return this;
   }
-
   @override
   ClientBrowser setLocale(value) {
     config['locale'] = value;
     addHeader('X-Appwrite-Locale', value);
     return this;
   }
-
   /// The user session to authenticate with
   @override
   ClientBrowser setSession(value) {
@@ -115,6 +112,14 @@ class ClientBrowser extends ClientBase with ClientMixin {
     return this;
   }
 
+  @override
+  Future<String> ping() async {
+    final String apiPath = '/ping';
+    final response = await call(HttpMethod.get, path: apiPath, responseType: ResponseType.plain);
+
+    return response.data;
+  }
+
   Future init() async {
     final cookieFallback = web.window.localStorage['cookieFallback'];
     if (cookieFallback != null) {
@@ -141,8 +146,7 @@ class ClientBrowser extends ClientBase with ClientMixin {
 
     late Response res;
     if (size <= CHUNK_SIZE) {
-      params[paramName] = http.MultipartFile.fromBytes(paramName, file.bytes!,
-          filename: file.filename);
+      params[paramName] = http.MultipartFile.fromBytes(paramName, file.bytes!, filename: file.filename);
       return call(
         HttpMethod.post,
         path: path,
@@ -169,8 +173,8 @@ class ClientBrowser extends ClientBase with ClientMixin {
       List<int> chunk = [];
       final end = min(offset + CHUNK_SIZE, size);
       chunk = file.bytes!.getRange(offset, end).toList();
-      params[paramName] = http.MultipartFile.fromBytes(paramName, chunk,
-          filename: file.filename);
+      params[paramName] =
+          http.MultipartFile.fromBytes(paramName, chunk, filename: file.filename);
       headers['content-range'] =
           'bytes $offset-${min<int>((offset + CHUNK_SIZE - 1), size - 1)}/$size';
       res = await call(HttpMethod.post,
@@ -230,7 +234,7 @@ class ClientBrowser extends ClientBase with ClientMixin {
 
   @override
   Future webAuth(Uri url, {String? callbackUrlScheme}) {
-    return FlutterWebAuth2.authenticate(
+  return FlutterWebAuth2.authenticate(
       url: url.toString(),
       callbackUrlScheme: "appwrite-callback-" + config['project']!,
     );

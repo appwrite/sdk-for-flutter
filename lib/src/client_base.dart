@@ -2,17 +2,15 @@ import 'response.dart';
 import 'client.dart';
 import 'enums.dart';
 
-abstract class ClientBase implements Client {
+abstract class ClientBase implements Client {  
   /// Your project ID
   @override
   ClientBase setProject(value);
-
   /// Your secret JSON Web Token
   @override
   ClientBase setJWT(value);
   @override
   ClientBase setLocale(value);
-
   /// The user session to authenticate with
   @override
   ClientBase setSession(value);
@@ -28,6 +26,9 @@ abstract class ClientBase implements Client {
 
   @override
   ClientBase addHeader(String key, String value);
+
+  @override
+  Future<String> ping();
 
   @override
   Future<Response> call(
