@@ -30,6 +30,9 @@ abstract class ClientBase implements Client {
   ClientBase addHeader(String key, String value);
 
   @override
+  Future<String> ping();
+
+  @override
   Future<Response> call(
     HttpMethod method, {
     String path = '',

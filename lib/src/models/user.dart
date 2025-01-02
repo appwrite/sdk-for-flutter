@@ -92,7 +92,7 @@ class User implements Model {
       hashOptions: map['hashOptions'],
       registration: map['registration'].toString(),
       status: map['status'],
-      labels: map['labels'] ?? [],
+      labels: List<String>.from(map['labels']?.map((x) => x.toString()) ?? []),
       passwordUpdate: map['passwordUpdate'].toString(),
       email: map['email'].toString(),
       phone: map['phone'].toString(),

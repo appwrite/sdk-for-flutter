@@ -64,7 +64,7 @@ class ClientIO extends ClientBase with ClientMixin {
       'x-sdk-name': 'Flutter',
       'x-sdk-platform': 'client',
       'x-sdk-language': 'flutter',
-      'x-sdk-version': '13.1.0',
+      'x-sdk-version': '13.1.1',
       'X-Appwrite-Response-Format': '1.6.0',
     };
 
@@ -145,6 +145,15 @@ class ClientIO extends ClientBase with ClientMixin {
     _headers![key] = value;
 
     return this;
+  }
+
+  @override
+  Future<String> ping() async {
+    final String apiPath = '/ping';
+    final response = await call(HttpMethod.get,
+        path: apiPath, responseType: ResponseType.plain);
+
+    return response.data;
   }
 
   Future init() async {

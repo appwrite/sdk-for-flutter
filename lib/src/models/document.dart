@@ -38,7 +38,8 @@ class Document implements Model {
       $databaseId: map['\$databaseId'].toString(),
       $createdAt: map['\$createdAt'].toString(),
       $updatedAt: map['\$updatedAt'].toString(),
-      $permissions: map['\$permissions'] ?? [],
+      $permissions: List<String>.from(
+          map['\$permissions']?.map((x) => x.toString()) ?? []),
       data: map,
     );
   }

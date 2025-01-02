@@ -71,7 +71,7 @@ class Membership implements Model {
       joined: map['joined'].toString(),
       confirm: map['confirm'],
       mfa: map['mfa'],
-      roles: map['roles'] ?? [],
+      roles: List<String>.from(map['roles']?.map((x) => x.toString()) ?? []),
     );
   }
 

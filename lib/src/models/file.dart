@@ -55,7 +55,8 @@ class File implements Model {
       bucketId: map['bucketId'].toString(),
       $createdAt: map['\$createdAt'].toString(),
       $updatedAt: map['\$updatedAt'].toString(),
-      $permissions: map['\$permissions'] ?? [],
+      $permissions: List<String>.from(
+          map['\$permissions']?.map((x) => x.toString()) ?? []),
       name: map['name'].toString(),
       signature: map['signature'].toString(),
       mimeType: map['mimeType'].toString(),

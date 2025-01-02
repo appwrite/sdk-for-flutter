@@ -78,7 +78,8 @@ class Execution implements Model {
       $id: map['\$id'].toString(),
       $createdAt: map['\$createdAt'].toString(),
       $updatedAt: map['\$updatedAt'].toString(),
-      $permissions: map['\$permissions'] ?? [],
+      $permissions: List<String>.from(
+          map['\$permissions']?.map((x) => x.toString()) ?? []),
       functionId: map['functionId'].toString(),
       trigger: map['trigger'].toString(),
       status: map['status'].toString(),

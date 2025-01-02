@@ -76,6 +76,9 @@ abstract class Client {
   /// Add headers that should be sent with all API calls.
   Client addHeader(String key, String value);
 
+  /// Sends a "ping" request to Appwrite to verify connectivity.
+  Future<String> ping();
+
   /// Send the API request.
   Future<Response> call(
     HttpMethod method, {
