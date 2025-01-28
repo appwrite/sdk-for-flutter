@@ -8,6 +8,7 @@ class RealtimeResponse {
     required this.type,
     required this.data,
   });
+  
 
   RealtimeResponse copyWith({
     String? type,
@@ -29,14 +30,13 @@ class RealtimeResponse {
   factory RealtimeResponse.fromMap(Map<String, dynamic> map) {
     return RealtimeResponse(
       type: map['type'],
-      data: Map<String, dynamic>.from(map['data']),
+      data: Map<String, dynamic>.from(map['data'] ?? {}),
     );
   }
 
   String toJson() => json.encode(toMap());
 
-  factory RealtimeResponse.fromJson(String source) =>
-      RealtimeResponse.fromMap(json.decode(source));
+  factory RealtimeResponse.fromJson(String source) => RealtimeResponse.fromMap(json.decode(source));
 
   @override
   String toString() => 'RealtimeResponse(type: $type, data: $data)';
@@ -44,10 +44,10 @@ class RealtimeResponse {
   @override
   bool operator ==(Object other) {
     if (identical(this, other)) return true;
-
+  
     return other is RealtimeResponse &&
-        other.type == type &&
-        mapEquals(other.data, data);
+      other.type == type &&
+      mapEquals(other.data, data);
   }
 
   @override
