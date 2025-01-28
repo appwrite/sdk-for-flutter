@@ -2,27 +2,29 @@ part of '../../models.dart';
 
 /// Identities List
 class IdentityList implements Model {
-    /// Total number of identities documents that matched your query.
-    final int total;
-    /// List of identities.
-    final List<Identity> identities;
+  /// Total number of identities documents that matched your query.
+  final int total;
 
-    IdentityList({
-        required this.total,
-        required this.identities,
-    });
+  /// List of identities.
+  final List<Identity> identities;
 
-    factory IdentityList.fromMap(Map<String, dynamic> map) {
-        return IdentityList(
-            total: map['total'],
-            identities: List<Identity>.from(map['identities'].map((p) => Identity.fromMap(p))),
-        );
-    }
+  IdentityList({
+    required this.total,
+    required this.identities,
+  });
 
-    Map<String, dynamic> toMap() {
-        return {
-            "total": total,
-            "identities": identities.map((p) => p.toMap()).toList(),
-        };
-    }
+  factory IdentityList.fromMap(Map<String, dynamic> map) {
+    return IdentityList(
+      total: map['total'],
+      identities: List<Identity>.from(
+          map['identities'].map((p) => Identity.fromMap(p))),
+    );
+  }
+
+  Map<String, dynamic> toMap() {
+    return {
+      "total": total,
+      "identities": identities.map((p) => p.toMap()).toList(),
+    };
+  }
 }
