@@ -43,7 +43,7 @@ class ClientBrowser extends ClientBase with ClientMixin {
       'x-sdk-name': 'Flutter',
       'x-sdk-platform': 'client',
       'x-sdk-language': 'flutter',
-      'x-sdk-version': '13.1.1',
+      'x-sdk-version': '14.0.0',
       'X-Appwrite-Response-Format': '1.6.0',
     };
 
@@ -161,7 +161,7 @@ class ClientBrowser extends ClientBase with ClientMixin {
     }
 
     var offset = 0;
-    if (idParamName.isNotEmpty && params[idParamName] != 'unique()') {
+    if (idParamName.isNotEmpty) {
       //make a request to check if a file already exists
       try {
         res = await call(

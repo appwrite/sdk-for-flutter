@@ -29,7 +29,7 @@ class RealtimeResponse {
   factory RealtimeResponse.fromMap(Map<String, dynamic> map) {
     return RealtimeResponse(
       type: map['type'],
-      data: Map<String, dynamic>.from(map['data']),
+      data: Map<String, dynamic>.from(map['data'] ?? {}),
     );
   }
 
