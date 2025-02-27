@@ -16,7 +16,9 @@ class RealtimeSubscription {
   final Future<void> Function() close;
 
   /// Initializes a [RealtimeSubscription]
-  RealtimeSubscription(
-      {required this.close, required this.channels, required this.controller})
-      : stream = controller.stream;
+  RealtimeSubscription({
+    required this.close,
+    required this.channels,
+    required this.controller,
+  }) : stream = controller.stream;
 }
