@@ -8,16 +8,14 @@ class IdentityList implements Model {
   /// List of identities.
   final List<Identity> identities;
 
-  IdentityList({
-    required this.total,
-    required this.identities,
-  });
+  IdentityList({required this.total, required this.identities});
 
   factory IdentityList.fromMap(Map<String, dynamic> map) {
     return IdentityList(
       total: map['total'],
       identities: List<Identity>.from(
-          map['identities'].map((p) => Identity.fromMap(p))),
+        map['identities'].map((p) => Identity.fromMap(p)),
+      ),
     );
   }
 

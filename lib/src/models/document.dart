@@ -19,6 +19,7 @@ class Document implements Model {
 
   /// Document permissions. [Learn more about permissions](https://appwrite.io/docs/permissions).
   final List<String> $permissions;
+
   final Map<String, dynamic> data;
 
   Document({
@@ -38,8 +39,7 @@ class Document implements Model {
       $databaseId: map['\$databaseId'].toString(),
       $createdAt: map['\$createdAt'].toString(),
       $updatedAt: map['\$updatedAt'].toString(),
-      $permissions: List<String>.from(
-          map['\$permissions']?.map((x) => x.toString()) ?? []),
+      $permissions: List.from(map['\$permissions'] ?? []),
       data: map,
     );
   }

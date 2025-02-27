@@ -8,10 +8,7 @@ class PhoneList implements Model {
   /// List of phones.
   final List<Phone> phones;
 
-  PhoneList({
-    required this.total,
-    required this.phones,
-  });
+  PhoneList({required this.total, required this.phones});
 
   factory PhoneList.fromMap(Map<String, dynamic> map) {
     return PhoneList(
@@ -21,9 +18,6 @@ class PhoneList implements Model {
   }
 
   Map<String, dynamic> toMap() {
-    return {
-      "total": total,
-      "phones": phones.map((p) => p.toMap()).toList(),
-    };
+    return {"total": total, "phones": phones.map((p) => p.toMap()).toList()};
   }
 }
