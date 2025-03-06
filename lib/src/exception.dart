@@ -9,11 +9,11 @@ class AppwriteException implements Exception {
   /// for more information.
   final String? type;
   final int? code;
-  final dynamic response;
+  final String? response;
 
   /// Initializes an Appwrite Exception.
   AppwriteException([this.message = "", this.code, this.type, this.response]);
-
+  
   /// Returns the error type, message, and code.
   @override
   String toString() {
