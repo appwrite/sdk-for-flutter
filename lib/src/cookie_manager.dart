@@ -11,20 +11,19 @@ class CookieManager extends Interceptor {
   CookieManager(this.cookieJar);
 
   @override
-  FutureOr<http.BaseRequest> onRequest(
-    http.BaseRequest request,
-  ) async {
+  FutureOr<http.BaseRequest> onRequest(http.BaseRequest request) async {
     await cookieJar
         .loadForRequest(Uri(scheme: request.url.scheme, host: request.url.host))
         .then((cookies) {
-      var cookie = getCookies(cookies);
-      if (cookie.isNotEmpty) {
-        request.headers.addAll({HttpHeaders.cookieHeader: cookie});
-      }
-      return request;
-    }).catchError((e, stackTrace) {
-      return request;
-    });
+          var cookie = getCookies(cookies);
+          if (cookie.isNotEmpty) {
+            request.headers.addAll({HttpHeaders.cookieHeader: cookie});
+          }
+          return request;
+        })
+        .catchError((e, stackTrace) {
+          return request;
+        });
     return request;
   }
 
@@ -43,8 +42,9 @@ class CookieManager extends Interceptor {
     var cookies = cookie.split(exp);
     await cookieJar.saveFromResponse(
       Uri(
-          scheme: response.request!.url.scheme,
-          host: response.request!.url.host),
+        scheme: response.request!.url.scheme,
+        host: response.request!.url.host,
+      ),
       cookies.map((str) => Cookie.fromSetCookieValue(str)).toList(),
     );
   }

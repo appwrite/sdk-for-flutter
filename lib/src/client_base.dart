@@ -30,7 +30,15 @@ abstract class ClientBase implements Client {
   ClientBase addHeader(String key, String value);
 
   @override
-  Future<String> ping();
+  Future<String> ping() async {
+    final String apiPath = '/ping';
+    final response = await call(
+      HttpMethod.get,
+      path: apiPath,
+      responseType: ResponseType.plain,
+    );
+    return response.data;
+  }
 
   @override
   Future<Response> call(

@@ -5,7 +5,7 @@ import 'dart:convert';
 import 'dart:developer';
 import 'enums.dart';
 
-class ClientMixin {
+mixin ClientMixin {
   http.BaseRequest prepareRequest(
     HttpMethod method, {
     required Uri uri,
@@ -26,14 +26,14 @@ class ClientMixin {
           } else {
             if (value is List) {
               value.asMap().forEach((i, v) {
-                (request as http.MultipartRequest)
-                    .fields
-                    .addAll({"$key[$i]": v.toString()});
+                (request as http.MultipartRequest).fields.addAll({
+                  "$key[$i]": v.toString(),
+                });
               });
             } else {
-              (request as http.MultipartRequest)
-                  .fields
-                  .addAll({key: value.toString()});
+              (request as http.MultipartRequest).fields.addAll({
+                key: value.toString(),
+              });
             }
           }
         });
@@ -51,16 +51,22 @@ class ClientMixin {
         });
       }
       uri = Uri(
-          fragment: uri.fragment,
-          path: uri.path,
-          host: uri.host,
-          scheme: uri.scheme,
-          queryParameters: params,
-          port: uri.port);
+        fragment: uri.fragment,
+        path: uri.path,
+        host: uri.host,
+        scheme: uri.scheme,
+        queryParameters: params,
+        port: uri.port,
+      );
       request = http.Request(method.name(), uri);
     } else {
       (request as http.Request).body = jsonEncode(params);
     }
+
+    headers['User-Agent'] = Uri.encodeFull(headers['User-Agent'] ?? '');
+    headers['X-Forwarded-User-Agent'] = Uri.encodeFull(
+      headers['X-Forwarded-User-Agent'] ?? '',
+    );
 
     request.headers.addAll(headers);
     return request;
@@ -81,10 +87,10 @@ class ClientMixin {
           response['message'],
           response['code'],
           response['type'],
-          response,
+          res.body,
         );
       } else {
-        throw AppwriteException(res.body);
+        throw AppwriteException(res.body, res.statusCode, '', res.body);
       }
     }
     dynamic data;
@@ -107,15 +113,18 @@ class ClientMixin {
   }
 
   Future<http.Response> toResponse(
-      http.StreamedResponse streamedResponse) async {
+    http.StreamedResponse streamedResponse,
+  ) async {
     if (streamedResponse.statusCode == 204) {
       return http.Response(
         '',
         streamedResponse.statusCode,
-        headers: streamedResponse.headers.map((k, v) =>
-            k.toLowerCase() == 'content-type'
-                ? MapEntry(k, 'text/plain')
-                : MapEntry(k, v)),
+        headers: streamedResponse.headers.map(
+          (k, v) =>
+              k.toLowerCase() == 'content-type'
+                  ? MapEntry(k, 'text/plain')
+                  : MapEntry(k, v),
+        ),
         request: streamedResponse.request,
         isRedirect: streamedResponse.isRedirect,
         persistentConnection: streamedResponse.persistentConnection,

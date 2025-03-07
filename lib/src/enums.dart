@@ -17,5 +17,5 @@ enum ResponseType {
   plain,
 
   /// Get original bytes, the type of response will be List<int>
-  bytes
+  bytes,
 }

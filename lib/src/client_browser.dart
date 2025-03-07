@@ -12,10 +12,7 @@ import 'input_file.dart';
 import 'upload_progress.dart';
 import 'response.dart';
 
-ClientBase createClient({
-  required String endPoint,
-  required bool selfSigned,
-}) =>
+ClientBase createClient({required String endPoint, required bool selfSigned}) =>
     ClientBrowser(endPoint: endPoint, selfSigned: selfSigned);
 
 class ClientBrowser extends ClientBase with ClientMixin {
@@ -43,14 +40,16 @@ class ClientBrowser extends ClientBase with ClientMixin {
       'x-sdk-name': 'Flutter',
       'x-sdk-platform': 'client',
       'x-sdk-language': 'flutter',
-      'x-sdk-version': '14.0.0',
+      'x-sdk-version': '15.0.0',
       'X-Appwrite-Response-Format': '1.6.0',
     };
 
     config = {};
 
-    assert(_endPoint.startsWith(RegExp("http://|https://")),
-        "endPoint $_endPoint must start with 'http'");
+    assert(
+      _endPoint.startsWith(RegExp("http://|https://")),
+      "endPoint $_endPoint must start with 'http'",
+    );
     init();
   }
 
@@ -115,15 +114,6 @@ class ClientBrowser extends ClientBase with ClientMixin {
     return this;
   }
 
-  @override
-  Future<String> ping() async {
-    final String apiPath = '/ping';
-    final response = await call(HttpMethod.get,
-        path: apiPath, responseType: ResponseType.plain);
-
-    return response.data;
-  }
-
   Future init() async {
     final cookieFallback = web.window.localStorage['cookieFallback'];
     if (cookieFallback != null) {
@@ -150,8 +140,11 @@ class ClientBrowser extends ClientBase with ClientMixin {
 
     late Response res;
     if (size <= CHUNK_SIZE) {
-      params[paramName] = http.MultipartFile.fromBytes(paramName, file.bytes!,
-          filename: file.filename);
+      params[paramName] = http.MultipartFile.fromBytes(
+        paramName,
+        file.bytes!,
+        filename: file.filename,
+      );
       return call(
         HttpMethod.post,
         path: path,
@@ -178,12 +171,19 @@ class ClientBrowser extends ClientBase with ClientMixin {
       List<int> chunk = [];
       final end = min(offset + CHUNK_SIZE, size);
       chunk = file.bytes!.getRange(offset, end).toList();
-      params[paramName] = http.MultipartFile.fromBytes(paramName, chunk,
-          filename: file.filename);
+      params[paramName] = http.MultipartFile.fromBytes(
+        paramName,
+        chunk,
+        filename: file.filename,
+      );
       headers['content-range'] =
           'bytes $offset-${min<int>((offset + CHUNK_SIZE - 1), size - 1)}/$size';
-      res = await call(HttpMethod.post,
-          path: path, headers: headers, params: params);
+      res = await call(
+        HttpMethod.post,
+        path: path,
+        headers: headers,
+        params: params,
+      );
       offset += CHUNK_SIZE;
       if (offset < size) {
         headers['x-appwrite-id'] = res.data['\$id'];
@@ -224,7 +224,8 @@ class ClientBrowser extends ClientBase with ClientMixin {
       final cookieFallback = res.headers['x-fallback-cookies'];
       if (cookieFallback != null) {
         debugPrint(
-            'Appwrite is using localStorage for session management. Increase your security by adding a custom domain as your API endpoint.');
+          'Appwrite is using localStorage for session management. Increase your security by adding a custom domain as your API endpoint.',
+        );
         addHeader('X-Fallback-Cookies', cookieFallback);
         web.window.localStorage['cookieFallback'] = cookieFallback;
       }

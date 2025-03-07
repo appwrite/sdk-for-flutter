@@ -8,10 +8,7 @@ class LocaleCode implements Model {
   /// Locale name
   final String name;
 
-  LocaleCode({
-    required this.code,
-    required this.name,
-  });
+  LocaleCode({required this.code, required this.name});
 
   factory LocaleCode.fromMap(Map<String, dynamic> map) {
     return LocaleCode(
@@ -21,9 +18,6 @@ class LocaleCode implements Model {
   }
 
   Map<String, dynamic> toMap() {
-    return {
-      "code": code,
-      "name": name,
-    };
+    return {"code": code, "name": name};
   }
 }

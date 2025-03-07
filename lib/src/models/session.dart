@@ -149,8 +149,7 @@ class Session implements Model {
       countryCode: map['countryCode'].toString(),
       countryName: map['countryName'].toString(),
       current: map['current'],
-      factors:
-          List<String>.from(map['factors']?.map((x) => x.toString()) ?? []),
+      factors: List.from(map['factors'] ?? []),
       secret: map['secret'].toString(),
       mfaUpdatedAt: map['mfaUpdatedAt'].toString(),
     );

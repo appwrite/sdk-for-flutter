@@ -9,9 +9,7 @@ class Query {
   Query._(this.method, [this.attribute = null, this.values = null]);
 
   Map<String, dynamic> toJson() {
-    final map = <String, dynamic>{
-      'method': method,
-    };
+    final map = <String, dynamic>{'method': method};
 
     if (attribute != null) {
       map['attribute'] = attribute;
@@ -85,12 +83,18 @@ class Query {
       Query._('contains', attribute, value).toString();
 
   static String or(List<String> queries) =>
-      Query._('or', null, queries.map((query) => jsonDecode(query)).toList())
-          .toString();
+      Query._(
+        'or',
+        null,
+        queries.map((query) => jsonDecode(query)).toList(),
+      ).toString();
 
   static String and(List<String> queries) =>
-      Query._('and', null, queries.map((query) => jsonDecode(query)).toList())
-          .toString();
+      Query._(
+        'and',
+        null,
+        queries.map((query) => jsonDecode(query)).toList(),
+      ).toString();
 
   /// Specify which attributes should be returned by the API call.
   static String select(List<String> attributes) =>
