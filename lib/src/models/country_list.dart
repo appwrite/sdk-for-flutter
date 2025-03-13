@@ -8,16 +8,14 @@ class CountryList implements Model {
   /// List of countries.
   final List<Country> countries;
 
-  CountryList({
-    required this.total,
-    required this.countries,
-  });
+  CountryList({required this.total, required this.countries});
 
   factory CountryList.fromMap(Map<String, dynamic> map) {
     return CountryList(
       total: map['total'],
-      countries:
-          List<Country>.from(map['countries'].map((p) => Country.fromMap(p))),
+      countries: List<Country>.from(
+        map['countries'].map((p) => Country.fromMap(p)),
+      ),
     );
   }
 

@@ -8,10 +8,7 @@ class Headers implements Model {
   /// Header value.
   final String value;
 
-  Headers({
-    required this.name,
-    required this.value,
-  });
+  Headers({required this.name, required this.value});
 
   factory Headers.fromMap(Map<String, dynamic> map) {
     return Headers(
@@ -21,9 +18,6 @@ class Headers implements Model {
   }
 
   Map<String, dynamic> toMap() {
-    return {
-      "name": name,
-      "value": value,
-    };
+    return {"name": name, "value": value};
   }
 }

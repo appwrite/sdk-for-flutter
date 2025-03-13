@@ -8,10 +8,7 @@ class FileList implements Model {
   /// List of files.
   final List<File> files;
 
-  FileList({
-    required this.total,
-    required this.files,
-  });
+  FileList({required this.total, required this.files});
 
   factory FileList.fromMap(Map<String, dynamic> map) {
     return FileList(
@@ -21,9 +18,6 @@ class FileList implements Model {
   }
 
   Map<String, dynamic> toMap() {
-    return {
-      "total": total,
-      "files": files.map((p) => p.toMap()).toList(),
-    };
+    return {"total": total, "files": files.map((p) => p.toMap()).toList()};
   }
 }

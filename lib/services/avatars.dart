@@ -6,8 +6,6 @@ class Avatars extends Service {
   /// Initializes a [Avatars] service
   Avatars(super.client);
 
-  /// Get browser icon
-  ///
   /// You can use this endpoint to show different browser icons to your users.
   /// The code argument receives the browser code as it appears in your user [GET
   /// /account/sessions](https://appwrite.io/docs/references/cloud/client-web/account#getSessions)
@@ -18,28 +16,34 @@ class Avatars extends Service {
   /// with preserved aspect ratio. If both dimensions are 0, the API provides an
   /// image at source quality. If dimensions are not specified, the default size
   /// of image returned is 100x100px.
-  Future<Uint8List> getBrowser(
-      {required enums.Browser code,
-      int? width,
-      int? height,
-      int? quality}) async {
-    final String apiPath =
-        '/avatars/browsers/{code}'.replaceAll('{code}', code.value);
+  Future<Uint8List> getBrowser({
+    required enums.Browser code,
+    int? width,
+    int? height,
+    int? quality,
+  }) async {
+    final String apiPath = '/avatars/browsers/{code}'.replaceAll(
+      '{code}',
+      code.value,
+    );
 
     final Map<String, dynamic> params = {
       'width': width,
       'height': height,
       'quality': quality,
+
       'project': client.config['project'],
     };
 
-    final res = await client.call(HttpMethod.get,
-        path: apiPath, params: params, responseType: ResponseType.bytes);
+    final res = await client.call(
+      HttpMethod.get,
+      path: apiPath,
+      params: params,
+      responseType: ResponseType.bytes,
+    );
     return res.data;
   }
 
-  /// Get credit card icon
-  ///
   /// The credit card endpoint will return you the icon of the credit card
   /// provider you need. Use width, height and quality arguments to change the
   /// output settings.
@@ -49,28 +53,34 @@ class Avatars extends Service {
   /// image at source quality. If dimensions are not specified, the default size
   /// of image returned is 100x100px.
   ///
-  Future<Uint8List> getCreditCard(
-      {required enums.CreditCard code,
-      int? width,
-      int? height,
-      int? quality}) async {
-    final String apiPath =
-        '/avatars/credit-cards/{code}'.replaceAll('{code}', code.value);
+  Future<Uint8List> getCreditCard({
+    required enums.CreditCard code,
+    int? width,
+    int? height,
+    int? quality,
+  }) async {
+    final String apiPath = '/avatars/credit-cards/{code}'.replaceAll(
+      '{code}',
+      code.value,
+    );
 
     final Map<String, dynamic> params = {
       'width': width,
       'height': height,
       'quality': quality,
+
       'project': client.config['project'],
     };
 
-    final res = await client.call(HttpMethod.get,
-        path: apiPath, params: params, responseType: ResponseType.bytes);
+    final res = await client.call(
+      HttpMethod.get,
+      path: apiPath,
+      params: params,
+      responseType: ResponseType.bytes,
+    );
     return res.data;
   }
 
-  /// Get favicon
-  ///
   /// Use this endpoint to fetch the favorite icon (AKA favicon) of any remote
   /// website URL.
   ///
@@ -80,16 +90,19 @@ class Avatars extends Service {
 
     final Map<String, dynamic> params = {
       'url': url,
+
       'project': client.config['project'],
     };
 
-    final res = await client.call(HttpMethod.get,
-        path: apiPath, params: params, responseType: ResponseType.bytes);
+    final res = await client.call(
+      HttpMethod.get,
+      path: apiPath,
+      params: params,
+      responseType: ResponseType.bytes,
+    );
     return res.data;
   }
 
-  /// Get country flag
-  ///
   /// You can use this endpoint to show different country flags icons to your
   /// users. The code argument receives the 2 letter country code. Use width,
   /// height and quality arguments to change the output settings. Country codes
@@ -100,25 +113,34 @@ class Avatars extends Service {
   /// image at source quality. If dimensions are not specified, the default size
   /// of image returned is 100x100px.
   ///
-  Future<Uint8List> getFlag(
-      {required enums.Flag code, int? width, int? height, int? quality}) async {
-    final String apiPath =
-        '/avatars/flags/{code}'.replaceAll('{code}', code.value);
+  Future<Uint8List> getFlag({
+    required enums.Flag code,
+    int? width,
+    int? height,
+    int? quality,
+  }) async {
+    final String apiPath = '/avatars/flags/{code}'.replaceAll(
+      '{code}',
+      code.value,
+    );
 
     final Map<String, dynamic> params = {
       'width': width,
       'height': height,
       'quality': quality,
+
       'project': client.config['project'],
     };
 
-    final res = await client.call(HttpMethod.get,
-        path: apiPath, params: params, responseType: ResponseType.bytes);
+    final res = await client.call(
+      HttpMethod.get,
+      path: apiPath,
+      params: params,
+      responseType: ResponseType.bytes,
+    );
     return res.data;
   }
 
-  /// Get image from URL
-  ///
   /// Use this endpoint to fetch a remote image URL and crop it to any image size
   /// you want. This endpoint is very useful if you need to crop and display
   /// remote images in your app or in case you want to make sure a 3rd party
@@ -130,24 +152,30 @@ class Avatars extends Service {
   /// of image returned is 400x400px.
   ///
   /// This endpoint does not follow HTTP redirects.
-  Future<Uint8List> getImage(
-      {required String url, int? width, int? height}) async {
+  Future<Uint8List> getImage({
+    required String url,
+    int? width,
+    int? height,
+  }) async {
     const String apiPath = '/avatars/image';
 
     final Map<String, dynamic> params = {
       'url': url,
       'width': width,
       'height': height,
+
       'project': client.config['project'],
     };
 
-    final res = await client.call(HttpMethod.get,
-        path: apiPath, params: params, responseType: ResponseType.bytes);
+    final res = await client.call(
+      HttpMethod.get,
+      path: apiPath,
+      params: params,
+      responseType: ResponseType.bytes,
+    );
     return res.data;
   }
 
-  /// Get user initials
-  ///
   /// Use this endpoint to show your user initials avatar icon on your website or
   /// app. By default, this route will try to print your logged-in user name or
   /// email initials. You can also overwrite the user name if you pass the 'name'
@@ -164,8 +192,12 @@ class Avatars extends Service {
   /// image at source quality. If dimensions are not specified, the default size
   /// of image returned is 100x100px.
   ///
-  Future<Uint8List> getInitials(
-      {String? name, int? width, int? height, String? background}) async {
+  Future<Uint8List> getInitials({
+    String? name,
+    int? width,
+    int? height,
+    String? background,
+  }) async {
     const String apiPath = '/avatars/initials';
 
     final Map<String, dynamic> params = {
@@ -173,21 +205,28 @@ class Avatars extends Service {
       'width': width,
       'height': height,
       'background': background,
+
       'project': client.config['project'],
     };
 
-    final res = await client.call(HttpMethod.get,
-        path: apiPath, params: params, responseType: ResponseType.bytes);
+    final res = await client.call(
+      HttpMethod.get,
+      path: apiPath,
+      params: params,
+      responseType: ResponseType.bytes,
+    );
     return res.data;
   }
 
-  /// Get QR code
-  ///
   /// Converts a given plain text to a QR code image. You can use the query
   /// parameters to change the size and style of the resulting image.
   ///
-  Future<Uint8List> getQR(
-      {required String text, int? size, int? margin, bool? download}) async {
+  Future<Uint8List> getQR({
+    required String text,
+    int? size,
+    int? margin,
+    bool? download,
+  }) async {
     const String apiPath = '/avatars/qr';
 
     final Map<String, dynamic> params = {
@@ -195,11 +234,16 @@ class Avatars extends Service {
       'size': size,
       'margin': margin,
       'download': download,
+
       'project': client.config['project'],
     };
 
-    final res = await client.call(HttpMethod.get,
-        path: apiPath, params: params, responseType: ResponseType.bytes);
+    final res = await client.call(
+      HttpMethod.get,
+      path: apiPath,
+      params: params,
+      responseType: ResponseType.bytes,
+    );
     return res.data;
   }
 }

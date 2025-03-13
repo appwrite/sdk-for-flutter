@@ -8,10 +8,7 @@ class LogList implements Model {
   /// List of logs.
   final List<Log> logs;
 
-  LogList({
-    required this.total,
-    required this.logs,
-  });
+  LogList({required this.total, required this.logs});
 
   factory LogList.fromMap(Map<String, dynamic> map) {
     return LogList(
@@ -21,9 +18,6 @@ class LogList implements Model {
   }
 
   Map<String, dynamic> toMap() {
-    return {
-      "total": total,
-      "logs": logs.map((p) => p.toMap()).toList(),
-    };
+    return {"total": total, "logs": logs.map((p) => p.toMap()).toList()};
   }
 }
