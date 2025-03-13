@@ -26,21 +26,21 @@ mixin ClientMixin {
           } else {
             if (value is List) {
               value.asMap().forEach((i, v) {
-                (request as http.MultipartRequest)
-                    .fields
-                    .addAll({"$key[$i]": v.toString()});
+                (request as http.MultipartRequest).fields.addAll({
+                  "$key[$i]": v.toString(),
+                });
               });
             } else {
-              (request as http.MultipartRequest)
-                  .fields
-                  .addAll({key: value.toString()});
+              (request as http.MultipartRequest).fields.addAll({
+                key: value.toString(),
+              });
             }
           }
         });
       }
     } else if (method == HttpMethod.get) {
       if (params.isNotEmpty) {
-        params = params.map((key, value){
+        params = params.map((key, value) {
           if (value is int || value is double) {
             return MapEntry(key, value.toString());
           }
@@ -51,19 +51,22 @@ mixin ClientMixin {
         });
       }
       uri = Uri(
-          fragment: uri.fragment,
-          path: uri.path,
-          host: uri.host,
-          scheme: uri.scheme,
-          queryParameters: params,
-          port: uri.port);
+        fragment: uri.fragment,
+        path: uri.path,
+        host: uri.host,
+        scheme: uri.scheme,
+        queryParameters: params,
+        port: uri.port,
+      );
       request = http.Request(method.name(), uri);
     } else {
       (request as http.Request).body = jsonEncode(params);
     }
 
     headers['User-Agent'] = Uri.encodeFull(headers['User-Agent'] ?? '');
-    headers['X-Forwarded-User-Agent'] = Uri.encodeFull(headers['X-Forwarded-User-Agent'] ?? '');
+    headers['X-Forwarded-User-Agent'] = Uri.encodeFull(
+      headers['X-Forwarded-User-Agent'] ?? '',
+    );
 
     request.headers.addAll(headers);
     return request;
@@ -109,18 +112,26 @@ mixin ClientMixin {
     return Response(data: data);
   }
 
-  Future<http.Response> toResponse(http.StreamedResponse streamedResponse) async {
-    if(streamedResponse.statusCode == 204) {
-        return http.Response('',
-          streamedResponse.statusCode,
-          headers: streamedResponse.headers.map((k,v) => k.toLowerCase()=='content-type' ? MapEntry(k, 'text/plain') : MapEntry(k,v)),
-          request: streamedResponse.request,
-          isRedirect: streamedResponse.isRedirect,
-          persistentConnection: streamedResponse.persistentConnection,
-          reasonPhrase: streamedResponse.reasonPhrase,
-        );
-      } else {
-        return await http.Response.fromStream(streamedResponse);
-      }
+  Future<http.Response> toResponse(
+    http.StreamedResponse streamedResponse,
+  ) async {
+    if (streamedResponse.statusCode == 204) {
+      return http.Response(
+        '',
+        streamedResponse.statusCode,
+        headers: streamedResponse.headers.map(
+          (k, v) =>
+              k.toLowerCase() == 'content-type'
+                  ? MapEntry(k, 'text/plain')
+                  : MapEntry(k, v),
+        ),
+        request: streamedResponse.request,
+        isRedirect: streamedResponse.isRedirect,
+        persistentConnection: streamedResponse.persistentConnection,
+        reasonPhrase: streamedResponse.reasonPhrase,
+      );
+    } else {
+      return await http.Response.fromStream(streamedResponse);
+    }
   }
 }
