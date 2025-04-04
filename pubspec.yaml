@@ -19,17 +19,17 @@ dependencies:
   flutter:
     sdk: flutter
   cookie_jar: ^4.0.8
-  device_info_plus: ^10.1.2
-  flutter_web_auth_2: ^3.1.2
+  device_info_plus: ^11.3.3
+  flutter_web_auth_2: ^4.1.0
   http: '>=0.13.6 <2.0.0'
-  package_info_plus: ^8.0.2
-  path_provider: ^2.1.4
-  web_socket_channel: ^3.0.1
-  web: ^1.0.0
+  package_info_plus: ^8.3.0
+  path_provider: ^2.1.5
+  web_socket_channel: ^3.0.2
+  web: ^1.1.1
 
 dev_dependencies:
   path_provider_platform_interface: ^2.1.2
-  flutter_lints: ^4.0.0
+  flutter_lints: ^5.0.0
   flutter_test:
     sdk: flutter
-  mockito: ^5.4.4
+  mockito: ^5.4.5
