@@ -59,7 +59,7 @@ class ClientIO extends ClientBase with ClientMixin {
       'x-sdk-name': 'Flutter',
       'x-sdk-platform': 'client',
       'x-sdk-language': 'flutter',
-      'x-sdk-version': '15.0.0',
+      'x-sdk-version': '15.0.1',
       'X-Appwrite-Response-Format': '1.6.0',
     };
 
@@ -124,15 +124,24 @@ class ClientIO extends ClientBase with ClientMixin {
 
   @override
   ClientIO setEndpoint(String endPoint) {
+    if (!endPoint.startsWith('http://') && !endPoint.startsWith('https://')) {
+      throw AppwriteException('Invalid endpoint URL: $endPoint');
+    }
+
     _endPoint = endPoint;
     _endPointRealtime = endPoint
         .replaceFirst('https://', 'wss://')
         .replaceFirst('http://', 'ws://');
+
     return this;
   }
 
   @override
   ClientIO setEndPointRealtime(String endPoint) {
+    if (!endPoint.startsWith('ws://') && !endPoint.startsWith('wss://')) {
+      throw AppwriteException('Invalid realtime endpoint URL: $endPoint');
+    }
+
     _endPointRealtime = endPoint;
     return this;
   }

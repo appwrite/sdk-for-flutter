@@ -15,6 +15,7 @@ enum OAuthProvider {
   dropbox(value: 'dropbox'),
   etsy(value: 'etsy'),
   facebook(value: 'facebook'),
+  figma(value: 'figma'),
   github(value: 'github'),
   gitlab(value: 'gitlab'),
   google(value: 'google'),

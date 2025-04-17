@@ -16,7 +16,8 @@ enum CreditCard {
   unionChinaPay(value: 'union-china-pay'),
   visa(value: 'visa'),
   mIR(value: 'mir'),
-  maestro(value: 'maestro');
+  maestro(value: 'maestro'),
+  rupay(value: 'rupay');
 
   const CreditCard({required this.value});
 

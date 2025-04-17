@@ -20,7 +20,7 @@ class Databases extends Service {
 
     final Map<String, dynamic> apiParams = {'queries': queries};
 
-    final Map<String, String> apiHeaders = {'content-type': 'application/json'};
+    final Map<String, String> apiHeaders = {};
 
     final res = await client.call(
       HttpMethod.get,
@@ -36,6 +36,7 @@ class Databases extends Service {
   /// collection resource using either a [server
   /// integration](https://appwrite.io/docs/server/databases#databasesCreateCollection)
   /// API or directly from your database console.
+  ///
   Future<models.Document> createDocument({
     required String databaseId,
     required String collectionId,
@@ -82,7 +83,7 @@ class Databases extends Service {
 
     final Map<String, dynamic> apiParams = {'queries': queries};
 
-    final Map<String, String> apiHeaders = {'content-type': 'application/json'};
+    final Map<String, String> apiHeaders = {};
 
     final res = await client.call(
       HttpMethod.get,
