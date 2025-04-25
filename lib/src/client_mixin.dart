@@ -63,10 +63,14 @@ mixin ClientMixin {
       (request as http.Request).body = jsonEncode(params);
     }
 
-    headers['User-Agent'] = Uri.encodeFull(headers['User-Agent'] ?? '');
-    headers['X-Forwarded-User-Agent'] = Uri.encodeFull(
-      headers['X-Forwarded-User-Agent'] ?? '',
-    );
+    if (headers['User-Agent'] != null) {
+      headers['User-Agent'] = Uri.encodeFull(headers['User-Agent']!);
+    }
+    if (headers['X-Forwarded-User-Agent'] != null) {
+      headers['X-Forwarded-User-Agent'] = Uri.encodeFull(
+        headers['X-Forwarded-User-Agent']!,
+      );
+    }
 
     request.headers.addAll(headers);
     return request;
