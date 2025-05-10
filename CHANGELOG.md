@@ -1,6 +1,7 @@
-## 15.0.3
+## 15.1.0
 
 * Upgrade dependencies to resolve PlatformConstants error with Expo 53
+* Introduces `createDocuments` method for bulk document creation
 
 ## 15.0.2
 
