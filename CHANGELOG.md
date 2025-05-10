@@ -1,3 +1,7 @@
+## 15.0.3
+
+* Upgrade dependencies to resolve PlatformConstants error with Expo 53
+
 ## 15.0.2
 
 * Avoid setting empty `User-Agent` header and only encode it when present.
