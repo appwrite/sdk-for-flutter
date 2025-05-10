@@ -44,7 +44,7 @@ class UploadProgress {
       "progress": progress,
       "sizeUploaded": sizeUploaded,
       "chunksTotal": chunksTotal,
-      "chunksUploaded": chunksUploaded
+      "chunksUploaded": chunksUploaded,
     };
   }
 
