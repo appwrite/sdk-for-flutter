@@ -21,7 +21,7 @@ Add this to your package's `pubspec.yaml` file:
 
 ```yml
 dependencies:
-  appwrite: ^15.0.2
+  appwrite: ^15.0.3
 ```
 
 You can install packages from the command line:
