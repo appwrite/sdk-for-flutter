@@ -36,7 +36,6 @@ class Databases extends Service {
   /// collection resource using either a [server
   /// integration](https://appwrite.io/docs/server/databases#databasesCreateCollection)
   /// API or directly from your database console.
-  ///
   Future<models.Document> createDocument({
     required String databaseId,
     required String collectionId,

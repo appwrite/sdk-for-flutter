@@ -169,12 +169,17 @@ class Storage extends Service {
   Future<Uint8List> getFileDownload({
     required String bucketId,
     required String fileId,
+    String? token,
   }) async {
     final String apiPath = '/storage/buckets/{bucketId}/files/{fileId}/download'
         .replaceAll('{bucketId}', bucketId)
         .replaceAll('{fileId}', fileId);
 
-    final Map<String, dynamic> params = {'project': client.config['project']};
+    final Map<String, dynamic> params = {
+      'token': token,
+
+      'project': client.config['project'],
+    };
 
     final res = await client.call(
       HttpMethod.get,
@@ -204,6 +209,7 @@ class Storage extends Service {
     int? rotation,
     String? background,
     enums.ImageFormat? output,
+    String? token,
   }) async {
     final String apiPath = '/storage/buckets/{bucketId}/files/{fileId}/preview'
         .replaceAll('{bucketId}', bucketId)
@@ -221,6 +227,7 @@ class Storage extends Service {
       'rotation': rotation,
       'background': background,
       'output': output?.value,
+      'token': token,
 
       'project': client.config['project'],
     };
@@ -240,12 +247,17 @@ class Storage extends Service {
   Future<Uint8List> getFileView({
     required String bucketId,
     required String fileId,
+    String? token,
   }) async {
     final String apiPath = '/storage/buckets/{bucketId}/files/{fileId}/view'
         .replaceAll('{bucketId}', bucketId)
         .replaceAll('{fileId}', fileId);
 
-    final Map<String, dynamic> params = {'project': client.config['project']};
+    final Map<String, dynamic> params = {
+      'token': token,
+
+      'project': client.config['project'],
+    };
 
     final res = await client.call(
       HttpMethod.get,

@@ -11,17 +11,13 @@ class Functions extends Service {
   Future<models.ExecutionList> listExecutions({
     required String functionId,
     List<String>? queries,
-    String? search,
   }) async {
     final String apiPath = '/functions/{functionId}/executions'.replaceAll(
       '{functionId}',
       functionId,
     );
 
-    final Map<String, dynamic> apiParams = {
-      'queries': queries,
-      'search': search,
-    };
+    final Map<String, dynamic> apiParams = {'queries': queries};
 
     final Map<String, String> apiHeaders = {};
 
