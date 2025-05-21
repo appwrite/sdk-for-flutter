@@ -73,6 +73,11 @@ abstract class Client {
   /// The user session to authenticate with.
   Client setSession(value);
 
+  /// Set DevKey.
+  ///
+  /// Your secret dev API key.
+  Client setDevKey(value);
+
   /// Add headers that should be sent with all API calls.
   Client addHeader(String key, String value);
 

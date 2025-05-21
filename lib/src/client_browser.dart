@@ -40,7 +40,7 @@ class ClientBrowser extends ClientBase with ClientMixin {
       'x-sdk-name': 'Flutter',
       'x-sdk-platform': 'client',
       'x-sdk-language': 'flutter',
-      'x-sdk-version': '16.0.0',
+      'x-sdk-version': '16.1.0',
       'X-Appwrite-Response-Format': '1.7.0',
     };
 
@@ -84,6 +84,14 @@ class ClientBrowser extends ClientBase with ClientMixin {
   ClientBrowser setSession(value) {
     config['session'] = value;
     addHeader('X-Appwrite-Session', value);
+    return this;
+  }
+
+  /// Your secret dev API key
+  @override
+  ClientBrowser setDevKey(value) {
+    config['devKey'] = value;
+    addHeader('X-Appwrite-Dev-Key', value);
     return this;
   }
 

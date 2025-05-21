@@ -46,10 +46,9 @@ class ClientIO extends ClientBase with ClientMixin {
     String endPoint = 'https://cloud.appwrite.io/v1',
     this.selfSigned = false,
   }) : _endPoint = endPoint {
-    _nativeClient =
-        HttpClient()
-          ..badCertificateCallback =
-              ((X509Certificate cert, String host, int port) => selfSigned);
+    _nativeClient = HttpClient()
+      ..badCertificateCallback =
+          ((X509Certificate cert, String host, int port) => selfSigned);
     _httpClient = IOClient(_nativeClient);
     _endPointRealtime = endPoint
         .replaceFirst('https://', 'wss://')
@@ -59,7 +58,7 @@ class ClientIO extends ClientBase with ClientMixin {
       'x-sdk-name': 'Flutter',
       'x-sdk-platform': 'client',
       'x-sdk-language': 'flutter',
-      'x-sdk-version': '16.0.0',
+      'x-sdk-version': '16.1.0',
       'X-Appwrite-Response-Format': '1.7.0',
     };
 
@@ -111,6 +110,14 @@ class ClientIO extends ClientBase with ClientMixin {
   ClientIO setSession(value) {
     config['session'] = value;
     addHeader('X-Appwrite-Session', value);
+    return this;
+  }
+
+  /// Your secret dev API key
+  @override
+  ClientIO setDevKey(value) {
+    config['devKey'] = value;
+    addHeader('X-Appwrite-Dev-Key', value);
     return this;
   }
 
@@ -349,10 +356,9 @@ class ClientIO extends ClientBase with ClientMixin {
   Future webAuth(Uri url, {String? callbackUrlScheme}) {
     return FlutterWebAuth2.authenticate(
       url: url.toString(),
-      callbackUrlScheme:
-          callbackUrlScheme != null && _customSchemeAllowed
-              ? callbackUrlScheme
-              : "appwrite-callback-" + config['project']!,
+      callbackUrlScheme: callbackUrlScheme != null && _customSchemeAllowed
+          ? callbackUrlScheme
+          : "appwrite-callback-" + config['project']!,
       options: const FlutterWebAuth2Options(intentFlags: ephemeralIntentFlags),
     ).then((value) async {
       Uri url = Uri.parse(value);

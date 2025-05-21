@@ -122,6 +122,31 @@ void main() {
 
         });
 
+        test('test method upsertDocument()', () async {
+            final Map<String, dynamic> data = {
+                '\$id': '5e5ea5c16897e',
+                '\$collectionId': '5e5ea5c15117e',
+                '\$databaseId': '5e5ea5c15117e',
+                '\$createdAt': '2020-10-15T06:38:00.000+00:00',
+                '\$updatedAt': '2020-10-15T06:38:00.000+00:00',
+                '\$permissions': [],};
+
+
+            when(client.call(
+                HttpMethod.put,
+            )).thenAnswer((_) async => Response(data: data));
+
+
+            final response = await databases.upsertDocument(
+                databaseId: '<DATABASE_ID>',
+                collectionId: '<COLLECTION_ID>',
+                documentId: '<DOCUMENT_ID>',
+                data: {},
+            );
+            expect(response, isA<models.Document>());
+
+        });
+
         test('test method updateDocument()', () async {
             final Map<String, dynamic> data = {
                 '\$id': '5e5ea5c16897e',

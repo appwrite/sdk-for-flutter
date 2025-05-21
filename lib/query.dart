@@ -82,19 +82,17 @@ class Query {
   static String contains(String attribute, dynamic value) =>
       Query._('contains', attribute, value).toString();
 
-  static String or(List<String> queries) =>
-      Query._(
-        'or',
-        null,
-        queries.map((query) => jsonDecode(query)).toList(),
-      ).toString();
+  static String or(List<String> queries) => Query._(
+    'or',
+    null,
+    queries.map((query) => jsonDecode(query)).toList(),
+  ).toString();
 
-  static String and(List<String> queries) =>
-      Query._(
-        'and',
-        null,
-        queries.map((query) => jsonDecode(query)).toList(),
-      ).toString();
+  static String and(List<String> queries) => Query._(
+    'and',
+    null,
+    queries.map((query) => jsonDecode(query)).toList(),
+  ).toString();
 
   /// Specify which attributes should be returned by the API call.
   static String select(List<String> attributes) =>
