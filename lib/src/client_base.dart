@@ -14,6 +14,9 @@ abstract class ClientBase implements Client {
   /// The user session to authenticate with
   @override
   ClientBase setSession(value);
+  /// Your secret dev API key
+  @override
+  ClientBase setDevKey(value);
 
   @override
   ClientBase setSelfSigned({bool status = true});

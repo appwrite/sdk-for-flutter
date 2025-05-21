@@ -113,6 +113,13 @@ class ClientIO extends ClientBase with ClientMixin {
         addHeader('X-Appwrite-Session', value);
         return this;
     }
+     /// Your secret dev API key
+    @override
+    ClientIO setDevKey(value) {
+        config['devKey'] = value;
+        addHeader('X-Appwrite-Dev-Key', value);
+        return this;
+    }
 
   @override
   ClientIO setSelfSigned({bool status = true}) {

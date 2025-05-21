@@ -48,27 +48,6 @@ class Databases extends Service {
 
     }
 
-    /// Create new Documents. Before using this route, you should create a new
-    /// collection resource using either a [server
-    /// integration](https://appwrite.io/docs/server/databases#databasesCreateCollection)
-    /// API or directly from your database console.
-    Future<models.DocumentList> createDocuments({required String databaseId, required String collectionId, required List<Map> documents}) async {
-        final String apiPath = '/databases/{databaseId}/collections/{collectionId}/documents'.replaceAll('{databaseId}', databaseId).replaceAll('{collectionId}', collectionId);
-
-        final Map<String, dynamic> apiParams = {
-            'documents': documents,
-        };
-
-        final Map<String, String> apiHeaders = {
-            'content-type': 'application/json',
-        };
-
-        final res = await client.call(HttpMethod.post, path: apiPath, params: apiParams, headers: apiHeaders);
-
-        return models.DocumentList.fromMap(res.data);
-
-    }
-
     /// Get a document by its unique ID. This endpoint response returns a JSON
     /// object with the document data.
     Future<models.Document> getDocument({required String databaseId, required String collectionId, required String documentId, List<String>? queries}) async {
@@ -83,6 +62,28 @@ class Databases extends Service {
         };
 
         final res = await client.call(HttpMethod.get, path: apiPath, params: apiParams, headers: apiHeaders);
+
+        return models.Document.fromMap(res.data);
+
+    }
+
+    /// Create or update a Document. Before using this route, you should create a
+    /// new collection resource using either a [server
+    /// integration](https://appwrite.io/docs/server/databases#databasesCreateCollection)
+    /// API or directly from your database console.
+    Future<models.Document> upsertDocument({required String databaseId, required String collectionId, required String documentId, required Map data, List<String>? permissions}) async {
+        final String apiPath = '/databases/{databaseId}/collections/{collectionId}/documents/{documentId}'.replaceAll('{databaseId}', databaseId).replaceAll('{collectionId}', collectionId).replaceAll('{documentId}', documentId);
+
+        final Map<String, dynamic> apiParams = {
+            'data': data,
+            'permissions': permissions,
+        };
+
+        final Map<String, String> apiHeaders = {
+            'content-type': 'application/json',
+        };
+
+        final res = await client.call(HttpMethod.put, path: apiPath, params: apiParams, headers: apiHeaders);
 
         return models.Document.fromMap(res.data);
 

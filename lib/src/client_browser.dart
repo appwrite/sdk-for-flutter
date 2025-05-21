@@ -84,6 +84,13 @@ class ClientBrowser extends ClientBase with ClientMixin {
     addHeader('X-Appwrite-Session', value);
     return this;
   }
+  /// Your secret dev API key
+  @override
+  ClientBrowser setDevKey(value) {
+    config['devKey'] = value;
+    addHeader('X-Appwrite-Dev-Key', value);
+    return this;
+  }
 
   @override
   ClientBrowser setSelfSigned({bool status = true}) {
