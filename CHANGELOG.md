@@ -1,6 +1,13 @@
 # Change Log
 
-## 16.0.1
+## 17.0.0
+
+* Update `flutter_web_auth_2` dependency to version 4.1.0
+* Update `auth.html` example in README.md to align with `flutter_web_auth_2` documentation
+* Breaking changes:
+  * Minimum iOS version supported is now 17.4 due to the updated requirements of `flutter_web_auth_2` version 4.1.0
+
+## 16.1.0
 
 * Add `setDevKey` method to Client service
 * Add `upsertDocument` method to Databases service
