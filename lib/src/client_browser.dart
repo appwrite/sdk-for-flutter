@@ -40,7 +40,7 @@ class ClientBrowser extends ClientBase with ClientMixin {
       'x-sdk-name': 'Flutter',
       'x-sdk-platform': 'client',
       'x-sdk-language': 'flutter',
-      'x-sdk-version': '16.1.0',
+      'x-sdk-version': '17.0.0',
       'X-Appwrite-Response-Format': '1.7.0',
     };
 
@@ -260,6 +260,7 @@ class ClientBrowser extends ClientBase with ClientMixin {
     return FlutterWebAuth2.authenticate(
       url: url.toString(),
       callbackUrlScheme: "appwrite-callback-" + config['project']!,
+      options: const FlutterWebAuth2Options(useWebview: false),
     );
   }
 }
