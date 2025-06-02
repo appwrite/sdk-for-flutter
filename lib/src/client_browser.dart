@@ -40,7 +40,7 @@ class ClientBrowser extends ClientBase with ClientMixin {
       'x-sdk-name': 'Flutter',
       'x-sdk-platform': 'client',
       'x-sdk-language': 'flutter',
-      'x-sdk-version': '17.0.0',
+      'x-sdk-version': '17.0.1',
       'X-Appwrite-Response-Format': '1.7.0',
     };
 
@@ -136,7 +136,6 @@ class ClientBrowser extends ClientBase with ClientMixin {
     if (cookieFallback != null) {
       addHeader('x-fallback-cookies', cookieFallback);
     }
-    _httpClient.withCredentials = true;
   }
 
   @override
@@ -227,11 +226,21 @@ class ClientBrowser extends ClientBase with ClientMixin {
   }) async {
     await init();
 
+    // Combine headers to check for dev key
+    final combinedHeaders = {..._headers!, ...headers};
+
+    // Only include credentials when dev key is not set
+    if (combinedHeaders['X-Appwrite-Dev-Key'] == null) {
+      _httpClient.withCredentials = true;
+    } else {
+      _httpClient.withCredentials = false;
+    }
+
     late http.Response res;
     http.BaseRequest request = prepareRequest(
       method,
       uri: Uri.parse(_endPoint + path),
-      headers: {..._headers!, ...headers},
+      headers: combinedHeaders,
       params: params,
     );
     try {
