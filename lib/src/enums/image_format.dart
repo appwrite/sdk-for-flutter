@@ -6,7 +6,8 @@ enum ImageFormat {
   png(value: 'png'),
   webp(value: 'webp'),
   heic(value: 'heic'),
-  avif(value: 'avif');
+  avif(value: 'avif'),
+  gif(value: 'gif');
 
   const ImageFormat({required this.value});
 
