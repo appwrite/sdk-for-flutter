@@ -2,27 +2,28 @@ part of '../../models.dart';
 
 /// Locale codes list
 class LocaleCodeList implements Model {
-  /// Total number of localeCodes documents that matched your query.
-  final int total;
+    /// Total number of localeCodes documents that matched your query.
+    final int total;
 
-  /// List of localeCodes.
-  final List<LocaleCode> localeCodes;
+    /// List of localeCodes.
+    final List<LocaleCode> localeCodes;
 
-  LocaleCodeList({required this.total, required this.localeCodes});
+    LocaleCodeList({
+        required this.total,
+        required this.localeCodes,
+    });
 
-  factory LocaleCodeList.fromMap(Map<String, dynamic> map) {
-    return LocaleCodeList(
-      total: map['total'],
-      localeCodes: List<LocaleCode>.from(
-        map['localeCodes'].map((p) => LocaleCode.fromMap(p)),
-      ),
-    );
-  }
+    factory LocaleCodeList.fromMap(Map<String, dynamic> map) {
+        return LocaleCodeList(
+            total: map['total'],
+            localeCodes: List<LocaleCode>.from(map['localeCodes'].map((p) => LocaleCode.fromMap(p))),
+        );
+    }
 
-  Map<String, dynamic> toMap() {
-    return {
-      "total": total,
-      "localeCodes": localeCodes.map((p) => p.toMap()).toList(),
-    };
-  }
+    Map<String, dynamic> toMap() {
+        return {
+            "total": total,
+            "localeCodes": localeCodes.map((p) => p.toMap()).toList(),
+        };
+    }
 }

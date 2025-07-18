@@ -2,59 +2,65 @@ part of '../../models.dart';
 
 /// Document
 class Document implements Model {
-  /// Document ID.
-  final String $id;
+    /// Document ID.
+    final String $id;
 
-  /// Collection ID.
-  final String $collectionId;
+    /// Document automatically incrementing ID.
+    final int $sequence;
 
-  /// Database ID.
-  final String $databaseId;
+    /// Collection ID.
+    final String $collectionId;
 
-  /// Document creation date in ISO 8601 format.
-  final String $createdAt;
+    /// Database ID.
+    final String $databaseId;
 
-  /// Document update date in ISO 8601 format.
-  final String $updatedAt;
+    /// Document creation date in ISO 8601 format.
+    final String $createdAt;
 
-  /// Document permissions. [Learn more about permissions](https://appwrite.io/docs/permissions).
-  final List<String> $permissions;
+    /// Document update date in ISO 8601 format.
+    final String $updatedAt;
 
-  final Map<String, dynamic> data;
+    /// Document permissions. [Learn more about permissions](https://appwrite.io/docs/permissions).
+    final List<String> $permissions;
 
-  Document({
-    required this.$id,
-    required this.$collectionId,
-    required this.$databaseId,
-    required this.$createdAt,
-    required this.$updatedAt,
-    required this.$permissions,
-    required this.data,
-  });
+    final Map<String, dynamic> data;
 
-  factory Document.fromMap(Map<String, dynamic> map) {
-    return Document(
-      $id: map['\$id'].toString(),
-      $collectionId: map['\$collectionId'].toString(),
-      $databaseId: map['\$databaseId'].toString(),
-      $createdAt: map['\$createdAt'].toString(),
-      $updatedAt: map['\$updatedAt'].toString(),
-      $permissions: List.from(map['\$permissions'] ?? []),
-      data: map,
-    );
-  }
+    Document({
+        required this.$id,
+        required this.$sequence,
+        required this.$collectionId,
+        required this.$databaseId,
+        required this.$createdAt,
+        required this.$updatedAt,
+        required this.$permissions,
+        required this.data,
+    });
 
-  Map<String, dynamic> toMap() {
-    return {
-      "\$id": $id,
-      "\$collectionId": $collectionId,
-      "\$databaseId": $databaseId,
-      "\$createdAt": $createdAt,
-      "\$updatedAt": $updatedAt,
-      "\$permissions": $permissions,
-      "data": data,
-    };
-  }
+    factory Document.fromMap(Map<String, dynamic> map) {
+        return Document(
+            $id: map['\$id'].toString(),
+            $sequence: map['\$sequence'],
+            $collectionId: map['\$collectionId'].toString(),
+            $databaseId: map['\$databaseId'].toString(),
+            $createdAt: map['\$createdAt'].toString(),
+            $updatedAt: map['\$updatedAt'].toString(),
+            $permissions: List.from(map['\$permissions'] ?? []),
+            data: map,
+        );
+    }
 
-  T convertTo<T>(T Function(Map) fromJson) => fromJson(data);
+    Map<String, dynamic> toMap() {
+        return {
+            "\$id": $id,
+            "\$sequence": $sequence,
+            "\$collectionId": $collectionId,
+            "\$databaseId": $databaseId,
+            "\$createdAt": $createdAt,
+            "\$updatedAt": $updatedAt,
+            "\$permissions": $permissions,
+            "data": data,
+        };
+    }
+
+    T convertTo<T>(T Function(Map) fromJson) => fromJson(data);
 }
