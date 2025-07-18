@@ -1,5 +1,14 @@
 # Change Log
 
+## 17.0.2
+
+* Add `gif` support to `ImageFormat` enum
+* Fix `convertTo()` method in `Document` and `Preferences` models to correctly accept `Map<String, dynamic>`
+
+## 17.0.1
+
+* Fix `devKeys` support by conditionally including credentials during requests
+
 ## 17.0.0
 
 * Update `flutter_web_auth_2` dependency to version 4.1.0
@@ -22,7 +31,7 @@
 ## 15.0.2
 
 * Avoid setting empty `User-Agent` header and only encode it when present.
-* Update doc examples to use new multi-region endpoint: `https://&lt;REGION&gt;.cloud.appwrite.io/v1`.
+* Update doc examples to use new multi-region endpoint: `https://<REGION>.cloud.appwrite.io/v1`.
 
 ## 15.0.1
 
@@ -34,7 +43,7 @@
 
 * Encode `User-Agent` header to fix invalid HTTP header field value error.
 * Breaking changes:
-  * Changed the typing of `AppwriteException`&#039;s response parameter from a `dynamic` object to an optional string (`?String`).
+  * Changed the typing of `AppwriteException`'s response parameter from a `dynamic` object to an optional string (`?String`).
 
 ## 14.0.0
 
@@ -180,8 +189,8 @@ https://github.com/appwrite/appwrite/blob/master/CHANGES.md
 ## 6.0.0
 * Support for Appwrite 0.15
 * **NEW** Phone authentication `account.createPhoneSession()`
-* **BREAKING** `Database` -&gt; `Databases`
-* **BREAKING** `account.createSession()` -&gt; `account.createEmailSession()`
+* **BREAKING** `Database` -> `Databases`
+* **BREAKING** `account.createSession()` -> `account.createEmailSession()`
 * **BREAKING** `dateCreated` attribute removed from `Team`, `Execution`, `File` models
 * **BREAKING** `dateCreated` and `dateUpdated` attribute removed from `Func`, `Deployment`, `Bucket` models
 * **BREAKING** Realtime channels
@@ -192,7 +201,7 @@ https://github.com/appwrite/appwrite/blob/master/CHANGES.md
 
 ## 5.0.0
 * Support for Appwrite 0.14
-* **BREAKING** `account.delete()` -&gt; `account.updateStatus()`
+* **BREAKING** `account.delete()` -> `account.updateStatus()`
 * **BREAKING** Execution model `stdout` renamed to `response`
 * **BREAKING** Membership model `name` renamed to `userName` and `email` renamed to `userEmail`
 * Added `teamName` to Membership model
@@ -209,7 +218,7 @@ https://github.com/appwrite/appwrite/blob/master/CHANGES.md
 * **BREAKING** **Tags** have been renamed to **Deployments**
 * **BREAKING** `createFile` function expects Bucket ID as the first parameter
 * **BREAKING** `createDeployment` and `createFile` functions expect an instance **InputFile** rather than the instance of **MultipartFile**
-* **BREAKING** `list&lt;Entity&gt;` endpoints now contain a `total` attribute instead of `sum`
+* **BREAKING** `list<Entity>` endpoints now contain a `total` attribute instead of `sum`
 * `onProgress()` callback function for endpoints supporting file uploads
 * Support for synchronous function executions
 * Bug fixes and Improvements
@@ -270,7 +279,7 @@ https://github.com/appwrite/appwrite/blob/master/CHANGES.md
 
 ## 0.7.0
 - Support for Appwrite 0.9
-- Breaking - removed order type enum, now you should pass string &#039;ASC&#039; or &#039;DESC&#039;
+- Breaking - removed order type enum, now you should pass string 'ASC' or 'DESC'
 - Image Crop Gravity support in image preview service
 - New endpoint in Account getSession to get session by ID
 - Fix - issues with User-Agent when app name consisted of non-ASCII characters
@@ -305,7 +314,7 @@ https://github.com/appwrite/appwrite/blob/master/CHANGES.md
 
 - Upgraded to Null-safety, minimum Dart SDK required 2.12.0 and minimum Flutter SDK version required 2.0.0
 - Upgraded all underlying dependencies to null safe version
-- All of Avatars service now return Future&lt;Response&gt;&lt;/Response&gt; instead of String like the Storage getFilePreview, getFileView and getFileDownload
+- All of Avatars service now return Future<Response></Response> instead of String like the Storage getFilePreview, getFileView and getFileDownload
 - Upgraded to Null-safety, minimum Dart SDK required 2.12.0
 - Upgraded all underlying dependencies to null safe version
 
@@ -347,7 +356,7 @@ https://github.com/appwrite/appwrite/blob/master/CHANGES.md
 
 ## 0.2.3
 
-- Fixed OAuth2 cookie bug, where a new session cookie couldn&#039;t overwrite an old cookie
+- Fixed OAuth2 cookie bug, where a new session cookie couldn't overwrite an old cookie
 
 ## 0.2.2
 
