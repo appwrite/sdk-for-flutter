@@ -15,7 +15,6 @@ import 'client_io.dart';
 RealtimeBase createRealtime(Client client) => RealtimeIO(client);
 
 class RealtimeIO extends RealtimeBase with RealtimeMixin {
-
   RealtimeIO(Client client) {
     this.client = client;
     getWebSocket = _getWebSocket;
@@ -23,7 +22,8 @@ class RealtimeIO extends RealtimeBase with RealtimeMixin {
 
   Future<WebSocketChannel> _getWebSocket(Uri uri) async {
     Map<String, String>? headers;
-    while (!(client as ClientIO).initialized && (client as ClientIO).initProgress) {
+    while (!(client as ClientIO).initialized &&
+        (client as ClientIO).initProgress) {
       await Future.delayed(Duration(milliseconds: 10));
     }
     if (!(client as ClientIO).initialized) {
@@ -32,9 +32,11 @@ class RealtimeIO extends RealtimeBase with RealtimeMixin {
     final cookies = await (client as ClientIO).cookieJar.loadForRequest(uri);
     headers = {HttpHeaders.cookieHeader: CookieManager.getCookies(cookies)};
 
-    final _websok = IOWebSocketChannel((client as ClientIO).selfSigned
-        ? await _connectForSelfSignedCert(uri, headers)
-        : await WebSocket.connect(uri.toString(), headers: headers));
+    final _websok = IOWebSocketChannel(
+      (client as ClientIO).selfSigned
+          ? await _connectForSelfSignedCert(uri, headers)
+          : await WebSocket.connect(uri.toString(), headers: headers),
+    );
     return _websok;
   }
 
@@ -50,16 +52,18 @@ class RealtimeIO extends RealtimeBase with RealtimeMixin {
   // https://github.com/jonataslaw/getsocket/blob/f25b3a264d8cc6f82458c949b86d286cd0343792/lib/src/io.dart#L104
   // and from official dart sdk websocket_impl.dart connect method
   Future<WebSocket> _connectForSelfSignedCert(
-      Uri uri, Map<String, dynamic> headers) async {
+    Uri uri,
+    Map<String, dynamic> headers,
+  ) async {
     try {
       var r = Random();
       var key = base64.encode(List<int>.generate(16, (_) => r.nextInt(255)));
       var client = HttpClient(context: SecurityContext());
       client.badCertificateCallback =
           (X509Certificate cert, String host, int port) {
-        debugPrint('AppwriteRealtime: Allow self-signed certificate');
-        return true;
-      };
+            debugPrint('AppwriteRealtime: Allow self-signed certificate');
+            return true;
+          };
 
       uri = Uri(
         scheme: uri.scheme == 'wss' ? 'https' : 'http',
