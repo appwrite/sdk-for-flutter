@@ -586,7 +586,6 @@ class Account extends Service {
     /// Use this endpoint to create a session from token. Provide the **userId**
     /// and **secret** parameters from the successful response of authentication
     /// flows initiated by token creation. For example, magic URL and phone login.
-    @Deprecated('This API has been deprecated.')
     Future<models.Session> updateMagicURLSession({required String userId, required String secret}) async {
         const String apiPath = '/account/sessions/magic-url';
 
@@ -659,7 +658,6 @@ class Account extends Service {
     /// Use this endpoint to create a session from token. Provide the **userId**
     /// and **secret** parameters from the successful response of authentication
     /// flows initiated by token creation. For example, magic URL and phone login.
-    @Deprecated('This API has been deprecated.')
     Future<models.Session> updatePhoneSession({required String userId, required String secret}) async {
         const String apiPath = '/account/sessions/phone';
 

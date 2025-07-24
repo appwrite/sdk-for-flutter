@@ -1,6 +1,6 @@
 /// Appwrite Flutter SDK
 ///
-/// This SDK is compatible with Appwrite server version 1.8.x. 
+/// This SDK is compatible with Appwrite server version 1.7.x. 
 /// For older versions, please check
 /// [previous releases](https://github.com/appwrite/sdk-for-flutter/releases).
 library appwrite;
@@ -33,7 +33,6 @@ part 'id.dart';
 part 'services/account.dart';
 part 'services/avatars.dart';
 part 'services/databases.dart';
-part 'services/tables.dart';
 part 'services/functions.dart';
 part 'services/graphql.dart';
 part 'services/locale.dart';

@@ -64,8 +64,8 @@ class ClientIO extends ClientBase with ClientMixin {
       'x-sdk-name': 'Flutter',
       'x-sdk-platform': 'client',
       'x-sdk-language': 'flutter',
-      'x-sdk-version': '18.0.0',
-      'X-Appwrite-Response-Format' : '1.8.0',
+      'x-sdk-version': '17.0.2',
+      'X-Appwrite-Response-Format' : '1.7.0',
     };
 
     config = {};

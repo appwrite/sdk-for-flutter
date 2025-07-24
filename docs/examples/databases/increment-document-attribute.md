@@ -6,10 +6,11 @@ Client client = Client()
 
 Databases databases = Databases(client);
 
-Document result = await databases.createDocument(
+Document result = await databases.incrementDocumentAttribute(
     databaseId: '<DATABASE_ID>',
     collectionId: '<COLLECTION_ID>',
     documentId: '<DOCUMENT_ID>',
-    data: {},
-    permissions: ["read("any")"], // optional
+    attribute: '',
+    value: 0, // optional
+    max: 0, // optional
 );
