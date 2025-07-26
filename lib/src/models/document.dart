@@ -5,6 +5,9 @@ class Document implements Model {
   /// Document ID.
   final String $id;
 
+  /// Document automatically incrementing ID.
+  final int $sequence;
+
   /// Collection ID.
   final String $collectionId;
 
@@ -24,6 +27,7 @@ class Document implements Model {
 
   Document({
     required this.$id,
+    required this.$sequence,
     required this.$collectionId,
     required this.$databaseId,
     required this.$createdAt,
@@ -35,6 +39,7 @@ class Document implements Model {
   factory Document.fromMap(Map<String, dynamic> map) {
     return Document(
       $id: map['\$id'].toString(),
+      $sequence: map['\$sequence'],
       $collectionId: map['\$collectionId'].toString(),
       $databaseId: map['\$databaseId'].toString(),
       $createdAt: map['\$createdAt'].toString(),
@@ -47,6 +52,7 @@ class Document implements Model {
   Map<String, dynamic> toMap() {
     return {
       "\$id": $id,
+      "\$sequence": $sequence,
       "\$collectionId": $collectionId,
       "\$databaseId": $databaseId,
       "\$createdAt": $createdAt,
