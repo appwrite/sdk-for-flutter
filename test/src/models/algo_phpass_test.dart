@@ -3,7 +3,6 @@ import 'package:flutter_test/flutter_test.dart';
 
 void main() {
   group('AlgoPhpass', () {
-
     test('model', () {
       final model = AlgoPhpass(
         type: 'phpass',

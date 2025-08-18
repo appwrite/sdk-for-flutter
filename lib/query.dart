@@ -1,5 +1,6 @@
 part of 'appwrite.dart';
 
+
 /// Helper class to generate query strings.
 class Query {
   final String method;
@@ -9,13 +10,15 @@ class Query {
   Query._(this.method, [this.attribute = null, this.values = null]);
 
   Map<String, dynamic> toJson() {
-    final map = <String, dynamic>{'method': method};
+    final map = <String, dynamic>{
+      'method': method,
+    };
 
-    if (attribute != null) {
+    if(attribute != null) {
       map['attribute'] = attribute;
     }
-
-    if (values != null) {
+    
+    if(values != null) {
       map['values'] = values is List ? values : [values];
     }
 
@@ -26,7 +29,7 @@ class Query {
   String toString() => jsonEncode(toJson());
 
   /// Filter resources where [attribute] is equal to [value].
-  ///
+  /// 
   /// [value] can be a single value or a list. If a list is used
   /// the query will return resources where [attribute] is equal
   /// to any of the values in the list.
@@ -58,12 +61,10 @@ class Query {
       Query._('search', attribute, value).toString();
 
   /// Filter resources where [attribute] is null.
-  static String isNull(String attribute) =>
-      Query._('isNull', attribute).toString();
+  static String isNull(String attribute) => Query._('isNull', attribute).toString();
 
   /// Filter resources where [attribute] is not null.
-  static String isNotNull(String attribute) =>
-      Query._('isNotNull', attribute).toString();
+  static String isNotNull(String attribute) => Query._('isNotNull', attribute).toString();
 
   /// Filter resources where [attribute] is between [start] and [end] (inclusive).
   static String between(String attribute, dynamic start, dynamic end) =>
@@ -82,51 +83,74 @@ class Query {
   static String contains(String attribute, dynamic value) =>
       Query._('contains', attribute, value).toString();
 
-  static String or(List<String> queries) => Query._(
-    'or',
-    null,
-    queries.map((query) => jsonDecode(query)).toList(),
-  ).toString();
+  /// Filter resources where [attribute] does not contain [value]
+  /// [value] can be a single value or a list.
+  static String notContains(String attribute, dynamic value) =>
+      Query._('notContains', attribute, value).toString();
 
-  static String and(List<String> queries) => Query._(
-    'and',
-    null,
-    queries.map((query) => jsonDecode(query)).toList(),
-  ).toString();
+  /// Filter resources by searching [attribute] for [value] (inverse of search).
+  static String notSearch(String attribute, String value) =>
+      Query._('notSearch', attribute, value).toString();
+
+  /// Filter resources where [attribute] is not between [start] and [end] (exclusive).
+  static String notBetween(String attribute, dynamic start, dynamic end) =>
+      Query._('notBetween', attribute, [start, end]).toString();
+
+  /// Filter resources where [attribute] does not start with [value].
+  static String notStartsWith(String attribute, String value) =>
+      Query._('notStartsWith', attribute, value).toString();
+
+  /// Filter resources where [attribute] does not end with [value].
+  static String notEndsWith(String attribute, String value) =>
+      Query._('notEndsWith', attribute, value).toString();
+
+  /// Filter resources where document was created before [value].
+  static String createdBefore(String value) => Query._('createdBefore', null, value).toString();
+
+  /// Filter resources where document was created after [value].
+  static String createdAfter(String value) => Query._('createdAfter', null, value).toString();
+
+  /// Filter resources where document was updated before [value].
+  static String updatedBefore(String value) => Query._('updatedBefore', null, value).toString();
+
+  /// Filter resources where document was updated after [value].
+  static String updatedAfter(String value) => Query._('updatedAfter', null, value).toString();
+
+  static String or(List<String> queries) =>
+    Query._('or', null, queries.map((query) => jsonDecode(query)).toList()).toString();
+
+  static String and(List<String> queries) =>
+      Query._('and', null, queries.map((query) => jsonDecode(query)).toList()).toString();
 
   /// Specify which attributes should be returned by the API call.
   static String select(List<String> attributes) =>
       Query._('select', null, attributes).toString();
 
   /// Sort results by [attribute] ascending.
-  static String orderAsc(String attribute) =>
-      Query._('orderAsc', attribute).toString();
+  static String orderAsc(String attribute) => Query._('orderAsc', attribute).toString();
 
   /// Sort results by [attribute] descending.
-  static String orderDesc(String attribute) =>
-      Query._('orderDesc', attribute).toString();
+  static String orderDesc(String attribute) => Query._('orderDesc', attribute).toString();
 
   /// Return results before [id].
-  ///
+  /// 
   /// Refer to the [Cursor Based Pagination](https://appwrite.io/docs/pagination#cursor-pagination)
   /// docs for more information.
-  static String cursorBefore(String id) =>
-      Query._('cursorBefore', null, id).toString();
+  static String cursorBefore(String id) => Query._('cursorBefore', null, id).toString();
 
   /// Return results after [id].
-  ///
+  /// 
   /// Refer to the [Cursor Based Pagination](https://appwrite.io/docs/pagination#cursor-pagination)
   /// docs for more information.
-  static String cursorAfter(String id) =>
-      Query._('cursorAfter', null, id).toString();
+  static String cursorAfter(String id) => Query._('cursorAfter', null, id).toString();
 
   /// Return only [limit] results.
   static String limit(int limit) => Query._('limit', null, limit).toString();
 
   /// Return results from [offset].
-  ///
+  /// 
   /// Refer to the [Offset Pagination](https://appwrite.io/docs/pagination#offset-pagination)
   /// docs for more information.
-  static String offset(int offset) =>
-      Query._('offset', null, offset).toString();
+  static String offset(int offset) => Query._('offset', null, offset).toString();
+
 }

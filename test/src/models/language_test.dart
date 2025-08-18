@@ -3,7 +3,6 @@ import 'package:flutter_test/flutter_test.dart';
 
 void main() {
   group('Language', () {
-
     test('model', () {
       final model = Language(
         name: 'Italian',

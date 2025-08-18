@@ -3,7 +3,6 @@ import 'package:flutter_test/flutter_test.dart';
 
 void main() {
   group('MfaFactors', () {
-
     test('model', () {
       final model = MfaFactors(
         totp: true,

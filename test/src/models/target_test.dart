@@ -3,7 +3,6 @@ import 'package:flutter_test/flutter_test.dart';
 
 void main() {
   group('Target', () {
-
     test('model', () {
       final model = Target(
         $id: '259125845563242502',

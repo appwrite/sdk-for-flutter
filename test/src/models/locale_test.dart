@@ -3,7 +3,6 @@ import 'package:flutter_test/flutter_test.dart';
 
 void main() {
   group('Locale', () {
-
     test('model', () {
       final model = Locale(
         ip: '127.0.0.1',

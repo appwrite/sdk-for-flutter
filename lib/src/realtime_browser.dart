@@ -26,7 +26,7 @@ class RealtimeBrowser extends RealtimeBase with RealtimeMixin {
   }
 
   String? _getFallbackCookie() {
-    final fallbackCookie = web.window.localStorage['cookieFallback'];
+    final fallbackCookie = web.window.localStorage.getItem('cookieFallback');
     if (fallbackCookie != null) {
       final cookie = Map<String, dynamic>.from(jsonDecode(fallbackCookie));
       return cookie.values.first;

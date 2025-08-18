@@ -3,7 +3,6 @@ import 'package:flutter_test/flutter_test.dart';
 
 void main() {
   group('IdentityList', () {
-
     test('model', () {
       final model = IdentityList(
         total: 5,

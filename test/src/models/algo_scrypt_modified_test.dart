@@ -3,7 +3,6 @@ import 'package:flutter_test/flutter_test.dart';
 
 void main() {
   group('AlgoScryptModified', () {
-
     test('model', () {
       final model = AlgoScryptModified(
         type: 'scryptMod',

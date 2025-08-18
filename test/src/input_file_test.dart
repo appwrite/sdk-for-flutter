@@ -36,7 +36,8 @@ void main() {
     });
 
     test('creates InputFile from bytes', () {
-      final inputFile = InputFile.fromBytes(bytes: [1, 2, 3], filename: 'file.txt');
+      final inputFile =
+          InputFile.fromBytes(bytes: [1, 2, 3], filename: 'file.txt');
 
       expect(inputFile.path, isNull);
       expect(inputFile.filename, 'file.txt');

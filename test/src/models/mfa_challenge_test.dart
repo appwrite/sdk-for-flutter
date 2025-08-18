@@ -3,7 +3,6 @@ import 'package:flutter_test/flutter_test.dart';
 
 void main() {
   group('MfaChallenge', () {
-
     test('model', () {
       final model = MfaChallenge(
         $id: 'bb8ea5c16897e',

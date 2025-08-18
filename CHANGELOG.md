@@ -1,5 +1,7 @@
 # Change Log
 
+## 17.1.1
+
 ## 17.1.0
 
 * Add `incrementDocumentAttribute` and `decrementDocumentAttribute` support to `Databases` service

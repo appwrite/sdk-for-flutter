@@ -3,7 +3,6 @@ import 'package:flutter_test/flutter_test.dart';
 
 void main() {
   group('Currency', () {
-
     test('model', () {
       final model = Currency(
         symbol: '\$',

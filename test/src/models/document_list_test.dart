@@ -3,7 +3,6 @@ import 'package:flutter_test/flutter_test.dart';
 
 void main() {
   group('DocumentList', () {
-
     test('model', () {
       final model = DocumentList(
         total: 5,

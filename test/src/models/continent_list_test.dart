@@ -3,7 +3,6 @@ import 'package:flutter_test/flutter_test.dart';
 
 void main() {
   group('ContinentList', () {
-
     test('model', () {
       final model = ContinentList(
         total: 5,
