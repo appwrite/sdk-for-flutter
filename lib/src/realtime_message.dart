@@ -4,7 +4,7 @@ import 'package:flutter/foundation.dart';
 /// Realtime Message
 class RealtimeMessage {
   /// All permutations of the system event that triggered this message
-  /// 
+  ///
   /// The first event in the list is the most specfic event without wildcards.
   final List<String> events;
 
