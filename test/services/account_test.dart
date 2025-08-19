@@ -260,7 +260,7 @@ void main() {
 
 
             final response = await account.createMfaAuthenticator(
-                type:  enums.AuthenticatorType.totp,
+                type: enums.AuthenticatorType.totp,
             );
             expect(response, isA<models.MfaType>());
 
@@ -292,7 +292,7 @@ void main() {
 
 
             final response = await account.updateMfaAuthenticator(
-                type:  enums.AuthenticatorType.totp,
+                type: enums.AuthenticatorType.totp,
                 otp: '<OTP>',
             );
             expect(response, isA<models.User>());
@@ -308,7 +308,7 @@ void main() {
 
 
             final response = await account.deleteMfaAuthenticator(
-                type:  enums.AuthenticatorType.totp,
+                type: enums.AuthenticatorType.totp,
             );
         });
 
@@ -326,7 +326,7 @@ void main() {
 
 
             final response = await account.createMfaChallenge(
-                factor:  enums.AuthenticationFactor.email,
+                factor: enums.AuthenticationFactor.email,
             );
             expect(response, isA<models.MfaChallenge>());
 
@@ -809,7 +809,7 @@ void main() {
 
 
             final response = await account.createOAuth2Session(
-                provider:  enums.OAuthProvider.amazon,
+                provider: enums.OAuthProvider.amazon,
             );
         });
 
@@ -1156,7 +1156,7 @@ void main() {
 
 
             final response = await account.createOAuth2Token(
-                provider:  enums.OAuthProvider.amazon,
+                provider: enums.OAuthProvider.amazon,
             );
         });
 

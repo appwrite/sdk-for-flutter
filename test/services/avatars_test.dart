@@ -63,7 +63,7 @@ void main() {
 
 
             final response = await avatars.getBrowser(
-                code:  enums.Browser.avantBrowser,
+                code: enums.Browser.avantBrowser,
             );
             expect(response, isA<Uint8List>());
 
@@ -77,7 +77,7 @@ void main() {
 
 
             final response = await avatars.getCreditCard(
-                code:  enums.CreditCard.americanExpress,
+                code: enums.CreditCard.americanExpress,
             );
             expect(response, isA<Uint8List>());
 
@@ -105,7 +105,7 @@ void main() {
 
 
             final response = await avatars.getFlag(
-                code:  enums.Flag.afghanistan,
+                code: enums.Flag.afghanistan,
             );
             expect(response, isA<Uint8List>());
 
