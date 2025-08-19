@@ -58,7 +58,7 @@ class Teams extends Service {
 
   /// Get a team by its ID. All team members have read access for this resource.
   Future<models.Team> get({required String teamId}) async {
-    final String apiPath = '/teams/{teamId}'.replaceAll('{teamId}', teamId);
+    final String apiPath = '/teams/$teamId';
 
     final Map<String, dynamic> apiParams = {};
 
@@ -79,7 +79,7 @@ class Teams extends Service {
     required String teamId,
     required String name,
   }) async {
-    final String apiPath = '/teams/{teamId}'.replaceAll('{teamId}', teamId);
+    final String apiPath = '/teams/$teamId';
 
     final Map<String, dynamic> apiParams = {'name': name};
 
@@ -98,7 +98,7 @@ class Teams extends Service {
   /// Delete a team using its ID. Only team members with the owner role can
   /// delete the team.
   Future delete({required String teamId}) async {
-    final String apiPath = '/teams/{teamId}'.replaceAll('{teamId}', teamId);
+    final String apiPath = '/teams/$teamId';
 
     final Map<String, dynamic> apiParams = {};
 
@@ -122,10 +122,7 @@ class Teams extends Service {
     List<String>? queries,
     String? search,
   }) async {
-    final String apiPath = '/teams/{teamId}/memberships'.replaceAll(
-      '{teamId}',
-      teamId,
-    );
+    final String apiPath = '/teams/$teamId/memberships';
 
     final Map<String, dynamic> apiParams = {
       'queries': queries,
@@ -174,10 +171,7 @@ class Teams extends Service {
     String? url,
     String? name,
   }) async {
-    final String apiPath = '/teams/{teamId}/memberships'.replaceAll(
-      '{teamId}',
-      teamId,
-    );
+    final String apiPath = '/teams/$teamId/memberships';
 
     final Map<String, dynamic> apiParams = {
       'email': email,
@@ -207,9 +201,7 @@ class Teams extends Service {
     required String teamId,
     required String membershipId,
   }) async {
-    final String apiPath = '/teams/{teamId}/memberships/{membershipId}'
-        .replaceAll('{teamId}', teamId)
-        .replaceAll('{membershipId}', membershipId);
+    final String apiPath = '/teams/$teamId/memberships/$membershipId';
 
     final Map<String, dynamic> apiParams = {};
 
@@ -234,9 +226,7 @@ class Teams extends Service {
     required String membershipId,
     required List<String> roles,
   }) async {
-    final String apiPath = '/teams/{teamId}/memberships/{membershipId}'
-        .replaceAll('{teamId}', teamId)
-        .replaceAll('{membershipId}', membershipId);
+    final String apiPath = '/teams/$teamId/memberships/$membershipId';
 
     final Map<String, dynamic> apiParams = {'roles': roles};
 
@@ -259,9 +249,7 @@ class Teams extends Service {
     required String teamId,
     required String membershipId,
   }) async {
-    final String apiPath = '/teams/{teamId}/memberships/{membershipId}'
-        .replaceAll('{teamId}', teamId)
-        .replaceAll('{membershipId}', membershipId);
+    final String apiPath = '/teams/$teamId/memberships/$membershipId';
 
     final Map<String, dynamic> apiParams = {};
 
@@ -290,9 +278,7 @@ class Teams extends Service {
     required String userId,
     required String secret,
   }) async {
-    final String apiPath = '/teams/{teamId}/memberships/{membershipId}/status'
-        .replaceAll('{teamId}', teamId)
-        .replaceAll('{membershipId}', membershipId);
+    final String apiPath = '/teams/$teamId/memberships/$membershipId/status';
 
     final Map<String, dynamic> apiParams = {'userId': userId, 'secret': secret};
 
@@ -312,10 +298,7 @@ class Teams extends Service {
   /// need to be shared by all team members, prefer storing them in [user
   /// preferences](https://appwrite.io/docs/references/cloud/client-web/account#getPrefs).
   Future<models.Preferences> getPrefs({required String teamId}) async {
-    final String apiPath = '/teams/{teamId}/prefs'.replaceAll(
-      '{teamId}',
-      teamId,
-    );
+    final String apiPath = '/teams/$teamId/prefs';
 
     final Map<String, dynamic> apiParams = {};
 
@@ -338,10 +321,7 @@ class Teams extends Service {
     required String teamId,
     required Map prefs,
   }) async {
-    final String apiPath = '/teams/{teamId}/prefs'.replaceAll(
-      '{teamId}',
-      teamId,
-    );
+    final String apiPath = '/teams/$teamId/prefs';
 
     final Map<String, dynamic> apiParams = {'prefs': prefs};
 

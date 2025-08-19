@@ -12,10 +12,7 @@ class Storage extends Service {
     List<String>? queries,
     String? search,
   }) async {
-    final String apiPath = '/storage/buckets/{bucketId}/files'.replaceAll(
-      '{bucketId}',
-      bucketId,
-    );
+    final String apiPath = '/storage/buckets/$bucketId/files';
 
     final Map<String, dynamic> apiParams = {
       'queries': queries,
@@ -59,10 +56,7 @@ class Storage extends Service {
     List<String>? permissions,
     Function(UploadProgress)? onProgress,
   }) async {
-    final String apiPath = '/storage/buckets/{bucketId}/files'.replaceAll(
-      '{bucketId}',
-      bucketId,
-    );
+    final String apiPath = '/storage/buckets/$bucketId/files';
 
     final Map<String, dynamic> apiParams = {
       'fileId': fileId,
@@ -95,9 +89,7 @@ class Storage extends Service {
     required String bucketId,
     required String fileId,
   }) async {
-    final String apiPath = '/storage/buckets/{bucketId}/files/{fileId}'
-        .replaceAll('{bucketId}', bucketId)
-        .replaceAll('{fileId}', fileId);
+    final String apiPath = '/storage/buckets/$bucketId/files/$fileId';
 
     final Map<String, dynamic> apiParams = {};
 
@@ -121,9 +113,7 @@ class Storage extends Service {
     String? name,
     List<String>? permissions,
   }) async {
-    final String apiPath = '/storage/buckets/{bucketId}/files/{fileId}'
-        .replaceAll('{bucketId}', bucketId)
-        .replaceAll('{fileId}', fileId);
+    final String apiPath = '/storage/buckets/$bucketId/files/$fileId';
 
     final Map<String, dynamic> apiParams = {
       'name': name,
@@ -145,9 +135,7 @@ class Storage extends Service {
   /// Delete a file by its unique ID. Only users with write permissions have
   /// access to delete this resource.
   Future deleteFile({required String bucketId, required String fileId}) async {
-    final String apiPath = '/storage/buckets/{bucketId}/files/{fileId}'
-        .replaceAll('{bucketId}', bucketId)
-        .replaceAll('{fileId}', fileId);
+    final String apiPath = '/storage/buckets/$bucketId/files/$fileId';
 
     final Map<String, dynamic> apiParams = {};
 
@@ -171,9 +159,7 @@ class Storage extends Service {
     required String fileId,
     String? token,
   }) async {
-    final String apiPath = '/storage/buckets/{bucketId}/files/{fileId}/download'
-        .replaceAll('{bucketId}', bucketId)
-        .replaceAll('{fileId}', fileId);
+    final String apiPath = '/storage/buckets/$bucketId/files/$fileId/download';
 
     final Map<String, dynamic> params = {
       'token': token,
@@ -211,9 +197,7 @@ class Storage extends Service {
     enums.ImageFormat? output,
     String? token,
   }) async {
-    final String apiPath = '/storage/buckets/{bucketId}/files/{fileId}/preview'
-        .replaceAll('{bucketId}', bucketId)
-        .replaceAll('{fileId}', fileId);
+    final String apiPath = '/storage/buckets/$bucketId/files/$fileId/preview';
 
     final Map<String, dynamic> params = {
       'width': width,
@@ -249,9 +233,7 @@ class Storage extends Service {
     required String fileId,
     String? token,
   }) async {
-    final String apiPath = '/storage/buckets/{bucketId}/files/{fileId}/view'
-        .replaceAll('{bucketId}', bucketId)
-        .replaceAll('{fileId}', fileId);
+    final String apiPath = '/storage/buckets/$bucketId/files/$fileId/view';
 
     final Map<String, dynamic> params = {
       'token': token,

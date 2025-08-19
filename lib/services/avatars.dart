@@ -22,10 +22,7 @@ class Avatars extends Service {
     int? height,
     int? quality,
   }) async {
-    final String apiPath = '/avatars/browsers/{code}'.replaceAll(
-      '{code}',
-      code.value,
-    );
+    final String apiPath = '/avatars/browsers/${code.value}';
 
     final Map<String, dynamic> params = {
       'width': width,
@@ -59,10 +56,7 @@ class Avatars extends Service {
     int? height,
     int? quality,
   }) async {
-    final String apiPath = '/avatars/credit-cards/{code}'.replaceAll(
-      '{code}',
-      code.value,
-    );
+    final String apiPath = '/avatars/credit-cards/${code.value}';
 
     final Map<String, dynamic> params = {
       'width': width,
@@ -119,10 +113,7 @@ class Avatars extends Service {
     int? height,
     int? quality,
   }) async {
-    final String apiPath = '/avatars/flags/{code}'.replaceAll(
-      '{code}',
-      code.value,
-    );
+    final String apiPath = '/avatars/flags/${code.value}';
 
     final Map<String, dynamic> params = {
       'width': width,

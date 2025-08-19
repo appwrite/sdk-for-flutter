@@ -108,10 +108,7 @@ class Account extends Service {
 
   /// Delete an identity by its unique ID.
   Future deleteIdentity({required String identityId}) async {
-    final String apiPath = '/account/identities/{identityId}'.replaceAll(
-      '{identityId}',
-      identityId,
-    );
+    final String apiPath = '/account/identities/$identityId';
 
     final Map<String, dynamic> apiParams = {};
 
@@ -193,10 +190,7 @@ class Account extends Service {
   Future<models.MfaType> createMfaAuthenticator({
     required enums.AuthenticatorType type,
   }) async {
-    final String apiPath = '/account/mfa/authenticators/{type}'.replaceAll(
-      '{type}',
-      type.value,
-    );
+    final String apiPath = '/account/mfa/authenticators/${type.value}';
 
     final Map<String, dynamic> apiParams = {};
 
@@ -219,10 +213,7 @@ class Account extends Service {
     required enums.AuthenticatorType type,
     required String otp,
   }) async {
-    final String apiPath = '/account/mfa/authenticators/{type}'.replaceAll(
-      '{type}',
-      type.value,
-    );
+    final String apiPath = '/account/mfa/authenticators/${type.value}';
 
     final Map<String, dynamic> apiParams = {'otp': otp};
 
@@ -240,10 +231,7 @@ class Account extends Service {
 
   /// Delete an authenticator for a user by ID.
   Future deleteMfaAuthenticator({required enums.AuthenticatorType type}) async {
-    final String apiPath = '/account/mfa/authenticators/{type}'.replaceAll(
-      '{type}',
-      type.value,
-    );
+    final String apiPath = '/account/mfa/authenticators/${type.value}';
 
     final Map<String, dynamic> apiParams = {};
 
@@ -700,10 +688,7 @@ class Account extends Service {
     String? failure,
     List<String>? scopes,
   }) async {
-    final String apiPath = '/account/sessions/oauth2/{provider}'.replaceAll(
-      '{provider}',
-      provider.value,
-    );
+    final String apiPath = '/account/sessions/oauth2/${provider.value}';
 
     final Map<String, dynamic> params = {
       'success': success,
@@ -788,10 +773,7 @@ class Account extends Service {
   /// Use this endpoint to get a logged in user's session using a Session ID.
   /// Inputting 'current' will return the current session being used.
   Future<models.Session> getSession({required String sessionId}) async {
-    final String apiPath = '/account/sessions/{sessionId}'.replaceAll(
-      '{sessionId}',
-      sessionId,
-    );
+    final String apiPath = '/account/sessions/$sessionId';
 
     final Map<String, dynamic> apiParams = {};
 
@@ -811,10 +793,7 @@ class Account extends Service {
   /// useful when session expiry is short. If the session was created using an
   /// OAuth provider, this endpoint refreshes the access token from the provider.
   Future<models.Session> updateSession({required String sessionId}) async {
-    final String apiPath = '/account/sessions/{sessionId}'.replaceAll(
-      '{sessionId}',
-      sessionId,
-    );
+    final String apiPath = '/account/sessions/$sessionId';
 
     final Map<String, dynamic> apiParams = {};
 
@@ -836,10 +815,7 @@ class Account extends Service {
   /// Sessions](https://appwrite.io/docs/references/cloud/client-web/account#deleteSessions)
   /// instead.
   Future deleteSession({required String sessionId}) async {
-    final String apiPath = '/account/sessions/{sessionId}'.replaceAll(
-      '{sessionId}',
-      sessionId,
-    );
+    final String apiPath = '/account/sessions/$sessionId';
 
     final Map<String, dynamic> apiParams = {};
 
@@ -914,10 +890,7 @@ class Account extends Service {
     required String targetId,
     required String identifier,
   }) async {
-    final String apiPath = '/account/targets/{targetId}/push'.replaceAll(
-      '{targetId}',
-      targetId,
-    );
+    final String apiPath = '/account/targets/$targetId/push';
 
     final Map<String, dynamic> apiParams = {'identifier': identifier};
 
@@ -937,10 +910,7 @@ class Account extends Service {
   /// deletion, the device will no longer receive push notifications. The target
   /// must exist and belong to the current user.
   Future deletePushTarget({required String targetId}) async {
-    final String apiPath = '/account/targets/{targetId}/push'.replaceAll(
-      '{targetId}',
-      targetId,
-    );
+    final String apiPath = '/account/targets/$targetId/push';
 
     final Map<String, dynamic> apiParams = {};
 
@@ -1052,10 +1022,7 @@ class Account extends Service {
     String? failure,
     List<String>? scopes,
   }) async {
-    final String apiPath = '/account/tokens/oauth2/{provider}'.replaceAll(
-      '{provider}',
-      provider.value,
-    );
+    final String apiPath = '/account/tokens/oauth2/${provider.value}';
 
     final Map<String, dynamic> params = {
       'success': success,

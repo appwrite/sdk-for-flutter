@@ -12,10 +12,7 @@ class Functions extends Service {
     required String functionId,
     List<String>? queries,
   }) async {
-    final String apiPath = '/functions/{functionId}/executions'.replaceAll(
-      '{functionId}',
-      functionId,
-    );
+    final String apiPath = '/functions/$functionId/executions';
 
     final Map<String, dynamic> apiParams = {'queries': queries};
 
@@ -44,10 +41,7 @@ class Functions extends Service {
     Map? headers,
     String? scheduledAt,
   }) async {
-    final String apiPath = '/functions/{functionId}/executions'.replaceAll(
-      '{functionId}',
-      functionId,
-    );
+    final String apiPath = '/functions/$functionId/executions';
 
     final Map<String, dynamic> apiParams = {
       'body': body,
@@ -75,9 +69,7 @@ class Functions extends Service {
     required String functionId,
     required String executionId,
   }) async {
-    final String apiPath = '/functions/{functionId}/executions/{executionId}'
-        .replaceAll('{functionId}', functionId)
-        .replaceAll('{executionId}', executionId);
+    final String apiPath = '/functions/$functionId/executions/$executionId';
 
     final Map<String, dynamic> apiParams = {};
 

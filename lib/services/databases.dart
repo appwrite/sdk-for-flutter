@@ -14,9 +14,7 @@ class Databases extends Service {
     List<String>? queries,
   }) async {
     final String apiPath =
-        '/databases/{databaseId}/collections/{collectionId}/documents'
-            .replaceAll('{databaseId}', databaseId)
-            .replaceAll('{collectionId}', collectionId);
+        '/databases/$databaseId/collections/$collectionId/documents';
 
     final Map<String, dynamic> apiParams = {'queries': queries};
 
@@ -44,9 +42,7 @@ class Databases extends Service {
     List<String>? permissions,
   }) async {
     final String apiPath =
-        '/databases/{databaseId}/collections/{collectionId}/documents'
-            .replaceAll('{databaseId}', databaseId)
-            .replaceAll('{collectionId}', collectionId);
+        '/databases/$databaseId/collections/$collectionId/documents';
 
     final Map<String, dynamic> apiParams = {
       'documentId': documentId,
@@ -75,10 +71,7 @@ class Databases extends Service {
     List<String>? queries,
   }) async {
     final String apiPath =
-        '/databases/{databaseId}/collections/{collectionId}/documents/{documentId}'
-            .replaceAll('{databaseId}', databaseId)
-            .replaceAll('{collectionId}', collectionId)
-            .replaceAll('{documentId}', documentId);
+        '/databases/$databaseId/collections/$collectionId/documents/$documentId';
 
     final Map<String, dynamic> apiParams = {'queries': queries};
 
@@ -110,10 +103,7 @@ class Databases extends Service {
     List<String>? permissions,
   }) async {
     final String apiPath =
-        '/databases/{databaseId}/collections/{collectionId}/documents/{documentId}'
-            .replaceAll('{databaseId}', databaseId)
-            .replaceAll('{collectionId}', collectionId)
-            .replaceAll('{documentId}', documentId);
+        '/databases/$databaseId/collections/$collectionId/documents/$documentId';
 
     final Map<String, dynamic> apiParams = {
       'data': data,
@@ -142,10 +132,7 @@ class Databases extends Service {
     List<String>? permissions,
   }) async {
     final String apiPath =
-        '/databases/{databaseId}/collections/{collectionId}/documents/{documentId}'
-            .replaceAll('{databaseId}', databaseId)
-            .replaceAll('{collectionId}', collectionId)
-            .replaceAll('{documentId}', documentId);
+        '/databases/$databaseId/collections/$collectionId/documents/$documentId';
 
     final Map<String, dynamic> apiParams = {
       'data': data,
@@ -171,10 +158,7 @@ class Databases extends Service {
     required String documentId,
   }) async {
     final String apiPath =
-        '/databases/{databaseId}/collections/{collectionId}/documents/{documentId}'
-            .replaceAll('{databaseId}', databaseId)
-            .replaceAll('{collectionId}', collectionId)
-            .replaceAll('{documentId}', documentId);
+        '/databases/$databaseId/collections/$collectionId/documents/$documentId';
 
     final Map<String, dynamic> apiParams = {};
 
@@ -200,11 +184,7 @@ class Databases extends Service {
     double? min,
   }) async {
     final String apiPath =
-        '/databases/{databaseId}/collections/{collectionId}/documents/{documentId}/{attribute}/decrement'
-            .replaceAll('{databaseId}', databaseId)
-            .replaceAll('{collectionId}', collectionId)
-            .replaceAll('{documentId}', documentId)
-            .replaceAll('{attribute}', attribute);
+        '/databases/$databaseId/collections/$collectionId/documents/$documentId/$attribute/decrement';
 
     final Map<String, dynamic> apiParams = {'value': value, 'min': min};
 
@@ -230,11 +210,7 @@ class Databases extends Service {
     double? max,
   }) async {
     final String apiPath =
-        '/databases/{databaseId}/collections/{collectionId}/documents/{documentId}/{attribute}/increment'
-            .replaceAll('{databaseId}', databaseId)
-            .replaceAll('{collectionId}', collectionId)
-            .replaceAll('{documentId}', documentId)
-            .replaceAll('{attribute}', attribute);
+        '/databases/$databaseId/collections/$collectionId/documents/$documentId/$attribute/increment';
 
     final Map<String, dynamic> apiParams = {'value': value, 'max': max};
 

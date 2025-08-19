@@ -12,10 +12,7 @@ class Messaging extends Service {
     required String subscriberId,
     required String targetId,
   }) async {
-    final String apiPath = '/messaging/topics/{topicId}/subscribers'.replaceAll(
-      '{topicId}',
-      topicId,
-    );
+    final String apiPath = '/messaging/topics/$topicId/subscribers';
 
     final Map<String, dynamic> apiParams = {
       'subscriberId': subscriberId,
@@ -40,9 +37,7 @@ class Messaging extends Service {
     required String subscriberId,
   }) async {
     final String apiPath =
-        '/messaging/topics/{topicId}/subscribers/{subscriberId}'
-            .replaceAll('{topicId}', topicId)
-            .replaceAll('{subscriberId}', subscriberId);
+        '/messaging/topics/$topicId/subscribers/$subscriberId';
 
     final Map<String, dynamic> apiParams = {};
 
