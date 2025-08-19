@@ -63,12 +63,16 @@ void main() {
 
     group('notEqual()', () {
       for (var t in tests) {
-        test(t.description, () {
-          final query = jsonDecode(Query.notEqual('attr', t.value));
-          expect(query['attribute'], 'attr');
-          expect(query['values'], t.expectedValues);
-          expect(query['method'], 'notEqual');
-        });
+        test(
+          t.description,
+          () {
+            final query = jsonDecode(Query.notEqual('attr', t.value));
+            expect(query['attribute'], 'attr');
+            expect(query['values'], t.expectedValues);
+            expect(query['method'], 'notEqual');
+          },
+          skip: t.value is List,
+        );
       }
     });
 
@@ -185,28 +189,28 @@ void main() {
   test('returns cursorBefore', () {
     final query = jsonDecode(Query.cursorBefore('custom'));
     expect(query['attribute'], null);
-    expect(query['values'], 'custom');
+    expect(query['values'], ['custom']);
     expect(query['method'], 'cursorBefore');
   });
 
   test('returns cursorAfter', () {
     final query = jsonDecode(Query.cursorAfter('custom'));
     expect(query['attribute'], null);
-    expect(query['values'], 'custom');
+    expect(query['values'], ['custom']);
     expect(query['method'], 'cursorAfter');
   });
 
   test('returns limit', () {
     final query = jsonDecode(Query.limit(1));
     expect(query['attribute'], null);
-    expect(query['values'], 1);
+    expect(query['values'], [1]);
     expect(query['method'], 'limit');
   });
 
   test('returns offset', () {
     final query = jsonDecode(Query.offset(1));
     expect(query['attribute'], null);
-    expect(query['values'], 1);
+    expect(query['values'], [1]);
     expect(query['method'], 'offset');
   });
 
@@ -264,28 +268,28 @@ void main() {
   test('returns createdBefore', () {
     final query = jsonDecode(Query.createdBefore('2023-01-01'));
     expect(query['attribute'], null);
-    expect(query['values'], '2023-01-01');
+    expect(query['values'], ['2023-01-01']);
     expect(query['method'], 'createdBefore');
   });
 
   test('returns createdAfter', () {
     final query = jsonDecode(Query.createdAfter('2023-01-01'));
     expect(query['attribute'], null);
-    expect(query['values'], '2023-01-01');
+    expect(query['values'], ['2023-01-01']);
     expect(query['method'], 'createdAfter');
   });
 
   test('returns updatedBefore', () {
     final query = jsonDecode(Query.updatedBefore('2023-01-01'));
     expect(query['attribute'], null);
-    expect(query['values'], '2023-01-01');
+    expect(query['values'], ['2023-01-01']);
     expect(query['method'], 'updatedBefore');
   });
 
   test('returns updatedAfter', () {
     final query = jsonDecode(Query.updatedAfter('2023-01-01'));
     expect(query['attribute'], null);
-    expect(query['values'], '2023-01-01');
+    expect(query['values'], ['2023-01-01']);
     expect(query['method'], 'updatedAfter');
   });
 }

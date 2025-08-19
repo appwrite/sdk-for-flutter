@@ -1,6 +1,7 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
 import 'package:appwrite/models.dart' as models;
+import 'package:appwrite/enums.dart' as enums;
 import 'package:appwrite/src/enums.dart';
 import 'package:appwrite/src/response.dart';
 import 'dart:typed_data';
@@ -23,7 +24,7 @@ class MockClient extends Mock implements Client {
 
   @override
   Future webAuth(
-    Uri? url, 
+    Uri? url,
     {
         String? callbackUrlScheme,
     }
@@ -60,7 +61,16 @@ void main() {
                 '\$createdAt': '2020-10-15T06:38:00.000+00:00',
                 '\$updatedAt': '2020-10-15T06:38:00.000+00:00',
                 'targetId': '259125845563242502',
-                'target': <String, dynamic>{},
+                'target': <String, dynamic>{
+    '\$id': '259125845563242502',
+    '\$createdAt': '2020-10-15T06:38:00.000+00:00',
+    '\$updatedAt': '2020-10-15T06:38:00.000+00:00',
+    'name': 'Apple iPhone 12',
+    'userId': '259125845563242502',
+    'providerType': 'email',
+    'identifier': 'token',
+    'expired': true,
+  },
                 'userId': '5e5ea5c16897e',
                 'userName': 'Aegon Targaryen',
                 'topicId': '259125845563242502',
