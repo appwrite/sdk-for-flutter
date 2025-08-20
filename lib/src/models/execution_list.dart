@@ -2,28 +2,27 @@ part of '../../models.dart';
 
 /// Executions List
 class ExecutionList implements Model {
-    /// Total number of executions rows that matched your query.
-    final int total;
+  /// Total number of executions rows that matched your query.
+  final int total;
 
-    /// List of executions.
-    final List<Execution> executions;
+  /// List of executions.
+  final List<Execution> executions;
 
-    ExecutionList({
-        required this.total,
-        required this.executions,
-    });
+  ExecutionList({required this.total, required this.executions});
 
-    factory ExecutionList.fromMap(Map<String, dynamic> map) {
-        return ExecutionList(
-            total: map['total'],
-            executions: List<Execution>.from(map['executions'].map((p) => Execution.fromMap(p))),
-        );
-    }
+  factory ExecutionList.fromMap(Map<String, dynamic> map) {
+    return ExecutionList(
+      total: map['total'],
+      executions: List<Execution>.from(
+        map['executions'].map((p) => Execution.fromMap(p)),
+      ),
+    );
+  }
 
-    Map<String, dynamic> toMap() {
-        return {
-            "total": total,
-            "executions": executions.map((p) => p.toMap()).toList(),
-        };
-    }
+  Map<String, dynamic> toMap() {
+    return {
+      "total": total,
+      "executions": executions.map((p) => p.toMap()).toList(),
+    };
+  }
 }
