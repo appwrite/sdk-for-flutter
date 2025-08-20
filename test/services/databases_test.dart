@@ -191,5 +191,57 @@ void main() {
             );
         });
 
+        test('test method decrementDocumentAttribute()', () async {
+            final Map<String, dynamic> data = {
+                '\$id': '5e5ea5c16897e',
+                '\$sequence': 1,
+                '\$collectionId': '5e5ea5c15117e',
+                '\$databaseId': '5e5ea5c15117e',
+                '\$createdAt': '2020-10-15T06:38:00.000+00:00',
+                '\$updatedAt': '2020-10-15T06:38:00.000+00:00',
+                '\$permissions': [],};
+
+
+            when(client.call(
+                HttpMethod.patch,
+            )).thenAnswer((_) async => Response(data: data));
+
+
+            final response = await databases.decrementDocumentAttribute(
+                databaseId: '<DATABASE_ID>',
+                collectionId: '<COLLECTION_ID>',
+                documentId: '<DOCUMENT_ID>',
+                attribute: '',
+            );
+            expect(response, isA<models.Document>());
+
+        });
+
+        test('test method incrementDocumentAttribute()', () async {
+            final Map<String, dynamic> data = {
+                '\$id': '5e5ea5c16897e',
+                '\$sequence': 1,
+                '\$collectionId': '5e5ea5c15117e',
+                '\$databaseId': '5e5ea5c15117e',
+                '\$createdAt': '2020-10-15T06:38:00.000+00:00',
+                '\$updatedAt': '2020-10-15T06:38:00.000+00:00',
+                '\$permissions': [],};
+
+
+            when(client.call(
+                HttpMethod.patch,
+            )).thenAnswer((_) async => Response(data: data));
+
+
+            final response = await databases.incrementDocumentAttribute(
+                databaseId: '<DATABASE_ID>',
+                collectionId: '<COLLECTION_ID>',
+                documentId: '<DOCUMENT_ID>',
+                attribute: '',
+            );
+            expect(response, isA<models.Document>());
+
+        });
+
     });
 }

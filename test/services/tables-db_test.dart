@@ -190,5 +190,57 @@ void main() {
             );
         });
 
+        test('test method decrementRowColumn()', () async {
+            final Map<String, dynamic> data = {
+                '\$id': '5e5ea5c16897e',
+                '\$sequence': 1,
+                '\$tableId': '5e5ea5c15117e',
+                '\$databaseId': '5e5ea5c15117e',
+                '\$createdAt': '2020-10-15T06:38:00.000+00:00',
+                '\$updatedAt': '2020-10-15T06:38:00.000+00:00',
+                '\$permissions': [],};
+
+
+            when(client.call(
+                HttpMethod.patch,
+            )).thenAnswer((_) async => Response(data: data));
+
+
+            final response = await tablesDb.decrementRowColumn(
+                databaseId: '<DATABASE_ID>',
+                tableId: '<TABLE_ID>',
+                rowId: '<ROW_ID>',
+                column: '',
+            );
+            expect(response, isA<models.Row>());
+
+        });
+
+        test('test method incrementRowColumn()', () async {
+            final Map<String, dynamic> data = {
+                '\$id': '5e5ea5c16897e',
+                '\$sequence': 1,
+                '\$tableId': '5e5ea5c15117e',
+                '\$databaseId': '5e5ea5c15117e',
+                '\$createdAt': '2020-10-15T06:38:00.000+00:00',
+                '\$updatedAt': '2020-10-15T06:38:00.000+00:00',
+                '\$permissions': [],};
+
+
+            when(client.call(
+                HttpMethod.patch,
+            )).thenAnswer((_) async => Response(data: data));
+
+
+            final response = await tablesDb.incrementRowColumn(
+                databaseId: '<DATABASE_ID>',
+                tableId: '<TABLE_ID>',
+                rowId: '<ROW_ID>',
+                column: '',
+            );
+            expect(response, isA<models.Row>());
+
+        });
+
     });
 }
