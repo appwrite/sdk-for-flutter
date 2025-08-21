@@ -46,13 +46,13 @@ class MockClient extends Mock implements Client {
 }
 
 void main() {
-    group('TablesDb test', () {
+    group('TablesDB test', () {
         late MockClient client;
-        late TablesDb tablesDb;
+        late TablesDB tablesDB;
 
         setUp(() {
             client = MockClient();
-            tablesDb = TablesDb(client);
+            tablesDB = TablesDB(client);
         });
 
         test('test method listRows()', () async {
@@ -66,7 +66,7 @@ void main() {
             )).thenAnswer((_) async => Response(data: data));
 
 
-            final response = await tablesDb.listRows(
+            final response = await tablesDB.listRows(
                 databaseId: '<DATABASE_ID>',
                 tableId: '<TABLE_ID>',
             );
@@ -90,7 +90,7 @@ void main() {
             )).thenAnswer((_) async => Response(data: data));
 
 
-            final response = await tablesDb.createRow(
+            final response = await tablesDB.createRow(
                 databaseId: '<DATABASE_ID>',
                 tableId: '<TABLE_ID>',
                 rowId: '<ROW_ID>',
@@ -116,7 +116,7 @@ void main() {
             )).thenAnswer((_) async => Response(data: data));
 
 
-            final response = await tablesDb.getRow(
+            final response = await tablesDB.getRow(
                 databaseId: '<DATABASE_ID>',
                 tableId: '<TABLE_ID>',
                 rowId: '<ROW_ID>',
@@ -141,7 +141,7 @@ void main() {
             )).thenAnswer((_) async => Response(data: data));
 
 
-            final response = await tablesDb.upsertRow(
+            final response = await tablesDB.upsertRow(
                 databaseId: '<DATABASE_ID>',
                 tableId: '<TABLE_ID>',
                 rowId: '<ROW_ID>',
@@ -166,7 +166,7 @@ void main() {
             )).thenAnswer((_) async => Response(data: data));
 
 
-            final response = await tablesDb.updateRow(
+            final response = await tablesDB.updateRow(
                 databaseId: '<DATABASE_ID>',
                 tableId: '<TABLE_ID>',
                 rowId: '<ROW_ID>',
@@ -183,7 +183,7 @@ void main() {
             )).thenAnswer((_) async => Response(data: data));
 
 
-            final response = await tablesDb.deleteRow(
+            final response = await tablesDB.deleteRow(
                 databaseId: '<DATABASE_ID>',
                 tableId: '<TABLE_ID>',
                 rowId: '<ROW_ID>',
@@ -206,7 +206,7 @@ void main() {
             )).thenAnswer((_) async => Response(data: data));
 
 
-            final response = await tablesDb.decrementRowColumn(
+            final response = await tablesDB.decrementRowColumn(
                 databaseId: '<DATABASE_ID>',
                 tableId: '<TABLE_ID>',
                 rowId: '<ROW_ID>',
@@ -232,7 +232,7 @@ void main() {
             )).thenAnswer((_) async => Response(data: data));
 
 
-            final response = await tablesDb.incrementRowColumn(
+            final response = await tablesDB.incrementRowColumn(
                 databaseId: '<DATABASE_ID>',
                 tableId: '<TABLE_ID>',
                 rowId: '<ROW_ID>',
