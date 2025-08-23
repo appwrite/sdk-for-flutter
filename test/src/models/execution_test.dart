@@ -10,6 +10,7 @@ void main() {
         $updatedAt: '2020-10-15T06:38:00.000+00:00',
         $permissions: [],
         functionId: '5e5ea6g16897e',
+        deploymentId: '5e5ea5c16897e',
         trigger: 'http',
         status: 'processing',
         requestMethod: 'GET',
@@ -31,6 +32,7 @@ void main() {
                   expect(result.$updatedAt, '2020-10-15T06:38:00.000+00:00');
                   expect(result.$permissions, []);
                   expect(result.functionId, '5e5ea6g16897e');
+                  expect(result.deploymentId, '5e5ea5c16897e');
                   expect(result.trigger, 'http');
                   expect(result.status, 'processing');
                   expect(result.requestMethod, 'GET');
