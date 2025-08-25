@@ -11,11 +11,11 @@ class Query {
   Map<String, dynamic> toJson() {
     final map = <String, dynamic>{'method': method};
 
-    if(attribute != null) {
+    if (attribute != null) {
       map['attribute'] = attribute;
     }
-    
-    if(values != null) {
+
+    if (values != null) {
       map['values'] = values is List ? values : [values];
     }
 
@@ -26,7 +26,7 @@ class Query {
   String toString() => jsonEncode(toJson());
 
   /// Filter resources where [attribute] is equal to [value].
-  /// 
+  ///
   /// [value] can be a single value or a list. If a list is used
   /// the query will return resources where [attribute] is equal
   /// to any of the values in the list.
@@ -144,14 +144,14 @@ class Query {
       Query._('orderDesc', attribute).toString();
 
   /// Return results before [id].
-  /// 
+  ///
   /// Refer to the [Cursor Based Pagination](https://appwrite.io/docs/pagination#cursor-pagination)
   /// docs for more information.
   static String cursorBefore(String id) =>
       Query._('cursorBefore', null, id).toString();
 
   /// Return results after [id].
-  /// 
+  ///
   /// Refer to the [Cursor Based Pagination](https://appwrite.io/docs/pagination#cursor-pagination)
   /// docs for more information.
   static String cursorAfter(String id) =>
@@ -161,7 +161,7 @@ class Query {
   static String limit(int limit) => Query._('limit', null, limit).toString();
 
   /// Return results from [offset].
-  /// 
+  ///
   /// Refer to the [Offset Pagination](https://appwrite.io/docs/pagination#offset-pagination)
   /// docs for more information.
   static String offset(int offset) =>
