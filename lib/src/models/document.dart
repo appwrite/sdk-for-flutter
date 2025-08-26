@@ -39,7 +39,7 @@ class Document implements Model {
   factory Document.fromMap(Map<String, dynamic> map) {
     return Document(
       $id: map['\$id'].toString(),
-      $sequence: map['\$sequence'],
+      $sequence: int.parse(map['\$sequence']),
       $collectionId: map['\$collectionId'].toString(),
       $databaseId: map['\$databaseId'].toString(),
       $createdAt: map['\$createdAt'].toString(),
