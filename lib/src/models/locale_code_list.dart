@@ -2,7 +2,7 @@ part of '../../models.dart';
 
 /// Locale codes list
 class LocaleCodeList implements Model {
-  /// Total number of localeCodes documents that matched your query.
+  /// Total number of localeCodes that matched your query.
   final int total;
 
   /// List of localeCodes.

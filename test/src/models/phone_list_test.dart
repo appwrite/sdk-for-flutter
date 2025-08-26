@@ -3,7 +3,6 @@ import 'package:flutter_test/flutter_test.dart';
 
 void main() {
   group('PhoneList', () {
-
     test('model', () {
       final model = PhoneList(
         total: 5,
@@ -13,8 +12,8 @@ void main() {
       final map = model.toMap();
       final result = PhoneList.fromMap(map);
 
-      expect(result.total, 5);
-      expect(result.phones, []);
-    });
+            expect(result.total, 5);
+                  expect(result.phones, []);
+          });
   });
 }

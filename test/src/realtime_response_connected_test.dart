@@ -13,7 +13,10 @@ void main() {
       final newChannels = ['channel3', 'channel4'];
       final newUser = {'id': 456, 'name': 'Jane Smith'};
 
-      final updatedResponse = response1.copyWith(channels: newChannels, user: newUser);
+      final updatedResponse = response1.copyWith(
+        channels: newChannels,
+        user: newUser,
+      );
 
       expect(updatedResponse.channels, equals(newChannels));
       expect(updatedResponse.user, equals(newUser));
@@ -47,11 +50,19 @@ void main() {
     test('toString should return a string representation of the response', () {
       final responseString = response1.toString();
 
-      expect(responseString, equals('RealtimeResponseConnected(channels: $channels, user: $user)'));
+      expect(
+        responseString,
+        equals(
+          'RealtimeResponseConnected(channels: $channels, user: $user)',
+        ),
+      );
     });
 
     test('equality operator should compare two instances', () {
-      final response2 = RealtimeResponseConnected(channels: channels, user: user);
+      final response2 = RealtimeResponseConnected(
+        channels: channels,
+        user: user,
+      );
 
       expect(response1 == response2, isTrue);
     });
@@ -59,7 +70,10 @@ void main() {
     test('hashCode should return a unique hash value', () {
       final hashCode1 = response1.hashCode;
 
-      final response2 = RealtimeResponseConnected(channels: channels, user: user);
+      final response2 = RealtimeResponseConnected(
+        channels: channels,
+        user: user,
+      );
       final hashCode2 = response2.hashCode;
 
       expect(hashCode1, equals(hashCode2));

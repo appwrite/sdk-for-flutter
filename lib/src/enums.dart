@@ -16,6 +16,6 @@ enum ResponseType {
   /// Transform the response data to a String encoded with UTF8.
   plain,
 
-  /// Get original bytes, the type of response will be List<int>
+  /// Get original bytes, the type of response will be `List<int>`
   bytes,
 }

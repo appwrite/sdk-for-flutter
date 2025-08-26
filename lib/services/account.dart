@@ -190,7 +190,36 @@ class Account extends Service {
   /// authenticator using the [verify
   /// authenticator](/docs/references/cloud/client-web/account#updateMfaAuthenticator)
   /// method.
+  @Deprecated(
+    'This API has been deprecated since 1.8.0. Please use `Account.createMFAAuthenticator` instead.',
+  )
   Future<models.MfaType> createMfaAuthenticator({
+    required enums.AuthenticatorType type,
+  }) async {
+    final String apiPath = '/account/mfa/authenticators/{type}'.replaceAll(
+      '{type}',
+      type.value,
+    );
+
+    final Map<String, dynamic> apiParams = {};
+
+    final Map<String, String> apiHeaders = {'content-type': 'application/json'};
+
+    final res = await client.call(
+      HttpMethod.post,
+      path: apiPath,
+      params: apiParams,
+      headers: apiHeaders,
+    );
+
+    return models.MfaType.fromMap(res.data);
+  }
+
+  /// Add an authenticator app to be used as an MFA factor. Verify the
+  /// authenticator using the [verify
+  /// authenticator](/docs/references/cloud/client-web/account#updateMfaAuthenticator)
+  /// method.
+  Future<models.MfaType> createMFAAuthenticator({
     required enums.AuthenticatorType type,
   }) async {
     final String apiPath = '/account/mfa/authenticators/{type}'.replaceAll(
@@ -215,6 +244,9 @@ class Account extends Service {
   /// Verify an authenticator app after adding it using the [add
   /// authenticator](/docs/references/cloud/client-web/account#createMfaAuthenticator)
   /// method.
+  @Deprecated(
+    'This API has been deprecated since 1.8.0. Please use `Account.updateMFAAuthenticator` instead.',
+  )
   Future<models.User> updateMfaAuthenticator({
     required enums.AuthenticatorType type,
     required String otp,
@@ -238,8 +270,58 @@ class Account extends Service {
     return models.User.fromMap(res.data);
   }
 
+  /// Verify an authenticator app after adding it using the [add
+  /// authenticator](/docs/references/cloud/client-web/account#createMfaAuthenticator)
+  /// method.
+  Future<models.User> updateMFAAuthenticator({
+    required enums.AuthenticatorType type,
+    required String otp,
+  }) async {
+    final String apiPath = '/account/mfa/authenticators/{type}'.replaceAll(
+      '{type}',
+      type.value,
+    );
+
+    final Map<String, dynamic> apiParams = {'otp': otp};
+
+    final Map<String, String> apiHeaders = {'content-type': 'application/json'};
+
+    final res = await client.call(
+      HttpMethod.put,
+      path: apiPath,
+      params: apiParams,
+      headers: apiHeaders,
+    );
+
+    return models.User.fromMap(res.data);
+  }
+
   /// Delete an authenticator for a user by ID.
+  @Deprecated(
+    'This API has been deprecated since 1.8.0. Please use `Account.deleteMFAAuthenticator` instead.',
+  )
   Future deleteMfaAuthenticator({required enums.AuthenticatorType type}) async {
+    final String apiPath = '/account/mfa/authenticators/{type}'.replaceAll(
+      '{type}',
+      type.value,
+    );
+
+    final Map<String, dynamic> apiParams = {};
+
+    final Map<String, String> apiHeaders = {'content-type': 'application/json'};
+
+    final res = await client.call(
+      HttpMethod.delete,
+      path: apiPath,
+      params: apiParams,
+      headers: apiHeaders,
+    );
+
+    return res.data;
+  }
+
+  /// Delete an authenticator for a user by ID.
+  Future deleteMFAAuthenticator({required enums.AuthenticatorType type}) async {
     final String apiPath = '/account/mfa/authenticators/{type}'.replaceAll(
       '{type}',
       type.value,
@@ -262,7 +344,32 @@ class Account extends Service {
   /// Begin the process of MFA verification after sign-in. Finish the flow with
   /// [updateMfaChallenge](/docs/references/cloud/client-web/account#updateMfaChallenge)
   /// method.
+  @Deprecated(
+    'This API has been deprecated since 1.8.0. Please use `Account.createMFAChallenge` instead.',
+  )
   Future<models.MfaChallenge> createMfaChallenge({
+    required enums.AuthenticationFactor factor,
+  }) async {
+    const String apiPath = '/account/mfa/challenge';
+
+    final Map<String, dynamic> apiParams = {'factor': factor.value};
+
+    final Map<String, String> apiHeaders = {'content-type': 'application/json'};
+
+    final res = await client.call(
+      HttpMethod.post,
+      path: apiPath,
+      params: apiParams,
+      headers: apiHeaders,
+    );
+
+    return models.MfaChallenge.fromMap(res.data);
+  }
+
+  /// Begin the process of MFA verification after sign-in. Finish the flow with
+  /// [updateMfaChallenge](/docs/references/cloud/client-web/account#updateMfaChallenge)
+  /// method.
+  Future<models.MfaChallenge> createMFAChallenge({
     required enums.AuthenticationFactor factor,
   }) async {
     const String apiPath = '/account/mfa/challenge';
@@ -286,6 +393,9 @@ class Account extends Service {
   /// the flow, use
   /// [createMfaChallenge](/docs/references/cloud/client-web/account#createMfaChallenge)
   /// method.
+  @Deprecated(
+    'This API has been deprecated since 1.8.0. Please use `Account.updateMFAChallenge` instead.',
+  )
   Future<models.Session> updateMfaChallenge({
     required String challengeId,
     required String otp,
@@ -309,8 +419,57 @@ class Account extends Service {
     return models.Session.fromMap(res.data);
   }
 
+  /// Complete the MFA challenge by providing the one-time password. Finish the
+  /// process of MFA verification by providing the one-time password. To begin
+  /// the flow, use
+  /// [createMfaChallenge](/docs/references/cloud/client-web/account#createMfaChallenge)
+  /// method.
+  Future<models.Session> updateMFAChallenge({
+    required String challengeId,
+    required String otp,
+  }) async {
+    const String apiPath = '/account/mfa/challenge';
+
+    final Map<String, dynamic> apiParams = {
+      'challengeId': challengeId,
+      'otp': otp,
+    };
+
+    final Map<String, String> apiHeaders = {'content-type': 'application/json'};
+
+    final res = await client.call(
+      HttpMethod.put,
+      path: apiPath,
+      params: apiParams,
+      headers: apiHeaders,
+    );
+
+    return models.Session.fromMap(res.data);
+  }
+
   /// List the factors available on the account to be used as a MFA challange.
+  @Deprecated(
+    'This API has been deprecated since 1.8.0. Please use `Account.listMFAFactors` instead.',
+  )
   Future<models.MfaFactors> listMfaFactors() async {
+    const String apiPath = '/account/mfa/factors';
+
+    final Map<String, dynamic> apiParams = {};
+
+    final Map<String, String> apiHeaders = {};
+
+    final res = await client.call(
+      HttpMethod.get,
+      path: apiPath,
+      params: apiParams,
+      headers: apiHeaders,
+    );
+
+    return models.MfaFactors.fromMap(res.data);
+  }
+
+  /// List the factors available on the account to be used as a MFA challange.
+  Future<models.MfaFactors> listMFAFactors() async {
     const String apiPath = '/account/mfa/factors';
 
     final Map<String, dynamic> apiParams = {};
@@ -331,7 +490,31 @@ class Account extends Service {
   /// codes, they must be generated using
   /// [createMfaRecoveryCodes](/docs/references/cloud/client-web/account#createMfaRecoveryCodes)
   /// method. An OTP challenge is required to read recovery codes.
+  @Deprecated(
+    'This API has been deprecated since 1.8.0. Please use `Account.getMFARecoveryCodes` instead.',
+  )
   Future<models.MfaRecoveryCodes> getMfaRecoveryCodes() async {
+    const String apiPath = '/account/mfa/recovery-codes';
+
+    final Map<String, dynamic> apiParams = {};
+
+    final Map<String, String> apiHeaders = {};
+
+    final res = await client.call(
+      HttpMethod.get,
+      path: apiPath,
+      params: apiParams,
+      headers: apiHeaders,
+    );
+
+    return models.MfaRecoveryCodes.fromMap(res.data);
+  }
+
+  /// Get recovery codes that can be used as backup for MFA flow. Before getting
+  /// codes, they must be generated using
+  /// [createMfaRecoveryCodes](/docs/references/cloud/client-web/account#createMfaRecoveryCodes)
+  /// method. An OTP challenge is required to read recovery codes.
+  Future<models.MfaRecoveryCodes> getMFARecoveryCodes() async {
     const String apiPath = '/account/mfa/recovery-codes';
 
     final Map<String, dynamic> apiParams = {};
@@ -353,7 +536,32 @@ class Account extends Service {
   /// authehticator. Recovery codes can be used as a MFA verification type in
   /// [createMfaChallenge](/docs/references/cloud/client-web/account#createMfaChallenge)
   /// method.
+  @Deprecated(
+    'This API has been deprecated since 1.8.0. Please use `Account.createMFARecoveryCodes` instead.',
+  )
   Future<models.MfaRecoveryCodes> createMfaRecoveryCodes() async {
+    const String apiPath = '/account/mfa/recovery-codes';
+
+    final Map<String, dynamic> apiParams = {};
+
+    final Map<String, String> apiHeaders = {'content-type': 'application/json'};
+
+    final res = await client.call(
+      HttpMethod.post,
+      path: apiPath,
+      params: apiParams,
+      headers: apiHeaders,
+    );
+
+    return models.MfaRecoveryCodes.fromMap(res.data);
+  }
+
+  /// Generate recovery codes as backup for MFA flow. It's recommended to
+  /// generate and show then immediately after user successfully adds their
+  /// authehticator. Recovery codes can be used as a MFA verification type in
+  /// [createMfaChallenge](/docs/references/cloud/client-web/account#createMfaChallenge)
+  /// method.
+  Future<models.MfaRecoveryCodes> createMFARecoveryCodes() async {
     const String apiPath = '/account/mfa/recovery-codes';
 
     final Map<String, dynamic> apiParams = {};
@@ -374,7 +582,31 @@ class Account extends Service {
   /// regenerating codes, they must be first generated using
   /// [createMfaRecoveryCodes](/docs/references/cloud/client-web/account#createMfaRecoveryCodes)
   /// method. An OTP challenge is required to regenreate recovery codes.
+  @Deprecated(
+    'This API has been deprecated since 1.8.0. Please use `Account.updateMFARecoveryCodes` instead.',
+  )
   Future<models.MfaRecoveryCodes> updateMfaRecoveryCodes() async {
+    const String apiPath = '/account/mfa/recovery-codes';
+
+    final Map<String, dynamic> apiParams = {};
+
+    final Map<String, String> apiHeaders = {'content-type': 'application/json'};
+
+    final res = await client.call(
+      HttpMethod.patch,
+      path: apiPath,
+      params: apiParams,
+      headers: apiHeaders,
+    );
+
+    return models.MfaRecoveryCodes.fromMap(res.data);
+  }
+
+  /// Regenerate recovery codes that can be used as backup for MFA flow. Before
+  /// regenerating codes, they must be first generated using
+  /// [createMfaRecoveryCodes](/docs/references/cloud/client-web/account#createMfaRecoveryCodes)
+  /// method. An OTP challenge is required to regenreate recovery codes.
+  Future<models.MfaRecoveryCodes> updateMFARecoveryCodes() async {
     const String apiPath = '/account/mfa/recovery-codes';
 
     final Map<String, dynamic> apiParams = {};
@@ -658,6 +890,7 @@ class Account extends Service {
   /// Use this endpoint to create a session from token. Provide the **userId**
   /// and **secret** parameters from the successful response of authentication
   /// flows initiated by token creation. For example, magic URL and phone login.
+  @Deprecated('This API has been deprecated.')
   Future<models.Session> updateMagicURLSession({
     required String userId,
     required String secret,
@@ -742,6 +975,7 @@ class Account extends Service {
   /// Use this endpoint to create a session from token. Provide the **userId**
   /// and **secret** parameters from the successful response of authentication
   /// flows initiated by token creation. For example, magic URL and phone login.
+  @Deprecated('This API has been deprecated.')
   Future<models.Session> updatePhoneSession({
     required String userId,
     required String secret,
@@ -957,8 +1191,11 @@ class Account extends Service {
   }
 
   /// Sends the user an email with a secret key for creating a session. If the
-  /// provided user ID has not be registered, a new user will be created. Use the
-  /// returned user ID and secret and submit a request to the [POST
+  /// email address has never been used, a **new account is created** using the
+  /// provided `userId`. Otherwise, if the email address is already attached to
+  /// an account, the **user ID is ignored**. Then, the user will receive an
+  /// email with the one-time password. Use the returned user ID and secret and
+  /// submit a request to the [POST
   /// /v1/account/sessions/token](https://appwrite.io/docs/references/cloud/client-web/account#createSession)
   /// endpoint to complete the login process. The secret sent to the user's email
   /// is valid for 15 minutes.
@@ -966,6 +1203,7 @@ class Account extends Service {
   /// A user is limited to 10 active sessions at a time by default. [Learn more
   /// about session
   /// limits](https://appwrite.io/docs/authentication-security#limits).
+  ///
   Future<models.Token> createEmailToken({
     required String userId,
     required String email,

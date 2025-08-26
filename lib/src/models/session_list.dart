@@ -2,7 +2,7 @@ part of '../../models.dart';
 
 /// Sessions List
 class SessionList implements Model {
-  /// Total number of sessions documents that matched your query.
+  /// Total number of sessions that matched your query.
   final int total;
 
   /// List of sessions.

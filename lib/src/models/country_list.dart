@@ -2,7 +2,7 @@ part of '../../models.dart';
 
 /// Countries List
 class CountryList implements Model {
-  /// Total number of countries documents that matched your query.
+  /// Total number of countries that matched your query.
   final int total;
 
   /// List of countries.

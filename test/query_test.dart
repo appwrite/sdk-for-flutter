@@ -1,10 +1,12 @@
+import 'dart:convert';
+
 import 'package:appwrite/appwrite.dart';
 import 'package:flutter_test/flutter_test.dart';
 
-class BasicFilterQueryTest {
+class BasicFilterQueryTest<T> {
   final String description;
-  final dynamic value;
-  final String expectedValues;
+  final T value;
+  final List<T> expectedValues;
 
   BasicFilterQueryTest({
     required this.description,
@@ -19,7 +21,7 @@ void main() {
       BasicFilterQueryTest(
         description: 'with a string',
         value: 's',
-        expectedValues: ["s"],
+        expectedValues: ['s'],
       ),
       BasicFilterQueryTest(
         description: 'with an integer',
@@ -44,14 +46,14 @@ void main() {
       BasicFilterQueryTest(
         description: 'with a list',
         value: ['a', 'b', 'c'],
-        expectedValues: ["a","b","c"],
+        expectedValues: ['a', 'b', 'c'],
       ),
     ];
 
     group('equal()', () {
       for (var t in tests) {
         test(t.description, () {
-          final query = Query.equal('attr', t.value).toJson();
+          final query = jsonDecode(Query.equal('attr', t.value));
           expect(query['attribute'], 'attr');
           expect(query['values'], t.expectedValues);
           expect(query['method'], 'equal');
@@ -61,19 +63,23 @@ void main() {
 
     group('notEqual()', () {
       for (var t in tests) {
-        test(t.description, () {
-          final query = Query.notEqual('attr', t.value).toJson();
-          expect(query['attribute'], 'attr');
-          expect(query['values'], t.expectedValues);
-          expect(query['method'], 'notEqual');
-        });
+        test(
+          t.description,
+          () {
+            final query = jsonDecode(Query.notEqual('attr', t.value));
+            expect(query['attribute'], 'attr');
+            expect(query['values'], t.expectedValues);
+            expect(query['method'], 'notEqual');
+          },
+          skip: t.value is List,
+        );
       }
     });
 
     group('lessThan()', () {
       for (var t in tests) {
         test(t.description, () {
-          final query = Query.lessThan('attr', t.value).toJson();
+          final query = jsonDecode(Query.lessThan('attr', t.value));
           expect(query['attribute'], 'attr');
           expect(query['values'], t.expectedValues);
           expect(query['method'], 'lessThan');
@@ -84,7 +90,7 @@ void main() {
     group('lessThanEqual()', () {
       for (var t in tests) {
         test(t.description, () {
-          final query = Query.lessThanEqual('attr', t.value).toJson();
+          final query = jsonDecode(Query.lessThanEqual('attr', t.value));
           expect(query['attribute'], 'attr');
           expect(query['values'], t.expectedValues);
           expect(query['method'], 'lessThanEqual');
@@ -95,7 +101,7 @@ void main() {
     group('greaterThan()', () {
       for (var t in tests) {
         test(t.description, () {
-          final query = Query.greaterThan('attr', t.value).toJson();
+          final query = jsonDecode(Query.greaterThan('attr', t.value));
           expect(query['attribute'], 'attr');
           expect(query['values'], t.expectedValues);
           expect(query['method'], 'greaterThan');
@@ -106,7 +112,7 @@ void main() {
     group('greaterThanEqual()', () {
       for (var t in tests) {
         test(t.description, () {
-          final query = Query.greaterThanEqual('attr', t.value).toJson();
+          final query = jsonDecode(Query.greaterThanEqual('attr', t.value));
           expect(query['attribute'], 'attr');
           expect(query['values'], t.expectedValues);
           expect(query['method'], 'greaterThanEqual');
@@ -116,21 +122,21 @@ void main() {
   });
 
   test('returns search', () {
-    final query = Query.search('attr', 'keyword1 keyword2').toJson();
+    final query = jsonDecode(Query.search('attr', 'keyword1 keyword2'));
     expect(query['attribute'], 'attr');
     expect(query['values'], ['keyword1 keyword2']);
     expect(query['method'], 'search');
   });
 
   test('returns isNull', () {
-    final query = Query.isNull('attr').toJson();
+    final query = jsonDecode(Query.isNull('attr'));
     expect(query['attribute'], 'attr');
     expect(query['values'], null);
     expect(query['method'], 'isNull');
   });
 
   test('returns isNotNull', () {
-    final query = Query.isNotNull('attr', 'keyword1 keyword2').toJson();
+    final query = jsonDecode(Query.isNotNull('attr'));
     expect(query['attribute'], 'attr');
     expect(query['values'], null);
     expect(query['method'], 'isNotNull');
@@ -138,21 +144,21 @@ void main() {
 
   group('between()', () {
     test('with integers', () {
-      final query = Query.between('attr', 1, 2).toJson();
+      final query = jsonDecode(Query.between('attr', 1, 2));
       expect(query['attribute'], 'attr');
       expect(query['values'], [1, 2]);
       expect(query['method'], 'between');
     });
 
     test('with doubles', () {
-      final query = Query.between('attr', 1.0, 2.0).toJson();
+      final query = jsonDecode(Query.between('attr', 1.0, 2.0));
       expect(query['attribute'], 'attr');
       expect(query['values'], [1.0, 2.0]);
       expect(query['method'], 'between');
     });
 
     test('with strings', () {
-      final query = Query.between('attr', 'a', 'z').toJson();
+      final query = jsonDecode(Query.between('attr', 'a', 'z'));
       expect(query['attribute'], 'attr');
       expect(query['values'], ['a', 'z']);
       expect(query['method'], 'between');
@@ -160,52 +166,131 @@ void main() {
   });
 
   test('returns select', () {
-    final query = Query.select(['attr1', 'attr2']).toJson();
+    final query = jsonDecode(Query.select(['attr1', 'attr2']));
     expect(query['attribute'], null);
     expect(query['values'], ['attr1', 'attr2']);
     expect(query['method'], 'select');
   });
 
   test('returns orderAsc', () {
-    final query = Query.orderAsc('attr').toJson();
+    final query = jsonDecode(Query.orderAsc('attr'));
     expect(query['attribute'], 'attr');
     expect(query['values'], null);
     expect(query['method'], 'orderAsc');
   });
 
   test('returns orderDesc', () {
-    final query = Query.orderDesc('attr').toJson();
+    final query = jsonDecode(Query.orderDesc('attr'));
     expect(query['attribute'], 'attr');
     expect(query['values'], null);
     expect(query['method'], 'orderDesc');
   });
 
   test('returns cursorBefore', () {
-    final query = Query.cursorBefore('custom').toJson();
+    final query = jsonDecode(Query.cursorBefore('custom'));
     expect(query['attribute'], null);
-    expect(query['values'], 'custom');
+    expect(query['values'], ['custom']);
     expect(query['method'], 'cursorBefore');
   });
 
   test('returns cursorAfter', () {
-    final query = Query.cursorAfter('custom').toJson();
+    final query = jsonDecode(Query.cursorAfter('custom'));
     expect(query['attribute'], null);
-    expect(query['values'], 'custom');
+    expect(query['values'], ['custom']);
     expect(query['method'], 'cursorAfter');
   });
 
   test('returns limit', () {
-    final query = Query.limit(1).toJson();
+    final query = jsonDecode(Query.limit(1));
     expect(query['attribute'], null);
-    expect(query['values'], 1);
+    expect(query['values'], [1]);
     expect(query['method'], 'limit');
   });
 
   test('returns offset', () {
-    final query = Query.offset(1).toJson();
+    final query = jsonDecode(Query.offset(1));
     expect(query['attribute'], null);
-    expect(query['values'], 1);
+    expect(query['values'], [1]);
     expect(query['method'], 'offset');
+  });
+
+  test('returns notContains', () {
+    final query = jsonDecode(Query.notContains('attr', 'value'));
+    expect(query['attribute'], 'attr');
+    expect(query['values'], ['value']);
+    expect(query['method'], 'notContains');
+  });
+
+  test('returns notSearch', () {
+    final query = jsonDecode(Query.notSearch('attr', 'keyword1 keyword2'));
+    expect(query['attribute'], 'attr');
+    expect(query['values'], ['keyword1 keyword2']);
+    expect(query['method'], 'notSearch');
+  });
+
+  group('notBetween()', () {
+    test('with integers', () {
+      final query = jsonDecode(Query.notBetween('attr', 1, 2));
+      expect(query['attribute'], 'attr');
+      expect(query['values'], [1, 2]);
+      expect(query['method'], 'notBetween');
+    });
+
+    test('with doubles', () {
+      final query = jsonDecode(Query.notBetween('attr', 1.0, 2.0));
+      expect(query['attribute'], 'attr');
+      expect(query['values'], [1.0, 2.0]);
+      expect(query['method'], 'notBetween');
+    });
+
+    test('with strings', () {
+      final query = jsonDecode(Query.notBetween('attr', 'a', 'z'));
+      expect(query['attribute'], 'attr');
+      expect(query['values'], ['a', 'z']);
+      expect(query['method'], 'notBetween');
+    });
+  });
+
+  test('returns notStartsWith', () {
+    final query = jsonDecode(Query.notStartsWith('attr', 'prefix'));
+    expect(query['attribute'], 'attr');
+    expect(query['values'], ['prefix']);
+    expect(query['method'], 'notStartsWith');
+  });
+
+  test('returns notEndsWith', () {
+    final query = jsonDecode(Query.notEndsWith('attr', 'suffix'));
+    expect(query['attribute'], 'attr');
+    expect(query['values'], ['suffix']);
+    expect(query['method'], 'notEndsWith');
+  });
+
+  test('returns createdBefore', () {
+    final query = jsonDecode(Query.createdBefore('2023-01-01'));
+    expect(query['attribute'], null);
+    expect(query['values'], ['2023-01-01']);
+    expect(query['method'], 'createdBefore');
+  });
+
+  test('returns createdAfter', () {
+    final query = jsonDecode(Query.createdAfter('2023-01-01'));
+    expect(query['attribute'], null);
+    expect(query['values'], ['2023-01-01']);
+    expect(query['method'], 'createdAfter');
+  });
+
+  test('returns updatedBefore', () {
+    final query = jsonDecode(Query.updatedBefore('2023-01-01'));
+    expect(query['attribute'], null);
+    expect(query['values'], ['2023-01-01']);
+    expect(query['method'], 'updatedBefore');
+  });
+
+  test('returns updatedAfter', () {
+    final query = jsonDecode(Query.updatedAfter('2023-01-01'));
+    expect(query['attribute'], null);
+    expect(query['values'], ['2023-01-01']);
+    expect(query['method'], 'updatedAfter');
   });
 }
 

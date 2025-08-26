@@ -3,7 +3,6 @@ import 'package:flutter_test/flutter_test.dart';
 
 void main() {
   group('CurrencyList', () {
-
     test('model', () {
       final model = CurrencyList(
         total: 5,
@@ -13,8 +12,8 @@ void main() {
       final map = model.toMap();
       final result = CurrencyList.fromMap(map);
 
-      expect(result.total, 5);
-      expect(result.currencies, []);
-    });
+            expect(result.total, 5);
+                  expect(result.currencies, []);
+          });
   });
 }

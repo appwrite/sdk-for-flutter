@@ -2,7 +2,7 @@ part of '../../models.dart';
 
 /// Continents List
 class ContinentList implements Model {
-  /// Total number of continents documents that matched your query.
+  /// Total number of continents that matched your query.
   final int total;
 
   /// List of continents.

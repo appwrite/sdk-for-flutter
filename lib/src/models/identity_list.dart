@@ -2,7 +2,7 @@ part of '../../models.dart';
 
 /// Identities List
 class IdentityList implements Model {
-  /// Total number of identities documents that matched your query.
+  /// Total number of identities that matched your query.
   final int total;
 
   /// List of identities.

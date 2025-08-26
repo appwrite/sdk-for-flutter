@@ -22,7 +22,6 @@ mixin RealtimeMixin {
   GetFallbackCookie? getFallbackCookie;
   int? get closeCode => _websok?.closeCode;
   Map<int, RealtimeSubscription> _subscriptions = {};
-  bool _notifyDone = true;
   bool _reconnect = true;
   int _retries = 0;
   StreamSubscription? _websocketSubscription;
@@ -65,11 +64,9 @@ mixin RealtimeMixin {
           _creatingSocket = false;
           return;
         }
-        _notifyDone = false;
         await _closeConnection();
         _lastUrl = uri.toString();
         _websok = await getWebSocket(uri);
-        _notifyDone = true;
       }
       debugPrint('subscription: $_lastUrl');
       _retries = 0;

@@ -1,6 +1,7 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
 import 'package:appwrite/models.dart' as models;
+import 'package:appwrite/enums.dart' as enums;
 import 'package:appwrite/src/enums.dart';
 import 'package:appwrite/src/response.dart';
 import 'dart:typed_data';
@@ -23,7 +24,7 @@ class MockClient extends Mock implements Client {
 
   @override
   Future webAuth(
-    Uri? url, 
+    Uri? url,
     {
         String? callbackUrlScheme,
     }
@@ -259,7 +260,25 @@ void main() {
 
 
             final response = await account.createMfaAuthenticator(
-                type: 'totp',
+                type: enums.AuthenticatorType.totp,
+            );
+            expect(response, isA<models.MfaType>());
+
+        });
+
+        test('test method createMFAAuthenticator()', () async {
+            final Map<String, dynamic> data = {
+                'secret': '1',
+                'uri': '1',};
+
+
+            when(client.call(
+                HttpMethod.post,
+            )).thenAnswer((_) async => Response(data: data));
+
+
+            final response = await account.createMFAAuthenticator(
+                type: enums.AuthenticatorType.totp,
             );
             expect(response, isA<models.MfaType>());
 
@@ -291,7 +310,40 @@ void main() {
 
 
             final response = await account.updateMfaAuthenticator(
-                type: 'totp',
+                type: enums.AuthenticatorType.totp,
+                otp: '<OTP>',
+            );
+            expect(response, isA<models.User>());
+
+        });
+
+        test('test method updateMFAAuthenticator()', () async {
+            final Map<String, dynamic> data = {
+                '\$id': '5e5ea5c16897e',
+                '\$createdAt': '2020-10-15T06:38:00.000+00:00',
+                '\$updatedAt': '2020-10-15T06:38:00.000+00:00',
+                'name': 'John Doe',
+                'registration': '2020-10-15T06:38:00.000+00:00',
+                'status': true,
+                'labels': [],
+                'passwordUpdate': '2020-10-15T06:38:00.000+00:00',
+                'email': 'john@appwrite.io',
+                'phone': '+4930901820',
+                'emailVerification': true,
+                'phoneVerification': true,
+                'mfa': true,
+                'prefs': <String, dynamic>{},
+                'targets': [],
+                'accessedAt': '2020-10-15T06:38:00.000+00:00',};
+
+
+            when(client.call(
+                HttpMethod.put,
+            )).thenAnswer((_) async => Response(data: data));
+
+
+            final response = await account.updateMFAAuthenticator(
+                type: enums.AuthenticatorType.totp,
                 otp: '<OTP>',
             );
             expect(response, isA<models.User>());
@@ -307,7 +359,20 @@ void main() {
 
 
             final response = await account.deleteMfaAuthenticator(
-                type: 'totp',
+                type: enums.AuthenticatorType.totp,
+            );
+        });
+
+        test('test method deleteMFAAuthenticator()', () async {
+            final data = '';
+
+            when(client.call(
+                HttpMethod.delete,
+            )).thenAnswer((_) async => Response(data: data));
+
+
+            final response = await account.deleteMFAAuthenticator(
+                type: enums.AuthenticatorType.totp,
             );
         });
 
@@ -325,7 +390,27 @@ void main() {
 
 
             final response = await account.createMfaChallenge(
-                factor: 'email',
+                factor: enums.AuthenticationFactor.email,
+            );
+            expect(response, isA<models.MfaChallenge>());
+
+        });
+
+        test('test method createMFAChallenge()', () async {
+            final Map<String, dynamic> data = {
+                '\$id': 'bb8ea5c16897e',
+                '\$createdAt': '2020-10-15T06:38:00.000+00:00',
+                'userId': '5e5ea5c168bb8',
+                'expire': '2020-10-15T06:38:00.000+00:00',};
+
+
+            when(client.call(
+                HttpMethod.post,
+            )).thenAnswer((_) async => Response(data: data));
+
+
+            final response = await account.createMFAChallenge(
+                factor: enums.AuthenticationFactor.email,
             );
             expect(response, isA<models.MfaChallenge>());
 
@@ -377,6 +462,52 @@ void main() {
 
         });
 
+        test('test method updateMFAChallenge()', () async {
+            final Map<String, dynamic> data = {
+                '\$id': '5e5ea5c16897e',
+                '\$createdAt': '2020-10-15T06:38:00.000+00:00',
+                '\$updatedAt': '2020-10-15T06:38:00.000+00:00',
+                'userId': '5e5bb8c16897e',
+                'expire': '2020-10-15T06:38:00.000+00:00',
+                'provider': 'email',
+                'providerUid': 'user@example.com',
+                'providerAccessToken': 'MTQ0NjJkZmQ5OTM2NDE1ZTZjNGZmZjI3',
+                'providerAccessTokenExpiry': '2020-10-15T06:38:00.000+00:00',
+                'providerRefreshToken': 'MTQ0NjJkZmQ5OTM2NDE1ZTZjNGZmZjI3',
+                'ip': '127.0.0.1',
+                'osCode': 'Mac',
+                'osName': 'Mac',
+                'osVersion': 'Mac',
+                'clientType': 'browser',
+                'clientCode': 'CM',
+                'clientName': 'Chrome Mobile iOS',
+                'clientVersion': '84.0',
+                'clientEngine': 'WebKit',
+                'clientEngineVersion': '605.1.15',
+                'deviceName': 'smartphone',
+                'deviceBrand': 'Google',
+                'deviceModel': 'Nexus 5',
+                'countryCode': 'US',
+                'countryName': 'United States',
+                'current': true,
+                'factors': [],
+                'secret': '5e5bb8c16897e',
+                'mfaUpdatedAt': '2020-10-15T06:38:00.000+00:00',};
+
+
+            when(client.call(
+                HttpMethod.put,
+            )).thenAnswer((_) async => Response(data: data));
+
+
+            final response = await account.updateMFAChallenge(
+                challengeId: '<CHALLENGE_ID>',
+                otp: '<OTP>',
+            );
+            expect(response, isA<models.Session>());
+
+        });
+
         test('test method listMfaFactors()', () async {
             final Map<String, dynamic> data = {
                 'totp': true,
@@ -391,6 +522,25 @@ void main() {
 
 
             final response = await account.listMfaFactors(
+            );
+            expect(response, isA<models.MfaFactors>());
+
+        });
+
+        test('test method listMFAFactors()', () async {
+            final Map<String, dynamic> data = {
+                'totp': true,
+                'phone': true,
+                'email': true,
+                'recoveryCode': true,};
+
+
+            when(client.call(
+                HttpMethod.get,
+            )).thenAnswer((_) async => Response(data: data));
+
+
+            final response = await account.listMFAFactors(
             );
             expect(response, isA<models.MfaFactors>());
 
@@ -412,6 +562,22 @@ void main() {
 
         });
 
+        test('test method getMFARecoveryCodes()', () async {
+            final Map<String, dynamic> data = {
+                'recoveryCodes': [],};
+
+
+            when(client.call(
+                HttpMethod.get,
+            )).thenAnswer((_) async => Response(data: data));
+
+
+            final response = await account.getMFARecoveryCodes(
+            );
+            expect(response, isA<models.MfaRecoveryCodes>());
+
+        });
+
         test('test method createMfaRecoveryCodes()', () async {
             final Map<String, dynamic> data = {
                 'recoveryCodes': [],};
@@ -428,6 +594,22 @@ void main() {
 
         });
 
+        test('test method createMFARecoveryCodes()', () async {
+            final Map<String, dynamic> data = {
+                'recoveryCodes': [],};
+
+
+            when(client.call(
+                HttpMethod.post,
+            )).thenAnswer((_) async => Response(data: data));
+
+
+            final response = await account.createMFARecoveryCodes(
+            );
+            expect(response, isA<models.MfaRecoveryCodes>());
+
+        });
+
         test('test method updateMfaRecoveryCodes()', () async {
             final Map<String, dynamic> data = {
                 'recoveryCodes': [],};
@@ -439,6 +621,22 @@ void main() {
 
 
             final response = await account.updateMfaRecoveryCodes(
+            );
+            expect(response, isA<models.MfaRecoveryCodes>());
+
+        });
+
+        test('test method updateMFARecoveryCodes()', () async {
+            final Map<String, dynamic> data = {
+                'recoveryCodes': [],};
+
+
+            when(client.call(
+                HttpMethod.patch,
+            )).thenAnswer((_) async => Response(data: data));
+
+
+            final response = await account.updateMFARecoveryCodes(
             );
             expect(response, isA<models.MfaRecoveryCodes>());
 
@@ -808,7 +1006,7 @@ void main() {
 
 
             final response = await account.createOAuth2Session(
-                provider: 'amazon',
+                provider: enums.OAuthProvider.amazon,
             );
         });
 
@@ -1155,7 +1353,7 @@ void main() {
 
 
             final response = await account.createOAuth2Token(
-                provider: 'amazon',
+                provider: enums.OAuthProvider.amazon,
             );
         });
 

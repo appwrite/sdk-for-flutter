@@ -2,7 +2,7 @@ part of '../../models.dart';
 
 /// Languages List
 class LanguageList implements Model {
-  /// Total number of languages documents that matched your query.
+  /// Total number of languages that matched your query.
   final int total;
 
   /// List of languages.

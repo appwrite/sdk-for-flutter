@@ -40,8 +40,8 @@ class ClientBrowser extends ClientBase with ClientMixin {
       'x-sdk-name': 'Flutter',
       'x-sdk-platform': 'client',
       'x-sdk-language': 'flutter',
-      'x-sdk-version': '17.1.0',
-      'X-Appwrite-Response-Format': '1.7.0',
+      'x-sdk-version': '18.0.0',
+      'X-Appwrite-Response-Format': '1.8.0',
     };
 
     config = {};
@@ -132,7 +132,7 @@ class ClientBrowser extends ClientBase with ClientMixin {
   }
 
   Future init() async {
-    final cookieFallback = web.window.localStorage['cookieFallback'];
+    final cookieFallback = web.window.localStorage.getItem('cookieFallback');
     if (cookieFallback != null) {
       addHeader('x-fallback-cookies', cookieFallback);
     }
@@ -253,7 +253,7 @@ class ClientBrowser extends ClientBase with ClientMixin {
           'Appwrite is using localStorage for session management. Increase your security by adding a custom domain as your API endpoint.',
         );
         addHeader('X-Fallback-Cookies', cookieFallback);
-        web.window.localStorage['cookieFallback'] = cookieFallback;
+        web.window.localStorage.setItem('cookieFallback', cookieFallback);
       }
       return prepareResponse(res, responseType: responseType);
     } catch (e) {

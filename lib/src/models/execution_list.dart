@@ -2,7 +2,7 @@ part of '../../models.dart';
 
 /// Executions List
 class ExecutionList implements Model {
-  /// Total number of executions documents that matched your query.
+  /// Total number of executions that matched your query.
   final int total;
 
   /// List of executions.

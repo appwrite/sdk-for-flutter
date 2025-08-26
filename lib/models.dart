@@ -2,6 +2,7 @@
 library appwrite.models;
 
 part 'src/models/model.dart';
+part 'src/models/row_list.dart';
 part 'src/models/document_list.dart';
 part 'src/models/session_list.dart';
 part 'src/models/identity_list.dart';
@@ -16,6 +17,7 @@ part 'src/models/language_list.dart';
 part 'src/models/currency_list.dart';
 part 'src/models/phone_list.dart';
 part 'src/models/locale_code_list.dart';
+part 'src/models/row.dart';
 part 'src/models/document.dart';
 part 'src/models/log.dart';
 part 'src/models/user.dart';

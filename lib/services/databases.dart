@@ -8,6 +8,9 @@ class Databases extends Service {
 
   /// Get a list of all the user's documents in a given collection. You can use
   /// the query params to filter your results.
+  @Deprecated(
+    'This API has been deprecated since 1.8.0. Please use `TablesDB.listRows` instead.',
+  )
   Future<models.DocumentList> listDocuments({
     required String databaseId,
     required String collectionId,
@@ -36,6 +39,9 @@ class Databases extends Service {
   /// collection resource using either a [server
   /// integration](https://appwrite.io/docs/server/databases#databasesCreateCollection)
   /// API or directly from your database console.
+  @Deprecated(
+    'This API has been deprecated since 1.8.0. Please use `TablesDB.createRow` instead.',
+  )
   Future<models.Document> createDocument({
     required String databaseId,
     required String collectionId,
@@ -68,6 +74,9 @@ class Databases extends Service {
 
   /// Get a document by its unique ID. This endpoint response returns a JSON
   /// object with the document data.
+  @Deprecated(
+    'This API has been deprecated since 1.8.0. Please use `TablesDB.getRow` instead.',
+  )
   Future<models.Document> getDocument({
     required String databaseId,
     required String collectionId,
@@ -94,14 +103,13 @@ class Databases extends Service {
     return models.Document.fromMap(res.data);
   }
 
-  /// **WARNING: Experimental Feature** - This endpoint is experimental and not
-  /// yet officially supported. It may be subject to breaking changes or removal
-  /// in future versions.
-  ///
   /// Create or update a Document. Before using this route, you should create a
   /// new collection resource using either a [server
   /// integration](https://appwrite.io/docs/server/databases#databasesCreateCollection)
   /// API or directly from your database console.
+  @Deprecated(
+    'This API has been deprecated since 1.8.0. Please use `TablesDB.upsertRow` instead.',
+  )
   Future<models.Document> upsertDocument({
     required String databaseId,
     required String collectionId,
@@ -134,6 +142,9 @@ class Databases extends Service {
 
   /// Update a document by its unique ID. Using the patch method you can pass
   /// only specific fields that will get updated.
+  @Deprecated(
+    'This API has been deprecated since 1.8.0. Please use `TablesDB.updateRow` instead.',
+  )
   Future<models.Document> updateDocument({
     required String databaseId,
     required String collectionId,
@@ -165,6 +176,9 @@ class Databases extends Service {
   }
 
   /// Delete a document by its unique ID.
+  @Deprecated(
+    'This API has been deprecated since 1.8.0. Please use `TablesDB.deleteRow` instead.',
+  )
   Future deleteDocument({
     required String databaseId,
     required String collectionId,
@@ -191,6 +205,9 @@ class Databases extends Service {
   }
 
   /// Decrement a specific attribute of a document by a given value.
+  @Deprecated(
+    'This API has been deprecated since 1.8.0. Please use `TablesDB.decrementRowColumn` instead.',
+  )
   Future<models.Document> decrementDocumentAttribute({
     required String databaseId,
     required String collectionId,
@@ -221,6 +238,9 @@ class Databases extends Service {
   }
 
   /// Increment a specific attribute of a document by a given value.
+  @Deprecated(
+    'This API has been deprecated since 1.8.0. Please use `TablesDB.incrementRowColumn` instead.',
+  )
   Future<models.Document> incrementDocumentAttribute({
     required String databaseId,
     required String collectionId,

@@ -82,6 +82,43 @@ class Query {
   static String contains(String attribute, dynamic value) =>
       Query._('contains', attribute, value).toString();
 
+  /// Filter resources where [attribute] does not contain [value]
+  /// [value] can be a single value or a list.
+  static String notContains(String attribute, dynamic value) =>
+      Query._('notContains', attribute, value).toString();
+
+  /// Filter resources by searching [attribute] for [value] (inverse of search).
+  static String notSearch(String attribute, String value) =>
+      Query._('notSearch', attribute, value).toString();
+
+  /// Filter resources where [attribute] is not between [start] and [end] (exclusive).
+  static String notBetween(String attribute, dynamic start, dynamic end) =>
+      Query._('notBetween', attribute, [start, end]).toString();
+
+  /// Filter resources where [attribute] does not start with [value].
+  static String notStartsWith(String attribute, String value) =>
+      Query._('notStartsWith', attribute, value).toString();
+
+  /// Filter resources where [attribute] does not end with [value].
+  static String notEndsWith(String attribute, String value) =>
+      Query._('notEndsWith', attribute, value).toString();
+
+  /// Filter resources where document was created before [value].
+  static String createdBefore(String value) =>
+      Query._('createdBefore', null, value).toString();
+
+  /// Filter resources where document was created after [value].
+  static String createdAfter(String value) =>
+      Query._('createdAfter', null, value).toString();
+
+  /// Filter resources where document was updated before [value].
+  static String updatedBefore(String value) =>
+      Query._('updatedBefore', null, value).toString();
+
+  /// Filter resources where document was updated after [value].
+  static String updatedAfter(String value) =>
+      Query._('updatedAfter', null, value).toString();
+
   static String or(List<String> queries) => Query._(
     'or',
     null,
