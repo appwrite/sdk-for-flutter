@@ -1,6 +1,6 @@
 # Examples
 
-Init your Appwrite client:
+Initialize your Appwrite client:
 
 ```dart
 Client client = Client();
@@ -8,7 +8,7 @@ Client client = Client();
 client
     .setEndpoint('https://localhost/v1') // Your Appwrite Endpoint
     .setProject('5e8cf4f46b5e8') // Your project ID
-    .setSelfSigned() // Remove in production
+    .setSelfSigned() // Allow self-signed certs for local dev; remove in production
 ;
 ```
 

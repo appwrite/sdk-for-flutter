@@ -9,7 +9,7 @@
 
 **This SDK is compatible with Appwrite server version 1.8.x. For older versions, please check [previous releases](https://github.com/appwrite/sdk-for-flutter/releases).**
 
-Appwrite is an open-source backend as a service server that abstract and simplify complex and repetitive development tasks behind a very simple to use REST API. Appwrite aims to help you develop your apps faster and in a more secure way. Use the Flutter SDK to integrate your app with the Appwrite server to easily start interacting with all of Appwrite backend APIs and tools. For full API documentation and tutorials go to [https://appwrite.io/docs](https://appwrite.io/docs)
+Appwrite is an open-source backend as a service server that abstracts and simplifies complex and repetitive development tasks behind a very simple to use REST API. Appwrite aims to help you develop your apps faster and in a more secure way. Use the Flutter SDK to integrate your app with the Appwrite server to easily start interacting with all of Appwrite backend APIs and tools. For full API documentation and tutorials go to [https://appwrite.io/docs](https://appwrite.io/docs)
 
 
 
@@ -34,9 +34,9 @@ flutter pub add appwrite
 ## Getting Started
 
 ### Add your Flutter Platform
-To init your SDK and start interacting with Appwrite services, you need to add a new Flutter platform to your project. To add a new platform, go to your Appwrite console, choose the project you created in the step before, and click the 'Add Platform' button.
+To initialize your SDK and start interacting with Appwrite services, you need to add a new Flutter platform to your project. To add a new platform, go to your Appwrite console, choose the project you created in the step before, and click the 'Add Platform' button.
 
-From the options, choose to add a new **Flutter** platform and add your app credentials. Appwrite Flutter SDK currently supports building apps for Android, iOS, Linux, Mac OS, Web and Windows.
+From the options, choose to add a new **Flutter** platform and add your app credentials. Appwrite Flutter SDK currently supports building apps for Android, iOS, Linux, macOS, Web and Windows.
 
 If you are building your Flutter application for multiple devices, you have to follow this process for each different device.
 
