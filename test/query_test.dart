@@ -279,6 +279,13 @@ void main() {
     expect(query['method'], 'createdAfter');
   });
 
+  test('returns createdBetween', () {
+    final query = jsonDecode(Query.createdBetween('2023-01-01', '2023-12-31'));
+    expect(query['attribute'], null);
+    expect(query['values'], ['2023-01-01', '2023-12-31']);
+    expect(query['method'], 'createdBetween');
+  });
+
   test('returns updatedBefore', () {
     final query = jsonDecode(Query.updatedBefore('2023-01-01'));
     expect(query['attribute'], null);
@@ -291,6 +298,13 @@ void main() {
     expect(query['attribute'], null);
     expect(query['values'], ['2023-01-01']);
     expect(query['method'], 'updatedAfter');
+  });
+
+  test('returns updatedBetween', () {
+    final query = jsonDecode(Query.updatedBetween('2023-01-01', '2023-12-31'));
+    expect(query['attribute'], null);
+    expect(query['values'], ['2023-01-01', '2023-12-31']);
+    expect(query['method'], 'updatedBetween');
   });
 }
 
