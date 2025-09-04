@@ -35,5 +35,5 @@ jobs:
       - name: Add & Commit
         uses: EndBug/add-and-commit@v9.1.4
         with:
-            add: lib
+            add: '["lib", "test"]'
     
