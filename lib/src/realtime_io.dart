@@ -61,9 +61,9 @@ class RealtimeIO extends RealtimeBase with RealtimeMixin {
       var client = HttpClient(context: SecurityContext());
       client.badCertificateCallback =
           (X509Certificate cert, String host, int port) {
-            debugPrint('AppwriteRealtime: Allow self-signed certificate');
-            return true;
-          };
+        debugPrint('AppwriteRealtime: Allow self-signed certificate');
+        return true;
+      };
 
       uri = Uri(
         scheme: uri.scheme == 'wss' ? 'https' : 'http',

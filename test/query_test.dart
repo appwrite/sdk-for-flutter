@@ -293,4 +293,3 @@ void main() {
     expect(query['method'], 'updatedAfter');
   });
 }
-

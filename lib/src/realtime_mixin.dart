@@ -146,10 +146,10 @@ mixin RealtimeMixin {
     return _retries < 5
         ? 1
         : _retries < 15
-        ? 5
-        : _retries < 100
-        ? 10
-        : 60;
+            ? 5
+            : _retries < 100
+                ? 10
+                : 60;
   }
 
   Uri _prepareUri() {

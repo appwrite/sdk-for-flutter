@@ -942,7 +942,6 @@ class Account extends Service {
       'success': success,
       'failure': failure,
       'scopes': scopes,
-
       'project': client.config['project'],
     };
 
@@ -1299,7 +1298,6 @@ class Account extends Service {
       'success': success,
       'failure': failure,
       'scopes': scopes,
-
       'project': client.config['project'],
     };
 
