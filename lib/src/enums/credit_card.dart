@@ -13,7 +13,7 @@ enum CreditCard {
   mastercard(value: 'mastercard'),
   naranja(value: 'naranja'),
   tarjetaShopping(value: 'targeta-shopping'),
-  unionChinaPay(value: 'union-china-pay'),
+  unionPay(value: 'unionpay'),
   visa(value: 'visa'),
   mIR(value: 'mir'),
   maestro(value: 'maestro'),

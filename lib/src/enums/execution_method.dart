@@ -6,7 +6,8 @@ enum ExecutionMethod {
   pUT(value: 'PUT'),
   pATCH(value: 'PATCH'),
   dELETE(value: 'DELETE'),
-  oPTIONS(value: 'OPTIONS');
+  oPTIONS(value: 'OPTIONS'),
+  hEAD(value: 'HEAD');
 
   const ExecutionMethod({required this.value});
 
