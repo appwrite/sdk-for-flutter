@@ -9,17 +9,19 @@ class Query {
   Query._(this.method, [this.attribute = null, this.values = null]);
 
   Map<String, dynamic> toJson() {
-    final map = <String, dynamic>{'method': method};
-
+    final result = <String, dynamic>{};
+    
+    result['method'] = method;
+    
     if(attribute != null) {
-      map['attribute'] = attribute;
+      result['attribute'] = attribute;
     }
     
     if(values != null) {
-      map['values'] = values is List ? values : [values];
+      result['values'] = values is List ? values : [values];
     }
 
-    return map;
+    return result;
   }
 
   @override
@@ -35,7 +37,7 @@ class Query {
 
   /// Filter resources where [attribute] is not equal to [value].
   static String notEqual(String attribute, dynamic value) =>
-      Query._('notEqual', attribute, [value]).toString();
+      Query._('notEqual', attribute, value).toString();
 
   /// Filter resources where [attribute] is less than [value].
   static String lessThan(String attribute, dynamic value) =>
@@ -176,50 +178,50 @@ class Query {
       Query._('offset', null, offset).toString();
 
   /// Filter resources where [attribute] is at a specific distance from the given coordinates.
-  static String distanceEqual(String attribute, List<dynamic> values, double distance, [bool meters = true]) =>
-      Query._('distanceEqual', attribute, [values, distance, meters]).toString();
+  static String distanceEqual(String attribute, List<dynamic> values, num distance, [bool meters = true]) =>
+      Query._('distanceEqual', attribute, [[values, distance, meters]]).toString();
 
   /// Filter resources where [attribute] is not at a specific distance from the given coordinates.
-  static String distanceNotEqual(String attribute, List<dynamic> values, double distance, [bool meters = true]) =>
-      Query._('distanceNotEqual', attribute, [values, distance, meters]).toString();
+  static String distanceNotEqual(String attribute, List<dynamic> values, num distance, [bool meters = true]) =>
+      Query._('distanceNotEqual', attribute, [[values, distance, meters]]).toString();
 
   /// Filter resources where [attribute] is at a distance greater than the specified value from the given coordinates.
-  static String distanceGreaterThan(String attribute, List<dynamic> values, double distance, [bool meters = true]) =>
-      Query._('distanceGreaterThan', attribute, [values, distance, meters]).toString();
+  static String distanceGreaterThan(String attribute, List<dynamic> values, num distance, [bool meters = true]) =>
+      Query._('distanceGreaterThan', attribute, [[values, distance, meters]]).toString();
 
   /// Filter resources where [attribute] is at a distance less than the specified value from the given coordinates.
-  static String distanceLessThan(String attribute, List<dynamic> values, double distance, [bool meters = true]) =>
-      Query._('distanceLessThan', attribute, [values, distance, meters]).toString();
+  static String distanceLessThan(String attribute, List<dynamic> values, num distance, [bool meters = true]) =>
+      Query._('distanceLessThan', attribute, [[values, distance, meters]]).toString();
 
   /// Filter resources where [attribute] intersects with the given geometry.
   static String intersects(String attribute, List<dynamic> values) =>
-      Query._('intersects', attribute, values).toString();
+      Query._('intersects', attribute, [values]).toString();
 
   /// Filter resources where [attribute] does not intersect with the given geometry.
   static String notIntersects(String attribute, List<dynamic> values) =>
-      Query._('notIntersects', attribute, values).toString();
+      Query._('notIntersects', attribute, [values]).toString();
 
   /// Filter resources where [attribute] crosses the given geometry.
   static String crosses(String attribute, List<dynamic> values) =>
-      Query._('crosses', attribute, values).toString();
+      Query._('crosses', attribute, [values]).toString();
 
   /// Filter resources where [attribute] does not cross the given geometry.
   static String notCrosses(String attribute, List<dynamic> values) =>
-      Query._('notCrosses', attribute, values).toString();
+      Query._('notCrosses', attribute, [values]).toString();
 
   /// Filter resources where [attribute] overlaps with the given geometry.
   static String overlaps(String attribute, List<dynamic> values) =>
-      Query._('overlaps', attribute, values).toString();
+      Query._('overlaps', attribute, [values]).toString();
 
   /// Filter resources where [attribute] does not overlap with the given geometry.
   static String notOverlaps(String attribute, List<dynamic> values) =>
-      Query._('notOverlaps', attribute, values).toString();
+      Query._('notOverlaps', attribute, [values]).toString();
 
   /// Filter resources where [attribute] touches the given geometry.
   static String touches(String attribute, List<dynamic> values) =>
-      Query._('touches', attribute, values).toString();
+      Query._('touches', attribute, [values]).toString();
 
   /// Filter resources where [attribute] does not touch the given geometry.
   static String notTouches(String attribute, List<dynamic> values) =>
-      Query._('notTouches', attribute, values).toString();
+      Query._('notTouches', attribute, [values]).toString();
 }
