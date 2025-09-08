@@ -99,7 +99,7 @@ class User implements Model {
       emailVerification: map['emailVerification'],
       phoneVerification: map['phoneVerification'],
       mfa: map['mfa'],
-      prefs: Preferences.fromMap(map['prefs']),
+      prefs: Preferences.fromMap(map['prefs']['data']),
       targets: List<Target>.from(map['targets'].map((p) => Target.fromMap(p))),
       accessedAt: map['accessedAt'].toString(),
     );
