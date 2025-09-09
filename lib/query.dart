@@ -130,16 +130,16 @@ class Query {
       Query._('updatedBetween', null, [start, end]).toString();
 
   static String or(List<String> queries) => Query._(
-    'or',
-    null,
-    queries.map((query) => jsonDecode(query)).toList(),
-  ).toString();
+        'or',
+        null,
+        queries.map((query) => jsonDecode(query)).toList(),
+      ).toString();
 
   static String and(List<String> queries) => Query._(
-    'and',
-    null,
-    queries.map((query) => jsonDecode(query)).toList(),
-  ).toString();
+        'and',
+        null,
+        queries.map((query) => jsonDecode(query)).toList(),
+      ).toString();
 
   /// Specify which attributes should be returned by the API call.
   static String select(List<String> attributes) =>

@@ -307,4 +307,3 @@ void main() {
     expect(query['method'], 'updatedBetween');
   });
 }
-
