@@ -8,25 +8,19 @@ class Functions extends Service {
 
   /// Get a list of all the current user function execution logs. You can use the
   /// query params to filter your results.
-  Future<models.ExecutionList> listExecutions({
-    required String functionId,
-    List<String>? queries,
-  }) async {
-    final String apiPath = '/functions/{functionId}/executions'.replaceAll(
-      '{functionId}',
-      functionId,
-    );
+  Future<models.ExecutionList> listExecutions(
+      {required String functionId, List<String>? queries}) async {
+    final String apiPath = '/functions/{functionId}/executions'
+        .replaceAll('{functionId}', functionId);
 
-    final Map<String, dynamic> apiParams = {'queries': queries};
+    final Map<String, dynamic> apiParams = {
+      'queries': queries,
+    };
 
     final Map<String, String> apiHeaders = {};
 
-    final res = await client.call(
-      HttpMethod.get,
-      path: apiPath,
-      params: apiParams,
-      headers: apiHeaders,
-    );
+    final res = await client.call(HttpMethod.get,
+        path: apiPath, params: apiParams, headers: apiHeaders);
 
     return models.ExecutionList.fromMap(res.data);
   }
@@ -35,19 +29,16 @@ class Functions extends Service {
   /// current execution status. You can ping the `Get Execution` endpoint to get
   /// updates on the current execution status. Once this endpoint is called, your
   /// function execution process will start asynchronously.
-  Future<models.Execution> createExecution({
-    required String functionId,
-    String? body,
-    bool? xasync,
-    String? path,
-    enums.ExecutionMethod? method,
-    Map? headers,
-    String? scheduledAt,
-  }) async {
-    final String apiPath = '/functions/{functionId}/executions'.replaceAll(
-      '{functionId}',
-      functionId,
-    );
+  Future<models.Execution> createExecution(
+      {required String functionId,
+      String? body,
+      bool? xasync,
+      String? path,
+      enums.ExecutionMethod? method,
+      Map? headers,
+      String? scheduledAt}) async {
+    final String apiPath = '/functions/{functionId}/executions'
+        .replaceAll('{functionId}', functionId);
 
     final Map<String, dynamic> apiParams = {
       'body': body,
@@ -58,23 +49,19 @@ class Functions extends Service {
       'scheduledAt': scheduledAt,
     };
 
-    final Map<String, String> apiHeaders = {'content-type': 'application/json'};
+    final Map<String, String> apiHeaders = {
+      'content-type': 'application/json',
+    };
 
-    final res = await client.call(
-      HttpMethod.post,
-      path: apiPath,
-      params: apiParams,
-      headers: apiHeaders,
-    );
+    final res = await client.call(HttpMethod.post,
+        path: apiPath, params: apiParams, headers: apiHeaders);
 
     return models.Execution.fromMap(res.data);
   }
 
   /// Get a function execution log by its unique ID.
-  Future<models.Execution> getExecution({
-    required String functionId,
-    required String executionId,
-  }) async {
+  Future<models.Execution> getExecution(
+      {required String functionId, required String executionId}) async {
     final String apiPath = '/functions/{functionId}/executions/{executionId}'
         .replaceAll('{functionId}', functionId)
         .replaceAll('{executionId}', executionId);
@@ -83,12 +70,8 @@ class Functions extends Service {
 
     final Map<String, String> apiHeaders = {};
 
-    final res = await client.call(
-      HttpMethod.get,
-      path: apiPath,
-      params: apiParams,
-      headers: apiHeaders,
-    );
+    final res = await client.call(HttpMethod.get,
+        path: apiPath, params: apiParams, headers: apiHeaders);
 
     return models.Execution.fromMap(res.data);
   }

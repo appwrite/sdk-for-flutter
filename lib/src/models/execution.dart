@@ -90,13 +90,11 @@ class Execution implements Model {
       requestMethod: map['requestMethod'].toString(),
       requestPath: map['requestPath'].toString(),
       requestHeaders: List<Headers>.from(
-        map['requestHeaders'].map((p) => Headers.fromMap(p)),
-      ),
+          map['requestHeaders'].map((p) => Headers.fromMap(p))),
       responseStatusCode: map['responseStatusCode'],
       responseBody: map['responseBody'].toString(),
       responseHeaders: List<Headers>.from(
-        map['responseHeaders'].map((p) => Headers.fromMap(p)),
-      ),
+          map['responseHeaders'].map((p) => Headers.fromMap(p))),
       logs: map['logs'].toString(),
       errors: map['errors'].toString(),
       duration: map['duration'].toDouble(),
