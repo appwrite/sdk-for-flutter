@@ -10,6 +10,8 @@ on:
 jobs:
   format:
     runs-on: ubuntu-latest
+    container:
+        image:  dart:stable
 
     steps:
       - name: Checkout repository
@@ -17,14 +19,6 @@ jobs:
         with:
           persist-credentials: true
           ref: ${{ github.event.pull_request.head.ref }}
-      
-      - name: Install Flutter
-        uses: subosito/flutter-action@v2
-        with:
-          channel: stable
-
-      - name: Install dependencies
-        run: flutter pub get
 
       - name: Format Dart code
         run: dart format .
@@ -35,5 +29,5 @@ jobs:
       - name: Add & Commit
         uses: EndBug/add-and-commit@v9.1.4
         with:
-            add: '["lib", "test"]'
+            add: lib
     

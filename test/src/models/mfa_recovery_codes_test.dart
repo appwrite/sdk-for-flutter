@@ -11,7 +11,7 @@ void main() {
       final map = model.toMap();
       final result = MfaRecoveryCodes.fromMap(map);
 
-      expect(result.recoveryCodes, []);
-    });
+            expect(result.recoveryCodes, []);
+          });
   });
 }

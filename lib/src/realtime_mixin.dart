@@ -41,7 +41,9 @@ mixin RealtimeMixin {
     _stopHeartbeat();
     _heartbeatTimer = Timer.periodic(Duration(seconds: 20), (_) {
       if (_websok != null) {
-        _websok!.sink.add(jsonEncode({"type": "ping"}));
+        _websok!.sink.add(jsonEncode({
+          "type": "ping"
+        }));
       }
     });
   }
@@ -52,7 +54,7 @@ mixin RealtimeMixin {
   }
 
   _createSocket() async {
-    if (_creatingSocket || _channels.isEmpty) return;
+    if(_creatingSocket || _channels.isEmpty) return;
     _creatingSocket = true;
     final uri = _prepareUri();
     try {
