@@ -31,6 +31,7 @@ class Avatars extends Service {
       'width': width,
       'height': height,
       'quality': quality,
+
       'project': client.config['project'],
     };
 
@@ -67,6 +68,7 @@ class Avatars extends Service {
       'width': width,
       'height': height,
       'quality': quality,
+
       'project': client.config['project'],
     };
 
@@ -88,6 +90,7 @@ class Avatars extends Service {
 
     final Map<String, dynamic> params = {
       'url': url,
+
       'project': client.config['project'],
     };
 
@@ -125,6 +128,7 @@ class Avatars extends Service {
       'width': width,
       'height': height,
       'quality': quality,
+
       'project': client.config['project'],
     };
 
@@ -159,6 +163,7 @@ class Avatars extends Service {
       'url': url,
       'width': width,
       'height': height,
+
       'project': client.config['project'],
     };
 
@@ -200,6 +205,7 @@ class Avatars extends Service {
       'width': width,
       'height': height,
       'background': background,
+
       'project': client.config['project'],
     };
 
@@ -228,6 +234,7 @@ class Avatars extends Service {
       'size': size,
       'margin': margin,
       'download': download,
+
       'project': client.config['project'],
     };
 

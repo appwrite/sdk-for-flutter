@@ -32,7 +32,7 @@ class Execution implements Model {
   /// HTTP request path and query.
   final String requestPath;
 
-  /// HTTP response headers as a key-value object. This will return only whitelisted headers. All headers are returned if execution is created as synchronous.
+  /// HTTP request headers as a key-value object. This will return only whitelisted headers. All headers are returned if execution is created as synchronous.
   final List<Headers> requestHeaders;
 
   /// HTTP response status code.
@@ -90,11 +90,13 @@ class Execution implements Model {
       requestMethod: map['requestMethod'].toString(),
       requestPath: map['requestPath'].toString(),
       requestHeaders: List<Headers>.from(
-          map['requestHeaders'].map((p) => Headers.fromMap(p))),
+        map['requestHeaders'].map((p) => Headers.fromMap(p)),
+      ),
       responseStatusCode: map['responseStatusCode'],
       responseBody: map['responseBody'].toString(),
       responseHeaders: List<Headers>.from(
-          map['responseHeaders'].map((p) => Headers.fromMap(p))),
+        map['responseHeaders'].map((p) => Headers.fromMap(p)),
+      ),
       logs: map['logs'].toString(),
       errors: map['errors'].toString(),
       duration: map['duration'].toDouble(),

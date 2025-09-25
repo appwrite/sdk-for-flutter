@@ -130,16 +130,16 @@ class Query {
       Query._('updatedBetween', null, [start, end]).toString();
 
   static String or(List<String> queries) => Query._(
-        'or',
-        null,
-        queries.map((query) => jsonDecode(query)).toList(),
-      ).toString();
+    'or',
+    null,
+    queries.map((query) => jsonDecode(query)).toList(),
+  ).toString();
 
   static String and(List<String> queries) => Query._(
-        'and',
-        null,
-        queries.map((query) => jsonDecode(query)).toList(),
-      ).toString();
+    'and',
+    null,
+    queries.map((query) => jsonDecode(query)).toList(),
+  ).toString();
 
   /// Specify which attributes should be returned by the API call.
   static String select(List<String> attributes) =>
@@ -152,6 +152,9 @@ class Query {
   /// Sort results by [attribute] descending.
   static String orderDesc(String attribute) =>
       Query._('orderDesc', attribute).toString();
+
+  /// Sort results randomly.
+  static String orderRandom() => Query._('orderRandom').toString();
 
   /// Return results before [id].
   ///
@@ -179,35 +182,43 @@ class Query {
 
   /// Filter resources where [attribute] is at a specific distance from the given coordinates.
   static String distanceEqual(
-          String attribute, List<dynamic> values, num distance,
-          [bool meters = true]) =>
-      Query._('distanceEqual', attribute, [
-        [values, distance, meters]
-      ]).toString();
+    String attribute,
+    List<dynamic> values,
+    num distance, [
+    bool meters = true,
+  ]) => Query._('distanceEqual', attribute, [
+    [values, distance, meters],
+  ]).toString();
 
   /// Filter resources where [attribute] is not at a specific distance from the given coordinates.
   static String distanceNotEqual(
-          String attribute, List<dynamic> values, num distance,
-          [bool meters = true]) =>
-      Query._('distanceNotEqual', attribute, [
-        [values, distance, meters]
-      ]).toString();
+    String attribute,
+    List<dynamic> values,
+    num distance, [
+    bool meters = true,
+  ]) => Query._('distanceNotEqual', attribute, [
+    [values, distance, meters],
+  ]).toString();
 
   /// Filter resources where [attribute] is at a distance greater than the specified value from the given coordinates.
   static String distanceGreaterThan(
-          String attribute, List<dynamic> values, num distance,
-          [bool meters = true]) =>
-      Query._('distanceGreaterThan', attribute, [
-        [values, distance, meters]
-      ]).toString();
+    String attribute,
+    List<dynamic> values,
+    num distance, [
+    bool meters = true,
+  ]) => Query._('distanceGreaterThan', attribute, [
+    [values, distance, meters],
+  ]).toString();
 
   /// Filter resources where [attribute] is at a distance less than the specified value from the given coordinates.
   static String distanceLessThan(
-          String attribute, List<dynamic> values, num distance,
-          [bool meters = true]) =>
-      Query._('distanceLessThan', attribute, [
-        [values, distance, meters]
-      ]).toString();
+    String attribute,
+    List<dynamic> values,
+    num distance, [
+    bool meters = true,
+  ]) => Query._('distanceLessThan', attribute, [
+    [values, distance, meters],
+  ]).toString();
 
   /// Filter resources where [attribute] intersects with the given geometry.
   static String intersects(String attribute, List<dynamic> values) =>

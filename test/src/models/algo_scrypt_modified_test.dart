@@ -8,18 +8,16 @@ void main() {
         type: 'scryptMod',
         salt: 'UxLMreBr6tYyjQ==',
         saltSeparator: 'Bw==',
-        signerKey:
-            'XyEKE9RcTDeLEsL/RjwPDBv/RqDl8fb3gpYEOQaPihbxf1ZAtSOHCjuAAa7Q3oHpCYhXSN9tizHgVOwn6krflQ==',
+        signerKey: 'XyEKE9RcTDeLEsL/RjwPDBv/RqDl8fb3gpYEOQaPihbxf1ZAtSOHCjuAAa7Q3oHpCYhXSN9tizHgVOwn6krflQ==',
       );
 
       final map = model.toMap();
       final result = AlgoScryptModified.fromMap(map);
 
-      expect(result.type, 'scryptMod');
-      expect(result.salt, 'UxLMreBr6tYyjQ==');
-      expect(result.saltSeparator, 'Bw==');
-      expect(result.signerKey,
-          'XyEKE9RcTDeLEsL/RjwPDBv/RqDl8fb3gpYEOQaPihbxf1ZAtSOHCjuAAa7Q3oHpCYhXSN9tizHgVOwn6krflQ==');
-    });
+            expect(result.type, 'scryptMod');
+                  expect(result.salt, 'UxLMreBr6tYyjQ==');
+                  expect(result.saltSeparator, 'Bw==');
+                  expect(result.signerKey, 'XyEKE9RcTDeLEsL/RjwPDBv/RqDl8fb3gpYEOQaPihbxf1ZAtSOHCjuAAa7Q3oHpCYhXSN9tizHgVOwn6krflQ==');
+          });
   });
 }

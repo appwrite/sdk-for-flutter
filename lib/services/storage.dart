@@ -177,6 +177,7 @@ class Storage extends Service {
 
     final Map<String, dynamic> params = {
       'token': token,
+
       'project': client.config['project'],
     };
 
@@ -227,6 +228,7 @@ class Storage extends Service {
       'background': background,
       'output': output?.value,
       'token': token,
+
       'project': client.config['project'],
     };
 
@@ -253,6 +255,7 @@ class Storage extends Service {
 
     final Map<String, dynamic> params = {
       'token': token,
+
       'project': client.config['project'],
     };
 

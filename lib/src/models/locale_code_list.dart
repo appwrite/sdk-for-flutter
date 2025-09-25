@@ -8,16 +8,14 @@ class LocaleCodeList implements Model {
   /// List of localeCodes.
   final List<LocaleCode> localeCodes;
 
-  LocaleCodeList({
-    required this.total,
-    required this.localeCodes,
-  });
+  LocaleCodeList({required this.total, required this.localeCodes});
 
   factory LocaleCodeList.fromMap(Map<String, dynamic> map) {
     return LocaleCodeList(
       total: map['total'],
       localeCodes: List<LocaleCode>.from(
-          map['localeCodes'].map((p) => LocaleCode.fromMap(p))),
+        map['localeCodes'].map((p) => LocaleCode.fromMap(p)),
+      ),
     );
   }
 
