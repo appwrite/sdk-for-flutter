@@ -186,6 +186,13 @@ void main() {
     expect(query['method'], 'orderDesc');
   });
 
+  test('returns orderRandom', () {
+    final query = jsonDecode(Query.orderRandom());
+    expect(query['attribute'], null);
+    expect(query['values'], null);
+    expect(query['method'], 'orderRandom');
+  });
+
   test('returns cursorBefore', () {
     final query = jsonDecode(Query.cursorBefore('custom'));
     expect(query['attribute'], null);
