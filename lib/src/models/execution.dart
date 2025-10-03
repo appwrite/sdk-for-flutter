@@ -21,10 +21,10 @@ class Execution implements Model {
   final String deploymentId;
 
   /// The trigger that caused the function to execute. Possible values can be: `http`, `schedule`, or `event`.
-  final String trigger;
+  final enums.ExecutionTrigger trigger;
 
   /// The status of the function execution. Possible values can be: `waiting`, `processing`, `completed`, or `failed`.
-  final String status;
+  final enums.ExecutionStatus status;
 
   /// HTTP request method type.
   final String requestMethod;
@@ -85,8 +85,12 @@ class Execution implements Model {
       $permissions: List.from(map['\$permissions'] ?? []),
       functionId: map['functionId'].toString(),
       deploymentId: map['deploymentId'].toString(),
-      trigger: map['trigger'].toString(),
-      status: map['status'].toString(),
+      trigger: enums.ExecutionTrigger.values.firstWhere(
+        (e) => e.value == map['trigger'],
+      ),
+      status: enums.ExecutionStatus.values.firstWhere(
+        (e) => e.value == map['status'],
+      ),
       requestMethod: map['requestMethod'].toString(),
       requestPath: map['requestPath'].toString(),
       requestHeaders: List<Headers>.from(
@@ -112,8 +116,8 @@ class Execution implements Model {
       "\$permissions": $permissions,
       "functionId": functionId,
       "deploymentId": deploymentId,
-      "trigger": trigger,
-      "status": status,
+      "trigger": trigger.value,
+      "status": status.value,
       "requestMethod": requestMethod,
       "requestPath": requestPath,
       "requestHeaders": requestHeaders.map((p) => p.toMap()).toList(),

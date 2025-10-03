@@ -7,7 +7,7 @@ class Preferences implements Model {
   Preferences({required this.data});
 
   factory Preferences.fromMap(Map<String, dynamic> map) {
-    return Preferences(data: map);
+    return Preferences(data: map["data"] ?? map);
   }
 
   Map<String, dynamic> toMap() {
