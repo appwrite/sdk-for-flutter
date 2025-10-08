@@ -1,6 +1,6 @@
 # Change Log
 
-## 20.0.1
+## 20.1.0
 
 * Deprecate `createVerification` method in `Account` service
 * Add `createEmailVerification` method in `Account` service
