@@ -1378,8 +1378,43 @@ class Account extends Service {
   /// the only valid redirect URLs are the ones from domains you have set when
   /// adding your platforms in the console interface.
   ///
+  Future<models.Token> createEmailVerification({required String url}) async {
+    const String apiPath = '/account/verifications/email';
+
+    final Map<String, dynamic> apiParams = {'url': url};
+
+    final Map<String, String> apiHeaders = {'content-type': 'application/json'};
+
+    final res = await client.call(
+      HttpMethod.post,
+      path: apiPath,
+      params: apiParams,
+      headers: apiHeaders,
+    );
+
+    return models.Token.fromMap(res.data);
+  }
+
+  /// Use this endpoint to send a verification message to your user email address
+  /// to confirm they are the valid owners of that address. Both the **userId**
+  /// and **secret** arguments will be passed as query parameters to the URL you
+  /// have provided to be attached to the verification email. The provided URL
+  /// should redirect the user back to your app and allow you to complete the
+  /// verification process by verifying both the **userId** and **secret**
+  /// parameters. Learn more about how to [complete the verification
+  /// process](https://appwrite.io/docs/references/cloud/client-web/account#updateVerification).
+  /// The verification link sent to the user's email address is valid for 7 days.
+  ///
+  /// Please note that in order to avoid a [Redirect
+  /// Attack](https://github.com/OWASP/CheatSheetSeries/blob/master/cheatsheets/Unvalidated_Redirects_and_Forwards_Cheat_Sheet.md),
+  /// the only valid redirect URLs are the ones from domains you have set when
+  /// adding your platforms in the console interface.
+  ///
+  @Deprecated(
+    'This API has been deprecated since 1.8.0. Please use `Account.createEmailVerification` instead.',
+  )
   Future<models.Token> createVerification({required String url}) async {
-    const String apiPath = '/account/verification';
+    const String apiPath = '/account/verifications/email';
 
     final Map<String, dynamic> apiParams = {'url': url};
 
@@ -1399,11 +1434,38 @@ class Account extends Service {
   /// the **userId** and **secret** parameters that were attached to your app URL
   /// to verify the user email ownership. If confirmed this route will return a
   /// 200 status code.
+  Future<models.Token> updateEmailVerification({
+    required String userId,
+    required String secret,
+  }) async {
+    const String apiPath = '/account/verifications/email';
+
+    final Map<String, dynamic> apiParams = {'userId': userId, 'secret': secret};
+
+    final Map<String, String> apiHeaders = {'content-type': 'application/json'};
+
+    final res = await client.call(
+      HttpMethod.put,
+      path: apiPath,
+      params: apiParams,
+      headers: apiHeaders,
+    );
+
+    return models.Token.fromMap(res.data);
+  }
+
+  /// Use this endpoint to complete the user email verification process. Use both
+  /// the **userId** and **secret** parameters that were attached to your app URL
+  /// to verify the user email ownership. If confirmed this route will return a
+  /// 200 status code.
+  @Deprecated(
+    'This API has been deprecated since 1.8.0. Please use `Account.updateEmailVerification` instead.',
+  )
   Future<models.Token> updateVerification({
     required String userId,
     required String secret,
   }) async {
-    const String apiPath = '/account/verification';
+    const String apiPath = '/account/verifications/email';
 
     final Map<String, dynamic> apiParams = {'userId': userId, 'secret': secret};
 
@@ -1428,7 +1490,7 @@ class Account extends Service {
   /// The verification code sent to the user's phone number is valid for 15
   /// minutes.
   Future<models.Token> createPhoneVerification() async {
-    const String apiPath = '/account/verification/phone';
+    const String apiPath = '/account/verifications/phone';
 
     final Map<String, dynamic> apiParams = {};
 
@@ -1452,7 +1514,7 @@ class Account extends Service {
     required String userId,
     required String secret,
   }) async {
-    const String apiPath = '/account/verification/phone';
+    const String apiPath = '/account/verifications/phone';
 
     final Map<String, dynamic> apiParams = {'userId': userId, 'secret': secret};
 
