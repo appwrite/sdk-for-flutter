@@ -1380,6 +1380,28 @@ void main() {
 
         });
 
+        test('test method createEmailVerification()', () async {
+            final Map<String, dynamic> data = {
+                '\$id': 'bb8ea5c16897e',
+                '\$createdAt': '2020-10-15T06:38:00.000+00:00',
+                'userId': '5e5ea5c168bb8',
+                'secret': '',
+                'expire': '2020-10-15T06:38:00.000+00:00',
+                'phrase': 'Golden Fox',};
+
+
+            when(client.call(
+                HttpMethod.post,
+            )).thenAnswer((_) async => Response(data: data));
+
+
+            final response = await account.createEmailVerification(
+                url: 'https://example.com',
+            );
+            expect(response, isA<models.Token>());
+
+        });
+
         test('test method createVerification()', () async {
             final Map<String, dynamic> data = {
                 '\$id': 'bb8ea5c16897e',
@@ -1397,6 +1419,29 @@ void main() {
 
             final response = await account.createVerification(
                 url: 'https://example.com',
+            );
+            expect(response, isA<models.Token>());
+
+        });
+
+        test('test method updateEmailVerification()', () async {
+            final Map<String, dynamic> data = {
+                '\$id': 'bb8ea5c16897e',
+                '\$createdAt': '2020-10-15T06:38:00.000+00:00',
+                'userId': '5e5ea5c168bb8',
+                'secret': '',
+                'expire': '2020-10-15T06:38:00.000+00:00',
+                'phrase': 'Golden Fox',};
+
+
+            when(client.call(
+                HttpMethod.put,
+            )).thenAnswer((_) async => Response(data: data));
+
+
+            final response = await account.updateEmailVerification(
+                userId: '<USER_ID>',
+                secret: '<SECRET>',
             );
             expect(response, isA<models.Token>());
 
