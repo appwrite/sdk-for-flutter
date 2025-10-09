@@ -55,6 +55,123 @@ void main() {
             databases = Databases(client);
         });
 
+        test('test method listTransactions()', () async {
+            final Map<String, dynamic> data = {
+                'total': 5,
+                'transactions': [],};
+
+
+            when(client.call(
+                HttpMethod.get,
+            )).thenAnswer((_) async => Response(data: data));
+
+
+            final response = await databases.listTransactions(
+            );
+            expect(response, isA<models.TransactionList>());
+
+        });
+
+        test('test method createTransaction()', () async {
+            final Map<String, dynamic> data = {
+                '\$id': '259125845563242502',
+                '\$createdAt': '2020-10-15T06:38:00.000+00:00',
+                '\$updatedAt': '2020-10-15T06:38:00.000+00:00',
+                'status': 'pending',
+                'operations': 5,
+                'expiresAt': '2020-10-15T06:38:00.000+00:00',};
+
+
+            when(client.call(
+                HttpMethod.post,
+            )).thenAnswer((_) async => Response(data: data));
+
+
+            final response = await databases.createTransaction(
+            );
+            expect(response, isA<models.Transaction>());
+
+        });
+
+        test('test method getTransaction()', () async {
+            final Map<String, dynamic> data = {
+                '\$id': '259125845563242502',
+                '\$createdAt': '2020-10-15T06:38:00.000+00:00',
+                '\$updatedAt': '2020-10-15T06:38:00.000+00:00',
+                'status': 'pending',
+                'operations': 5,
+                'expiresAt': '2020-10-15T06:38:00.000+00:00',};
+
+
+            when(client.call(
+                HttpMethod.get,
+            )).thenAnswer((_) async => Response(data: data));
+
+
+            final response = await databases.getTransaction(
+                transactionId: '<TRANSACTION_ID>',
+            );
+            expect(response, isA<models.Transaction>());
+
+        });
+
+        test('test method updateTransaction()', () async {
+            final Map<String, dynamic> data = {
+                '\$id': '259125845563242502',
+                '\$createdAt': '2020-10-15T06:38:00.000+00:00',
+                '\$updatedAt': '2020-10-15T06:38:00.000+00:00',
+                'status': 'pending',
+                'operations': 5,
+                'expiresAt': '2020-10-15T06:38:00.000+00:00',};
+
+
+            when(client.call(
+                HttpMethod.patch,
+            )).thenAnswer((_) async => Response(data: data));
+
+
+            final response = await databases.updateTransaction(
+                transactionId: '<TRANSACTION_ID>',
+            );
+            expect(response, isA<models.Transaction>());
+
+        });
+
+        test('test method deleteTransaction()', () async {
+            final data = '';
+
+            when(client.call(
+                HttpMethod.delete,
+            )).thenAnswer((_) async => Response(data: data));
+
+
+            final response = await databases.deleteTransaction(
+                transactionId: '<TRANSACTION_ID>',
+            );
+        });
+
+        test('test method createOperations()', () async {
+            final Map<String, dynamic> data = {
+                '\$id': '259125845563242502',
+                '\$createdAt': '2020-10-15T06:38:00.000+00:00',
+                '\$updatedAt': '2020-10-15T06:38:00.000+00:00',
+                'status': 'pending',
+                'operations': 5,
+                'expiresAt': '2020-10-15T06:38:00.000+00:00',};
+
+
+            when(client.call(
+                HttpMethod.post,
+            )).thenAnswer((_) async => Response(data: data));
+
+
+            final response = await databases.createOperations(
+                transactionId: '<TRANSACTION_ID>',
+            );
+            expect(response, isA<models.Transaction>());
+
+        });
+
         test('test method listDocuments()', () async {
             final Map<String, dynamic> data = {
                 'total': 5,

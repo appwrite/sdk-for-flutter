@@ -6,10 +6,6 @@ Client client = Client()
 
 Databases databases = Databases(client);
 
-Document result = await databases.getDocument(
-    databaseId: '<DATABASE_ID>',
-    collectionId: '<COLLECTION_ID>',
-    documentId: '<DOCUMENT_ID>',
-    queries: [], // optional
-    transactionId: '<TRANSACTION_ID>', // optional
+Transaction result = await databases.createTransaction(
+    ttl: 60, // optional
 );

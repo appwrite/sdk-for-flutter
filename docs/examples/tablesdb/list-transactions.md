@@ -6,9 +6,6 @@ Client client = Client()
 
 TablesDB tablesDB = TablesDB(client);
 
-RowList result = await tablesDB.listRows(
-    databaseId: '<DATABASE_ID>',
-    tableId: '<TABLE_ID>',
+TransactionList result = await tablesDB.listTransactions(
     queries: [], // optional
-    transactionId: '<TRANSACTION_ID>', // optional
 );
