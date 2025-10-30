@@ -8,7 +8,10 @@ class TeamList implements Model {
   /// List of teams.
   final List<Team> teams;
 
-  TeamList({required this.total, required this.teams});
+  TeamList({
+    required this.total,
+    required this.teams,
+  });
 
   factory TeamList.fromMap(Map<String, dynamic> map) {
     return TeamList(
@@ -17,7 +20,11 @@ class TeamList implements Model {
     );
   }
 
+  @override
   Map<String, dynamic> toMap() {
-    return {"total": total, "teams": teams.map((p) => p.toMap()).toList()};
+    return {
+      "total": total,
+      "teams": teams.map((p) => p.toMap()).toList(),
+    };
   }
 }

@@ -8,17 +8,20 @@ class LanguageList implements Model {
   /// List of languages.
   final List<Language> languages;
 
-  LanguageList({required this.total, required this.languages});
+  LanguageList({
+    required this.total,
+    required this.languages,
+  });
 
   factory LanguageList.fromMap(Map<String, dynamic> map) {
     return LanguageList(
       total: map['total'],
-      languages: List<Language>.from(
-        map['languages'].map((p) => Language.fromMap(p)),
-      ),
+      languages:
+          List<Language>.from(map['languages'].map((p) => Language.fromMap(p))),
     );
   }
 
+  @override
   Map<String, dynamic> toMap() {
     return {
       "total": total,

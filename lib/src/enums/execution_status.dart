@@ -4,7 +4,8 @@ enum ExecutionStatus {
   waiting(value: 'waiting'),
   processing(value: 'processing'),
   completed(value: 'completed'),
-  failed(value: 'failed');
+  failed(value: 'failed'),
+  scheduled(value: 'scheduled');
 
   const ExecutionStatus({required this.value});
 

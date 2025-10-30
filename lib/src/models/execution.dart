@@ -23,7 +23,7 @@ class Execution implements Model {
   /// The trigger that caused the function to execute. Possible values can be: `http`, `schedule`, or `event`.
   final enums.ExecutionTrigger trigger;
 
-  /// The status of the function execution. Possible values can be: `waiting`, `processing`, `completed`, or `failed`.
+  /// The status of the function execution. Possible values can be: `waiting`, `processing`, `completed`, `failed`, or `scheduled`.
   final enums.ExecutionStatus status;
 
   /// HTTP request method type.
@@ -85,22 +85,18 @@ class Execution implements Model {
       $permissions: List.from(map['\$permissions'] ?? []),
       functionId: map['functionId'].toString(),
       deploymentId: map['deploymentId'].toString(),
-      trigger: enums.ExecutionTrigger.values.firstWhere(
-        (e) => e.value == map['trigger'],
-      ),
-      status: enums.ExecutionStatus.values.firstWhere(
-        (e) => e.value == map['status'],
-      ),
+      trigger: enums.ExecutionTrigger.values
+          .firstWhere((e) => e.value == map['trigger']),
+      status: enums.ExecutionStatus.values
+          .firstWhere((e) => e.value == map['status']),
       requestMethod: map['requestMethod'].toString(),
       requestPath: map['requestPath'].toString(),
       requestHeaders: List<Headers>.from(
-        map['requestHeaders'].map((p) => Headers.fromMap(p)),
-      ),
+          map['requestHeaders'].map((p) => Headers.fromMap(p))),
       responseStatusCode: map['responseStatusCode'],
       responseBody: map['responseBody'].toString(),
       responseHeaders: List<Headers>.from(
-        map['responseHeaders'].map((p) => Headers.fromMap(p)),
-      ),
+          map['responseHeaders'].map((p) => Headers.fromMap(p))),
       logs: map['logs'].toString(),
       errors: map['errors'].toString(),
       duration: map['duration'].toDouble(),
@@ -108,6 +104,7 @@ class Execution implements Model {
     );
   }
 
+  @override
   Map<String, dynamic> toMap() {
     return {
       "\$id": $id,

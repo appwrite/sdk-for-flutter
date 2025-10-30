@@ -8,17 +8,20 @@ class DocumentList implements Model {
   /// List of documents.
   final List<Document> documents;
 
-  DocumentList({required this.total, required this.documents});
+  DocumentList({
+    required this.total,
+    required this.documents,
+  });
 
   factory DocumentList.fromMap(Map<String, dynamic> map) {
     return DocumentList(
       total: map['total'],
-      documents: List<Document>.from(
-        map['documents'].map((p) => Document.fromMap(p)),
-      ),
+      documents:
+          List<Document>.from(map['documents'].map((p) => Document.fromMap(p))),
     );
   }
 
+  @override
   Map<String, dynamic> toMap() {
     return {
       "total": total,

@@ -9,8 +9,8 @@ import 'upload_progress.dart';
 ///
 /// The [Client] is also responsible for managing user's sessions.
 abstract class Client {
-  /// The size for cunked uploads in bytes.
-  static const int CHUNK_SIZE = 5 * 1024 * 1024;
+  /// The size for chunked uploads in bytes.
+  static const int chunkSize = 5 * 1024 * 1024;
 
   /// Holds configuration such as project.
   late Map<String, String> config;
@@ -27,7 +27,8 @@ abstract class Client {
   factory Client({
     String endPoint = 'https://cloud.appwrite.io/v1',
     bool selfSigned = false,
-  }) => createClient(endPoint: endPoint, selfSigned: selfSigned);
+  }) =>
+      createClient(endPoint: endPoint, selfSigned: selfSigned);
 
   /// Handle OAuth2 session creation.
   Future webAuth(Uri url, {String? callbackUrlScheme});
@@ -58,25 +59,25 @@ abstract class Client {
   /// Set Project.
   ///
   /// Your project ID.
-  Client setProject(value);
+  Client setProject(String value);
 
   /// Set JWT.
   ///
   /// Your secret JSON Web Token.
-  Client setJWT(value);
+  Client setJWT(String value);
 
   /// Set Locale.
-  Client setLocale(value);
+  Client setLocale(String value);
 
   /// Set Session.
   ///
   /// The user session to authenticate with.
-  Client setSession(value);
+  Client setSession(String value);
 
   /// Set DevKey.
   ///
   /// Your secret dev API key.
-  Client setDevKey(value);
+  Client setDevKey(String value);
 
   /// Add headers that should be sent with all API calls.
   Client addHeader(String key, String value);

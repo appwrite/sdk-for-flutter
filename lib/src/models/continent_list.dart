@@ -8,17 +8,20 @@ class ContinentList implements Model {
   /// List of continents.
   final List<Continent> continents;
 
-  ContinentList({required this.total, required this.continents});
+  ContinentList({
+    required this.total,
+    required this.continents,
+  });
 
   factory ContinentList.fromMap(Map<String, dynamic> map) {
     return ContinentList(
       total: map['total'],
       continents: List<Continent>.from(
-        map['continents'].map((p) => Continent.fromMap(p)),
-      ),
+          map['continents'].map((p) => Continent.fromMap(p))),
     );
   }
 
+  @override
   Map<String, dynamic> toMap() {
     return {
       "total": total,

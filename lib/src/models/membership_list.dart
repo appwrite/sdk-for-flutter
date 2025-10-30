@@ -8,17 +8,20 @@ class MembershipList implements Model {
   /// List of memberships.
   final List<Membership> memberships;
 
-  MembershipList({required this.total, required this.memberships});
+  MembershipList({
+    required this.total,
+    required this.memberships,
+  });
 
   factory MembershipList.fromMap(Map<String, dynamic> map) {
     return MembershipList(
       total: map['total'],
       memberships: List<Membership>.from(
-        map['memberships'].map((p) => Membership.fromMap(p)),
-      ),
+          map['memberships'].map((p) => Membership.fromMap(p))),
     );
   }
 
+  @override
   Map<String, dynamic> toMap() {
     return {
       "total": total,

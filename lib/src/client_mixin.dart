@@ -45,7 +45,7 @@ mixin ClientMixin {
             return MapEntry(key, value.toString());
           }
           if (value is List) {
-            return MapEntry(key + "[]", value);
+            return MapEntry("$key[]", value);
           }
           return MapEntry(key, value);
         });
@@ -123,11 +123,10 @@ mixin ClientMixin {
       return http.Response(
         '',
         streamedResponse.statusCode,
-        headers: streamedResponse.headers.map(
-          (k, v) => k.toLowerCase() == 'content-type'
-              ? MapEntry(k, 'text/plain')
-              : MapEntry(k, v),
-        ),
+        headers: streamedResponse.headers.map((k, v) =>
+            k.toLowerCase() == 'content-type'
+                ? MapEntry(k, 'text/plain')
+                : MapEntry(k, v)),
         request: streamedResponse.request,
         isRedirect: streamedResponse.isRedirect,
         persistentConnection: streamedResponse.persistentConnection,

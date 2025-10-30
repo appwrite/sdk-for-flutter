@@ -115,6 +115,7 @@ class Log implements Model {
     );
   }
 
+  @override
   Map<String, dynamic> toMap() {
     return {
       "event": event,

@@ -5,7 +5,9 @@ class MfaRecoveryCodes implements Model {
   /// Recovery codes.
   final List<String> recoveryCodes;
 
-  MfaRecoveryCodes({required this.recoveryCodes});
+  MfaRecoveryCodes({
+    required this.recoveryCodes,
+  });
 
   factory MfaRecoveryCodes.fromMap(Map<String, dynamic> map) {
     return MfaRecoveryCodes(
@@ -13,7 +15,10 @@ class MfaRecoveryCodes implements Model {
     );
   }
 
+  @override
   Map<String, dynamic> toMap() {
-    return {"recoveryCodes": recoveryCodes};
+    return {
+      "recoveryCodes": recoveryCodes,
+    };
   }
 }

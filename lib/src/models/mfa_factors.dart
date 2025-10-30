@@ -30,6 +30,7 @@ class MfaFactors implements Model {
     );
   }
 
+  @override
   Map<String, dynamic> toMap() {
     return {
       "totp": totp,

@@ -45,6 +45,7 @@ class Currency implements Model {
     );
   }
 
+  @override
   Map<String, dynamic> toMap() {
     return {
       "symbol": symbol,

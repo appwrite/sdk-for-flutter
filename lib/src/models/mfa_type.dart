@@ -8,7 +8,10 @@ class MfaType implements Model {
   /// URI for authenticator apps.
   final String uri;
 
-  MfaType({required this.secret, required this.uri});
+  MfaType({
+    required this.secret,
+    required this.uri,
+  });
 
   factory MfaType.fromMap(Map<String, dynamic> map) {
     return MfaType(
@@ -17,7 +20,11 @@ class MfaType implements Model {
     );
   }
 
+  @override
   Map<String, dynamic> toMap() {
-    return {"secret": secret, "uri": uri};
+    return {
+      "secret": secret,
+      "uri": uri,
+    };
   }
 }

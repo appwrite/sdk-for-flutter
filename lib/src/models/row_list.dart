@@ -8,7 +8,10 @@ class RowList implements Model {
   /// List of rows.
   final List<Row> rows;
 
-  RowList({required this.total, required this.rows});
+  RowList({
+    required this.total,
+    required this.rows,
+  });
 
   factory RowList.fromMap(Map<String, dynamic> map) {
     return RowList(
@@ -17,8 +20,12 @@ class RowList implements Model {
     );
   }
 
+  @override
   Map<String, dynamic> toMap() {
-    return {"total": total, "rows": rows.map((p) => p.toMap()).toList()};
+    return {
+      "total": total,
+      "rows": rows.map((p) => p.toMap()).toList(),
+    };
   }
 
   List<T> convertTo<T>(T Function(Map) fromJson) =>

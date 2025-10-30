@@ -22,7 +22,7 @@ ClientBase createClient({required String endPoint, required bool selfSigned}) =>
     ClientIO(endPoint: endPoint, selfSigned: selfSigned);
 
 class ClientIO extends ClientBase with ClientMixin {
-  static const int CHUNK_SIZE = 5 * 1024 * 1024;
+  static const int chunkSize = 5 * 1024 * 1024;
   String _endPoint;
   Map<String, String>? _headers;
   @override
@@ -58,7 +58,7 @@ class ClientIO extends ClientBase with ClientMixin {
       'x-sdk-name': 'Flutter',
       'x-sdk-platform': 'client',
       'x-sdk-language': 'flutter',
-      'x-sdk-version': '20.2.1',
+      'x-sdk-version': '20.2.2',
       'X-Appwrite-Response-Format': '1.8.0',
     };
 
@@ -206,7 +206,7 @@ class ClientIO extends ClientBase with ClientMixin {
     } catch (e) {
       debugPrint('Error getting device info: $e');
       device = Platform.operatingSystem;
-      addHeader('user-agent', '$device');
+      addHeader('user-agent', device);
     }
 
     _initialized = true;
@@ -269,7 +269,7 @@ class ClientIO extends ClientBase with ClientMixin {
     }
 
     late Response res;
-    if (size <= CHUNK_SIZE) {
+    if (size <= chunkSize) {
       if (file.path != null) {
         params[paramName] = await http.MultipartFile.fromPath(
           paramName,
@@ -297,11 +297,11 @@ class ClientIO extends ClientBase with ClientMixin {
       try {
         res = await call(
           HttpMethod.get,
-          path: path + '/' + params[idParamName],
+          path: '$path/${params[idParamName]}',
           headers: headers,
         );
         final int chunksUploaded = res.data['chunksUploaded'] as int;
-        offset = chunksUploaded * CHUNK_SIZE;
+        offset = chunksUploaded * chunkSize;
       } on AppwriteException catch (_) {}
     }
 
@@ -314,11 +314,11 @@ class ClientIO extends ClientBase with ClientMixin {
     while (offset < size) {
       List<int> chunk = [];
       if (file.bytes != null) {
-        final end = min(offset + CHUNK_SIZE, size);
+        final end = min(offset + chunkSize, size);
         chunk = file.bytes!.getRange(offset, end).toList();
       } else {
         raf!.setPositionSync(offset);
-        chunk = raf.readSync(CHUNK_SIZE);
+        chunk = raf.readSync(chunkSize);
       }
       params[paramName] = http.MultipartFile.fromBytes(
         paramName,
@@ -326,14 +326,14 @@ class ClientIO extends ClientBase with ClientMixin {
         filename: file.filename,
       );
       headers['content-range'] =
-          'bytes $offset-${min<int>((offset + CHUNK_SIZE - 1), size - 1)}/$size';
+          'bytes $offset-${min<int>((offset + chunkSize - 1), size - 1)}/$size';
       res = await call(
         HttpMethod.post,
         path: path,
         headers: headers,
         params: params,
       );
-      offset += CHUNK_SIZE;
+      offset += chunkSize;
       if (offset < size) {
         headers['x-appwrite-id'] = res.data['\$id'];
       }
@@ -358,7 +358,7 @@ class ClientIO extends ClientBase with ClientMixin {
       url: url.toString(),
       callbackUrlScheme: callbackUrlScheme != null && _customSchemeAllowed
           ? callbackUrlScheme
-          : "appwrite-callback-" + config['project']!,
+          : "appwrite-callback-${config['project']!}",
       options: const FlutterWebAuth2Options(
         intentFlags: ephemeralIntentFlags,
         useWebview: false,

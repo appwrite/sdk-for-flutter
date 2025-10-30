@@ -13,12 +13,8 @@ class Account extends Service {
 
     final Map<String, String> apiHeaders = {};
 
-    final res = await client.call(
-      HttpMethod.get,
-      path: apiPath,
-      params: apiParams,
-      headers: apiHeaders,
-    );
+    final res = await client.call(HttpMethod.get,
+        path: apiPath, params: apiParams, headers: apiHeaders);
 
     return models.User.fromMap(res.data);
   }
@@ -30,12 +26,11 @@ class Account extends Service {
   /// route to start verifying the user email address. To allow the new user to
   /// login to their new account, you need to create a new [account
   /// session](https://appwrite.io/docs/references/cloud/client-web/account#createEmailSession).
-  Future<models.User> create({
-    required String userId,
-    required String email,
-    required String password,
-    String? name,
-  }) async {
+  Future<models.User> create(
+      {required String userId,
+      required String email,
+      required String password,
+      String? name}) async {
     const String apiPath = '/account';
 
     final Map<String, dynamic> apiParams = {
@@ -45,14 +40,12 @@ class Account extends Service {
       'name': name,
     };
 
-    final Map<String, String> apiHeaders = {'content-type': 'application/json'};
+    final Map<String, String> apiHeaders = {
+      'content-type': 'application/json',
+    };
 
-    final res = await client.call(
-      HttpMethod.post,
-      path: apiPath,
-      params: apiParams,
-      headers: apiHeaders,
-    );
+    final res = await client.call(HttpMethod.post,
+        path: apiPath, params: apiParams, headers: apiHeaders);
 
     return models.User.fromMap(res.data);
   }
@@ -65,10 +58,8 @@ class Account extends Service {
   /// This endpoint can also be used to convert an anonymous account to a normal
   /// one, by passing an email address and a new password.
   ///
-  Future<models.User> updateEmail({
-    required String email,
-    required String password,
-  }) async {
+  Future<models.User> updateEmail(
+      {required String email, required String password}) async {
     const String apiPath = '/account/email';
 
     final Map<String, dynamic> apiParams = {
@@ -76,14 +67,12 @@ class Account extends Service {
       'password': password,
     };
 
-    final Map<String, String> apiHeaders = {'content-type': 'application/json'};
+    final Map<String, String> apiHeaders = {
+      'content-type': 'application/json',
+    };
 
-    final res = await client.call(
-      HttpMethod.patch,
-      path: apiPath,
-      params: apiParams,
-      headers: apiHeaders,
-    );
+    final res = await client.call(HttpMethod.patch,
+        path: apiPath, params: apiParams, headers: apiHeaders);
 
     return models.User.fromMap(res.data);
   }
@@ -92,37 +81,31 @@ class Account extends Service {
   Future<models.IdentityList> listIdentities({List<String>? queries}) async {
     const String apiPath = '/account/identities';
 
-    final Map<String, dynamic> apiParams = {'queries': queries};
+    final Map<String, dynamic> apiParams = {
+      'queries': queries,
+    };
 
     final Map<String, String> apiHeaders = {};
 
-    final res = await client.call(
-      HttpMethod.get,
-      path: apiPath,
-      params: apiParams,
-      headers: apiHeaders,
-    );
+    final res = await client.call(HttpMethod.get,
+        path: apiPath, params: apiParams, headers: apiHeaders);
 
     return models.IdentityList.fromMap(res.data);
   }
 
   /// Delete an identity by its unique ID.
   Future deleteIdentity({required String identityId}) async {
-    final String apiPath = '/account/identities/{identityId}'.replaceAll(
-      '{identityId}',
-      identityId,
-    );
+    final String apiPath = '/account/identities/{identityId}'
+        .replaceAll('{identityId}', identityId);
 
     final Map<String, dynamic> apiParams = {};
 
-    final Map<String, String> apiHeaders = {'content-type': 'application/json'};
+    final Map<String, String> apiHeaders = {
+      'content-type': 'application/json',
+    };
 
-    final res = await client.call(
-      HttpMethod.delete,
-      path: apiPath,
-      params: apiParams,
-      headers: apiHeaders,
-    );
+    final res = await client.call(HttpMethod.delete,
+        path: apiPath, params: apiParams, headers: apiHeaders);
 
     return res.data;
   }
@@ -137,14 +120,12 @@ class Account extends Service {
 
     final Map<String, dynamic> apiParams = {};
 
-    final Map<String, String> apiHeaders = {'content-type': 'application/json'};
+    final Map<String, String> apiHeaders = {
+      'content-type': 'application/json',
+    };
 
-    final res = await client.call(
-      HttpMethod.post,
-      path: apiPath,
-      params: apiParams,
-      headers: apiHeaders,
-    );
+    final res = await client.call(HttpMethod.post,
+        path: apiPath, params: apiParams, headers: apiHeaders);
 
     return models.Jwt.fromMap(res.data);
   }
@@ -154,16 +135,14 @@ class Account extends Service {
   Future<models.LogList> listLogs({List<String>? queries}) async {
     const String apiPath = '/account/logs';
 
-    final Map<String, dynamic> apiParams = {'queries': queries};
+    final Map<String, dynamic> apiParams = {
+      'queries': queries,
+    };
 
     final Map<String, String> apiHeaders = {};
 
-    final res = await client.call(
-      HttpMethod.get,
-      path: apiPath,
-      params: apiParams,
-      headers: apiHeaders,
-    );
+    final res = await client.call(HttpMethod.get,
+        path: apiPath, params: apiParams, headers: apiHeaders);
 
     return models.LogList.fromMap(res.data);
   }
@@ -172,16 +151,16 @@ class Account extends Service {
   Future<models.User> updateMFA({required bool mfa}) async {
     const String apiPath = '/account/mfa';
 
-    final Map<String, dynamic> apiParams = {'mfa': mfa};
+    final Map<String, dynamic> apiParams = {
+      'mfa': mfa,
+    };
 
-    final Map<String, String> apiHeaders = {'content-type': 'application/json'};
+    final Map<String, String> apiHeaders = {
+      'content-type': 'application/json',
+    };
 
-    final res = await client.call(
-      HttpMethod.patch,
-      path: apiPath,
-      params: apiParams,
-      headers: apiHeaders,
-    );
+    final res = await client.call(HttpMethod.patch,
+        path: apiPath, params: apiParams, headers: apiHeaders);
 
     return models.User.fromMap(res.data);
   }
@@ -191,26 +170,20 @@ class Account extends Service {
   /// authenticator](/docs/references/cloud/client-web/account#updateMfaAuthenticator)
   /// method.
   @Deprecated(
-    'This API has been deprecated since 1.8.0. Please use `Account.createMFAAuthenticator` instead.',
-  )
-  Future<models.MfaType> createMfaAuthenticator({
-    required enums.AuthenticatorType type,
-  }) async {
-    final String apiPath = '/account/mfa/authenticators/{type}'.replaceAll(
-      '{type}',
-      type.value,
-    );
+      'This API has been deprecated since 1.8.0. Please use `Account.createMFAAuthenticator` instead.')
+  Future<models.MfaType> createMfaAuthenticator(
+      {required enums.AuthenticatorType type}) async {
+    final String apiPath =
+        '/account/mfa/authenticators/{type}'.replaceAll('{type}', type.value);
 
     final Map<String, dynamic> apiParams = {};
 
-    final Map<String, String> apiHeaders = {'content-type': 'application/json'};
+    final Map<String, String> apiHeaders = {
+      'content-type': 'application/json',
+    };
 
-    final res = await client.call(
-      HttpMethod.post,
-      path: apiPath,
-      params: apiParams,
-      headers: apiHeaders,
-    );
+    final res = await client.call(HttpMethod.post,
+        path: apiPath, params: apiParams, headers: apiHeaders);
 
     return models.MfaType.fromMap(res.data);
   }
@@ -219,24 +192,19 @@ class Account extends Service {
   /// authenticator using the [verify
   /// authenticator](/docs/references/cloud/client-web/account#updateMfaAuthenticator)
   /// method.
-  Future<models.MfaType> createMFAAuthenticator({
-    required enums.AuthenticatorType type,
-  }) async {
-    final String apiPath = '/account/mfa/authenticators/{type}'.replaceAll(
-      '{type}',
-      type.value,
-    );
+  Future<models.MfaType> createMFAAuthenticator(
+      {required enums.AuthenticatorType type}) async {
+    final String apiPath =
+        '/account/mfa/authenticators/{type}'.replaceAll('{type}', type.value);
 
     final Map<String, dynamic> apiParams = {};
 
-    final Map<String, String> apiHeaders = {'content-type': 'application/json'};
+    final Map<String, String> apiHeaders = {
+      'content-type': 'application/json',
+    };
 
-    final res = await client.call(
-      HttpMethod.post,
-      path: apiPath,
-      params: apiParams,
-      headers: apiHeaders,
-    );
+    final res = await client.call(HttpMethod.post,
+        path: apiPath, params: apiParams, headers: apiHeaders);
 
     return models.MfaType.fromMap(res.data);
   }
@@ -245,27 +213,22 @@ class Account extends Service {
   /// authenticator](/docs/references/cloud/client-web/account#createMfaAuthenticator)
   /// method.
   @Deprecated(
-    'This API has been deprecated since 1.8.0. Please use `Account.updateMFAAuthenticator` instead.',
-  )
-  Future<models.User> updateMfaAuthenticator({
-    required enums.AuthenticatorType type,
-    required String otp,
-  }) async {
-    final String apiPath = '/account/mfa/authenticators/{type}'.replaceAll(
-      '{type}',
-      type.value,
-    );
+      'This API has been deprecated since 1.8.0. Please use `Account.updateMFAAuthenticator` instead.')
+  Future<models.User> updateMfaAuthenticator(
+      {required enums.AuthenticatorType type, required String otp}) async {
+    final String apiPath =
+        '/account/mfa/authenticators/{type}'.replaceAll('{type}', type.value);
 
-    final Map<String, dynamic> apiParams = {'otp': otp};
+    final Map<String, dynamic> apiParams = {
+      'otp': otp,
+    };
 
-    final Map<String, String> apiHeaders = {'content-type': 'application/json'};
+    final Map<String, String> apiHeaders = {
+      'content-type': 'application/json',
+    };
 
-    final res = await client.call(
-      HttpMethod.put,
-      path: apiPath,
-      params: apiParams,
-      headers: apiHeaders,
-    );
+    final res = await client.call(HttpMethod.put,
+        path: apiPath, params: apiParams, headers: apiHeaders);
 
     return models.User.fromMap(res.data);
   }
@@ -273,70 +236,57 @@ class Account extends Service {
   /// Verify an authenticator app after adding it using the [add
   /// authenticator](/docs/references/cloud/client-web/account#createMfaAuthenticator)
   /// method.
-  Future<models.User> updateMFAAuthenticator({
-    required enums.AuthenticatorType type,
-    required String otp,
-  }) async {
-    final String apiPath = '/account/mfa/authenticators/{type}'.replaceAll(
-      '{type}',
-      type.value,
-    );
+  Future<models.User> updateMFAAuthenticator(
+      {required enums.AuthenticatorType type, required String otp}) async {
+    final String apiPath =
+        '/account/mfa/authenticators/{type}'.replaceAll('{type}', type.value);
 
-    final Map<String, dynamic> apiParams = {'otp': otp};
+    final Map<String, dynamic> apiParams = {
+      'otp': otp,
+    };
 
-    final Map<String, String> apiHeaders = {'content-type': 'application/json'};
+    final Map<String, String> apiHeaders = {
+      'content-type': 'application/json',
+    };
 
-    final res = await client.call(
-      HttpMethod.put,
-      path: apiPath,
-      params: apiParams,
-      headers: apiHeaders,
-    );
+    final res = await client.call(HttpMethod.put,
+        path: apiPath, params: apiParams, headers: apiHeaders);
 
     return models.User.fromMap(res.data);
   }
 
   /// Delete an authenticator for a user by ID.
   @Deprecated(
-    'This API has been deprecated since 1.8.0. Please use `Account.deleteMFAAuthenticator` instead.',
-  )
+      'This API has been deprecated since 1.8.0. Please use `Account.deleteMFAAuthenticator` instead.')
   Future deleteMfaAuthenticator({required enums.AuthenticatorType type}) async {
-    final String apiPath = '/account/mfa/authenticators/{type}'.replaceAll(
-      '{type}',
-      type.value,
-    );
+    final String apiPath =
+        '/account/mfa/authenticators/{type}'.replaceAll('{type}', type.value);
 
     final Map<String, dynamic> apiParams = {};
 
-    final Map<String, String> apiHeaders = {'content-type': 'application/json'};
+    final Map<String, String> apiHeaders = {
+      'content-type': 'application/json',
+    };
 
-    final res = await client.call(
-      HttpMethod.delete,
-      path: apiPath,
-      params: apiParams,
-      headers: apiHeaders,
-    );
+    final res = await client.call(HttpMethod.delete,
+        path: apiPath, params: apiParams, headers: apiHeaders);
 
     return res.data;
   }
 
   /// Delete an authenticator for a user by ID.
   Future deleteMFAAuthenticator({required enums.AuthenticatorType type}) async {
-    final String apiPath = '/account/mfa/authenticators/{type}'.replaceAll(
-      '{type}',
-      type.value,
-    );
+    final String apiPath =
+        '/account/mfa/authenticators/{type}'.replaceAll('{type}', type.value);
 
     final Map<String, dynamic> apiParams = {};
 
-    final Map<String, String> apiHeaders = {'content-type': 'application/json'};
+    final Map<String, String> apiHeaders = {
+      'content-type': 'application/json',
+    };
 
-    final res = await client.call(
-      HttpMethod.delete,
-      path: apiPath,
-      params: apiParams,
-      headers: apiHeaders,
-    );
+    final res = await client.call(HttpMethod.delete,
+        path: apiPath, params: apiParams, headers: apiHeaders);
 
     return res.data;
   }
@@ -345,23 +295,21 @@ class Account extends Service {
   /// [updateMfaChallenge](/docs/references/cloud/client-web/account#updateMfaChallenge)
   /// method.
   @Deprecated(
-    'This API has been deprecated since 1.8.0. Please use `Account.createMFAChallenge` instead.',
-  )
-  Future<models.MfaChallenge> createMfaChallenge({
-    required enums.AuthenticationFactor factor,
-  }) async {
+      'This API has been deprecated since 1.8.0. Please use `Account.createMFAChallenge` instead.')
+  Future<models.MfaChallenge> createMfaChallenge(
+      {required enums.AuthenticationFactor factor}) async {
     const String apiPath = '/account/mfa/challenge';
 
-    final Map<String, dynamic> apiParams = {'factor': factor.value};
+    final Map<String, dynamic> apiParams = {
+      'factor': factor.value,
+    };
 
-    final Map<String, String> apiHeaders = {'content-type': 'application/json'};
+    final Map<String, String> apiHeaders = {
+      'content-type': 'application/json',
+    };
 
-    final res = await client.call(
-      HttpMethod.post,
-      path: apiPath,
-      params: apiParams,
-      headers: apiHeaders,
-    );
+    final res = await client.call(HttpMethod.post,
+        path: apiPath, params: apiParams, headers: apiHeaders);
 
     return models.MfaChallenge.fromMap(res.data);
   }
@@ -369,21 +317,20 @@ class Account extends Service {
   /// Begin the process of MFA verification after sign-in. Finish the flow with
   /// [updateMfaChallenge](/docs/references/cloud/client-web/account#updateMfaChallenge)
   /// method.
-  Future<models.MfaChallenge> createMFAChallenge({
-    required enums.AuthenticationFactor factor,
-  }) async {
+  Future<models.MfaChallenge> createMFAChallenge(
+      {required enums.AuthenticationFactor factor}) async {
     const String apiPath = '/account/mfa/challenge';
 
-    final Map<String, dynamic> apiParams = {'factor': factor.value};
+    final Map<String, dynamic> apiParams = {
+      'factor': factor.value,
+    };
 
-    final Map<String, String> apiHeaders = {'content-type': 'application/json'};
+    final Map<String, String> apiHeaders = {
+      'content-type': 'application/json',
+    };
 
-    final res = await client.call(
-      HttpMethod.post,
-      path: apiPath,
-      params: apiParams,
-      headers: apiHeaders,
-    );
+    final res = await client.call(HttpMethod.post,
+        path: apiPath, params: apiParams, headers: apiHeaders);
 
     return models.MfaChallenge.fromMap(res.data);
   }
@@ -394,12 +341,9 @@ class Account extends Service {
   /// [createMfaChallenge](/docs/references/cloud/client-web/account#createMfaChallenge)
   /// method.
   @Deprecated(
-    'This API has been deprecated since 1.8.0. Please use `Account.updateMFAChallenge` instead.',
-  )
-  Future<models.Session> updateMfaChallenge({
-    required String challengeId,
-    required String otp,
-  }) async {
+      'This API has been deprecated since 1.8.0. Please use `Account.updateMFAChallenge` instead.')
+  Future<models.Session> updateMfaChallenge(
+      {required String challengeId, required String otp}) async {
     const String apiPath = '/account/mfa/challenge';
 
     final Map<String, dynamic> apiParams = {
@@ -407,14 +351,12 @@ class Account extends Service {
       'otp': otp,
     };
 
-    final Map<String, String> apiHeaders = {'content-type': 'application/json'};
+    final Map<String, String> apiHeaders = {
+      'content-type': 'application/json',
+    };
 
-    final res = await client.call(
-      HttpMethod.put,
-      path: apiPath,
-      params: apiParams,
-      headers: apiHeaders,
-    );
+    final res = await client.call(HttpMethod.put,
+        path: apiPath, params: apiParams, headers: apiHeaders);
 
     return models.Session.fromMap(res.data);
   }
@@ -424,10 +366,8 @@ class Account extends Service {
   /// the flow, use
   /// [createMfaChallenge](/docs/references/cloud/client-web/account#createMfaChallenge)
   /// method.
-  Future<models.Session> updateMFAChallenge({
-    required String challengeId,
-    required String otp,
-  }) async {
+  Future<models.Session> updateMFAChallenge(
+      {required String challengeId, required String otp}) async {
     const String apiPath = '/account/mfa/challenge';
 
     final Map<String, dynamic> apiParams = {
@@ -435,22 +375,19 @@ class Account extends Service {
       'otp': otp,
     };
 
-    final Map<String, String> apiHeaders = {'content-type': 'application/json'};
+    final Map<String, String> apiHeaders = {
+      'content-type': 'application/json',
+    };
 
-    final res = await client.call(
-      HttpMethod.put,
-      path: apiPath,
-      params: apiParams,
-      headers: apiHeaders,
-    );
+    final res = await client.call(HttpMethod.put,
+        path: apiPath, params: apiParams, headers: apiHeaders);
 
     return models.Session.fromMap(res.data);
   }
 
   /// List the factors available on the account to be used as a MFA challange.
   @Deprecated(
-    'This API has been deprecated since 1.8.0. Please use `Account.listMFAFactors` instead.',
-  )
+      'This API has been deprecated since 1.8.0. Please use `Account.listMFAFactors` instead.')
   Future<models.MfaFactors> listMfaFactors() async {
     const String apiPath = '/account/mfa/factors';
 
@@ -458,12 +395,8 @@ class Account extends Service {
 
     final Map<String, String> apiHeaders = {};
 
-    final res = await client.call(
-      HttpMethod.get,
-      path: apiPath,
-      params: apiParams,
-      headers: apiHeaders,
-    );
+    final res = await client.call(HttpMethod.get,
+        path: apiPath, params: apiParams, headers: apiHeaders);
 
     return models.MfaFactors.fromMap(res.data);
   }
@@ -476,12 +409,8 @@ class Account extends Service {
 
     final Map<String, String> apiHeaders = {};
 
-    final res = await client.call(
-      HttpMethod.get,
-      path: apiPath,
-      params: apiParams,
-      headers: apiHeaders,
-    );
+    final res = await client.call(HttpMethod.get,
+        path: apiPath, params: apiParams, headers: apiHeaders);
 
     return models.MfaFactors.fromMap(res.data);
   }
@@ -491,8 +420,7 @@ class Account extends Service {
   /// [createMfaRecoveryCodes](/docs/references/cloud/client-web/account#createMfaRecoveryCodes)
   /// method. An OTP challenge is required to read recovery codes.
   @Deprecated(
-    'This API has been deprecated since 1.8.0. Please use `Account.getMFARecoveryCodes` instead.',
-  )
+      'This API has been deprecated since 1.8.0. Please use `Account.getMFARecoveryCodes` instead.')
   Future<models.MfaRecoveryCodes> getMfaRecoveryCodes() async {
     const String apiPath = '/account/mfa/recovery-codes';
 
@@ -500,12 +428,8 @@ class Account extends Service {
 
     final Map<String, String> apiHeaders = {};
 
-    final res = await client.call(
-      HttpMethod.get,
-      path: apiPath,
-      params: apiParams,
-      headers: apiHeaders,
-    );
+    final res = await client.call(HttpMethod.get,
+        path: apiPath, params: apiParams, headers: apiHeaders);
 
     return models.MfaRecoveryCodes.fromMap(res.data);
   }
@@ -521,12 +445,8 @@ class Account extends Service {
 
     final Map<String, String> apiHeaders = {};
 
-    final res = await client.call(
-      HttpMethod.get,
-      path: apiPath,
-      params: apiParams,
-      headers: apiHeaders,
-    );
+    final res = await client.call(HttpMethod.get,
+        path: apiPath, params: apiParams, headers: apiHeaders);
 
     return models.MfaRecoveryCodes.fromMap(res.data);
   }
@@ -537,21 +457,18 @@ class Account extends Service {
   /// [createMfaChallenge](/docs/references/cloud/client-web/account#createMfaChallenge)
   /// method.
   @Deprecated(
-    'This API has been deprecated since 1.8.0. Please use `Account.createMFARecoveryCodes` instead.',
-  )
+      'This API has been deprecated since 1.8.0. Please use `Account.createMFARecoveryCodes` instead.')
   Future<models.MfaRecoveryCodes> createMfaRecoveryCodes() async {
     const String apiPath = '/account/mfa/recovery-codes';
 
     final Map<String, dynamic> apiParams = {};
 
-    final Map<String, String> apiHeaders = {'content-type': 'application/json'};
+    final Map<String, String> apiHeaders = {
+      'content-type': 'application/json',
+    };
 
-    final res = await client.call(
-      HttpMethod.post,
-      path: apiPath,
-      params: apiParams,
-      headers: apiHeaders,
-    );
+    final res = await client.call(HttpMethod.post,
+        path: apiPath, params: apiParams, headers: apiHeaders);
 
     return models.MfaRecoveryCodes.fromMap(res.data);
   }
@@ -566,14 +483,12 @@ class Account extends Service {
 
     final Map<String, dynamic> apiParams = {};
 
-    final Map<String, String> apiHeaders = {'content-type': 'application/json'};
+    final Map<String, String> apiHeaders = {
+      'content-type': 'application/json',
+    };
 
-    final res = await client.call(
-      HttpMethod.post,
-      path: apiPath,
-      params: apiParams,
-      headers: apiHeaders,
-    );
+    final res = await client.call(HttpMethod.post,
+        path: apiPath, params: apiParams, headers: apiHeaders);
 
     return models.MfaRecoveryCodes.fromMap(res.data);
   }
@@ -583,21 +498,18 @@ class Account extends Service {
   /// [createMfaRecoveryCodes](/docs/references/cloud/client-web/account#createMfaRecoveryCodes)
   /// method. An OTP challenge is required to regenreate recovery codes.
   @Deprecated(
-    'This API has been deprecated since 1.8.0. Please use `Account.updateMFARecoveryCodes` instead.',
-  )
+      'This API has been deprecated since 1.8.0. Please use `Account.updateMFARecoveryCodes` instead.')
   Future<models.MfaRecoveryCodes> updateMfaRecoveryCodes() async {
     const String apiPath = '/account/mfa/recovery-codes';
 
     final Map<String, dynamic> apiParams = {};
 
-    final Map<String, String> apiHeaders = {'content-type': 'application/json'};
+    final Map<String, String> apiHeaders = {
+      'content-type': 'application/json',
+    };
 
-    final res = await client.call(
-      HttpMethod.patch,
-      path: apiPath,
-      params: apiParams,
-      headers: apiHeaders,
-    );
+    final res = await client.call(HttpMethod.patch,
+        path: apiPath, params: apiParams, headers: apiHeaders);
 
     return models.MfaRecoveryCodes.fromMap(res.data);
   }
@@ -611,14 +523,12 @@ class Account extends Service {
 
     final Map<String, dynamic> apiParams = {};
 
-    final Map<String, String> apiHeaders = {'content-type': 'application/json'};
+    final Map<String, String> apiHeaders = {
+      'content-type': 'application/json',
+    };
 
-    final res = await client.call(
-      HttpMethod.patch,
-      path: apiPath,
-      params: apiParams,
-      headers: apiHeaders,
-    );
+    final res = await client.call(HttpMethod.patch,
+        path: apiPath, params: apiParams, headers: apiHeaders);
 
     return models.MfaRecoveryCodes.fromMap(res.data);
   }
@@ -627,16 +537,16 @@ class Account extends Service {
   Future<models.User> updateName({required String name}) async {
     const String apiPath = '/account/name';
 
-    final Map<String, dynamic> apiParams = {'name': name};
+    final Map<String, dynamic> apiParams = {
+      'name': name,
+    };
 
-    final Map<String, String> apiHeaders = {'content-type': 'application/json'};
+    final Map<String, String> apiHeaders = {
+      'content-type': 'application/json',
+    };
 
-    final res = await client.call(
-      HttpMethod.patch,
-      path: apiPath,
-      params: apiParams,
-      headers: apiHeaders,
-    );
+    final res = await client.call(HttpMethod.patch,
+        path: apiPath, params: apiParams, headers: apiHeaders);
 
     return models.User.fromMap(res.data);
   }
@@ -644,10 +554,8 @@ class Account extends Service {
   /// Update currently logged in user password. For validation, user is required
   /// to pass in the new password, and the old password. For users created with
   /// OAuth, Team Invites and Magic URL, oldPassword is optional.
-  Future<models.User> updatePassword({
-    required String password,
-    String? oldPassword,
-  }) async {
+  Future<models.User> updatePassword(
+      {required String password, String? oldPassword}) async {
     const String apiPath = '/account/password';
 
     final Map<String, dynamic> apiParams = {
@@ -655,14 +563,12 @@ class Account extends Service {
       'oldPassword': oldPassword,
     };
 
-    final Map<String, String> apiHeaders = {'content-type': 'application/json'};
+    final Map<String, String> apiHeaders = {
+      'content-type': 'application/json',
+    };
 
-    final res = await client.call(
-      HttpMethod.patch,
-      path: apiPath,
-      params: apiParams,
-      headers: apiHeaders,
-    );
+    final res = await client.call(HttpMethod.patch,
+        path: apiPath, params: apiParams, headers: apiHeaders);
 
     return models.User.fromMap(res.data);
   }
@@ -672,10 +578,8 @@ class Account extends Service {
   /// SMS is not sent automatically, however you can use the [POST
   /// /account/verification/phone](https://appwrite.io/docs/references/cloud/client-web/account#createPhoneVerification)
   /// endpoint to send a confirmation SMS.
-  Future<models.User> updatePhone({
-    required String phone,
-    required String password,
-  }) async {
+  Future<models.User> updatePhone(
+      {required String phone, required String password}) async {
     const String apiPath = '/account/phone';
 
     final Map<String, dynamic> apiParams = {
@@ -683,14 +587,12 @@ class Account extends Service {
       'password': password,
     };
 
-    final Map<String, String> apiHeaders = {'content-type': 'application/json'};
+    final Map<String, String> apiHeaders = {
+      'content-type': 'application/json',
+    };
 
-    final res = await client.call(
-      HttpMethod.patch,
-      path: apiPath,
-      params: apiParams,
-      headers: apiHeaders,
-    );
+    final res = await client.call(HttpMethod.patch,
+        path: apiPath, params: apiParams, headers: apiHeaders);
 
     return models.User.fromMap(res.data);
   }
@@ -703,12 +605,8 @@ class Account extends Service {
 
     final Map<String, String> apiHeaders = {};
 
-    final res = await client.call(
-      HttpMethod.get,
-      path: apiPath,
-      params: apiParams,
-      headers: apiHeaders,
-    );
+    final res = await client.call(HttpMethod.get,
+        path: apiPath, params: apiParams, headers: apiHeaders);
 
     return models.Preferences.fromMap(res.data);
   }
@@ -719,16 +617,16 @@ class Account extends Service {
   Future<models.User> updatePrefs({required Map prefs}) async {
     const String apiPath = '/account/prefs';
 
-    final Map<String, dynamic> apiParams = {'prefs': prefs};
+    final Map<String, dynamic> apiParams = {
+      'prefs': prefs,
+    };
 
-    final Map<String, String> apiHeaders = {'content-type': 'application/json'};
+    final Map<String, String> apiHeaders = {
+      'content-type': 'application/json',
+    };
 
-    final res = await client.call(
-      HttpMethod.patch,
-      path: apiPath,
-      params: apiParams,
-      headers: apiHeaders,
-    );
+    final res = await client.call(HttpMethod.patch,
+        path: apiPath, params: apiParams, headers: apiHeaders);
 
     return models.User.fromMap(res.data);
   }
@@ -741,22 +639,21 @@ class Account extends Service {
   /// /account/recovery](https://appwrite.io/docs/references/cloud/client-web/account#updateRecovery)
   /// endpoint to complete the process. The verification link sent to the user's
   /// email address is valid for 1 hour.
-  Future<models.Token> createRecovery({
-    required String email,
-    required String url,
-  }) async {
+  Future<models.Token> createRecovery(
+      {required String email, required String url}) async {
     const String apiPath = '/account/recovery';
 
-    final Map<String, dynamic> apiParams = {'email': email, 'url': url};
+    final Map<String, dynamic> apiParams = {
+      'email': email,
+      'url': url,
+    };
 
-    final Map<String, String> apiHeaders = {'content-type': 'application/json'};
+    final Map<String, String> apiHeaders = {
+      'content-type': 'application/json',
+    };
 
-    final res = await client.call(
-      HttpMethod.post,
-      path: apiPath,
-      params: apiParams,
-      headers: apiHeaders,
-    );
+    final res = await client.call(HttpMethod.post,
+        path: apiPath, params: apiParams, headers: apiHeaders);
 
     return models.Token.fromMap(res.data);
   }
@@ -771,11 +668,10 @@ class Account extends Service {
   /// Attack](https://github.com/OWASP/CheatSheetSeries/blob/master/cheatsheets/Unvalidated_Redirects_and_Forwards_Cheat_Sheet.md)
   /// the only valid redirect URLs are the ones from domains you have set when
   /// adding your platforms in the console interface.
-  Future<models.Token> updateRecovery({
-    required String userId,
-    required String secret,
-    required String password,
-  }) async {
+  Future<models.Token> updateRecovery(
+      {required String userId,
+      required String secret,
+      required String password}) async {
     const String apiPath = '/account/recovery';
 
     final Map<String, dynamic> apiParams = {
@@ -784,14 +680,12 @@ class Account extends Service {
       'password': password,
     };
 
-    final Map<String, String> apiHeaders = {'content-type': 'application/json'};
+    final Map<String, String> apiHeaders = {
+      'content-type': 'application/json',
+    };
 
-    final res = await client.call(
-      HttpMethod.put,
-      path: apiPath,
-      params: apiParams,
-      headers: apiHeaders,
-    );
+    final res = await client.call(HttpMethod.put,
+        path: apiPath, params: apiParams, headers: apiHeaders);
 
     return models.Token.fromMap(res.data);
   }
@@ -805,12 +699,8 @@ class Account extends Service {
 
     final Map<String, String> apiHeaders = {};
 
-    final res = await client.call(
-      HttpMethod.get,
-      path: apiPath,
-      params: apiParams,
-      headers: apiHeaders,
-    );
+    final res = await client.call(HttpMethod.get,
+        path: apiPath, params: apiParams, headers: apiHeaders);
 
     return models.SessionList.fromMap(res.data);
   }
@@ -822,14 +712,12 @@ class Account extends Service {
 
     final Map<String, dynamic> apiParams = {};
 
-    final Map<String, String> apiHeaders = {'content-type': 'application/json'};
+    final Map<String, String> apiHeaders = {
+      'content-type': 'application/json',
+    };
 
-    final res = await client.call(
-      HttpMethod.delete,
-      path: apiPath,
-      params: apiParams,
-      headers: apiHeaders,
-    );
+    final res = await client.call(HttpMethod.delete,
+        path: apiPath, params: apiParams, headers: apiHeaders);
 
     return res.data;
   }
@@ -846,14 +734,12 @@ class Account extends Service {
 
     final Map<String, dynamic> apiParams = {};
 
-    final Map<String, String> apiHeaders = {'content-type': 'application/json'};
+    final Map<String, String> apiHeaders = {
+      'content-type': 'application/json',
+    };
 
-    final res = await client.call(
-      HttpMethod.post,
-      path: apiPath,
-      params: apiParams,
-      headers: apiHeaders,
-    );
+    final res = await client.call(HttpMethod.post,
+        path: apiPath, params: apiParams, headers: apiHeaders);
 
     return models.Session.fromMap(res.data);
   }
@@ -864,10 +750,8 @@ class Account extends Service {
   /// A user is limited to 10 active sessions at a time by default. [Learn more
   /// about session
   /// limits](https://appwrite.io/docs/authentication-security#limits).
-  Future<models.Session> createEmailPasswordSession({
-    required String email,
-    required String password,
-  }) async {
+  Future<models.Session> createEmailPasswordSession(
+      {required String email, required String password}) async {
     const String apiPath = '/account/sessions/email';
 
     final Map<String, dynamic> apiParams = {
@@ -875,14 +759,12 @@ class Account extends Service {
       'password': password,
     };
 
-    final Map<String, String> apiHeaders = {'content-type': 'application/json'};
+    final Map<String, String> apiHeaders = {
+      'content-type': 'application/json',
+    };
 
-    final res = await client.call(
-      HttpMethod.post,
-      path: apiPath,
-      params: apiParams,
-      headers: apiHeaders,
-    );
+    final res = await client.call(HttpMethod.post,
+        path: apiPath, params: apiParams, headers: apiHeaders);
 
     return models.Session.fromMap(res.data);
   }
@@ -891,24 +773,22 @@ class Account extends Service {
   /// and **secret** parameters from the successful response of authentication
   /// flows initiated by token creation. For example, magic URL and phone login.
   @Deprecated(
-    'This API has been deprecated since 1.6.0. Please use `Account.createSession` instead.',
-  )
-  Future<models.Session> updateMagicURLSession({
-    required String userId,
-    required String secret,
-  }) async {
+      'This API has been deprecated since 1.6.0. Please use `Account.createSession` instead.')
+  Future<models.Session> updateMagicURLSession(
+      {required String userId, required String secret}) async {
     const String apiPath = '/account/sessions/magic-url';
 
-    final Map<String, dynamic> apiParams = {'userId': userId, 'secret': secret};
+    final Map<String, dynamic> apiParams = {
+      'userId': userId,
+      'secret': secret,
+    };
 
-    final Map<String, String> apiHeaders = {'content-type': 'application/json'};
+    final Map<String, String> apiHeaders = {
+      'content-type': 'application/json',
+    };
 
-    final res = await client.call(
-      HttpMethod.put,
-      path: apiPath,
-      params: apiParams,
-      headers: apiHeaders,
-    );
+    final res = await client.call(HttpMethod.put,
+        path: apiPath, params: apiParams, headers: apiHeaders);
 
     return models.Session.fromMap(res.data);
   }
@@ -929,22 +809,18 @@ class Account extends Service {
   /// about session
   /// limits](https://appwrite.io/docs/authentication-security#limits).
   ///
-  Future createOAuth2Session({
-    required enums.OAuthProvider provider,
-    String? success,
-    String? failure,
-    List<String>? scopes,
-  }) async {
-    final String apiPath = '/account/sessions/oauth2/{provider}'.replaceAll(
-      '{provider}',
-      provider.value,
-    );
+  Future createOAuth2Session(
+      {required enums.OAuthProvider provider,
+      String? success,
+      String? failure,
+      List<String>? scopes}) async {
+    final String apiPath = '/account/sessions/oauth2/{provider}'
+        .replaceAll('{provider}', provider.value);
 
     final Map<String, dynamic> params = {
       'success': success,
       'failure': failure,
       'scopes': scopes,
-
       'project': client.config['project'],
     };
 
@@ -954,22 +830,20 @@ class Account extends Service {
       if (value is List) {
         for (var item in value) {
           query.add(
-            Uri.encodeComponent(key + '[]') + '=' + Uri.encodeComponent(item),
-          );
+              '${Uri.encodeComponent('$key[]')}=${Uri.encodeComponent(item)}');
         }
       } else if (value != null) {
-        query.add(Uri.encodeComponent(key) + '=' + Uri.encodeComponent(value));
+        query.add('${Uri.encodeComponent(key)}=${Uri.encodeComponent(value)}');
       }
     });
 
     Uri endpoint = Uri.parse(client.endPoint);
     Uri url = Uri(
-      scheme: endpoint.scheme,
-      host: endpoint.host,
-      port: endpoint.port,
-      path: endpoint.path + apiPath,
-      query: query.join('&'),
-    );
+        scheme: endpoint.scheme,
+        host: endpoint.host,
+        port: endpoint.port,
+        path: endpoint.path + apiPath,
+        query: query.join('&'));
 
     return client.webAuth(url, callbackUrlScheme: success);
   }
@@ -978,24 +852,22 @@ class Account extends Service {
   /// and **secret** parameters from the successful response of authentication
   /// flows initiated by token creation. For example, magic URL and phone login.
   @Deprecated(
-    'This API has been deprecated since 1.6.0. Please use `Account.createSession` instead.',
-  )
-  Future<models.Session> updatePhoneSession({
-    required String userId,
-    required String secret,
-  }) async {
+      'This API has been deprecated since 1.6.0. Please use `Account.createSession` instead.')
+  Future<models.Session> updatePhoneSession(
+      {required String userId, required String secret}) async {
     const String apiPath = '/account/sessions/phone';
 
-    final Map<String, dynamic> apiParams = {'userId': userId, 'secret': secret};
+    final Map<String, dynamic> apiParams = {
+      'userId': userId,
+      'secret': secret,
+    };
 
-    final Map<String, String> apiHeaders = {'content-type': 'application/json'};
+    final Map<String, String> apiHeaders = {
+      'content-type': 'application/json',
+    };
 
-    final res = await client.call(
-      HttpMethod.put,
-      path: apiPath,
-      params: apiParams,
-      headers: apiHeaders,
-    );
+    final res = await client.call(HttpMethod.put,
+        path: apiPath, params: apiParams, headers: apiHeaders);
 
     return models.Session.fromMap(res.data);
   }
@@ -1003,22 +875,21 @@ class Account extends Service {
   /// Use this endpoint to create a session from token. Provide the **userId**
   /// and **secret** parameters from the successful response of authentication
   /// flows initiated by token creation. For example, magic URL and phone login.
-  Future<models.Session> createSession({
-    required String userId,
-    required String secret,
-  }) async {
+  Future<models.Session> createSession(
+      {required String userId, required String secret}) async {
     const String apiPath = '/account/sessions/token';
 
-    final Map<String, dynamic> apiParams = {'userId': userId, 'secret': secret};
+    final Map<String, dynamic> apiParams = {
+      'userId': userId,
+      'secret': secret,
+    };
 
-    final Map<String, String> apiHeaders = {'content-type': 'application/json'};
+    final Map<String, String> apiHeaders = {
+      'content-type': 'application/json',
+    };
 
-    final res = await client.call(
-      HttpMethod.post,
-      path: apiPath,
-      params: apiParams,
-      headers: apiHeaders,
-    );
+    final res = await client.call(HttpMethod.post,
+        path: apiPath, params: apiParams, headers: apiHeaders);
 
     return models.Session.fromMap(res.data);
   }
@@ -1026,21 +897,15 @@ class Account extends Service {
   /// Use this endpoint to get a logged in user's session using a Session ID.
   /// Inputting 'current' will return the current session being used.
   Future<models.Session> getSession({required String sessionId}) async {
-    final String apiPath = '/account/sessions/{sessionId}'.replaceAll(
-      '{sessionId}',
-      sessionId,
-    );
+    final String apiPath =
+        '/account/sessions/{sessionId}'.replaceAll('{sessionId}', sessionId);
 
     final Map<String, dynamic> apiParams = {};
 
     final Map<String, String> apiHeaders = {};
 
-    final res = await client.call(
-      HttpMethod.get,
-      path: apiPath,
-      params: apiParams,
-      headers: apiHeaders,
-    );
+    final res = await client.call(HttpMethod.get,
+        path: apiPath, params: apiParams, headers: apiHeaders);
 
     return models.Session.fromMap(res.data);
   }
@@ -1049,21 +914,17 @@ class Account extends Service {
   /// useful when session expiry is short. If the session was created using an
   /// OAuth provider, this endpoint refreshes the access token from the provider.
   Future<models.Session> updateSession({required String sessionId}) async {
-    final String apiPath = '/account/sessions/{sessionId}'.replaceAll(
-      '{sessionId}',
-      sessionId,
-    );
+    final String apiPath =
+        '/account/sessions/{sessionId}'.replaceAll('{sessionId}', sessionId);
 
     final Map<String, dynamic> apiParams = {};
 
-    final Map<String, String> apiHeaders = {'content-type': 'application/json'};
+    final Map<String, String> apiHeaders = {
+      'content-type': 'application/json',
+    };
 
-    final res = await client.call(
-      HttpMethod.patch,
-      path: apiPath,
-      params: apiParams,
-      headers: apiHeaders,
-    );
+    final res = await client.call(HttpMethod.patch,
+        path: apiPath, params: apiParams, headers: apiHeaders);
 
     return models.Session.fromMap(res.data);
   }
@@ -1074,21 +935,17 @@ class Account extends Service {
   /// Sessions](https://appwrite.io/docs/references/cloud/client-web/account#deleteSessions)
   /// instead.
   Future deleteSession({required String sessionId}) async {
-    final String apiPath = '/account/sessions/{sessionId}'.replaceAll(
-      '{sessionId}',
-      sessionId,
-    );
+    final String apiPath =
+        '/account/sessions/{sessionId}'.replaceAll('{sessionId}', sessionId);
 
     final Map<String, dynamic> apiParams = {};
 
-    final Map<String, String> apiHeaders = {'content-type': 'application/json'};
+    final Map<String, String> apiHeaders = {
+      'content-type': 'application/json',
+    };
 
-    final res = await client.call(
-      HttpMethod.delete,
-      path: apiPath,
-      params: apiParams,
-      headers: apiHeaders,
-    );
+    final res = await client.call(HttpMethod.delete,
+        path: apiPath, params: apiParams, headers: apiHeaders);
 
     return res.data;
   }
@@ -1101,14 +958,12 @@ class Account extends Service {
 
     final Map<String, dynamic> apiParams = {};
 
-    final Map<String, String> apiHeaders = {'content-type': 'application/json'};
+    final Map<String, String> apiHeaders = {
+      'content-type': 'application/json',
+    };
 
-    final res = await client.call(
-      HttpMethod.patch,
-      path: apiPath,
-      params: apiParams,
-      headers: apiHeaders,
-    );
+    final res = await client.call(HttpMethod.patch,
+        path: apiPath, params: apiParams, headers: apiHeaders);
 
     return models.User.fromMap(res.data);
   }
@@ -1118,11 +973,10 @@ class Account extends Service {
   /// (usually a device token), and optionally specify which provider should send
   /// notifications to this target. The target is automatically linked to the
   /// current session and includes device information like brand and model.
-  Future<models.Target> createPushTarget({
-    required String targetId,
-    required String identifier,
-    String? providerId,
-  }) async {
+  Future<models.Target> createPushTarget(
+      {required String targetId,
+      required String identifier,
+      String? providerId}) async {
     const String apiPath = '/account/targets/push';
 
     final Map<String, dynamic> apiParams = {
@@ -1131,14 +985,12 @@ class Account extends Service {
       'providerId': providerId,
     };
 
-    final Map<String, String> apiHeaders = {'content-type': 'application/json'};
+    final Map<String, String> apiHeaders = {
+      'content-type': 'application/json',
+    };
 
-    final res = await client.call(
-      HttpMethod.post,
-      path: apiPath,
-      params: apiParams,
-      headers: apiHeaders,
-    );
+    final res = await client.call(HttpMethod.post,
+        path: apiPath, params: apiParams, headers: apiHeaders);
 
     return models.Target.fromMap(res.data);
   }
@@ -1148,25 +1000,21 @@ class Account extends Service {
   /// email, phone etc.). The target must exist and belong to the current user.
   /// If you change the provider ID, notifications will be sent through the new
   /// messaging provider instead.
-  Future<models.Target> updatePushTarget({
-    required String targetId,
-    required String identifier,
-  }) async {
-    final String apiPath = '/account/targets/{targetId}/push'.replaceAll(
-      '{targetId}',
-      targetId,
-    );
+  Future<models.Target> updatePushTarget(
+      {required String targetId, required String identifier}) async {
+    final String apiPath =
+        '/account/targets/{targetId}/push'.replaceAll('{targetId}', targetId);
 
-    final Map<String, dynamic> apiParams = {'identifier': identifier};
+    final Map<String, dynamic> apiParams = {
+      'identifier': identifier,
+    };
 
-    final Map<String, String> apiHeaders = {'content-type': 'application/json'};
+    final Map<String, String> apiHeaders = {
+      'content-type': 'application/json',
+    };
 
-    final res = await client.call(
-      HttpMethod.put,
-      path: apiPath,
-      params: apiParams,
-      headers: apiHeaders,
-    );
+    final res = await client.call(HttpMethod.put,
+        path: apiPath, params: apiParams, headers: apiHeaders);
 
     return models.Target.fromMap(res.data);
   }
@@ -1175,21 +1023,17 @@ class Account extends Service {
   /// deletion, the device will no longer receive push notifications. The target
   /// must exist and belong to the current user.
   Future deletePushTarget({required String targetId}) async {
-    final String apiPath = '/account/targets/{targetId}/push'.replaceAll(
-      '{targetId}',
-      targetId,
-    );
+    final String apiPath =
+        '/account/targets/{targetId}/push'.replaceAll('{targetId}', targetId);
 
     final Map<String, dynamic> apiParams = {};
 
-    final Map<String, String> apiHeaders = {'content-type': 'application/json'};
+    final Map<String, String> apiHeaders = {
+      'content-type': 'application/json',
+    };
 
-    final res = await client.call(
-      HttpMethod.delete,
-      path: apiPath,
-      params: apiParams,
-      headers: apiHeaders,
-    );
+    final res = await client.call(HttpMethod.delete,
+        path: apiPath, params: apiParams, headers: apiHeaders);
 
     return res.data;
   }
@@ -1208,11 +1052,8 @@ class Account extends Service {
   /// about session
   /// limits](https://appwrite.io/docs/authentication-security#limits).
   ///
-  Future<models.Token> createEmailToken({
-    required String userId,
-    required String email,
-    bool? phrase,
-  }) async {
+  Future<models.Token> createEmailToken(
+      {required String userId, required String email, bool? phrase}) async {
     const String apiPath = '/account/tokens/email';
 
     final Map<String, dynamic> apiParams = {
@@ -1221,14 +1062,12 @@ class Account extends Service {
       'phrase': phrase,
     };
 
-    final Map<String, String> apiHeaders = {'content-type': 'application/json'};
+    final Map<String, String> apiHeaders = {
+      'content-type': 'application/json',
+    };
 
-    final res = await client.call(
-      HttpMethod.post,
-      path: apiPath,
-      params: apiParams,
-      headers: apiHeaders,
-    );
+    final res = await client.call(HttpMethod.post,
+        path: apiPath, params: apiParams, headers: apiHeaders);
 
     return models.Token.fromMap(res.data);
   }
@@ -1247,12 +1086,11 @@ class Account extends Service {
   /// about session
   /// limits](https://appwrite.io/docs/authentication-security#limits).
   ///
-  Future<models.Token> createMagicURLToken({
-    required String userId,
-    required String email,
-    String? url,
-    bool? phrase,
-  }) async {
+  Future<models.Token> createMagicURLToken(
+      {required String userId,
+      required String email,
+      String? url,
+      bool? phrase}) async {
     const String apiPath = '/account/tokens/magic-url';
 
     final Map<String, dynamic> apiParams = {
@@ -1262,14 +1100,12 @@ class Account extends Service {
       'phrase': phrase,
     };
 
-    final Map<String, String> apiHeaders = {'content-type': 'application/json'};
+    final Map<String, String> apiHeaders = {
+      'content-type': 'application/json',
+    };
 
-    final res = await client.call(
-      HttpMethod.post,
-      path: apiPath,
-      params: apiParams,
-      headers: apiHeaders,
-    );
+    final res = await client.call(HttpMethod.post,
+        path: apiPath, params: apiParams, headers: apiHeaders);
 
     return models.Token.fromMap(res.data);
   }
@@ -1288,22 +1124,18 @@ class Account extends Service {
   /// A user is limited to 10 active sessions at a time by default. [Learn more
   /// about session
   /// limits](https://appwrite.io/docs/authentication-security#limits).
-  Future createOAuth2Token({
-    required enums.OAuthProvider provider,
-    String? success,
-    String? failure,
-    List<String>? scopes,
-  }) async {
-    final String apiPath = '/account/tokens/oauth2/{provider}'.replaceAll(
-      '{provider}',
-      provider.value,
-    );
+  Future createOAuth2Token(
+      {required enums.OAuthProvider provider,
+      String? success,
+      String? failure,
+      List<String>? scopes}) async {
+    final String apiPath = '/account/tokens/oauth2/{provider}'
+        .replaceAll('{provider}', provider.value);
 
     final Map<String, dynamic> params = {
       'success': success,
       'failure': failure,
       'scopes': scopes,
-
       'project': client.config['project'],
     };
 
@@ -1313,22 +1145,20 @@ class Account extends Service {
       if (value is List) {
         for (var item in value) {
           query.add(
-            Uri.encodeComponent(key + '[]') + '=' + Uri.encodeComponent(item),
-          );
+              '${Uri.encodeComponent('$key[]')}=${Uri.encodeComponent(item)}');
         }
       } else if (value != null) {
-        query.add(Uri.encodeComponent(key) + '=' + Uri.encodeComponent(value));
+        query.add('${Uri.encodeComponent(key)}=${Uri.encodeComponent(value)}');
       }
     });
 
     Uri endpoint = Uri.parse(client.endPoint);
     Uri url = Uri(
-      scheme: endpoint.scheme,
-      host: endpoint.host,
-      port: endpoint.port,
-      path: endpoint.path + apiPath,
-      query: query.join('&'),
-    );
+        scheme: endpoint.scheme,
+        host: endpoint.host,
+        port: endpoint.port,
+        path: endpoint.path + apiPath,
+        query: query.join('&'));
 
     return client.webAuth(url, callbackUrlScheme: success);
   }
@@ -1343,22 +1173,21 @@ class Account extends Service {
   /// A user is limited to 10 active sessions at a time by default. [Learn more
   /// about session
   /// limits](https://appwrite.io/docs/authentication-security#limits).
-  Future<models.Token> createPhoneToken({
-    required String userId,
-    required String phone,
-  }) async {
+  Future<models.Token> createPhoneToken(
+      {required String userId, required String phone}) async {
     const String apiPath = '/account/tokens/phone';
 
-    final Map<String, dynamic> apiParams = {'userId': userId, 'phone': phone};
+    final Map<String, dynamic> apiParams = {
+      'userId': userId,
+      'phone': phone,
+    };
 
-    final Map<String, String> apiHeaders = {'content-type': 'application/json'};
+    final Map<String, String> apiHeaders = {
+      'content-type': 'application/json',
+    };
 
-    final res = await client.call(
-      HttpMethod.post,
-      path: apiPath,
-      params: apiParams,
-      headers: apiHeaders,
-    );
+    final res = await client.call(HttpMethod.post,
+        path: apiPath, params: apiParams, headers: apiHeaders);
 
     return models.Token.fromMap(res.data);
   }
@@ -1381,16 +1210,16 @@ class Account extends Service {
   Future<models.Token> createEmailVerification({required String url}) async {
     const String apiPath = '/account/verifications/email';
 
-    final Map<String, dynamic> apiParams = {'url': url};
+    final Map<String, dynamic> apiParams = {
+      'url': url,
+    };
 
-    final Map<String, String> apiHeaders = {'content-type': 'application/json'};
+    final Map<String, String> apiHeaders = {
+      'content-type': 'application/json',
+    };
 
-    final res = await client.call(
-      HttpMethod.post,
-      path: apiPath,
-      params: apiParams,
-      headers: apiHeaders,
-    );
+    final res = await client.call(HttpMethod.post,
+        path: apiPath, params: apiParams, headers: apiHeaders);
 
     return models.Token.fromMap(res.data);
   }
@@ -1411,21 +1240,20 @@ class Account extends Service {
   /// adding your platforms in the console interface.
   ///
   @Deprecated(
-    'This API has been deprecated since 1.8.0. Please use `Account.createEmailVerification` instead.',
-  )
+      'This API has been deprecated since 1.8.0. Please use `Account.createEmailVerification` instead.')
   Future<models.Token> createVerification({required String url}) async {
     const String apiPath = '/account/verifications/email';
 
-    final Map<String, dynamic> apiParams = {'url': url};
+    final Map<String, dynamic> apiParams = {
+      'url': url,
+    };
 
-    final Map<String, String> apiHeaders = {'content-type': 'application/json'};
+    final Map<String, String> apiHeaders = {
+      'content-type': 'application/json',
+    };
 
-    final res = await client.call(
-      HttpMethod.post,
-      path: apiPath,
-      params: apiParams,
-      headers: apiHeaders,
-    );
+    final res = await client.call(HttpMethod.post,
+        path: apiPath, params: apiParams, headers: apiHeaders);
 
     return models.Token.fromMap(res.data);
   }
@@ -1434,22 +1262,21 @@ class Account extends Service {
   /// the **userId** and **secret** parameters that were attached to your app URL
   /// to verify the user email ownership. If confirmed this route will return a
   /// 200 status code.
-  Future<models.Token> updateEmailVerification({
-    required String userId,
-    required String secret,
-  }) async {
+  Future<models.Token> updateEmailVerification(
+      {required String userId, required String secret}) async {
     const String apiPath = '/account/verifications/email';
 
-    final Map<String, dynamic> apiParams = {'userId': userId, 'secret': secret};
+    final Map<String, dynamic> apiParams = {
+      'userId': userId,
+      'secret': secret,
+    };
 
-    final Map<String, String> apiHeaders = {'content-type': 'application/json'};
+    final Map<String, String> apiHeaders = {
+      'content-type': 'application/json',
+    };
 
-    final res = await client.call(
-      HttpMethod.put,
-      path: apiPath,
-      params: apiParams,
-      headers: apiHeaders,
-    );
+    final res = await client.call(HttpMethod.put,
+        path: apiPath, params: apiParams, headers: apiHeaders);
 
     return models.Token.fromMap(res.data);
   }
@@ -1459,24 +1286,22 @@ class Account extends Service {
   /// to verify the user email ownership. If confirmed this route will return a
   /// 200 status code.
   @Deprecated(
-    'This API has been deprecated since 1.8.0. Please use `Account.updateEmailVerification` instead.',
-  )
-  Future<models.Token> updateVerification({
-    required String userId,
-    required String secret,
-  }) async {
+      'This API has been deprecated since 1.8.0. Please use `Account.updateEmailVerification` instead.')
+  Future<models.Token> updateVerification(
+      {required String userId, required String secret}) async {
     const String apiPath = '/account/verifications/email';
 
-    final Map<String, dynamic> apiParams = {'userId': userId, 'secret': secret};
+    final Map<String, dynamic> apiParams = {
+      'userId': userId,
+      'secret': secret,
+    };
 
-    final Map<String, String> apiHeaders = {'content-type': 'application/json'};
+    final Map<String, String> apiHeaders = {
+      'content-type': 'application/json',
+    };
 
-    final res = await client.call(
-      HttpMethod.put,
-      path: apiPath,
-      params: apiParams,
-      headers: apiHeaders,
-    );
+    final res = await client.call(HttpMethod.put,
+        path: apiPath, params: apiParams, headers: apiHeaders);
 
     return models.Token.fromMap(res.data);
   }
@@ -1494,14 +1319,12 @@ class Account extends Service {
 
     final Map<String, dynamic> apiParams = {};
 
-    final Map<String, String> apiHeaders = {'content-type': 'application/json'};
+    final Map<String, String> apiHeaders = {
+      'content-type': 'application/json',
+    };
 
-    final res = await client.call(
-      HttpMethod.post,
-      path: apiPath,
-      params: apiParams,
-      headers: apiHeaders,
-    );
+    final res = await client.call(HttpMethod.post,
+        path: apiPath, params: apiParams, headers: apiHeaders);
 
     return models.Token.fromMap(res.data);
   }
@@ -1510,22 +1333,21 @@ class Account extends Service {
   /// **userId** and **secret** that were sent to your user's phone number to
   /// verify the user email ownership. If confirmed this route will return a 200
   /// status code.
-  Future<models.Token> updatePhoneVerification({
-    required String userId,
-    required String secret,
-  }) async {
+  Future<models.Token> updatePhoneVerification(
+      {required String userId, required String secret}) async {
     const String apiPath = '/account/verifications/phone';
 
-    final Map<String, dynamic> apiParams = {'userId': userId, 'secret': secret};
+    final Map<String, dynamic> apiParams = {
+      'userId': userId,
+      'secret': secret,
+    };
 
-    final Map<String, String> apiHeaders = {'content-type': 'application/json'};
+    final Map<String, String> apiHeaders = {
+      'content-type': 'application/json',
+    };
 
-    final res = await client.call(
-      HttpMethod.put,
-      path: apiPath,
-      params: apiParams,
-      headers: apiHeaders,
-    );
+    final res = await client.call(HttpMethod.put,
+        path: apiPath, params: apiParams, headers: apiHeaders);
 
     return models.Token.fromMap(res.data);
   }

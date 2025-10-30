@@ -8,17 +8,20 @@ class TransactionList implements Model {
   /// List of transactions.
   final List<Transaction> transactions;
 
-  TransactionList({required this.total, required this.transactions});
+  TransactionList({
+    required this.total,
+    required this.transactions,
+  });
 
   factory TransactionList.fromMap(Map<String, dynamic> map) {
     return TransactionList(
       total: map['total'],
       transactions: List<Transaction>.from(
-        map['transactions'].map((p) => Transaction.fromMap(p)),
-      ),
+          map['transactions'].map((p) => Transaction.fromMap(p))),
     );
   }
 
+  @override
   Map<String, dynamic> toMap() {
     return {
       "total": total,
