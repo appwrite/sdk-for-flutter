@@ -21,7 +21,7 @@ mixin RealtimeMixin {
   late WebSocketFactory getWebSocket;
   GetFallbackCookie? getFallbackCookie;
   int? get closeCode => _websok?.closeCode;
-  Map<int, RealtimeSubscription> _subscriptions = {};
+  final Map<int, RealtimeSubscription> _subscriptions = {};
   bool _reconnect = true;
   int _retries = 0;
   StreamSubscription? _websocketSubscription;
@@ -41,7 +41,9 @@ mixin RealtimeMixin {
     _stopHeartbeat();
     _heartbeatTimer = Timer.periodic(Duration(seconds: 20), (_) {
       if (_websok != null) {
-        _websok!.sink.add(jsonEncode({"type": "ping"}));
+        _websok!.sink.add(jsonEncode({
+          "type": "ping"
+        }));
       }
     });
   }
@@ -51,8 +53,8 @@ mixin RealtimeMixin {
     _heartbeatTimer = null;
   }
 
-  _createSocket() async {
-    if (_creatingSocket || _channels.isEmpty) return;
+  Future<void> _createSocket() async {
+    if(_creatingSocket || _channels.isEmpty) return;
     _creatingSocket = true;
     final uri = _prepareUri();
     try {
@@ -70,57 +72,53 @@ mixin RealtimeMixin {
       }
       debugPrint('subscription: $_lastUrl');
       _retries = 0;
-      _websocketSubscription = _websok?.stream.listen(
-        (response) {
-          final data = RealtimeResponse.fromJson(response);
-          switch (data.type) {
-            case 'error':
-              handleError(data);
-              break;
-            case 'connected':
-              // channels, user?
-              final message = RealtimeResponseConnected.fromMap(data.data);
-              if (message.user.isEmpty) {
-                // send fallback cookie if exists
-                final cookie = getFallbackCookie?.call();
-                if (cookie != null) {
-                  _websok?.sink.add(
-                    jsonEncode({
-                      "type": "authentication",
-                      "data": {"session": cookie},
-                    }),
-                  );
+      _websocketSubscription = _websok?.stream.listen((response) {
+        final data = RealtimeResponse.fromJson(response);
+        switch (data.type) {
+          case 'error':
+            handleError(data);
+            break;
+          case 'connected':
+            // channels, user?
+            final message = RealtimeResponseConnected.fromMap(data.data);
+            if (message.user.isEmpty) {
+              // send fallback cookie if exists
+              final cookie = getFallbackCookie?.call();
+              if (cookie != null) {
+                _websok?.sink.add(jsonEncode({
+                  "type": "authentication",
+                  "data": {
+                    "session": cookie,
+                  },
+                }));
+              }
+            }
+            _startHeartbeat(); // Start heartbeat after successful connection
+            break;
+          case 'pong':
+            debugPrint('Received heartbeat response from realtime server');
+            break;
+          case 'event':
+            final message = RealtimeMessage.fromMap(data.data);
+            for (var subscription in _subscriptions.values) {
+              for (var channel in message.channels) {
+                if (subscription.channels.contains(channel)) {
+                  subscription.controller.add(message);
                 }
               }
-              _startHeartbeat(); // Start heartbeat after successful connection
-              break;
-            case 'pong':
-              debugPrint('Received heartbeat response from realtime server');
-              break;
-            case 'event':
-              final message = RealtimeMessage.fromMap(data.data);
-              for (var subscription in _subscriptions.values) {
-                for (var channel in message.channels) {
-                  if (subscription.channels.contains(channel)) {
-                    subscription.controller.add(message);
-                  }
-                }
-              }
-              break;
-          }
-        },
-        onDone: () {
-          _stopHeartbeat();
-          _retry();
-        },
-        onError: (err, stack) {
-          _stopHeartbeat();
-          for (var subscription in _subscriptions.values) {
-            subscription.controller.addError(err, stack);
-          }
-          _retry();
-        },
-      );
+            }
+            break;
+        }
+      }, onDone: () {
+        _stopHeartbeat();
+        _retry();
+      }, onError: (err, stack) {
+        _stopHeartbeat();
+        for (var subscription in _subscriptions.values) {
+          subscription.controller.addError(err, stack);
+        }
+        _retry();
+      });
     } catch (e) {
       if (e is AppwriteException) {
         rethrow;
@@ -146,17 +144,16 @@ mixin RealtimeMixin {
     return _retries < 5
         ? 1
         : _retries < 15
-        ? 5
-        : _retries < 100
-        ? 10
-        : 60;
+            ? 5
+            : _retries < 100
+                ? 10
+                : 60;
   }
 
   Uri _prepareUri() {
     if (client.endPointRealtime == null) {
       throw AppwriteException(
-        "Please set endPointRealtime to connect to realtime server",
-      );
+          "Please set endPointRealtime to connect to realtime server");
     }
     var uri = Uri.parse(client.endPointRealtime!);
     return Uri(
@@ -167,7 +164,7 @@ mixin RealtimeMixin {
         "project": client.config['project'],
         "channels[]": _channels.toList(),
       },
-      path: uri.path + "/realtime",
+      path: "${uri.path}/realtime",
     );
   }
 
@@ -177,29 +174,27 @@ mixin RealtimeMixin {
     Future.delayed(Duration.zero, () => _createSocket());
     int id = DateTime.now().microsecondsSinceEpoch;
     RealtimeSubscription subscription = RealtimeSubscription(
-      controller: controller,
-      channels: channels,
-      close: () async {
-        _subscriptions.remove(id);
-        controller.close();
-        _cleanup(channels);
+        controller: controller,
+        channels: channels,
+        close: () async {
+          _subscriptions.remove(id);
+          controller.close();
+          _cleanup(channels);
 
-        if (_channels.isNotEmpty) {
-          await Future.delayed(Duration.zero, () => _createSocket());
-        } else {
-          await _closeConnection();
-        }
-      },
-    );
+          if (_channels.isNotEmpty) {
+            await Future.delayed(Duration.zero, () => _createSocket());
+          } else {
+            await _closeConnection();
+          }
+        });
     _subscriptions[id] = subscription;
     return subscription;
   }
 
   void _cleanup(List<String> channels) {
     for (var channel in channels) {
-      bool found = _subscriptions.values.any(
-        (subscription) => subscription.channels.contains(channel),
-      );
+      bool found = _subscriptions.values
+          .any((subscription) => subscription.channels.contains(channel));
       if (!found) {
         _channels.remove(channel);
       }
