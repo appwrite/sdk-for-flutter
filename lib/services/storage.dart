@@ -8,13 +8,17 @@ class Storage extends Service {
   /// Get a list of all the user files. You can use the query params to filter
   /// your results.
   Future<models.FileList> listFiles(
-      {required String bucketId, List<String>? queries, String? search}) async {
+      {required String bucketId,
+      List<String>? queries,
+      String? search,
+      bool? total}) async {
     final String apiPath =
         '/storage/buckets/{bucketId}/files'.replaceAll('{bucketId}', bucketId);
 
     final Map<String, dynamic> apiParams = {
       'queries': queries,
       'search': search,
+      'total': total,
     };
 
     final Map<String, String> apiHeaders = {};

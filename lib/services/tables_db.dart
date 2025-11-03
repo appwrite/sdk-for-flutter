@@ -119,7 +119,8 @@ class TablesDB extends Service {
       {required String databaseId,
       required String tableId,
       List<String>? queries,
-      String? transactionId}) async {
+      String? transactionId,
+      bool? total}) async {
     final String apiPath = '/tablesdb/{databaseId}/tables/{tableId}/rows'
         .replaceAll('{databaseId}', databaseId)
         .replaceAll('{tableId}', tableId);
@@ -127,6 +128,7 @@ class TablesDB extends Service {
     final Map<String, dynamic> apiParams = {
       'queries': queries,
       'transactionId': transactionId,
+      'total': total,
     };
 
     final Map<String, String> apiHeaders = {};

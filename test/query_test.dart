@@ -274,43 +274,43 @@ void main() {
 
   test('returns createdBefore', () {
     final query = jsonDecode(Query.createdBefore('2023-01-01'));
-    expect(query['attribute'], null);
+    expect(query['attribute'], '\$createdAt');
     expect(query['values'], ['2023-01-01']);
-    expect(query['method'], 'createdBefore');
+    expect(query['method'], 'lessThan');
   });
 
   test('returns createdAfter', () {
     final query = jsonDecode(Query.createdAfter('2023-01-01'));
-    expect(query['attribute'], null);
+    expect(query['attribute'], '\$createdAt');
     expect(query['values'], ['2023-01-01']);
-    expect(query['method'], 'createdAfter');
+    expect(query['method'], 'greaterThan');
   });
 
   test('returns createdBetween', () {
     final query = jsonDecode(Query.createdBetween('2023-01-01', '2023-12-31'));
-    expect(query['attribute'], null);
+    expect(query['attribute'], '\$createdAt');
     expect(query['values'], ['2023-01-01', '2023-12-31']);
-    expect(query['method'], 'createdBetween');
+    expect(query['method'], 'between');
   });
 
   test('returns updatedBefore', () {
     final query = jsonDecode(Query.updatedBefore('2023-01-01'));
-    expect(query['attribute'], null);
+    expect(query['attribute'], '\$updatedAt');
     expect(query['values'], ['2023-01-01']);
-    expect(query['method'], 'updatedBefore');
+    expect(query['method'], 'lessThan');
   });
 
   test('returns updatedAfter', () {
     final query = jsonDecode(Query.updatedAfter('2023-01-01'));
-    expect(query['attribute'], null);
+    expect(query['attribute'], '\$updatedAt');
     expect(query['values'], ['2023-01-01']);
-    expect(query['method'], 'updatedAfter');
+    expect(query['method'], 'greaterThan');
   });
 
   test('returns updatedBetween', () {
     final query = jsonDecode(Query.updatedBetween('2023-01-01', '2023-12-31'));
-    expect(query['attribute'], null);
+    expect(query['attribute'], '\$updatedAt');
     expect(query['values'], ['2023-01-01', '2023-12-31']);
-    expect(query['method'], 'updatedBetween');
+    expect(query['method'], 'between');
   });
 }

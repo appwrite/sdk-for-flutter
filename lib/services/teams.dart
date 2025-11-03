@@ -8,12 +8,14 @@ class Teams extends Service {
 
   /// Get a list of all the teams in which the current user is a member. You can
   /// use the parameters to filter your results.
-  Future<models.TeamList> list({List<String>? queries, String? search}) async {
+  Future<models.TeamList> list(
+      {List<String>? queries, String? search, bool? total}) async {
     const String apiPath = '/teams';
 
     final Map<String, dynamic> apiParams = {
       'queries': queries,
       'search': search,
+      'total': total,
     };
 
     final Map<String, String> apiHeaders = {};
@@ -103,13 +105,17 @@ class Teams extends Service {
   /// members have read access to this endpoint. Hide sensitive attributes from
   /// the response by toggling membership privacy in the Console.
   Future<models.MembershipList> listMemberships(
-      {required String teamId, List<String>? queries, String? search}) async {
+      {required String teamId,
+      List<String>? queries,
+      String? search,
+      bool? total}) async {
     final String apiPath =
         '/teams/{teamId}/memberships'.replaceAll('{teamId}', teamId);
 
     final Map<String, dynamic> apiParams = {
       'queries': queries,
       'search': search,
+      'total': total,
     };
 
     final Map<String, String> apiHeaders = {};

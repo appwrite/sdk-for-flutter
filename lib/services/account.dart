@@ -78,11 +78,13 @@ class Account extends Service {
   }
 
   /// Get the list of identities for the currently logged in user.
-  Future<models.IdentityList> listIdentities({List<String>? queries}) async {
+  Future<models.IdentityList> listIdentities(
+      {List<String>? queries, bool? total}) async {
     const String apiPath = '/account/identities';
 
     final Map<String, dynamic> apiParams = {
       'queries': queries,
+      'total': total,
     };
 
     final Map<String, String> apiHeaders = {};
@@ -132,11 +134,12 @@ class Account extends Service {
 
   /// Get the list of latest security activity logs for the currently logged in
   /// user. Each log returns user IP address, location and date and time of log.
-  Future<models.LogList> listLogs({List<String>? queries}) async {
+  Future<models.LogList> listLogs({List<String>? queries, bool? total}) async {
     const String apiPath = '/account/logs';
 
     final Map<String, dynamic> apiParams = {
       'queries': queries,
+      'total': total,
     };
 
     final Map<String, String> apiHeaders = {};

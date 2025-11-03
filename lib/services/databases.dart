@@ -123,7 +123,8 @@ class Databases extends Service {
       {required String databaseId,
       required String collectionId,
       List<String>? queries,
-      String? transactionId}) async {
+      String? transactionId,
+      bool? total}) async {
     final String apiPath =
         '/databases/{databaseId}/collections/{collectionId}/documents'
             .replaceAll('{databaseId}', databaseId)
@@ -132,6 +133,7 @@ class Databases extends Service {
     final Map<String, dynamic> apiParams = {
       'queries': queries,
       'transactionId': transactionId,
+      'total': total,
     };
 
     final Map<String, String> apiHeaders = {};

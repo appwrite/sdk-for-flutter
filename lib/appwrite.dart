@@ -30,6 +30,7 @@ part 'query.dart';
 part 'permission.dart';
 part 'role.dart';
 part 'id.dart';
+part 'operator.dart';
 part 'services/account.dart';
 part 'services/avatars.dart';
 part 'services/databases.dart';

@@ -9,12 +9,13 @@ class Functions extends Service {
   /// Get a list of all the current user function execution logs. You can use the
   /// query params to filter your results.
   Future<models.ExecutionList> listExecutions(
-      {required String functionId, List<String>? queries}) async {
+      {required String functionId, List<String>? queries, bool? total}) async {
     final String apiPath = '/functions/{functionId}/executions'
         .replaceAll('{functionId}', functionId);
 
     final Map<String, dynamic> apiParams = {
       'queries': queries,
+      'total': total,
     };
 
     final Map<String, String> apiHeaders = {};
