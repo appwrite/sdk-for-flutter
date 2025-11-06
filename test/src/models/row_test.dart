@@ -27,7 +27,8 @@ void main() {
       expect(result.$permissions, []);
     });
 
-    // Test for the specific bug reported in issue #281
+    // Test for the specific bug
+    //reported in issue #281
     test('fromMap should handle columns named data without type errors', () {
       final map = {
         '\$id': 'row123',

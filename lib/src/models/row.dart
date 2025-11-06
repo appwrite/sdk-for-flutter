@@ -45,6 +45,7 @@ class Row implements Model {
       $createdAt: map['\$createdAt'].toString(),
       $updatedAt: map['\$updatedAt'].toString(),
       $permissions: List.from(map['\$permissions'] ?? []),
+      // Assign the entire map to data
       data: map,
     );
   }
