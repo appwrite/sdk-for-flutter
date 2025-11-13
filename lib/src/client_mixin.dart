@@ -12,7 +12,6 @@ mixin ClientMixin {
     required Map<String, String> headers,
     required Map<String, dynamic> params,
   }) {
-
     http.BaseRequest request = http.Request(method.name(), uri);
     if (headers['content-type'] == 'multipart/form-data') {
       request = http.MultipartRequest(method.name(), uri);
@@ -126,9 +125,13 @@ mixin ClientMixin {
     http.StreamedResponse streamedResponse,
   ) async {
     if (streamedResponse.statusCode == 204) {
-      return http.Response('',
+      return http.Response(
+        '',
         streamedResponse.statusCode,
-        headers: streamedResponse.headers.map((k,v) => k.toLowerCase()=='content-type' ? MapEntry(k, 'text/plain') : MapEntry(k,v)),
+        headers: streamedResponse.headers.map((k, v) =>
+            k.toLowerCase() == 'content-type'
+                ? MapEntry(k, 'text/plain')
+                : MapEntry(k, v)),
         request: streamedResponse.request,
         isRedirect: streamedResponse.isRedirect,
         persistentConnection: streamedResponse.persistentConnection,
