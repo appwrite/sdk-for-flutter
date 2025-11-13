@@ -1,6 +1,6 @@
 part of '../../enums.dart';
 
-enum ImageFormat {
+enum Output {
     jpg(value: 'jpg'),
     jpeg(value: 'jpeg'),
     png(value: 'png'),
@@ -9,7 +9,7 @@ enum ImageFormat {
     avif(value: 'avif'),
     gif(value: 'gif');
 
-    const ImageFormat({
+    const Output({
         required this.value
     });
 

@@ -1,9 +1,10 @@
 part of '../../enums.dart';
 
-enum AuthenticatorType {
-    totp(value: 'totp');
+enum Theme {
+    light(value: 'light'),
+    dark(value: 'dark');
 
-    const AuthenticatorType({
+    const Theme({
         required this.value
     });
 
