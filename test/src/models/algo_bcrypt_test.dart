@@ -11,7 +11,7 @@ void main() {
       final map = model.toMap();
       final result = AlgoBcrypt.fromMap(map);
 
-      expect(result.type, 'bcrypt');
-    });
+            expect(result.type, 'bcrypt');
+          });
   });
 }

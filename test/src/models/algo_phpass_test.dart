@@ -11,7 +11,7 @@ void main() {
       final map = model.toMap();
       final result = AlgoPhpass.fromMap(map);
 
-      expect(result.type, 'phpass');
-    });
+            expect(result.type, 'phpass');
+          });
   });
 }
