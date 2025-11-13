@@ -13,9 +13,9 @@ class Teams extends Service {
     const String apiPath = '/teams';
 
     final Map<String, dynamic> apiParams = {
-      'queries': queries,
-      'search': search,
-      'total': total,
+      if (queries != null) 'queries': queries,
+      if (search != null) 'search': search,
+      if (total != null) 'total': total,
     };
 
     final Map<String, String> apiHeaders = {};
@@ -38,7 +38,7 @@ class Teams extends Service {
     final Map<String, dynamic> apiParams = {
       'teamId': teamId,
       'name': name,
-      'roles': roles,
+      if (roles != null) 'roles': roles,
     };
 
     final Map<String, String> apiHeaders = {
@@ -113,9 +113,9 @@ class Teams extends Service {
         '/teams/{teamId}/memberships'.replaceAll('{teamId}', teamId);
 
     final Map<String, dynamic> apiParams = {
-      'queries': queries,
-      'search': search,
-      'total': total,
+      if (queries != null) 'queries': queries,
+      if (search != null) 'search': search,
+      if (total != null) 'total': total,
     };
 
     final Map<String, String> apiHeaders = {};
@@ -159,12 +159,12 @@ class Teams extends Service {
         '/teams/{teamId}/memberships'.replaceAll('{teamId}', teamId);
 
     final Map<String, dynamic> apiParams = {
-      'email': email,
-      'userId': userId,
-      'phone': phone,
+      if (email != null) 'email': email,
+      if (userId != null) 'userId': userId,
+      if (phone != null) 'phone': phone,
       'roles': roles,
-      'url': url,
-      'name': name,
+      if (url != null) 'url': url,
+      if (name != null) 'name': name,
     };
 
     final Map<String, String> apiHeaders = {

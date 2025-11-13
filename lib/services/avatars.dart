@@ -25,9 +25,9 @@ class Avatars extends Service {
         '/avatars/browsers/{code}'.replaceAll('{code}', code.value);
 
     final Map<String, dynamic> params = {
-      'width': width,
-      'height': height,
-      'quality': quality,
+      if (width != null) 'width': width,
+      if (height != null) 'height': height,
+      if (quality != null) 'quality': quality,
       'project': client.config['project'],
     };
 
@@ -54,9 +54,9 @@ class Avatars extends Service {
         '/avatars/credit-cards/{code}'.replaceAll('{code}', code.value);
 
     final Map<String, dynamic> params = {
-      'width': width,
-      'height': height,
-      'quality': quality,
+      if (width != null) 'width': width,
+      if (height != null) 'height': height,
+      if (quality != null) 'quality': quality,
       'project': client.config['project'],
     };
 
@@ -98,9 +98,9 @@ class Avatars extends Service {
         '/avatars/flags/{code}'.replaceAll('{code}', code.value);
 
     final Map<String, dynamic> params = {
-      'width': width,
-      'height': height,
-      'quality': quality,
+      if (width != null) 'width': width,
+      if (height != null) 'height': height,
+      if (quality != null) 'quality': quality,
       'project': client.config['project'],
     };
 
@@ -126,8 +126,8 @@ class Avatars extends Service {
 
     final Map<String, dynamic> params = {
       'url': url,
-      'width': width,
-      'height': height,
+      if (width != null) 'width': width,
+      if (height != null) 'height': height,
       'project': client.config['project'],
     };
 
@@ -157,10 +157,10 @@ class Avatars extends Service {
     const String apiPath = '/avatars/initials';
 
     final Map<String, dynamic> params = {
-      'name': name,
-      'width': width,
-      'height': height,
-      'background': background,
+      if (name != null) 'name': name,
+      if (width != null) 'width': width,
+      if (height != null) 'height': height,
+      if (background != null) 'background': background,
       'project': client.config['project'],
     };
 
@@ -178,9 +178,71 @@ class Avatars extends Service {
 
     final Map<String, dynamic> params = {
       'text': text,
-      'size': size,
-      'margin': margin,
-      'download': download,
+      if (size != null) 'size': size,
+      if (margin != null) 'margin': margin,
+      if (download != null) 'download': download,
+      'project': client.config['project'],
+    };
+
+    final res = await client.call(HttpMethod.get,
+        path: apiPath, params: params, responseType: ResponseType.bytes);
+    return res.data;
+  }
+
+  /// Use this endpoint to capture a screenshot of any website URL. This endpoint
+  /// uses a headless browser to render the webpage and capture it as an image.
+  ///
+  /// You can configure the browser viewport size, theme, user agent,
+  /// geolocation, permissions, and more. Capture either just the viewport or the
+  /// full page scroll.
+  ///
+  /// When width and height are specified, the image is resized accordingly. If
+  /// both dimensions are 0, the API provides an image at original size. If
+  /// dimensions are not specified, the default viewport size is 1280x720px.
+  Future<Uint8List> getScreenshot(
+      {required String url,
+      Map? headers,
+      int? viewportWidth,
+      int? viewportHeight,
+      double? scale,
+      enums.Theme? theme,
+      String? userAgent,
+      bool? fullpage,
+      String? locale,
+      enums.Timezone? timezone,
+      double? latitude,
+      double? longitude,
+      double? accuracy,
+      bool? touch,
+      List<String>? permissions,
+      int? sleep,
+      int? width,
+      int? height,
+      int? quality,
+      enums.Output? output}) async {
+    const String apiPath = '/avatars/screenshots';
+
+    final Map<String, dynamic> params = {
+      'url': url,
+      if (headers != null) 'headers': headers,
+      if (viewportWidth != null) 'viewportWidth': viewportWidth,
+      if (viewportHeight != null) 'viewportHeight': viewportHeight,
+      if (scale != null) 'scale': scale,
+      if (theme != null) 'theme': theme!.value,
+      if (userAgent != null) 'userAgent': userAgent,
+      if (fullpage != null) 'fullpage': fullpage,
+      if (locale != null) 'locale': locale,
+      if (timezone != null) 'timezone': timezone!.value,
+      if (latitude != null) 'latitude': latitude,
+      if (longitude != null) 'longitude': longitude,
+      if (accuracy != null) 'accuracy': accuracy,
+      if (touch != null) 'touch': touch,
+      if (permissions != null) 'permissions': permissions,
+      if (sleep != null) 'sleep': sleep,
+      if (width != null) 'width': width,
+      if (height != null) 'height': height,
+      if (quality != null) 'quality': quality,
+      if (output != null) 'output': output!.value,
       'project': client.config['project'],
     };
 

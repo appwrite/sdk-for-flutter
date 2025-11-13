@@ -16,9 +16,9 @@ class Storage extends Service {
         '/storage/buckets/{bucketId}/files'.replaceAll('{bucketId}', bucketId);
 
     final Map<String, dynamic> apiParams = {
-      'queries': queries,
-      'search': search,
-      'total': total,
+      if (queries != null) 'queries': queries,
+      if (search != null) 'search': search,
+      if (total != null) 'total': total,
     };
 
     final Map<String, String> apiHeaders = {};
@@ -59,7 +59,7 @@ class Storage extends Service {
     final Map<String, dynamic> apiParams = {
       'fileId': fileId,
       'file': file,
-      'permissions': permissions,
+      if (permissions != null) 'permissions': permissions,
     };
 
     final Map<String, String> apiHeaders = {
@@ -111,8 +111,8 @@ class Storage extends Service {
         .replaceAll('{fileId}', fileId);
 
     final Map<String, dynamic> apiParams = {
-      'name': name,
-      'permissions': permissions,
+      if (name != null) 'name': name,
+      if (permissions != null) 'permissions': permissions,
     };
 
     final Map<String, String> apiHeaders = {
@@ -154,7 +154,7 @@ class Storage extends Service {
         .replaceAll('{fileId}', fileId);
 
     final Map<String, dynamic> params = {
-      'token': token,
+      if (token != null) 'token': token,
       'project': client.config['project'],
     };
 
@@ -188,18 +188,18 @@ class Storage extends Service {
         .replaceAll('{fileId}', fileId);
 
     final Map<String, dynamic> params = {
-      'width': width,
-      'height': height,
-      'gravity': gravity?.value,
-      'quality': quality,
-      'borderWidth': borderWidth,
-      'borderColor': borderColor,
-      'borderRadius': borderRadius,
-      'opacity': opacity,
-      'rotation': rotation,
-      'background': background,
-      'output': output?.value,
-      'token': token,
+      if (width != null) 'width': width,
+      if (height != null) 'height': height,
+      if (gravity != null) 'gravity': gravity!.value,
+      if (quality != null) 'quality': quality,
+      if (borderWidth != null) 'borderWidth': borderWidth,
+      if (borderColor != null) 'borderColor': borderColor,
+      if (borderRadius != null) 'borderRadius': borderRadius,
+      if (opacity != null) 'opacity': opacity,
+      if (rotation != null) 'rotation': rotation,
+      if (background != null) 'background': background,
+      if (output != null) 'output': output!.value,
+      if (token != null) 'token': token,
       'project': client.config['project'],
     };
 
@@ -218,7 +218,7 @@ class Storage extends Service {
         .replaceAll('{fileId}', fileId);
 
     final Map<String, dynamic> params = {
-      'token': token,
+      if (token != null) 'token': token,
       'project': client.config['project'],
     };
 

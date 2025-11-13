@@ -145,5 +145,18 @@ void main() {
       );
       expect(response, isA<Uint8List>());
     });
+
+    test('test method getScreenshot()', () async {
+      final Uint8List data = Uint8List.fromList([]);
+
+      when(client.call(
+        HttpMethod.get,
+      )).thenAnswer((_) async => Response(data: data));
+
+      final response = await avatars.getScreenshot(
+        url: 'https://example.com',
+      );
+      expect(response, isA<Uint8List>());
+    });
   });
 }

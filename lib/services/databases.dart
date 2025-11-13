@@ -12,7 +12,7 @@ class Databases extends Service {
     const String apiPath = '/databases/transactions';
 
     final Map<String, dynamic> apiParams = {
-      'queries': queries,
+      if (queries != null) 'queries': queries,
     };
 
     final Map<String, String> apiHeaders = {};
@@ -28,7 +28,7 @@ class Databases extends Service {
     const String apiPath = '/databases/transactions';
 
     final Map<String, dynamic> apiParams = {
-      'ttl': ttl,
+      if (ttl != null) 'ttl': ttl,
     };
 
     final Map<String, String> apiHeaders = {
@@ -64,8 +64,8 @@ class Databases extends Service {
         .replaceAll('{transactionId}', transactionId);
 
     final Map<String, dynamic> apiParams = {
-      'commit': commit,
-      'rollback': rollback,
+      if (commit != null) 'commit': commit,
+      if (rollback != null) 'rollback': rollback,
     };
 
     final Map<String, String> apiHeaders = {
@@ -102,7 +102,7 @@ class Databases extends Service {
         .replaceAll('{transactionId}', transactionId);
 
     final Map<String, dynamic> apiParams = {
-      'operations': operations,
+      if (operations != null) 'operations': operations,
     };
 
     final Map<String, String> apiHeaders = {
@@ -131,9 +131,9 @@ class Databases extends Service {
             .replaceAll('{collectionId}', collectionId);
 
     final Map<String, dynamic> apiParams = {
-      'queries': queries,
-      'transactionId': transactionId,
-      'total': total,
+      if (queries != null) 'queries': queries,
+      if (transactionId != null) 'transactionId': transactionId,
+      if (total != null) 'total': total,
     };
 
     final Map<String, String> apiHeaders = {};
@@ -165,8 +165,8 @@ class Databases extends Service {
     final Map<String, dynamic> apiParams = {
       'documentId': documentId,
       'data': data,
-      'permissions': permissions,
-      'transactionId': transactionId,
+      if (permissions != null) 'permissions': permissions,
+      if (transactionId != null) 'transactionId': transactionId,
     };
 
     final Map<String, String> apiHeaders = {
@@ -196,8 +196,8 @@ class Databases extends Service {
             .replaceAll('{documentId}', documentId);
 
     final Map<String, dynamic> apiParams = {
-      'queries': queries,
-      'transactionId': transactionId,
+      if (queries != null) 'queries': queries,
+      if (transactionId != null) 'transactionId': transactionId,
     };
 
     final Map<String, String> apiHeaders = {};
@@ -229,8 +229,8 @@ class Databases extends Service {
 
     final Map<String, dynamic> apiParams = {
       'data': data,
-      'permissions': permissions,
-      'transactionId': transactionId,
+      if (permissions != null) 'permissions': permissions,
+      if (transactionId != null) 'transactionId': transactionId,
     };
 
     final Map<String, String> apiHeaders = {
@@ -261,9 +261,9 @@ class Databases extends Service {
             .replaceAll('{documentId}', documentId);
 
     final Map<String, dynamic> apiParams = {
-      'data': data,
-      'permissions': permissions,
-      'transactionId': transactionId,
+      if (data != null) 'data': data,
+      if (permissions != null) 'permissions': permissions,
+      if (transactionId != null) 'transactionId': transactionId,
     };
 
     final Map<String, String> apiHeaders = {
@@ -291,7 +291,7 @@ class Databases extends Service {
             .replaceAll('{documentId}', documentId);
 
     final Map<String, dynamic> apiParams = {
-      'transactionId': transactionId,
+      if (transactionId != null) 'transactionId': transactionId,
     };
 
     final Map<String, String> apiHeaders = {
@@ -323,9 +323,9 @@ class Databases extends Service {
             .replaceAll('{attribute}', attribute);
 
     final Map<String, dynamic> apiParams = {
-      'value': value,
-      'min': min,
-      'transactionId': transactionId,
+      if (value != null) 'value': value,
+      if (min != null) 'min': min,
+      if (transactionId != null) 'transactionId': transactionId,
     };
 
     final Map<String, String> apiHeaders = {
@@ -357,9 +357,9 @@ class Databases extends Service {
             .replaceAll('{attribute}', attribute);
 
     final Map<String, dynamic> apiParams = {
-      'value': value,
-      'max': max,
-      'transactionId': transactionId,
+      if (value != null) 'value': value,
+      if (max != null) 'max': max,
+      if (transactionId != null) 'transactionId': transactionId,
     };
 
     final Map<String, String> apiHeaders = {

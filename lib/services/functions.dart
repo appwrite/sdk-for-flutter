@@ -14,8 +14,8 @@ class Functions extends Service {
         .replaceAll('{functionId}', functionId);
 
     final Map<String, dynamic> apiParams = {
-      'queries': queries,
-      'total': total,
+      if (queries != null) 'queries': queries,
+      if (total != null) 'total': total,
     };
 
     final Map<String, String> apiHeaders = {};
@@ -42,12 +42,12 @@ class Functions extends Service {
         .replaceAll('{functionId}', functionId);
 
     final Map<String, dynamic> apiParams = {
-      'body': body,
-      'async': xasync,
-      'path': path,
-      'method': method?.value,
-      'headers': headers,
-      'scheduledAt': scheduledAt,
+      if (body != null) 'body': body,
+      if (xasync != null) 'async': xasync,
+      if (path != null) 'path': path,
+      if (method != null) 'method': method!.value,
+      if (headers != null) 'headers': headers,
+      if (scheduledAt != null) 'scheduledAt': scheduledAt,
     };
 
     final Map<String, String> apiHeaders = {
