@@ -47,7 +47,7 @@ class Functions extends Service {
       if (path != null) 'path': path,
       if (method != null) 'method': method!.value,
       if (headers != null) 'headers': headers,
-      if (scheduledAt != null) 'scheduledAt': scheduledAt,
+      'scheduledAt': scheduledAt,
     };
 
     final Map<String, String> apiHeaders = {

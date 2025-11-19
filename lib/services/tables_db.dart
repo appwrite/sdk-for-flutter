@@ -157,8 +157,8 @@ class TablesDB extends Service {
     final Map<String, dynamic> apiParams = {
       'rowId': rowId,
       'data': data,
-      if (permissions != null) 'permissions': permissions,
-      if (transactionId != null) 'transactionId': transactionId,
+      'permissions': permissions,
+      'transactionId': transactionId,
     };
 
     final Map<String, String> apiHeaders = {
@@ -217,8 +217,8 @@ class TablesDB extends Service {
 
     final Map<String, dynamic> apiParams = {
       if (data != null) 'data': data,
-      if (permissions != null) 'permissions': permissions,
-      if (transactionId != null) 'transactionId': transactionId,
+      'permissions': permissions,
+      'transactionId': transactionId,
     };
 
     final Map<String, String> apiHeaders = {
@@ -248,8 +248,8 @@ class TablesDB extends Service {
 
     final Map<String, dynamic> apiParams = {
       if (data != null) 'data': data,
-      if (permissions != null) 'permissions': permissions,
-      if (transactionId != null) 'transactionId': transactionId,
+      'permissions': permissions,
+      'transactionId': transactionId,
     };
 
     final Map<String, String> apiHeaders = {
@@ -275,7 +275,7 @@ class TablesDB extends Service {
             .replaceAll('{rowId}', rowId);
 
     final Map<String, dynamic> apiParams = {
-      if (transactionId != null) 'transactionId': transactionId,
+      'transactionId': transactionId,
     };
 
     final Map<String, String> apiHeaders = {
@@ -306,8 +306,8 @@ class TablesDB extends Service {
 
     final Map<String, dynamic> apiParams = {
       if (value != null) 'value': value,
-      if (min != null) 'min': min,
-      if (transactionId != null) 'transactionId': transactionId,
+      'min': min,
+      'transactionId': transactionId,
     };
 
     final Map<String, String> apiHeaders = {
@@ -338,8 +338,8 @@ class TablesDB extends Service {
 
     final Map<String, dynamic> apiParams = {
       if (value != null) 'value': value,
-      if (max != null) 'max': max,
-      if (transactionId != null) 'transactionId': transactionId,
+      'max': max,
+      'transactionId': transactionId,
     };
 
     final Map<String, String> apiHeaders = {
