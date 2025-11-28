@@ -1,5 +1,9 @@
 # Change Log
 
+## 20.4.0
+
+* Add `getScreenshot` method to `Avatars` service
+
 ## 20.3.2
 
 * Fix OAuth2 browser infinite redirect issue
