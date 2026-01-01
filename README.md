@@ -160,6 +160,36 @@ User user = await account.create(
 );
 ```
 
+### Uploading Files (InputFile)
+
+You can upload files in Flutter (mobile & web) using the InputFile class. For example:
+
+```dart
+import 'package:appwrite/appwrite.dart';
+import 'package:file_picker/file_picker.dart';
+
+// Pick a file
+FilePickerResult? result = await FilePicker.platform.pickFiles();
+
+if (result != null) {
+  final file = InputFile.fromBytes(
+    bytes: result.files.first.bytes!,
+    filename: result.files.first.name,
+  );
+
+  final storage = Storage(client);
+  final uploadedFile = await storage.createFile(
+    bucketId: 'YOUR_BUCKET_ID',
+    fileId: ID.unique(),
+    file: file,
+  );
+
+  print('File uploaded successfully: ${uploadedFile.$id}');
+}
+```
+Replace 'YOUR_BUCKET_ID' with your Appwrite bucket ID.
+
+
 ### Error Handling
 The Appwrite Flutter SDK raises `AppwriteException` object with `message`, `type`, `code` and `response` properties. You can handle any errors by catching `AppwriteException` and present the `message` to the user or handle it yourself based on the provided error information. Below is an example.
 
