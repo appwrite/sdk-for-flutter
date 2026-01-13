@@ -30,7 +30,7 @@ Uint8List bytes = await avatars.getScreenshot(
     width: 800, // optional
     height: 600, // optional
     quality: 85, // optional
-    output: Output.jpg, // optional
+    output: ImageFormat.jpg, // optional
 )
 
 final file = File('path_to_file/filename.ext');
@@ -61,7 +61,7 @@ FutureBuilder(
     width:800 , // optional
     height:600 , // optional
     quality:85 , // optional
-    output: Output.jpg, // optional
+    output: ImageFormat.jpg, // optional
 ), // Works for both public file and private file, for private files you need to be logged in
     builder: (context, snapshot) {
       return snapshot.hasData && snapshot.data != null
