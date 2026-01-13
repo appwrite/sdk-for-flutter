@@ -111,7 +111,7 @@ class Storage extends Service {
         .replaceAll('{fileId}', fileId);
 
     final Map<String, dynamic> apiParams = {
-      'name': name,
+      if (name != null) 'name': name,
       'permissions': permissions,
     };
 

@@ -46,6 +46,8 @@ mixin ClientMixin {
           if (value != null) {
             if (value is int || value is double) {
               filteredParams[key] = value.toString();
+            } else if (value is bool) {
+              filteredParams[key] = value.toString();
             } else if (value is List) {
               filteredParams["$key[]"] = value;
             } else {

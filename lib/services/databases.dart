@@ -218,7 +218,7 @@ class Databases extends Service {
       {required String databaseId,
       required String collectionId,
       required String documentId,
-      required Map data,
+      Map? data,
       List<String>? permissions,
       String? transactionId}) async {
     final String apiPath =
@@ -228,7 +228,7 @@ class Databases extends Service {
             .replaceAll('{documentId}', documentId);
 
     final Map<String, dynamic> apiParams = {
-      'data': data,
+      if (data != null) 'data': data,
       'permissions': permissions,
       'transactionId': transactionId,
     };

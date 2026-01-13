@@ -117,10 +117,12 @@ class Account extends Service {
   /// Appwrite server-side API and SDKs. The JWT secret is valid for 15 minutes
   /// from its creation and will be invalid if the user will logout in that time
   /// frame.
-  Future<models.Jwt> createJWT() async {
+  Future<models.Jwt> createJWT({int? duration}) async {
     const String apiPath = '/account/jwts';
 
-    final Map<String, dynamic> apiParams = {};
+    final Map<String, dynamic> apiParams = {
+      if (duration != null) 'duration': duration,
+    };
 
     final Map<String, String> apiHeaders = {
       'content-type': 'application/json',
