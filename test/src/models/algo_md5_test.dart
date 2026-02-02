@@ -11,7 +11,7 @@ void main() {
       final map = model.toMap();
       final result = AlgoMd5.fromMap(map);
 
-            expect(result.type, 'md5');
-          });
+      expect(result.type, 'md5');
+    });
   });
 }
