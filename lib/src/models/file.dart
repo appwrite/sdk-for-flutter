@@ -35,6 +35,12 @@ class File implements Model {
   /// Total number of chunks uploaded
   final int chunksUploaded;
 
+  /// Whether file contents are encrypted at rest.
+  final bool encryption;
+
+  /// Compression algorithm used for the file. Will be one of none, [gzip](https://en.wikipedia.org/wiki/Gzip), or [zstd](https://en.wikipedia.org/wiki/Zstd).
+  final String compression;
+
   File({
     required this.$id,
     required this.bucketId,
@@ -47,6 +53,8 @@ class File implements Model {
     required this.sizeOriginal,
     required this.chunksTotal,
     required this.chunksUploaded,
+    required this.encryption,
+    required this.compression,
   });
 
   factory File.fromMap(Map<String, dynamic> map) {
@@ -62,6 +70,8 @@ class File implements Model {
       sizeOriginal: map['sizeOriginal'],
       chunksTotal: map['chunksTotal'],
       chunksUploaded: map['chunksUploaded'],
+      encryption: map['encryption'],
+      compression: map['compression'].toString(),
     );
   }
 
@@ -79,6 +89,8 @@ class File implements Model {
       "sizeOriginal": sizeOriginal,
       "chunksTotal": chunksTotal,
       "chunksUploaded": chunksUploaded,
+      "encryption": encryption,
+      "compression": compression,
     };
   }
 }

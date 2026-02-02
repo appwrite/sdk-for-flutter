@@ -39,6 +39,13 @@ class Query {
   static String notEqual(String attribute, dynamic value) =>
       Query._('notEqual', attribute, value).toString();
 
+  /// Filter resources where [attribute] matches a regular expression pattern.
+  ///
+  /// [attribute] The attribute to filter on.
+  /// [pattern] The regular expression pattern to match.
+  static String regex(String attribute, String pattern) =>
+      Query._('regex', attribute, pattern).toString();
+
   /// Filter resources where [attribute] is less than [value].
   static String lessThan(String attribute, dynamic value) =>
       Query._('lessThan', attribute, value).toString();
@@ -66,6 +73,18 @@ class Query {
   /// Filter resources where [attribute] is not null.
   static String isNotNull(String attribute) =>
       Query._('isNotNull', attribute).toString();
+
+  /// Filter resources where the specified attributes exist.
+  ///
+  /// [attributes] The list of attributes that must exist.
+  static String exists(List<String> attributes) =>
+      Query._('exists', null, attributes).toString();
+
+  /// Filter resources where the specified attributes do not exist.
+  ///
+  /// [attributes] The list of attributes that must not exist.
+  static String notExists(List<String> attributes) =>
+      Query._('notExists', null, attributes).toString();
 
   /// Filter resources where [attribute] is between [start] and [end] (inclusive).
   static String between(String attribute, dynamic start, dynamic end) =>
@@ -134,6 +153,16 @@ class Query {
   static String and(List<String> queries) => Query._(
         'and',
         null,
+        queries.map((query) => jsonDecode(query)).toList(),
+      ).toString();
+
+  /// Filter array elements where at least one element matches all the specified queries.
+  ///
+  /// [attribute] The attribute containing the array to filter on.
+  /// [queries] The list of query strings to match against array elements.
+  static String elemMatch(String attribute, List<String> queries) => Query._(
+        'elemMatch',
+        attribute,
         queries.map((query) => jsonDecode(query)).toList(),
       ).toString();
 

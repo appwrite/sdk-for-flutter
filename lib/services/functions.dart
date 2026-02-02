@@ -45,7 +45,7 @@ class Functions extends Service {
       if (body != null) 'body': body,
       if (xasync != null) 'async': xasync,
       if (path != null) 'path': path,
-      if (method != null) 'method': method!.value,
+      if (method != null) 'method': method.value,
       if (headers != null) 'headers': headers,
       'scheduledAt': scheduledAt,
     };

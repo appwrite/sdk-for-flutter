@@ -272,6 +272,46 @@ void main() {
     expect(query['method'], 'notEndsWith');
   });
 
+  test('returns regex', () {
+    final query = jsonDecode(Query.regex('attr', 'pattern.*'));
+    expect(query['attribute'], 'attr');
+    expect(query['values'], ['pattern.*']);
+    expect(query['method'], 'regex');
+  });
+
+  test('returns exists', () {
+    final query = jsonDecode(Query.exists(['attr1', 'attr2']));
+    expect(query['attribute'], null);
+    expect(query['values'], ['attr1', 'attr2']);
+    expect(query['method'], 'exists');
+  });
+
+  test('returns notExists', () {
+    final query = jsonDecode(Query.notExists(['attr1', 'attr2']));
+    expect(query['attribute'], null);
+    expect(query['values'], ['attr1', 'attr2']);
+    expect(query['method'], 'notExists');
+  });
+
+  test('returns elemMatch', () {
+    final inner1 = Query.equal('name', 'Alice');
+    final inner2 = Query.greaterThan('age', 18);
+
+    final query = jsonDecode(Query.elemMatch('friends', [inner1, inner2]));
+
+    expect(query['attribute'], 'friends');
+    expect(query['method'], 'elemMatch');
+    expect(query['values'].length, 2);
+
+    expect(query['values'][0]['method'], 'equal');
+    expect(query['values'][0]['attribute'], 'name');
+    expect(query['values'][0]['values'], ['Alice']);
+
+    expect(query['values'][1]['method'], 'greaterThan');
+    expect(query['values'][1]['attribute'], 'age');
+    expect(query['values'][1]['values'], [18]);
+  });
+
   test('returns createdBefore', () {
     final query = jsonDecode(Query.createdBefore('2023-01-01'));
     expect(query['attribute'], '\$createdAt');

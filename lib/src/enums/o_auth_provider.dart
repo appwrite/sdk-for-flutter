@@ -39,9 +39,7 @@ enum OAuthProvider {
   yammer(value: 'yammer'),
   yandex(value: 'yandex'),
   zoho(value: 'zoho'),
-  zoom(value: 'zoom'),
-  mock(value: 'mock'),
-  mockUnverified(value: 'mock-unverified');
+  zoom(value: 'zoom');
 
   const OAuthProvider({required this.value});
 

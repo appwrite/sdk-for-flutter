@@ -43,7 +43,7 @@ class RealtimeIO extends RealtimeBase with RealtimeMixin {
   /// Use this method to subscribe to a channels and listen to
   /// realtime events on those channels
   @override
-  RealtimeSubscription subscribe(List<String> channels) {
+  RealtimeSubscription subscribe(List<Object> channels) {
     return subscribeTo(channels);
   }
 

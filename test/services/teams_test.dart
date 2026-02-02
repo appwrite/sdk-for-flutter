@@ -184,7 +184,7 @@ void main() {
 
       final response = await teams.createMembership(
         teamId: '<TEAM_ID>',
-        roles: [],
+        roles: [enums.Roles.admin],
       );
       expect(response, isA<models.Membership>());
     });
@@ -241,7 +241,7 @@ void main() {
       final response = await teams.updateMembership(
         teamId: '<TEAM_ID>',
         membershipId: '<MEMBERSHIP_ID>',
-        roles: [],
+        roles: [enums.Roles.admin],
       );
       expect(response, isA<models.Membership>());
     });

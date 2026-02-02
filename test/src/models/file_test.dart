@@ -16,6 +16,8 @@ void main() {
         sizeOriginal: 17890,
         chunksTotal: 17890,
         chunksUploaded: 17890,
+        encryption: true,
+        compression: 'gzip',
       );
 
       final map = model.toMap();
@@ -32,6 +34,8 @@ void main() {
       expect(result.sizeOriginal, 17890);
       expect(result.chunksTotal, 17890);
       expect(result.chunksUploaded, 17890);
+      expect(result.encryption, true);
+      expect(result.compression, 'gzip');
     });
   });
 }

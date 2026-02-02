@@ -190,7 +190,7 @@ class Storage extends Service {
     final Map<String, dynamic> params = {
       if (width != null) 'width': width,
       if (height != null) 'height': height,
-      if (gravity != null) 'gravity': gravity!.value,
+      if (gravity != null) 'gravity': gravity.value,
       if (quality != null) 'quality': quality,
       if (borderWidth != null) 'borderWidth': borderWidth,
       if (borderColor != null) 'borderColor': borderColor,
@@ -198,7 +198,7 @@ class Storage extends Service {
       if (opacity != null) 'opacity': opacity,
       if (rotation != null) 'rotation': rotation,
       if (background != null) 'background': background,
-      if (output != null) 'output': output!.value,
+      if (output != null) 'output': output.value,
       if (token != null) 'token': token,
       'project': client.config['project'],
     };
