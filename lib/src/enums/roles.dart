@@ -1,9 +1,11 @@
 part of '../../enums.dart';
 
-enum AuthenticatorType {
-    totp(value: 'totp');
+enum Roles {
+    admin(value: 'admin'),
+    developer(value: 'developer'),
+    owner(value: 'owner');
 
-    const AuthenticatorType({
+    const Roles({
         required this.value
     });
 

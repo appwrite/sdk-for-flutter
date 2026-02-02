@@ -58,7 +58,7 @@ class ClientIO extends ClientBase with ClientMixin {
       'x-sdk-name': 'Flutter',
       'x-sdk-platform': 'client',
       'x-sdk-language': 'flutter',
-      'x-sdk-version': '20.3.3',
+      'x-sdk-version': '21.0.0',
       'X-Appwrite-Response-Format': '1.8.0',
     };
 
@@ -89,7 +89,6 @@ class ClientIO extends ClientBase with ClientMixin {
     addHeader('X-Appwrite-Project', value);
     return this;
   }
-
   /// Your secret JSON Web Token
   @override
   ClientIO setJWT(value) {
@@ -97,14 +96,12 @@ class ClientIO extends ClientBase with ClientMixin {
     addHeader('X-Appwrite-JWT', value);
     return this;
   }
-
   @override
   ClientIO setLocale(value) {
     config['locale'] = value;
     addHeader('X-Appwrite-Locale', value);
     return this;
   }
-
   /// The user session to authenticate with
   @override
   ClientIO setSession(value) {
@@ -112,7 +109,6 @@ class ClientIO extends ClientBase with ClientMixin {
     addHeader('X-Appwrite-Session', value);
     return this;
   }
-
   /// Your secret dev API key
   @override
   ClientIO setDevKey(value) {

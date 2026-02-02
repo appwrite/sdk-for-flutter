@@ -41,7 +41,9 @@ mixin RealtimeMixin {
     _stopHeartbeat();
     _heartbeatTimer = Timer.periodic(Duration(seconds: 20), (_) {
       if (_websok != null) {
-        _websok!.sink.add(jsonEncode({"type": "ping"}));
+        _websok!.sink.add(jsonEncode({
+          "type": "ping"
+        }));
       }
     });
   }
@@ -52,7 +54,7 @@ mixin RealtimeMixin {
   }
 
   Future<void> _createSocket() async {
-    if (_creatingSocket || _channels.isEmpty) return;
+    if(_creatingSocket || _channels.isEmpty) return;
     _creatingSocket = true;
     final uri = _prepareUri();
     try {
@@ -166,18 +168,25 @@ mixin RealtimeMixin {
     );
   }
 
-  RealtimeSubscription subscribeTo(List<String> channels) {
+  /// Convert channel value to string
+  /// Handles String and Channel instances (which have toString())
+  String _channelToString(Object channel) {
+    return channel is String ? channel : channel.toString();
+  }
+
+  RealtimeSubscription subscribeTo(List<Object> channels) {
     StreamController<RealtimeMessage> controller = StreamController.broadcast();
-    _channels.addAll(channels);
+    final channelStrings = channels.map((ch) => _channelToString(ch)).toList().cast<String>();
+    _channels.addAll(channelStrings);
     Future.delayed(Duration.zero, () => _createSocket());
     int id = DateTime.now().microsecondsSinceEpoch;
     RealtimeSubscription subscription = RealtimeSubscription(
         controller: controller,
-        channels: channels,
+        channels: channelStrings,
         close: () async {
           _subscriptions.remove(id);
           controller.close();
-          _cleanup(channels);
+          _cleanup(channelStrings);
 
           if (_channels.isNotEmpty) {
             await Future.delayed(Duration.zero, () => _createSocket());
