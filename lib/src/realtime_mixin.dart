@@ -41,7 +41,9 @@ mixin RealtimeMixin {
     _stopHeartbeat();
     _heartbeatTimer = Timer.periodic(Duration(seconds: 20), (_) {
       if (_websok != null) {
-        _websok!.sink.add(jsonEncode({"type": "ping"}));
+        _websok!.sink.add(jsonEncode({
+          "type": "ping"
+        }));
       }
     });
   }
@@ -52,7 +54,7 @@ mixin RealtimeMixin {
   }
 
   Future<void> _createSocket() async {
-    if (_creatingSocket || _channels.isEmpty) return;
+    if(_creatingSocket || _channels.isEmpty) return;
     _creatingSocket = true;
     final uri = _prepareUri();
     try {
@@ -174,8 +176,7 @@ mixin RealtimeMixin {
 
   RealtimeSubscription subscribeTo(List<Object> channels) {
     StreamController<RealtimeMessage> controller = StreamController.broadcast();
-    final channelStrings =
-        channels.map((ch) => _channelToString(ch)).toList().cast<String>();
+    final channelStrings = channels.map((ch) => _channelToString(ch)).toList().cast<String>();
     _channels.addAll(channelStrings);
     Future.delayed(Duration.zero, () => _createSocket());
     int id = DateTime.now().microsecondsSinceEpoch;

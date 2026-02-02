@@ -1,13 +1,15 @@
 part of '../../enums.dart';
 
 enum Roles {
-  admin(value: 'admin'),
-  developer(value: 'developer'),
-  owner(value: 'owner');
+    admin(value: 'admin'),
+    developer(value: 'developer'),
+    owner(value: 'owner');
 
-  const Roles({required this.value});
+    const Roles({
+        required this.value
+    });
 
-  final String value;
+    final String value;
 
-  String toJson() => value;
+    String toJson() => value;
 }
