@@ -11,7 +11,7 @@ void main() {
       final map = model.toMap();
       final result = AlgoSha.fromMap(map);
 
-            expect(result.type, 'sha');
-          });
+      expect(result.type, 'sha');
+    });
   });
 }
