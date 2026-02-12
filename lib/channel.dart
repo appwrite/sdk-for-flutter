@@ -2,31 +2,18 @@ part of appwrite;
 
 // Marker classes for type safety
 class _Root {}
-
 class _Database {}
-
 class _Collection {}
-
 class _Document {}
-
 class _TablesDB {}
-
 class _Table {}
-
 class _Row {}
-
 class _Bucket {}
-
 class _File {}
-
 class _Func {}
-
 class _Execution {}
-
 class _Team {}
-
 class _Membership {}
-
 class _Resolved {}
 
 // Helper function for normalizing ID
@@ -88,14 +75,12 @@ class Channel<T> {
 
 /// Only available on Channel<_Database>
 extension DatabaseChannel on Channel<_Database> {
-  Channel<_Collection> collection([String id = '*']) =>
-      _next<_Collection>('collections', id);
+  Channel<_Collection> collection([String id = '*']) => _next<_Collection>('collections', id);
 }
 
 /// Only available on Channel<_Collection>
 extension CollectionChannel on Channel<_Collection> {
-  Channel<_Document> document([String id = '*']) =>
-      _next<_Document>('documents', id);
+  Channel<_Document> document([String id = '*']) => _next<_Document>('documents', id);
 }
 
 // --- TABLESDB ROUTE ---
@@ -121,8 +106,7 @@ extension BucketChannel on Channel<_Bucket> {
 
 /// Only available on Channel<_Func>
 extension FuncChannel on Channel<_Func> {
-  Channel<_Execution> execution([String id = '*']) =>
-      _next<_Execution>('executions', id);
+  Channel<_Execution> execution([String id = '*']) => _next<_Execution>('executions', id);
 }
 
 // --- TERMINAL ACTIONS ---
