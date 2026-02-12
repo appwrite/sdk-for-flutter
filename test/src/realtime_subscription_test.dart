@@ -10,7 +10,8 @@ void main() {
     final subscription = RealtimeSubscription(
         controller: mockStream,
         close: mockCloseFunction,
-        channels: ['documents']);
+        channels: ['documents'],
+        queries: const []);
 
     test('should have the correct stream and close function', () {
       expect(subscription.controller, equals(mockStream));

@@ -12,6 +12,9 @@ class RealtimeSubscription {
   /// List of channels
   List<String> channels;
 
+  /// List of query strings
+  List<String> queries;
+
   /// Closes the subscription
   final Future<void> Function() close;
 
@@ -19,6 +22,7 @@ class RealtimeSubscription {
   RealtimeSubscription({
     required this.close,
     required this.channels,
+    required this.queries,
     required this.controller,
   }) : stream = controller.stream;
 }
