@@ -12,8 +12,8 @@ void main() {
       final map = model.toMap();
       final result = IdentityList.fromMap(map);
 
-      expect(result.total, 5);
-      expect(result.identities, []);
-    });
+            expect(result.total, 5);
+                  expect(result.identities, []);
+          });
   });
 }
