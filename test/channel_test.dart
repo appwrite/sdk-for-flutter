@@ -5,7 +5,7 @@ void main() {
   group('database()', () {
     test('returns database channel with defaults', () {
       expect(Channel.database().collection().document().toString(),
-          'databases.*.collections.*.documents.*');
+          'databases.*.collections.*.documents');
     });
 
     test('returns database channel with specific IDs', () {
@@ -31,7 +31,7 @@ void main() {
   group('tablesdb()', () {
     test('returns tablesdb channel with defaults', () {
       expect(Channel.tablesdb().table().row().toString(),
-          'tablesdb.*.tables.*.rows.*');
+          'tablesdb.*.tables.*.rows');
     });
 
     test('returns tablesdb channel with specific IDs', () {
@@ -51,18 +51,14 @@ void main() {
   });
 
   group('account()', () {
-    test('returns account channel with default', () {
-      expect(Channel.account(), 'account.*');
-    });
-
-    test('returns account channel with specific user ID', () {
-      expect(Channel.account('user123'), 'account.user123');
+    test('returns account channel', () {
+      expect(Channel.account(), 'account');
     });
   });
 
   group('bucket()', () {
     test('returns buckets channel with defaults', () {
-      expect(Channel.bucket().file().toString(), 'buckets.*.files.*');
+      expect(Channel.bucket().file().toString(), 'buckets.*.files');
     });
 
     test('returns buckets channel with specific IDs', () {
@@ -78,18 +74,21 @@ void main() {
 
   group('functions()', () {
     test('returns functions channel with defaults', () {
-      expect(Channel.function().execution().toString(),
-          'functions.*.executions.*');
+      expect(Channel.function().toString(), 'functions.*');
     });
 
     test('returns functions channel with specific IDs', () {
-      expect(Channel.function('func1').execution('exec1').toString(),
-          'functions.func1.executions.exec1');
+      expect(Channel.function('func1').toString(), 'functions.func1');
+    });
+  });
+
+  group('executions()', () {
+    test('returns executions channel with defaults', () {
+      expect(Channel.execution().toString(), 'executions.*');
     });
 
-    test('returns functions channel with action', () {
-      expect(Channel.function('func1').execution('exec1').create().toString(),
-          'functions.func1.executions.exec1.create');
+    test('returns executions channel with specific IDs', () {
+      expect(Channel.execution('exec1').toString(), 'executions.exec1');
     });
   });
 

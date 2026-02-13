@@ -38,9 +38,15 @@ class Channel<T> {
 
   Channel._(this._segments);
 
-  /// Internal helper to transition to next state with segment and ID
-  Channel<N> _next<N>(String segment, [String id = '*']) {
-    return Channel<N>._([..._segments, segment, _normalize(id)]);
+  /// Internal helper to transition to next state with segment and optional ID
+  Channel<N> _next<N>(String segment, [String? id]) {
+    final segments = [..._segments, segment];
+
+    if (id != null) {
+      segments.add(_normalize(id));
+    }
+
+    return Channel<N>._(segments);
   }
 
   /// Internal helper for terminal actions (no ID segment)
@@ -61,6 +67,9 @@ class Channel<T> {
   static Channel<_Bucket> bucket([String id = '*']) =>
       Channel<_Bucket>._(['buckets', _normalize(id)]);
 
+  static Channel<_Execution> execution([String id = '*']) =>
+      Channel<_Execution>._(['executions', _normalize(id)]);
+
   static Channel<_Func> function([String id = '*']) =>
       Channel<_Func>._(['functions', _normalize(id)]);
 
@@ -70,10 +79,7 @@ class Channel<T> {
   static Channel<_Membership> membership([String id = '*']) =>
       Channel<_Membership>._(['memberships', _normalize(id)]);
 
-  static String account([String userId = '']) {
-    final id = _normalize(userId);
-    return id == '*' ? 'account' : 'account.$id';
-  }
+  static String account() => 'account';
 
   // Global events
   static String documents() => 'documents';
@@ -88,13 +94,13 @@ class Channel<T> {
 
 /// Only available on Channel<_Database>
 extension DatabaseChannel on Channel<_Database> {
-  Channel<_Collection> collection([String id = '*']) =>
-      _next<_Collection>('collections', id);
+  Channel<_Collection> collection([String? id]) =>
+      _next<_Collection>('collections', id ?? '*');
 }
 
 /// Only available on Channel<_Collection>
 extension CollectionChannel on Channel<_Collection> {
-  Channel<_Document> document([String id = '*']) =>
+  Channel<_Document> document([String? id]) =>
       _next<_Document>('documents', id);
 }
 
@@ -102,27 +108,19 @@ extension CollectionChannel on Channel<_Collection> {
 
 /// Only available on Channel<_TablesDB>
 extension TablesDBChannel on Channel<_TablesDB> {
-  Channel<_Table> table([String id = '*']) => _next<_Table>('tables', id);
+  Channel<_Table> table([String? id]) => _next<_Table>('tables', id ?? '*');
 }
 
 /// Only available on Channel<_Table>
 extension TableChannel on Channel<_Table> {
-  Channel<_Row> row([String id = '*']) => _next<_Row>('rows', id);
+  Channel<_Row> row([String? id]) => _next<_Row>('rows', id);
 }
 
 // --- BUCKET ROUTE ---
 
 /// Only available on Channel<_Bucket>
 extension BucketChannel on Channel<_Bucket> {
-  Channel<_File> file([String id = '*']) => _next<_File>('files', id);
-}
-
-// --- FUNCTION ROUTE ---
-
-/// Only available on Channel<_Func>
-extension FuncChannel on Channel<_Func> {
-  Channel<_Execution> execution([String id = '*']) =>
-      _next<_Execution>('executions', id);
+  Channel<_File> file([String? id]) => _next<_File>('files', id);
 }
 
 // --- TERMINAL ACTIONS ---
@@ -144,13 +142,6 @@ extension RowChannel on Channel<_Row> {
 
 /// Only available on Channel<_File>
 extension FileChannel on Channel<_File> {
-  Channel<_Resolved> create() => _resolve('create');
-  Channel<_Resolved> update() => _resolve('update');
-  Channel<_Resolved> delete() => _resolve('delete');
-}
-
-/// Only available on Channel<_Execution>
-extension ExecutionChannel on Channel<_Execution> {
   Channel<_Resolved> create() => _resolve('create');
   Channel<_Resolved> update() => _resolve('update');
   Channel<_Resolved> delete() => _resolve('delete');

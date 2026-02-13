@@ -188,6 +188,104 @@ void main() {
       expect(response, isA<models.Jwt>());
     });
 
+    test('test method listKeys()', () async {
+      final Map<String, dynamic> data = {
+        'total': 5,
+        'keys': [],
+      };
+
+      when(client.call(
+        HttpMethod.get,
+      )).thenAnswer((_) async => Response(data: data));
+
+      final response = await account.listKeys();
+      expect(response, isA<models.KeyList>());
+    });
+
+    test('test method createKey()', () async {
+      final Map<String, dynamic> data = {
+        '\$id': '5e5ea5c16897e',
+        '\$createdAt': '2020-10-15T06:38:00.000+00:00',
+        '\$updatedAt': '2020-10-15T06:38:00.000+00:00',
+        'name': 'My API Key',
+        'expire': '2020-10-15T06:38:00.000+00:00',
+        'scopes': [],
+        'secret': '919c2d18fb5d4...a2ae413da83346ad2',
+        'accessedAt': '2020-10-15T06:38:00.000+00:00',
+        'sdks': [],
+      };
+
+      when(client.call(
+        HttpMethod.post,
+      )).thenAnswer((_) async => Response(data: data));
+
+      final response = await account.createKey(
+        name: '<NAME>',
+        scopes: [enums.Scopes.account],
+      );
+      expect(response, isA<models.Key>());
+    });
+
+    test('test method getKey()', () async {
+      final Map<String, dynamic> data = {
+        '\$id': '5e5ea5c16897e',
+        '\$createdAt': '2020-10-15T06:38:00.000+00:00',
+        '\$updatedAt': '2020-10-15T06:38:00.000+00:00',
+        'name': 'My API Key',
+        'expire': '2020-10-15T06:38:00.000+00:00',
+        'scopes': [],
+        'secret': '919c2d18fb5d4...a2ae413da83346ad2',
+        'accessedAt': '2020-10-15T06:38:00.000+00:00',
+        'sdks': [],
+      };
+
+      when(client.call(
+        HttpMethod.get,
+      )).thenAnswer((_) async => Response(data: data));
+
+      final response = await account.getKey(
+        keyId: '<KEY_ID>',
+      );
+      expect(response, isA<models.Key>());
+    });
+
+    test('test method updateKey()', () async {
+      final Map<String, dynamic> data = {
+        '\$id': '5e5ea5c16897e',
+        '\$createdAt': '2020-10-15T06:38:00.000+00:00',
+        '\$updatedAt': '2020-10-15T06:38:00.000+00:00',
+        'name': 'My API Key',
+        'expire': '2020-10-15T06:38:00.000+00:00',
+        'scopes': [],
+        'secret': '919c2d18fb5d4...a2ae413da83346ad2',
+        'accessedAt': '2020-10-15T06:38:00.000+00:00',
+        'sdks': [],
+      };
+
+      when(client.call(
+        HttpMethod.put,
+      )).thenAnswer((_) async => Response(data: data));
+
+      final response = await account.updateKey(
+        keyId: '<KEY_ID>',
+        name: '<NAME>',
+        scopes: [enums.Scopes.account],
+      );
+      expect(response, isA<models.Key>());
+    });
+
+    test('test method deleteKey()', () async {
+      final data = '';
+
+      when(client.call(
+        HttpMethod.delete,
+      )).thenAnswer((_) async => Response(data: data));
+
+      final response = await account.deleteKey(
+        keyId: '<KEY_ID>',
+      );
+    });
+
     test('test method listLogs()', () async {
       final Map<String, dynamic> data = {
         'total': 5,
@@ -642,6 +740,204 @@ void main() {
         password: '',
       );
       expect(response, isA<models.User>());
+    });
+
+    test('test method listPaymentMethods()', () async {
+      final Map<String, dynamic> data = {
+        'total': 5,
+        'paymentMethods': [],
+      };
+
+      when(client.call(
+        HttpMethod.get,
+      )).thenAnswer((_) async => Response(data: data));
+
+      final response = await account.listPaymentMethods();
+      expect(response, isA<models.PaymentMethodList>());
+    });
+
+    test('test method createPaymentMethod()', () async {
+      final Map<String, dynamic> data = {
+        '\$id': '5e5ea5c16897e',
+        '\$createdAt': '2020-10-15T06:38:00.000+00:00',
+        '\$updatedAt': '2020-10-15T06:38:00.000+00:00',
+        '\$permissions': [],
+        'providerMethodId': 'abdk3ed3sdkfj',
+        'clientSecret': 'seti_ddfe',
+        'providerUserId': 'abdk3ed3sdkfj',
+        'userId': '5e5ea5c16897e',
+        'expiryMonth': 2,
+        'expiryYear': 2024,
+        'last4': '4242',
+        'brand': 'visa',
+        'name': 'John Doe',
+        'mandateId': 'yxc',
+        'country': 'de',
+        'state': '',
+        'lastError': 'Your card has insufficient funds.',
+        'default': true,
+        'expired': true,
+        'failed': true,
+      };
+
+      when(client.call(
+        HttpMethod.post,
+      )).thenAnswer((_) async => Response(data: data));
+
+      final response = await account.createPaymentMethod();
+      expect(response, isA<models.PaymentMethod>());
+    });
+
+    test('test method getPaymentMethod()', () async {
+      final Map<String, dynamic> data = {
+        '\$id': '5e5ea5c16897e',
+        '\$createdAt': '2020-10-15T06:38:00.000+00:00',
+        '\$updatedAt': '2020-10-15T06:38:00.000+00:00',
+        '\$permissions': [],
+        'providerMethodId': 'abdk3ed3sdkfj',
+        'clientSecret': 'seti_ddfe',
+        'providerUserId': 'abdk3ed3sdkfj',
+        'userId': '5e5ea5c16897e',
+        'expiryMonth': 2,
+        'expiryYear': 2024,
+        'last4': '4242',
+        'brand': 'visa',
+        'name': 'John Doe',
+        'mandateId': 'yxc',
+        'country': 'de',
+        'state': '',
+        'lastError': 'Your card has insufficient funds.',
+        'default': true,
+        'expired': true,
+        'failed': true,
+      };
+
+      when(client.call(
+        HttpMethod.get,
+      )).thenAnswer((_) async => Response(data: data));
+
+      final response = await account.getPaymentMethod(
+        paymentMethodId: '<PAYMENT_METHOD_ID>',
+      );
+      expect(response, isA<models.PaymentMethod>());
+    });
+
+    test('test method updatePaymentMethod()', () async {
+      final Map<String, dynamic> data = {
+        '\$id': '5e5ea5c16897e',
+        '\$createdAt': '2020-10-15T06:38:00.000+00:00',
+        '\$updatedAt': '2020-10-15T06:38:00.000+00:00',
+        '\$permissions': [],
+        'providerMethodId': 'abdk3ed3sdkfj',
+        'clientSecret': 'seti_ddfe',
+        'providerUserId': 'abdk3ed3sdkfj',
+        'userId': '5e5ea5c16897e',
+        'expiryMonth': 2,
+        'expiryYear': 2024,
+        'last4': '4242',
+        'brand': 'visa',
+        'name': 'John Doe',
+        'mandateId': 'yxc',
+        'country': 'de',
+        'state': '',
+        'lastError': 'Your card has insufficient funds.',
+        'default': true,
+        'expired': true,
+        'failed': true,
+      };
+
+      when(client.call(
+        HttpMethod.patch,
+      )).thenAnswer((_) async => Response(data: data));
+
+      final response = await account.updatePaymentMethod(
+        paymentMethodId: '<PAYMENT_METHOD_ID>',
+        expiryMonth: 1,
+        expiryYear: 1,
+      );
+      expect(response, isA<models.PaymentMethod>());
+    });
+
+    test('test method deletePaymentMethod()', () async {
+      final data = '';
+
+      when(client.call(
+        HttpMethod.delete,
+      )).thenAnswer((_) async => Response(data: data));
+
+      final response = await account.deletePaymentMethod(
+        paymentMethodId: '<PAYMENT_METHOD_ID>',
+      );
+    });
+
+    test('test method updatePaymentMethodProvider()', () async {
+      final Map<String, dynamic> data = {
+        '\$id': '5e5ea5c16897e',
+        '\$createdAt': '2020-10-15T06:38:00.000+00:00',
+        '\$updatedAt': '2020-10-15T06:38:00.000+00:00',
+        '\$permissions': [],
+        'providerMethodId': 'abdk3ed3sdkfj',
+        'clientSecret': 'seti_ddfe',
+        'providerUserId': 'abdk3ed3sdkfj',
+        'userId': '5e5ea5c16897e',
+        'expiryMonth': 2,
+        'expiryYear': 2024,
+        'last4': '4242',
+        'brand': 'visa',
+        'name': 'John Doe',
+        'mandateId': 'yxc',
+        'country': 'de',
+        'state': '',
+        'lastError': 'Your card has insufficient funds.',
+        'default': true,
+        'expired': true,
+        'failed': true,
+      };
+
+      when(client.call(
+        HttpMethod.patch,
+      )).thenAnswer((_) async => Response(data: data));
+
+      final response = await account.updatePaymentMethodProvider(
+        paymentMethodId: '<PAYMENT_METHOD_ID>',
+        providerMethodId: '<PROVIDER_METHOD_ID>',
+        name: '<NAME>',
+      );
+      expect(response, isA<models.PaymentMethod>());
+    });
+
+    test('test method updatePaymentMethodMandateOptions()', () async {
+      final Map<String, dynamic> data = {
+        '\$id': '5e5ea5c16897e',
+        '\$createdAt': '2020-10-15T06:38:00.000+00:00',
+        '\$updatedAt': '2020-10-15T06:38:00.000+00:00',
+        '\$permissions': [],
+        'providerMethodId': 'abdk3ed3sdkfj',
+        'clientSecret': 'seti_ddfe',
+        'providerUserId': 'abdk3ed3sdkfj',
+        'userId': '5e5ea5c16897e',
+        'expiryMonth': 2,
+        'expiryYear': 2024,
+        'last4': '4242',
+        'brand': 'visa',
+        'name': 'John Doe',
+        'mandateId': 'yxc',
+        'country': 'de',
+        'state': '',
+        'lastError': 'Your card has insufficient funds.',
+        'default': true,
+        'expired': true,
+        'failed': true,
+      };
+
+      when(client.call(
+        HttpMethod.patch,
+      )).thenAnswer((_) async => Response(data: data));
+
+      final response = await account.updatePaymentMethodMandateOptions(
+        paymentMethodId: '<PAYMENT_METHOD_ID>',
+      );
+      expect(response, isA<models.PaymentMethod>());
     });
 
     test('test method updatePhone()', () async {

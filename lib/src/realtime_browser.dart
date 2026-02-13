@@ -35,7 +35,10 @@ class RealtimeBrowser extends RealtimeBase with RealtimeMixin {
   }
 
   @override
-  RealtimeSubscription subscribe(List<Object> channels) {
-    return subscribeTo(channels);
+  RealtimeSubscription subscribe(
+    List<Object> channels, {
+    List<String> queries = const [],
+  }) {
+    return subscribeTo(channels, queries);
   }
 }

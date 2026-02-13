@@ -149,7 +149,7 @@ class Teams extends Service {
   ///
   Future<models.Membership> createMembership(
       {required String teamId,
-      required List<enums.Roles> roles,
+      required List<String> roles,
       String? email,
       String? userId,
       String? phone,
@@ -162,7 +162,7 @@ class Teams extends Service {
       if (email != null) 'email': email,
       if (userId != null) 'userId': userId,
       if (phone != null) 'phone': phone,
-      'roles': roles.map((e) => e.value).toList(),
+      'roles': roles,
       if (url != null) 'url': url,
       if (name != null) 'name': name,
     };
@@ -203,13 +203,13 @@ class Teams extends Service {
   Future<models.Membership> updateMembership(
       {required String teamId,
       required String membershipId,
-      required List<enums.Roles> roles}) async {
+      required List<String> roles}) async {
     final String apiPath = '/teams/{teamId}/memberships/{membershipId}'
         .replaceAll('{teamId}', teamId)
         .replaceAll('{membershipId}', membershipId);
 
     final Map<String, dynamic> apiParams = {
-      'roles': roles.map((e) => e.value).toList(),
+      'roles': roles,
     };
 
     final Map<String, String> apiHeaders = {

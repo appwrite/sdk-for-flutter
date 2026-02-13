@@ -51,7 +51,9 @@ abstract class Realtime extends Service {
   /// ]);
   /// ```
   RealtimeSubscription subscribe(
-      List<Object> channels); // Object can be String or Channel<T>
+    List<Object> channels, {
+    List<String> queries = const [],
+  }); // Object can be String or Channel<T>
 
   /// The [close code](https://datatracker.ietf.org/doc/html/rfc6455#section-7.1.5) set when the WebSocket connection is closed.
   ///
