@@ -57,5 +57,3 @@ part 'src/models/mfa_factors.dart';
 part 'src/models/transaction.dart';
 part 'src/models/subscriber.dart';
 part 'src/models/target.dart';
-part 'src/models/payment_method.dart';
-part 'src/models/payment_method_list.dart';
