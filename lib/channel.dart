@@ -87,6 +87,7 @@ class Channel<T> {
   static String files() => 'files';
   static String executions() => 'executions';
   static String teams() => 'teams';
+  static String memberships() => 'memberships';
 }
 
 // --- DATABASE ROUTE ---
