@@ -24,11 +24,12 @@ class MockClient extends Mock implements Client {
 
   @override
   Future webAuth(
-    Uri? url, {
-    String? callbackUrlScheme,
-  }) async {
-    return super
-        .noSuchMethod(Invocation.method(#webAuth, [url]), returnValue: 'done');
+    Uri? url,
+    {
+        String? callbackUrlScheme,
+    }
+  ) async {
+    return super.noSuchMethod(Invocation.method(#webAuth, [url]), returnValue: 'done');
   }
 
   @override
@@ -40,297 +41,323 @@ class MockClient extends Mock implements Client {
     Map<String, String>? headers,
     Function(UploadProgress)? onProgress,
   }) async {
-    return super.noSuchMethod(
-        Invocation.method(
-            #chunkedUpload, [path, params, paramName, idParamName, headers]),
-        returnValue: Response(data: {}));
+    return super.noSuchMethod(Invocation.method(#chunkedUpload, [path, params, paramName, idParamName, headers]), returnValue: Response(data: {}));
   }
 }
 
 void main() {
-  group('TablesDB test', () {
-    late MockClient client;
-    late TablesDB tablesDB;
+    group('TablesDB test', () {
+        late MockClient client;
+        late TablesDB tablesDB;
 
-    setUp(() {
-      client = MockClient();
-      tablesDB = TablesDB(client);
+        setUp(() {
+            client = MockClient();
+            tablesDB = TablesDB(client);
+        });
+
+        test('test method listTransactions()', () async {
+            final Map<String, dynamic> data = {
+                'total': 5,
+                'transactions': [],};
+
+
+            when(client.call(
+                HttpMethod.get,
+            )).thenAnswer((_) async => Response(data: data));
+
+
+            final response = await tablesDB.listTransactions(
+            );
+            expect(response, isA<models.TransactionList>());
+
+        });
+
+        test('test method createTransaction()', () async {
+            final Map<String, dynamic> data = {
+                '\$id': '259125845563242502',
+                '\$createdAt': '2020-10-15T06:38:00.000+00:00',
+                '\$updatedAt': '2020-10-15T06:38:00.000+00:00',
+                'status': 'pending',
+                'operations': 5,
+                'expiresAt': '2020-10-15T06:38:00.000+00:00',};
+
+
+            when(client.call(
+                HttpMethod.post,
+            )).thenAnswer((_) async => Response(data: data));
+
+
+            final response = await tablesDB.createTransaction(
+            );
+            expect(response, isA<models.Transaction>());
+
+        });
+
+        test('test method getTransaction()', () async {
+            final Map<String, dynamic> data = {
+                '\$id': '259125845563242502',
+                '\$createdAt': '2020-10-15T06:38:00.000+00:00',
+                '\$updatedAt': '2020-10-15T06:38:00.000+00:00',
+                'status': 'pending',
+                'operations': 5,
+                'expiresAt': '2020-10-15T06:38:00.000+00:00',};
+
+
+            when(client.call(
+                HttpMethod.get,
+            )).thenAnswer((_) async => Response(data: data));
+
+
+            final response = await tablesDB.getTransaction(
+                transactionId: '<TRANSACTION_ID>',
+            );
+            expect(response, isA<models.Transaction>());
+
+        });
+
+        test('test method updateTransaction()', () async {
+            final Map<String, dynamic> data = {
+                '\$id': '259125845563242502',
+                '\$createdAt': '2020-10-15T06:38:00.000+00:00',
+                '\$updatedAt': '2020-10-15T06:38:00.000+00:00',
+                'status': 'pending',
+                'operations': 5,
+                'expiresAt': '2020-10-15T06:38:00.000+00:00',};
+
+
+            when(client.call(
+                HttpMethod.patch,
+            )).thenAnswer((_) async => Response(data: data));
+
+
+            final response = await tablesDB.updateTransaction(
+                transactionId: '<TRANSACTION_ID>',
+            );
+            expect(response, isA<models.Transaction>());
+
+        });
+
+        test('test method deleteTransaction()', () async {
+            final data = '';
+
+            when(client.call(
+                HttpMethod.delete,
+            )).thenAnswer((_) async => Response(data: data));
+
+
+            final response = await tablesDB.deleteTransaction(
+                transactionId: '<TRANSACTION_ID>',
+            );
+        });
+
+        test('test method createOperations()', () async {
+            final Map<String, dynamic> data = {
+                '\$id': '259125845563242502',
+                '\$createdAt': '2020-10-15T06:38:00.000+00:00',
+                '\$updatedAt': '2020-10-15T06:38:00.000+00:00',
+                'status': 'pending',
+                'operations': 5,
+                'expiresAt': '2020-10-15T06:38:00.000+00:00',};
+
+
+            when(client.call(
+                HttpMethod.post,
+            )).thenAnswer((_) async => Response(data: data));
+
+
+            final response = await tablesDB.createOperations(
+                transactionId: '<TRANSACTION_ID>',
+            );
+            expect(response, isA<models.Transaction>());
+
+        });
+
+        test('test method listRows()', () async {
+            final Map<String, dynamic> data = {
+                'total': 5,
+                'rows': [],};
+
+
+            when(client.call(
+                HttpMethod.get,
+            )).thenAnswer((_) async => Response(data: data));
+
+
+            final response = await tablesDB.listRows(
+                databaseId: '<DATABASE_ID>',
+                tableId: '<TABLE_ID>',
+            );
+            expect(response, isA<models.RowList>());
+
+        });
+
+        test('test method createRow()', () async {
+            final Map<String, dynamic> data = {
+                '\$id': '5e5ea5c16897e',
+                '\$sequence': 1,
+                '\$tableId': '5e5ea5c15117e',
+                '\$databaseId': '5e5ea5c15117e',
+                '\$createdAt': '2020-10-15T06:38:00.000+00:00',
+                '\$updatedAt': '2020-10-15T06:38:00.000+00:00',
+                '\$permissions': [],};
+
+
+            when(client.call(
+                HttpMethod.post,
+            )).thenAnswer((_) async => Response(data: data));
+
+
+            final response = await tablesDB.createRow(
+                databaseId: '<DATABASE_ID>',
+                tableId: '<TABLE_ID>',
+                rowId: '<ROW_ID>',
+                data: {},
+            );
+            expect(response, isA<models.Row>());
+
+        });
+
+        test('test method getRow()', () async {
+            final Map<String, dynamic> data = {
+                '\$id': '5e5ea5c16897e',
+                '\$sequence': 1,
+                '\$tableId': '5e5ea5c15117e',
+                '\$databaseId': '5e5ea5c15117e',
+                '\$createdAt': '2020-10-15T06:38:00.000+00:00',
+                '\$updatedAt': '2020-10-15T06:38:00.000+00:00',
+                '\$permissions': [],};
+
+
+            when(client.call(
+                HttpMethod.get,
+            )).thenAnswer((_) async => Response(data: data));
+
+
+            final response = await tablesDB.getRow(
+                databaseId: '<DATABASE_ID>',
+                tableId: '<TABLE_ID>',
+                rowId: '<ROW_ID>',
+            );
+            expect(response, isA<models.Row>());
+
+        });
+
+        test('test method upsertRow()', () async {
+            final Map<String, dynamic> data = {
+                '\$id': '5e5ea5c16897e',
+                '\$sequence': 1,
+                '\$tableId': '5e5ea5c15117e',
+                '\$databaseId': '5e5ea5c15117e',
+                '\$createdAt': '2020-10-15T06:38:00.000+00:00',
+                '\$updatedAt': '2020-10-15T06:38:00.000+00:00',
+                '\$permissions': [],};
+
+
+            when(client.call(
+                HttpMethod.put,
+            )).thenAnswer((_) async => Response(data: data));
+
+
+            final response = await tablesDB.upsertRow(
+                databaseId: '<DATABASE_ID>',
+                tableId: '<TABLE_ID>',
+                rowId: '<ROW_ID>',
+            );
+            expect(response, isA<models.Row>());
+
+        });
+
+        test('test method updateRow()', () async {
+            final Map<String, dynamic> data = {
+                '\$id': '5e5ea5c16897e',
+                '\$sequence': 1,
+                '\$tableId': '5e5ea5c15117e',
+                '\$databaseId': '5e5ea5c15117e',
+                '\$createdAt': '2020-10-15T06:38:00.000+00:00',
+                '\$updatedAt': '2020-10-15T06:38:00.000+00:00',
+                '\$permissions': [],};
+
+
+            when(client.call(
+                HttpMethod.patch,
+            )).thenAnswer((_) async => Response(data: data));
+
+
+            final response = await tablesDB.updateRow(
+                databaseId: '<DATABASE_ID>',
+                tableId: '<TABLE_ID>',
+                rowId: '<ROW_ID>',
+            );
+            expect(response, isA<models.Row>());
+
+        });
+
+        test('test method deleteRow()', () async {
+            final data = '';
+
+            when(client.call(
+                HttpMethod.delete,
+            )).thenAnswer((_) async => Response(data: data));
+
+
+            final response = await tablesDB.deleteRow(
+                databaseId: '<DATABASE_ID>',
+                tableId: '<TABLE_ID>',
+                rowId: '<ROW_ID>',
+            );
+        });
+
+        test('test method decrementRowColumn()', () async {
+            final Map<String, dynamic> data = {
+                '\$id': '5e5ea5c16897e',
+                '\$sequence': 1,
+                '\$tableId': '5e5ea5c15117e',
+                '\$databaseId': '5e5ea5c15117e',
+                '\$createdAt': '2020-10-15T06:38:00.000+00:00',
+                '\$updatedAt': '2020-10-15T06:38:00.000+00:00',
+                '\$permissions': [],};
+
+
+            when(client.call(
+                HttpMethod.patch,
+            )).thenAnswer((_) async => Response(data: data));
+
+
+            final response = await tablesDB.decrementRowColumn(
+                databaseId: '<DATABASE_ID>',
+                tableId: '<TABLE_ID>',
+                rowId: '<ROW_ID>',
+                column: '',
+            );
+            expect(response, isA<models.Row>());
+
+        });
+
+        test('test method incrementRowColumn()', () async {
+            final Map<String, dynamic> data = {
+                '\$id': '5e5ea5c16897e',
+                '\$sequence': 1,
+                '\$tableId': '5e5ea5c15117e',
+                '\$databaseId': '5e5ea5c15117e',
+                '\$createdAt': '2020-10-15T06:38:00.000+00:00',
+                '\$updatedAt': '2020-10-15T06:38:00.000+00:00',
+                '\$permissions': [],};
+
+
+            when(client.call(
+                HttpMethod.patch,
+            )).thenAnswer((_) async => Response(data: data));
+
+
+            final response = await tablesDB.incrementRowColumn(
+                databaseId: '<DATABASE_ID>',
+                tableId: '<TABLE_ID>',
+                rowId: '<ROW_ID>',
+                column: '',
+            );
+            expect(response, isA<models.Row>());
+
+        });
+
     });
-
-    test('test method listTransactions()', () async {
-      final Map<String, dynamic> data = {
-        'total': 5,
-        'transactions': [],
-      };
-
-      when(client.call(
-        HttpMethod.get,
-      )).thenAnswer((_) async => Response(data: data));
-
-      final response = await tablesDB.listTransactions();
-      expect(response, isA<models.TransactionList>());
-    });
-
-    test('test method createTransaction()', () async {
-      final Map<String, dynamic> data = {
-        '\$id': '259125845563242502',
-        '\$createdAt': '2020-10-15T06:38:00.000+00:00',
-        '\$updatedAt': '2020-10-15T06:38:00.000+00:00',
-        'status': 'pending',
-        'operations': 5,
-        'expiresAt': '2020-10-15T06:38:00.000+00:00',
-      };
-
-      when(client.call(
-        HttpMethod.post,
-      )).thenAnswer((_) async => Response(data: data));
-
-      final response = await tablesDB.createTransaction();
-      expect(response, isA<models.Transaction>());
-    });
-
-    test('test method getTransaction()', () async {
-      final Map<String, dynamic> data = {
-        '\$id': '259125845563242502',
-        '\$createdAt': '2020-10-15T06:38:00.000+00:00',
-        '\$updatedAt': '2020-10-15T06:38:00.000+00:00',
-        'status': 'pending',
-        'operations': 5,
-        'expiresAt': '2020-10-15T06:38:00.000+00:00',
-      };
-
-      when(client.call(
-        HttpMethod.get,
-      )).thenAnswer((_) async => Response(data: data));
-
-      final response = await tablesDB.getTransaction(
-        transactionId: '<TRANSACTION_ID>',
-      );
-      expect(response, isA<models.Transaction>());
-    });
-
-    test('test method updateTransaction()', () async {
-      final Map<String, dynamic> data = {
-        '\$id': '259125845563242502',
-        '\$createdAt': '2020-10-15T06:38:00.000+00:00',
-        '\$updatedAt': '2020-10-15T06:38:00.000+00:00',
-        'status': 'pending',
-        'operations': 5,
-        'expiresAt': '2020-10-15T06:38:00.000+00:00',
-      };
-
-      when(client.call(
-        HttpMethod.patch,
-      )).thenAnswer((_) async => Response(data: data));
-
-      final response = await tablesDB.updateTransaction(
-        transactionId: '<TRANSACTION_ID>',
-      );
-      expect(response, isA<models.Transaction>());
-    });
-
-    test('test method deleteTransaction()', () async {
-      final data = '';
-
-      when(client.call(
-        HttpMethod.delete,
-      )).thenAnswer((_) async => Response(data: data));
-
-      final response = await tablesDB.deleteTransaction(
-        transactionId: '<TRANSACTION_ID>',
-      );
-    });
-
-    test('test method createOperations()', () async {
-      final Map<String, dynamic> data = {
-        '\$id': '259125845563242502',
-        '\$createdAt': '2020-10-15T06:38:00.000+00:00',
-        '\$updatedAt': '2020-10-15T06:38:00.000+00:00',
-        'status': 'pending',
-        'operations': 5,
-        'expiresAt': '2020-10-15T06:38:00.000+00:00',
-      };
-
-      when(client.call(
-        HttpMethod.post,
-      )).thenAnswer((_) async => Response(data: data));
-
-      final response = await tablesDB.createOperations(
-        transactionId: '<TRANSACTION_ID>',
-      );
-      expect(response, isA<models.Transaction>());
-    });
-
-    test('test method listRows()', () async {
-      final Map<String, dynamic> data = {
-        'total': 5,
-        'rows': [],
-      };
-
-      when(client.call(
-        HttpMethod.get,
-      )).thenAnswer((_) async => Response(data: data));
-
-      final response = await tablesDB.listRows(
-        databaseId: '<DATABASE_ID>',
-        tableId: '<TABLE_ID>',
-      );
-      expect(response, isA<models.RowList>());
-    });
-
-    test('test method createRow()', () async {
-      final Map<String, dynamic> data = {
-        '\$id': '5e5ea5c16897e',
-        '\$sequence': 1,
-        '\$tableId': '5e5ea5c15117e',
-        '\$databaseId': '5e5ea5c15117e',
-        '\$createdAt': '2020-10-15T06:38:00.000+00:00',
-        '\$updatedAt': '2020-10-15T06:38:00.000+00:00',
-        '\$permissions': [],
-      };
-
-      when(client.call(
-        HttpMethod.post,
-      )).thenAnswer((_) async => Response(data: data));
-
-      final response = await tablesDB.createRow(
-        databaseId: '<DATABASE_ID>',
-        tableId: '<TABLE_ID>',
-        rowId: '<ROW_ID>',
-        data: {},
-      );
-      expect(response, isA<models.Row>());
-    });
-
-    test('test method getRow()', () async {
-      final Map<String, dynamic> data = {
-        '\$id': '5e5ea5c16897e',
-        '\$sequence': 1,
-        '\$tableId': '5e5ea5c15117e',
-        '\$databaseId': '5e5ea5c15117e',
-        '\$createdAt': '2020-10-15T06:38:00.000+00:00',
-        '\$updatedAt': '2020-10-15T06:38:00.000+00:00',
-        '\$permissions': [],
-      };
-
-      when(client.call(
-        HttpMethod.get,
-      )).thenAnswer((_) async => Response(data: data));
-
-      final response = await tablesDB.getRow(
-        databaseId: '<DATABASE_ID>',
-        tableId: '<TABLE_ID>',
-        rowId: '<ROW_ID>',
-      );
-      expect(response, isA<models.Row>());
-    });
-
-    test('test method upsertRow()', () async {
-      final Map<String, dynamic> data = {
-        '\$id': '5e5ea5c16897e',
-        '\$sequence': 1,
-        '\$tableId': '5e5ea5c15117e',
-        '\$databaseId': '5e5ea5c15117e',
-        '\$createdAt': '2020-10-15T06:38:00.000+00:00',
-        '\$updatedAt': '2020-10-15T06:38:00.000+00:00',
-        '\$permissions': [],
-      };
-
-      when(client.call(
-        HttpMethod.put,
-      )).thenAnswer((_) async => Response(data: data));
-
-      final response = await tablesDB.upsertRow(
-        databaseId: '<DATABASE_ID>',
-        tableId: '<TABLE_ID>',
-        rowId: '<ROW_ID>',
-      );
-      expect(response, isA<models.Row>());
-    });
-
-    test('test method updateRow()', () async {
-      final Map<String, dynamic> data = {
-        '\$id': '5e5ea5c16897e',
-        '\$sequence': 1,
-        '\$tableId': '5e5ea5c15117e',
-        '\$databaseId': '5e5ea5c15117e',
-        '\$createdAt': '2020-10-15T06:38:00.000+00:00',
-        '\$updatedAt': '2020-10-15T06:38:00.000+00:00',
-        '\$permissions': [],
-      };
-
-      when(client.call(
-        HttpMethod.patch,
-      )).thenAnswer((_) async => Response(data: data));
-
-      final response = await tablesDB.updateRow(
-        databaseId: '<DATABASE_ID>',
-        tableId: '<TABLE_ID>',
-        rowId: '<ROW_ID>',
-      );
-      expect(response, isA<models.Row>());
-    });
-
-    test('test method deleteRow()', () async {
-      final data = '';
-
-      when(client.call(
-        HttpMethod.delete,
-      )).thenAnswer((_) async => Response(data: data));
-
-      final response = await tablesDB.deleteRow(
-        databaseId: '<DATABASE_ID>',
-        tableId: '<TABLE_ID>',
-        rowId: '<ROW_ID>',
-      );
-    });
-
-    test('test method decrementRowColumn()', () async {
-      final Map<String, dynamic> data = {
-        '\$id': '5e5ea5c16897e',
-        '\$sequence': 1,
-        '\$tableId': '5e5ea5c15117e',
-        '\$databaseId': '5e5ea5c15117e',
-        '\$createdAt': '2020-10-15T06:38:00.000+00:00',
-        '\$updatedAt': '2020-10-15T06:38:00.000+00:00',
-        '\$permissions': [],
-      };
-
-      when(client.call(
-        HttpMethod.patch,
-      )).thenAnswer((_) async => Response(data: data));
-
-      final response = await tablesDB.decrementRowColumn(
-        databaseId: '<DATABASE_ID>',
-        tableId: '<TABLE_ID>',
-        rowId: '<ROW_ID>',
-        column: '',
-      );
-      expect(response, isA<models.Row>());
-    });
-
-    test('test method incrementRowColumn()', () async {
-      final Map<String, dynamic> data = {
-        '\$id': '5e5ea5c16897e',
-        '\$sequence': 1,
-        '\$tableId': '5e5ea5c15117e',
-        '\$databaseId': '5e5ea5c15117e',
-        '\$createdAt': '2020-10-15T06:38:00.000+00:00',
-        '\$updatedAt': '2020-10-15T06:38:00.000+00:00',
-        '\$permissions': [],
-      };
-
-      when(client.call(
-        HttpMethod.patch,
-      )).thenAnswer((_) async => Response(data: data));
-
-      final response = await tablesDB.incrementRowColumn(
-        databaseId: '<DATABASE_ID>',
-        tableId: '<TABLE_ID>',
-        rowId: '<ROW_ID>',
-        column: '',
-      );
-      expect(response, isA<models.Row>());
-    });
-  });
 }

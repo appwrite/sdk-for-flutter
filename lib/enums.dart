@@ -1,7 +1,6 @@
 /// Appwrite Enums
 library appwrite.enums;
 
-part 'src/enums/scopes.dart';
 part 'src/enums/authenticator_type.dart';
 part 'src/enums/authentication_factor.dart';
 part 'src/enums/o_auth_provider.dart';
