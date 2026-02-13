@@ -11,7 +11,7 @@ void main() {
       final map = model.toMap();
       final result = EstimationDeleteOrganization.fromMap(map);
 
-            expect(result.unpaidInvoices, []);
-          });
+      expect(result.unpaidInvoices, []);
+    });
   });
 }

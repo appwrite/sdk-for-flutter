@@ -16,12 +16,12 @@ void main() {
       final map = model.toMap();
       final result = UsageResources.fromMap(map);
 
-            expect(result.name, '');
-                  expect(result.value, 0);
-                  expect(result.amount, 500);
-                  expect(result.rate, 12.5);
-                  expect(result.desc, 'Your monthly recurring Pro plan.');
-                  expect(result.resourceId, '');
-          });
+      expect(result.name, '');
+      expect(result.value, 0);
+      expect(result.amount, 500);
+      expect(result.rate, 12.5);
+      expect(result.desc, 'Your monthly recurring Pro plan.');
+      expect(result.resourceId, '');
+    });
   });
 }

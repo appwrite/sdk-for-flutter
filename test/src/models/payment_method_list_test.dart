@@ -12,8 +12,8 @@ void main() {
       final map = model.toMap();
       final result = PaymentMethodList.fromMap(map);
 
-            expect(result.total, 5);
-                  expect(result.paymentMethods, []);
-          });
+      expect(result.total, 5);
+      expect(result.paymentMethods, []);
+    });
   });
 }
