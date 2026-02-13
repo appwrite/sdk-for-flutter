@@ -12,8 +12,8 @@ void main() {
       final map = model.toMap();
       final result = KeyList.fromMap(map);
 
-            expect(result.total, 5);
-                  expect(result.keys, []);
-          });
+      expect(result.total, 5);
+      expect(result.keys, []);
+    });
   });
 }
