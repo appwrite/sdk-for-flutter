@@ -10,14 +10,14 @@ class Query {
 
   Map<String, dynamic> toJson() {
     final result = <String, dynamic>{};
-
+    
     result['method'] = method;
-
-    if (attribute != null) {
+    
+    if(attribute != null) {
       result['attribute'] = attribute;
     }
-
-    if (values != null) {
+    
+    if(values != null) {
       result['values'] = values is List ? values : [values];
     }
 
@@ -28,7 +28,7 @@ class Query {
   String toString() => jsonEncode(toJson());
 
   /// Filter resources where [attribute] is equal to [value].
-  ///
+  /// 
   /// [value] can be a single value or a list. If a list is used
   /// the query will return resources where [attribute] is equal
   /// to any of the values in the list.
@@ -98,10 +98,25 @@ class Query {
   static String endsWith(String attribute, String value) =>
       Query._('endsWith', attribute, value).toString();
 
-  /// Filter resources where [attribute] contains [value]
+  /// Filter resources where [attribute] contains [value].
+  /// For string attributes, checks if the string contains the substring.
   /// [value] can be a single value or a list.
+  ///
+  /// Note: For array attributes, use [containsAny] or [containsAll] instead.
   static String contains(String attribute, dynamic value) =>
       Query._('contains', attribute, value).toString();
+
+  /// Filter resources where [attribute] contains ANY of the specified [value]s.
+  /// For array and relationship attributes, matches documents where the attribute
+  /// contains at least one of the given values.
+  static String containsAny(String attribute, List<dynamic> value) =>
+      Query._('containsAny', attribute, value).toString();
+
+  /// Filter resources where [attribute] contains ALL of the specified [value]s.
+  /// For array and relationship attributes, matches documents where the attribute
+  /// contains every one of the given values.
+  static String containsAll(String attribute, List<dynamic> value) =>
+      Query._('containsAll', attribute, value).toString();
 
   /// Filter resources where [attribute] does not contain [value]
   /// [value] can be a single value or a list.
@@ -125,46 +140,50 @@ class Query {
       Query._('notEndsWith', attribute, value).toString();
 
   /// Filter resources where document was created before [value].
-  static String createdBefore(String value) => lessThan('\$createdAt', value);
+  static String createdBefore(String value) =>
+      lessThan('\$createdAt', value);
 
   /// Filter resources where document was created after [value].
-  static String createdAfter(String value) => greaterThan('\$createdAt', value);
+  static String createdAfter(String value) =>
+      greaterThan('\$createdAt', value);
 
   /// Filter resources where document was created between [start] and [end] (inclusive).
   static String createdBetween(String start, String end) =>
       between('\$createdAt', start, end);
 
   /// Filter resources where document was updated before [value].
-  static String updatedBefore(String value) => lessThan('\$updatedAt', value);
+  static String updatedBefore(String value) =>
+      lessThan('\$updatedAt', value);
 
   /// Filter resources where document was updated after [value].
-  static String updatedAfter(String value) => greaterThan('\$updatedAt', value);
+  static String updatedAfter(String value) =>
+      greaterThan('\$updatedAt', value);
 
   /// Filter resources where document was updated between [start] and [end] (inclusive).
   static String updatedBetween(String start, String end) =>
       between('\$updatedAt', start, end);
 
   static String or(List<String> queries) => Query._(
-        'or',
-        null,
-        queries.map((query) => jsonDecode(query)).toList(),
-      ).toString();
+    'or',
+    null,
+    queries.map((query) => jsonDecode(query)).toList(),
+  ).toString();
 
   static String and(List<String> queries) => Query._(
-        'and',
-        null,
-        queries.map((query) => jsonDecode(query)).toList(),
-      ).toString();
+    'and',
+    null,
+    queries.map((query) => jsonDecode(query)).toList(),
+  ).toString();
 
   /// Filter array elements where at least one element matches all the specified queries.
   ///
   /// [attribute] The attribute containing the array to filter on.
   /// [queries] The list of query strings to match against array elements.
   static String elemMatch(String attribute, List<String> queries) => Query._(
-        'elemMatch',
-        attribute,
-        queries.map((query) => jsonDecode(query)).toList(),
-      ).toString();
+    'elemMatch',
+    attribute,
+    queries.map((query) => jsonDecode(query)).toList(),
+  ).toString();
 
   /// Specify which attributes should be returned by the API call.
   static String select(List<String> attributes) =>
@@ -179,17 +198,18 @@ class Query {
       Query._('orderDesc', attribute).toString();
 
   /// Sort results randomly.
-  static String orderRandom() => Query._('orderRandom').toString();
+  static String orderRandom() =>
+      Query._('orderRandom').toString();
 
   /// Return results before [id].
-  ///
+  /// 
   /// Refer to the [Cursor Based Pagination](https://appwrite.io/docs/pagination#cursor-pagination)
   /// docs for more information.
   static String cursorBefore(String id) =>
       Query._('cursorBefore', null, id).toString();
 
   /// Return results after [id].
-  ///
+  /// 
   /// Refer to the [Cursor Based Pagination](https://appwrite.io/docs/pagination#cursor-pagination)
   /// docs for more information.
   static String cursorAfter(String id) =>
@@ -199,43 +219,27 @@ class Query {
   static String limit(int limit) => Query._('limit', null, limit).toString();
 
   /// Return results from [offset].
-  ///
+  /// 
   /// Refer to the [Offset Pagination](https://appwrite.io/docs/pagination#offset-pagination)
   /// docs for more information.
   static String offset(int offset) =>
       Query._('offset', null, offset).toString();
 
   /// Filter resources where [attribute] is at a specific distance from the given coordinates.
-  static String distanceEqual(
-          String attribute, List<dynamic> values, num distance,
-          [bool meters = true]) =>
-      Query._('distanceEqual', attribute, [
-        [values, distance, meters]
-      ]).toString();
+  static String distanceEqual(String attribute, List<dynamic> values, num distance, [bool meters = true]) =>
+      Query._('distanceEqual', attribute, [[values, distance, meters]]).toString();
 
   /// Filter resources where [attribute] is not at a specific distance from the given coordinates.
-  static String distanceNotEqual(
-          String attribute, List<dynamic> values, num distance,
-          [bool meters = true]) =>
-      Query._('distanceNotEqual', attribute, [
-        [values, distance, meters]
-      ]).toString();
+  static String distanceNotEqual(String attribute, List<dynamic> values, num distance, [bool meters = true]) =>
+      Query._('distanceNotEqual', attribute, [[values, distance, meters]]).toString();
 
   /// Filter resources where [attribute] is at a distance greater than the specified value from the given coordinates.
-  static String distanceGreaterThan(
-          String attribute, List<dynamic> values, num distance,
-          [bool meters = true]) =>
-      Query._('distanceGreaterThan', attribute, [
-        [values, distance, meters]
-      ]).toString();
+  static String distanceGreaterThan(String attribute, List<dynamic> values, num distance, [bool meters = true]) =>
+      Query._('distanceGreaterThan', attribute, [[values, distance, meters]]).toString();
 
   /// Filter resources where [attribute] is at a distance less than the specified value from the given coordinates.
-  static String distanceLessThan(
-          String attribute, List<dynamic> values, num distance,
-          [bool meters = true]) =>
-      Query._('distanceLessThan', attribute, [
-        [values, distance, meters]
-      ]).toString();
+  static String distanceLessThan(String attribute, List<dynamic> values, num distance, [bool meters = true]) =>
+      Query._('distanceLessThan', attribute, [[values, distance, meters]]).toString();
 
   /// Filter resources where [attribute] intersects with the given geometry.
   static String intersects(String attribute, List<dynamic> values) =>
