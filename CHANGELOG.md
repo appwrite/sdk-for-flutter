@@ -4,8 +4,6 @@
 
 * Added upsert() to DocumentChannel and RowChannel to support upsert operations on documents and rows.
 * Added Query.contains, Query.containsAny, and Query.containsAll for enhanced filtering capabilities.
-* Updated README to use appwrite: ^21.1.0 in dependencies.
-* Updated README server compatibility to Appwrite server 1.8.x.
 
 ## 21.1.0
 
