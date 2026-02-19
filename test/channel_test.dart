@@ -26,6 +26,16 @@ void main() {
               .toString(),
           'databases.db1.collections.col1.documents.doc1.create');
     });
+
+    test('returns database channel with upsert action', () {
+      expect(
+          Channel.database('db1')
+              .collection('col1')
+              .document('doc1')
+              .upsert()
+              .toString(),
+          'databases.db1.collections.col1.documents.doc1.upsert');
+    });
   });
 
   group('tablesdb()', () {

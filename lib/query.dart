@@ -98,10 +98,25 @@ class Query {
   static String endsWith(String attribute, String value) =>
       Query._('endsWith', attribute, value).toString();
 
-  /// Filter resources where [attribute] contains [value]
+  /// Filter resources where [attribute] contains [value].
+  /// For string attributes, checks if the string contains the substring.
   /// [value] can be a single value or a list.
+  ///
+  /// Note: For array attributes, use [containsAny] or [containsAll] instead.
   static String contains(String attribute, dynamic value) =>
       Query._('contains', attribute, value).toString();
+
+  /// Filter resources where [attribute] contains ANY of the specified [value]s.
+  /// For array and relationship attributes, matches documents where the attribute
+  /// contains at least one of the given values.
+  static String containsAny(String attribute, List<dynamic> value) =>
+      Query._('containsAny', attribute, value).toString();
+
+  /// Filter resources where [attribute] contains ALL of the specified [value]s.
+  /// For array and relationship attributes, matches documents where the attribute
+  /// contains every one of the given values.
+  static String containsAll(String attribute, List<dynamic> value) =>
+      Query._('containsAll', attribute, value).toString();
 
   /// Filter resources where [attribute] does not contain [value]
   /// [value] can be a single value or a list.

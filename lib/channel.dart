@@ -130,6 +130,7 @@ extension BucketChannel on Channel<_Bucket> {
 /// Only available on Channel<_Document>
 extension DocumentChannel on Channel<_Document> {
   Channel<_Resolved> create() => _resolve('create');
+  Channel<_Resolved> upsert() => _resolve('upsert');
   Channel<_Resolved> update() => _resolve('update');
   Channel<_Resolved> delete() => _resolve('delete');
 }
@@ -137,6 +138,7 @@ extension DocumentChannel on Channel<_Document> {
 /// Only available on Channel<_Row>
 extension RowChannel on Channel<_Row> {
   Channel<_Resolved> create() => _resolve('create');
+  Channel<_Resolved> upsert() => _resolve('upsert');
   Channel<_Resolved> update() => _resolve('update');
   Channel<_Resolved> delete() => _resolve('delete');
 }
