@@ -31,7 +31,7 @@ class Operator {
 
     result['method'] = method;
 
-    if (values != null) {
+    if(values != null) {
       result['values'] = values is List ? values : [values];
     }
 
@@ -147,7 +147,8 @@ class Operator {
       Operator._('arrayRemove', [value]).toString();
 
   /// Remove duplicate values from an array attribute.
-  static String arrayUnique() => Operator._('arrayUnique', []).toString();
+  static String arrayUnique() =>
+      Operator._('arrayUnique', []).toString();
 
   /// Keep only values that exist in both the current array and the provided array.
   static String arrayIntersect(List<dynamic> values) =>
@@ -172,7 +173,8 @@ class Operator {
       Operator._('stringReplace', [search, replace]).toString();
 
   /// Toggle a boolean attribute.
-  static String toggle() => Operator._('toggle', []).toString();
+  static String toggle() =>
+      Operator._('toggle', []).toString();
 
   /// Add days to a date attribute.
   static String dateAddDays(int days) =>
@@ -183,5 +185,6 @@ class Operator {
       Operator._('dateSubDays', [days]).toString();
 
   /// Set a date attribute to the current date and time.
-  static String dateSetNow() => Operator._('dateSetNow', []).toString();
+  static String dateSetNow() =>
+      Operator._('dateSetNow', []).toString();
 }

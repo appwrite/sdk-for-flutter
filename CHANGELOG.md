@@ -1,5 +1,10 @@
 # Change Log
 
+## 22.0.0
+
+* Breaking: Channel API no longer defaults to '*'; explicit IDs required.
+* Updated: Docs and README reflect 21.4.1; TTL examples added.
+
 ## 21.1.0
 
 * Add `queries` parameter to Realtime subscriptions for filtering events
