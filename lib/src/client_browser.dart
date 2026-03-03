@@ -63,6 +63,7 @@ class ClientBrowser extends ClientBase with ClientMixin {
     addHeader('X-Appwrite-Project', value);
     return this;
   }
+
   /// Your secret JSON Web Token
   @override
   ClientBrowser setJWT(value) {
@@ -70,12 +71,14 @@ class ClientBrowser extends ClientBase with ClientMixin {
     addHeader('X-Appwrite-JWT', value);
     return this;
   }
+
   @override
   ClientBrowser setLocale(value) {
     config['locale'] = value;
     addHeader('X-Appwrite-Locale', value);
     return this;
   }
+
   /// The user session to authenticate with
   @override
   ClientBrowser setSession(value) {
@@ -83,6 +86,7 @@ class ClientBrowser extends ClientBase with ClientMixin {
     addHeader('X-Appwrite-Session', value);
     return this;
   }
+
   /// Your secret dev API key
   @override
   ClientBrowser setDevKey(value) {
