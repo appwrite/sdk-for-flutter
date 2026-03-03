@@ -5,7 +5,7 @@ class Document implements Model {
   /// Document ID.
   final String $id;
 
-  /// Document automatically incrementing ID.
+  /// Document sequence ID.
   final int $sequence;
 
   /// Collection ID.

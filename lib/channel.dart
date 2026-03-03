@@ -30,7 +30,13 @@ class _Membership {}
 class _Resolved {}
 
 // Helper function for normalizing ID
-String _normalize(String id) => id.trim().isEmpty ? '*' : id.trim();
+String _normalize(String id) {
+  final trimmed = id.trim();
+  if (trimmed.isEmpty) {
+    throw ArgumentError('Channel ID is required');
+  }
+  return trimmed;
+}
 
 /// Channel class with generic type parameter for type-safe method chaining
 class Channel<T> {
@@ -58,25 +64,25 @@ class Channel<T> {
   String toString() => _segments.join('.');
 
   // --- ROOT FACTORIES ---
-  static Channel<_Database> database([String id = '*']) =>
+  static Channel<_Database> database(String id) =>
       Channel<_Database>._(['databases', _normalize(id)]);
 
-  static Channel<_TablesDB> tablesdb([String id = '*']) =>
+  static Channel<_TablesDB> tablesdb(String id) =>
       Channel<_TablesDB>._(['tablesdb', _normalize(id)]);
 
-  static Channel<_Bucket> bucket([String id = '*']) =>
+  static Channel<_Bucket> bucket(String id) =>
       Channel<_Bucket>._(['buckets', _normalize(id)]);
 
-  static Channel<_Execution> execution([String id = '*']) =>
+  static Channel<_Execution> execution(String id) =>
       Channel<_Execution>._(['executions', _normalize(id)]);
 
-  static Channel<_Func> function([String id = '*']) =>
+  static Channel<_Func> function(String id) =>
       Channel<_Func>._(['functions', _normalize(id)]);
 
-  static Channel<_Team> team([String id = '*']) =>
+  static Channel<_Team> team(String id) =>
       Channel<_Team>._(['teams', _normalize(id)]);
 
-  static Channel<_Membership> membership([String id = '*']) =>
+  static Channel<_Membership> membership(String id) =>
       Channel<_Membership>._(['memberships', _normalize(id)]);
 
   static String account() => 'account';
@@ -95,8 +101,8 @@ class Channel<T> {
 
 /// Only available on Channel<_Database>
 extension DatabaseChannel on Channel<_Database> {
-  Channel<_Collection> collection([String? id]) =>
-      _next<_Collection>('collections', id ?? '*');
+  Channel<_Collection> collection(String id) =>
+      _next<_Collection>('collections', id);
 }
 
 /// Only available on Channel<_Collection>
@@ -109,7 +115,7 @@ extension CollectionChannel on Channel<_Collection> {
 
 /// Only available on Channel<_TablesDB>
 extension TablesDBChannel on Channel<_TablesDB> {
-  Channel<_Table> table([String? id]) => _next<_Table>('tables', id ?? '*');
+  Channel<_Table> table(String id) => _next<_Table>('tables', id);
 }
 
 /// Only available on Channel<_Table>

@@ -5,7 +5,7 @@ class Row implements Model {
   /// Row ID.
   final String $id;
 
-  /// Row automatically incrementing ID.
+  /// Row sequence ID.
   final int $sequence;
 
   /// Table ID.

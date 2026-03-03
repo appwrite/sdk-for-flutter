@@ -3,18 +3,13 @@ import 'package:flutter_test/flutter_test.dart';
 
 void main() {
   group('database()', () {
-    test('returns database channel with defaults', () {
-      expect(Channel.database().collection().document().toString(),
-          'databases.*.collections.*.documents');
+    test('throws when database id is missing', () {
+      expect(() => Channel.database(''), throwsArgumentError);
     });
 
     test('returns database channel with specific IDs', () {
-      expect(
-          Channel.database('db1')
-              .collection('col1')
-              .document('doc1')
-              .toString(),
-          'databases.db1.collections.col1.documents.doc1');
+      expect(Channel.database('db1').collection('col1').document().toString(),
+          'databases.db1.collections.col1.documents');
     });
 
     test('returns database channel with action', () {
@@ -39,14 +34,13 @@ void main() {
   });
 
   group('tablesdb()', () {
-    test('returns tablesdb channel with defaults', () {
-      expect(Channel.tablesdb().table().row().toString(),
-          'tablesdb.*.tables.*.rows');
+    test('throws when tablesdb id is missing', () {
+      expect(() => Channel.tablesdb(''), throwsArgumentError);
     });
 
     test('returns tablesdb channel with specific IDs', () {
-      expect(Channel.tablesdb('db1').table('table1').row('row1').toString(),
-          'tablesdb.db1.tables.table1.rows.row1');
+      expect(Channel.tablesdb('db1').table('table1').row().toString(),
+          'tablesdb.db1.tables.table1.rows');
     });
 
     test('returns tablesdb channel with action', () {
@@ -67,13 +61,13 @@ void main() {
   });
 
   group('bucket()', () {
-    test('returns buckets channel with defaults', () {
-      expect(Channel.bucket().file().toString(), 'buckets.*.files');
+    test('throws when bucket id is missing', () {
+      expect(() => Channel.bucket(''), throwsArgumentError);
     });
 
     test('returns buckets channel with specific IDs', () {
-      expect(Channel.bucket('bucket1').file('file1').toString(),
-          'buckets.bucket1.files.file1');
+      expect(
+          Channel.bucket('bucket1').file().toString(), 'buckets.bucket1.files');
     });
 
     test('returns buckets channel with action', () {
@@ -83,8 +77,8 @@ void main() {
   });
 
   group('functions()', () {
-    test('returns functions channel with defaults', () {
-      expect(Channel.function().toString(), 'functions.*');
+    test('throws when function id is missing', () {
+      expect(() => Channel.function(''), throwsArgumentError);
     });
 
     test('returns functions channel with specific IDs', () {
@@ -93,8 +87,8 @@ void main() {
   });
 
   group('executions()', () {
-    test('returns executions channel with defaults', () {
-      expect(Channel.execution().toString(), 'executions.*');
+    test('throws when execution id is missing', () {
+      expect(() => Channel.execution(''), throwsArgumentError);
     });
 
     test('returns executions channel with specific IDs', () {
@@ -103,8 +97,8 @@ void main() {
   });
 
   group('teams()', () {
-    test('returns teams channel with default', () {
-      expect(Channel.team().toString(), 'teams.*');
+    test('throws when team id is missing', () {
+      expect(() => Channel.team(''), throwsArgumentError);
     });
 
     test('returns teams channel with specific team ID', () {
@@ -117,8 +111,8 @@ void main() {
   });
 
   group('memberships()', () {
-    test('returns memberships channel with default', () {
-      expect(Channel.membership().toString(), 'memberships.*');
+    test('throws when membership id is missing', () {
+      expect(() => Channel.membership(''), throwsArgumentError);
     });
 
     test('returns memberships channel with specific membership ID', () {

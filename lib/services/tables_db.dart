@@ -120,7 +120,8 @@ class TablesDB extends Service {
       required String tableId,
       List<String>? queries,
       String? transactionId,
-      bool? total}) async {
+      bool? total,
+      int? ttl}) async {
     final String apiPath = '/tablesdb/{databaseId}/tables/{tableId}/rows'
         .replaceAll('{databaseId}', databaseId)
         .replaceAll('{tableId}', tableId);
@@ -129,6 +130,7 @@ class TablesDB extends Service {
       if (queries != null) 'queries': queries,
       if (transactionId != null) 'transactionId': transactionId,
       if (total != null) 'total': total,
+      if (ttl != null) 'ttl': ttl,
     };
 
     final Map<String, String> apiHeaders = {};
