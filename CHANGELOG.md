@@ -1,8 +1,10 @@
 # Change Log
 
-## 0.0.0
+## 21.1.1
 
-*
+* Added extensive docs for `DocumentsDB` and `VectorsDB` usage
+* Updated README badge to API version `1.9.x` and dependency example
+* Updated dependency example to `^21.1.0`
 
 ## 21.1.0
 
