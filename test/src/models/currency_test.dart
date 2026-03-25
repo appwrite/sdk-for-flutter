@@ -17,13 +17,13 @@ void main() {
       final map = model.toMap();
       final result = Currency.fromMap(map);
 
-      expect(result.symbol, '\$');
-      expect(result.name, 'US dollar');
-      expect(result.symbolNative, '\$');
-      expect(result.decimalDigits, 2);
-      expect(result.rounding, 0);
-      expect(result.code, 'USD');
-      expect(result.namePlural, 'US dollars');
-    });
+            expect(result.symbol, '\$');
+                  expect(result.name, 'US dollar');
+                  expect(result.symbolNative, '\$');
+                  expect(result.decimalDigits, 2);
+                  expect(result.rounding, 0);
+                  expect(result.code, 'USD');
+                  expect(result.namePlural, 'US dollars');
+          });
   });
 }
