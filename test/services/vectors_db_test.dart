@@ -24,12 +24,11 @@ class MockClient extends Mock implements Client {
 
   @override
   Future webAuth(
-    Uri? url,
-    {
-        String? callbackUrlScheme,
-    }
-  ) async {
-    return super.noSuchMethod(Invocation.method(#webAuth, [url]), returnValue: 'done');
+    Uri? url, {
+    String? callbackUrlScheme,
+  }) async {
+    return super
+        .noSuchMethod(Invocation.method(#webAuth, [url]), returnValue: 'done');
   }
 
   @override
@@ -41,271 +40,249 @@ class MockClient extends Mock implements Client {
     Map<String, String>? headers,
     Function(UploadProgress)? onProgress,
   }) async {
-    return super.noSuchMethod(Invocation.method(#chunkedUpload, [path, params, paramName, idParamName, headers]), returnValue: Response(data: {}));
+    return super.noSuchMethod(
+        Invocation.method(
+            #chunkedUpload, [path, params, paramName, idParamName, headers]),
+        returnValue: Response(data: {}));
   }
 }
 
 void main() {
-    group('VectorsDB test', () {
-        late MockClient client;
-        late VectorsDB vectorsDB;
-
-        setUp(() {
-            client = MockClient();
-            vectorsDB = VectorsDB(client);
-        });
-
-        test('test method listTransactions()', () async {
-            final Map<String, dynamic> data = {
-                'total': 5,
-                'transactions': [],};
-
-
-            when(client.call(
-                HttpMethod.get,
-            )).thenAnswer((_) async => Response(data: data));
-
-
-            final response = await vectorsDB.listTransactions(
-            );
-            expect(response, isA<models.TransactionList>());
-
-        });
-
-        test('test method createTransaction()', () async {
-            final Map<String, dynamic> data = {
-                '\$id': '259125845563242502',
-                '\$createdAt': '2020-10-15T06:38:00.000+00:00',
-                '\$updatedAt': '2020-10-15T06:38:00.000+00:00',
-                'status': 'pending',
-                'operations': 5,
-                'expiresAt': '2020-10-15T06:38:00.000+00:00',};
-
-
-            when(client.call(
-                HttpMethod.post,
-            )).thenAnswer((_) async => Response(data: data));
-
-
-            final response = await vectorsDB.createTransaction(
-            );
-            expect(response, isA<models.Transaction>());
-
-        });
-
-        test('test method getTransaction()', () async {
-            final Map<String, dynamic> data = {
-                '\$id': '259125845563242502',
-                '\$createdAt': '2020-10-15T06:38:00.000+00:00',
-                '\$updatedAt': '2020-10-15T06:38:00.000+00:00',
-                'status': 'pending',
-                'operations': 5,
-                'expiresAt': '2020-10-15T06:38:00.000+00:00',};
-
-
-            when(client.call(
-                HttpMethod.get,
-            )).thenAnswer((_) async => Response(data: data));
-
-
-            final response = await vectorsDB.getTransaction(
-                transactionId: '<TRANSACTION_ID>',
-            );
-            expect(response, isA<models.Transaction>());
-
-        });
-
-        test('test method updateTransaction()', () async {
-            final Map<String, dynamic> data = {
-                '\$id': '259125845563242502',
-                '\$createdAt': '2020-10-15T06:38:00.000+00:00',
-                '\$updatedAt': '2020-10-15T06:38:00.000+00:00',
-                'status': 'pending',
-                'operations': 5,
-                'expiresAt': '2020-10-15T06:38:00.000+00:00',};
-
-
-            when(client.call(
-                HttpMethod.patch,
-            )).thenAnswer((_) async => Response(data: data));
-
-
-            final response = await vectorsDB.updateTransaction(
-                transactionId: '<TRANSACTION_ID>',
-            );
-            expect(response, isA<models.Transaction>());
-
-        });
-
-        test('test method deleteTransaction()', () async {
-            final data = '';
-
-            when(client.call(
-                HttpMethod.delete,
-            )).thenAnswer((_) async => Response(data: data));
-
-
-            final response = await vectorsDB.deleteTransaction(
-                transactionId: '<TRANSACTION_ID>',
-            );
-        });
-
-        test('test method createOperations()', () async {
-            final Map<String, dynamic> data = {
-                '\$id': '259125845563242502',
-                '\$createdAt': '2020-10-15T06:38:00.000+00:00',
-                '\$updatedAt': '2020-10-15T06:38:00.000+00:00',
-                'status': 'pending',
-                'operations': 5,
-                'expiresAt': '2020-10-15T06:38:00.000+00:00',};
-
-
-            when(client.call(
-                HttpMethod.post,
-            )).thenAnswer((_) async => Response(data: data));
-
-
-            final response = await vectorsDB.createOperations(
-                transactionId: '<TRANSACTION_ID>',
-            );
-            expect(response, isA<models.Transaction>());
-
-        });
-
-        test('test method listDocuments()', () async {
-            final Map<String, dynamic> data = {
-                'total': 5,
-                'documents': [],};
-
-
-            when(client.call(
-                HttpMethod.get,
-            )).thenAnswer((_) async => Response(data: data));
-
-
-            final response = await vectorsDB.listDocuments(
-                databaseId: '<DATABASE_ID>',
-                collectionId: '<COLLECTION_ID>',
-            );
-            expect(response, isA<models.DocumentList>());
-
-        });
-
-        test('test method createDocument()', () async {
-            final Map<String, dynamic> data = {
-                '\$id': '5e5ea5c16897e',
-                '\$sequence': '1',
-                '\$collectionId': '5e5ea5c15117e',
-                '\$databaseId': '5e5ea5c15117e',
-                '\$createdAt': '2020-10-15T06:38:00.000+00:00',
-                '\$updatedAt': '2020-10-15T06:38:00.000+00:00',
-                '\$permissions': [],};
-
-
-            when(client.call(
-                HttpMethod.post,
-            )).thenAnswer((_) async => Response(data: data));
-
-
-            final response = await vectorsDB.createDocument(
-                databaseId: '<DATABASE_ID>',
-                collectionId: '<COLLECTION_ID>',
-                documentId: '<DOCUMENT_ID>',
-                data: {},
-            );
-            expect(response, isA<models.Document>());
-
-        });
-
-        test('test method getDocument()', () async {
-            final Map<String, dynamic> data = {
-                '\$id': '5e5ea5c16897e',
-                '\$sequence': '1',
-                '\$collectionId': '5e5ea5c15117e',
-                '\$databaseId': '5e5ea5c15117e',
-                '\$createdAt': '2020-10-15T06:38:00.000+00:00',
-                '\$updatedAt': '2020-10-15T06:38:00.000+00:00',
-                '\$permissions': [],};
-
-
-            when(client.call(
-                HttpMethod.get,
-            )).thenAnswer((_) async => Response(data: data));
-
-
-            final response = await vectorsDB.getDocument(
-                databaseId: '<DATABASE_ID>',
-                collectionId: '<COLLECTION_ID>',
-                documentId: '<DOCUMENT_ID>',
-            );
-            expect(response, isA<models.Document>());
-
-        });
-
-        test('test method upsertDocument()', () async {
-            final Map<String, dynamic> data = {
-                '\$id': '5e5ea5c16897e',
-                '\$sequence': '1',
-                '\$collectionId': '5e5ea5c15117e',
-                '\$databaseId': '5e5ea5c15117e',
-                '\$createdAt': '2020-10-15T06:38:00.000+00:00',
-                '\$updatedAt': '2020-10-15T06:38:00.000+00:00',
-                '\$permissions': [],};
-
-
-            when(client.call(
-                HttpMethod.put,
-            )).thenAnswer((_) async => Response(data: data));
-
-
-            final response = await vectorsDB.upsertDocument(
-                databaseId: '<DATABASE_ID>',
-                collectionId: '<COLLECTION_ID>',
-                documentId: '<DOCUMENT_ID>',
-            );
-            expect(response, isA<models.Document>());
-
-        });
-
-        test('test method updateDocument()', () async {
-            final Map<String, dynamic> data = {
-                '\$id': '5e5ea5c16897e',
-                '\$sequence': '1',
-                '\$collectionId': '5e5ea5c15117e',
-                '\$databaseId': '5e5ea5c15117e',
-                '\$createdAt': '2020-10-15T06:38:00.000+00:00',
-                '\$updatedAt': '2020-10-15T06:38:00.000+00:00',
-                '\$permissions': [],};
-
-
-            when(client.call(
-                HttpMethod.patch,
-            )).thenAnswer((_) async => Response(data: data));
-
-
-            final response = await vectorsDB.updateDocument(
-                databaseId: '<DATABASE_ID>',
-                collectionId: '<COLLECTION_ID>',
-                documentId: '<DOCUMENT_ID>',
-            );
-            expect(response, isA<models.Document>());
-
-        });
-
-        test('test method deleteDocument()', () async {
-            final data = '';
-
-            when(client.call(
-                HttpMethod.delete,
-            )).thenAnswer((_) async => Response(data: data));
-
-
-            final response = await vectorsDB.deleteDocument(
-                databaseId: '<DATABASE_ID>',
-                collectionId: '<COLLECTION_ID>',
-                documentId: '<DOCUMENT_ID>',
-            );
-        });
-
+  group('VectorsDB test', () {
+    late MockClient client;
+    late VectorsDB vectorsDB;
+
+    setUp(() {
+      client = MockClient();
+      vectorsDB = VectorsDB(client);
     });
+
+    test('test method listTransactions()', () async {
+      final Map<String, dynamic> data = {
+        'total': 5,
+        'transactions': [],
+      };
+
+      when(client.call(
+        HttpMethod.get,
+      )).thenAnswer((_) async => Response(data: data));
+
+      final response = await vectorsDB.listTransactions();
+      expect(response, isA<models.TransactionList>());
+    });
+
+    test('test method createTransaction()', () async {
+      final Map<String, dynamic> data = {
+        '\$id': '259125845563242502',
+        '\$createdAt': '2020-10-15T06:38:00.000+00:00',
+        '\$updatedAt': '2020-10-15T06:38:00.000+00:00',
+        'status': 'pending',
+        'operations': 5,
+        'expiresAt': '2020-10-15T06:38:00.000+00:00',
+      };
+
+      when(client.call(
+        HttpMethod.post,
+      )).thenAnswer((_) async => Response(data: data));
+
+      final response = await vectorsDB.createTransaction();
+      expect(response, isA<models.Transaction>());
+    });
+
+    test('test method getTransaction()', () async {
+      final Map<String, dynamic> data = {
+        '\$id': '259125845563242502',
+        '\$createdAt': '2020-10-15T06:38:00.000+00:00',
+        '\$updatedAt': '2020-10-15T06:38:00.000+00:00',
+        'status': 'pending',
+        'operations': 5,
+        'expiresAt': '2020-10-15T06:38:00.000+00:00',
+      };
+
+      when(client.call(
+        HttpMethod.get,
+      )).thenAnswer((_) async => Response(data: data));
+
+      final response = await vectorsDB.getTransaction(
+        transactionId: '<TRANSACTION_ID>',
+      );
+      expect(response, isA<models.Transaction>());
+    });
+
+    test('test method updateTransaction()', () async {
+      final Map<String, dynamic> data = {
+        '\$id': '259125845563242502',
+        '\$createdAt': '2020-10-15T06:38:00.000+00:00',
+        '\$updatedAt': '2020-10-15T06:38:00.000+00:00',
+        'status': 'pending',
+        'operations': 5,
+        'expiresAt': '2020-10-15T06:38:00.000+00:00',
+      };
+
+      when(client.call(
+        HttpMethod.patch,
+      )).thenAnswer((_) async => Response(data: data));
+
+      final response = await vectorsDB.updateTransaction(
+        transactionId: '<TRANSACTION_ID>',
+      );
+      expect(response, isA<models.Transaction>());
+    });
+
+    test('test method deleteTransaction()', () async {
+      final data = '';
+
+      when(client.call(
+        HttpMethod.delete,
+      )).thenAnswer((_) async => Response(data: data));
+
+      final response = await vectorsDB.deleteTransaction(
+        transactionId: '<TRANSACTION_ID>',
+      );
+    });
+
+    test('test method createOperations()', () async {
+      final Map<String, dynamic> data = {
+        '\$id': '259125845563242502',
+        '\$createdAt': '2020-10-15T06:38:00.000+00:00',
+        '\$updatedAt': '2020-10-15T06:38:00.000+00:00',
+        'status': 'pending',
+        'operations': 5,
+        'expiresAt': '2020-10-15T06:38:00.000+00:00',
+      };
+
+      when(client.call(
+        HttpMethod.post,
+      )).thenAnswer((_) async => Response(data: data));
+
+      final response = await vectorsDB.createOperations(
+        transactionId: '<TRANSACTION_ID>',
+      );
+      expect(response, isA<models.Transaction>());
+    });
+
+    test('test method listDocuments()', () async {
+      final Map<String, dynamic> data = {
+        'total': 5,
+        'documents': [],
+      };
+
+      when(client.call(
+        HttpMethod.get,
+      )).thenAnswer((_) async => Response(data: data));
+
+      final response = await vectorsDB.listDocuments(
+        databaseId: '<DATABASE_ID>',
+        collectionId: '<COLLECTION_ID>',
+      );
+      expect(response, isA<models.DocumentList>());
+    });
+
+    test('test method createDocument()', () async {
+      final Map<String, dynamic> data = {
+        '\$id': '5e5ea5c16897e',
+        '\$sequence': '1',
+        '\$collectionId': '5e5ea5c15117e',
+        '\$databaseId': '5e5ea5c15117e',
+        '\$createdAt': '2020-10-15T06:38:00.000+00:00',
+        '\$updatedAt': '2020-10-15T06:38:00.000+00:00',
+        '\$permissions': [],
+      };
+
+      when(client.call(
+        HttpMethod.post,
+      )).thenAnswer((_) async => Response(data: data));
+
+      final response = await vectorsDB.createDocument(
+        databaseId: '<DATABASE_ID>',
+        collectionId: '<COLLECTION_ID>',
+        documentId: '<DOCUMENT_ID>',
+        data: {},
+      );
+      expect(response, isA<models.Document>());
+    });
+
+    test('test method getDocument()', () async {
+      final Map<String, dynamic> data = {
+        '\$id': '5e5ea5c16897e',
+        '\$sequence': '1',
+        '\$collectionId': '5e5ea5c15117e',
+        '\$databaseId': '5e5ea5c15117e',
+        '\$createdAt': '2020-10-15T06:38:00.000+00:00',
+        '\$updatedAt': '2020-10-15T06:38:00.000+00:00',
+        '\$permissions': [],
+      };
+
+      when(client.call(
+        HttpMethod.get,
+      )).thenAnswer((_) async => Response(data: data));
+
+      final response = await vectorsDB.getDocument(
+        databaseId: '<DATABASE_ID>',
+        collectionId: '<COLLECTION_ID>',
+        documentId: '<DOCUMENT_ID>',
+      );
+      expect(response, isA<models.Document>());
+    });
+
+    test('test method upsertDocument()', () async {
+      final Map<String, dynamic> data = {
+        '\$id': '5e5ea5c16897e',
+        '\$sequence': '1',
+        '\$collectionId': '5e5ea5c15117e',
+        '\$databaseId': '5e5ea5c15117e',
+        '\$createdAt': '2020-10-15T06:38:00.000+00:00',
+        '\$updatedAt': '2020-10-15T06:38:00.000+00:00',
+        '\$permissions': [],
+      };
+
+      when(client.call(
+        HttpMethod.put,
+      )).thenAnswer((_) async => Response(data: data));
+
+      final response = await vectorsDB.upsertDocument(
+        databaseId: '<DATABASE_ID>',
+        collectionId: '<COLLECTION_ID>',
+        documentId: '<DOCUMENT_ID>',
+      );
+      expect(response, isA<models.Document>());
+    });
+
+    test('test method updateDocument()', () async {
+      final Map<String, dynamic> data = {
+        '\$id': '5e5ea5c16897e',
+        '\$sequence': '1',
+        '\$collectionId': '5e5ea5c15117e',
+        '\$databaseId': '5e5ea5c15117e',
+        '\$createdAt': '2020-10-15T06:38:00.000+00:00',
+        '\$updatedAt': '2020-10-15T06:38:00.000+00:00',
+        '\$permissions': [],
+      };
+
+      when(client.call(
+        HttpMethod.patch,
+      )).thenAnswer((_) async => Response(data: data));
+
+      final response = await vectorsDB.updateDocument(
+        databaseId: '<DATABASE_ID>',
+        collectionId: '<COLLECTION_ID>',
+        documentId: '<DOCUMENT_ID>',
+      );
+      expect(response, isA<models.Document>());
+    });
+
+    test('test method deleteDocument()', () async {
+      final data = '';
+
+      when(client.call(
+        HttpMethod.delete,
+      )).thenAnswer((_) async => Response(data: data));
+
+      final response = await vectorsDB.deleteDocument(
+        databaseId: '<DATABASE_ID>',
+        collectionId: '<COLLECTION_ID>',
+        documentId: '<DOCUMENT_ID>',
+      );
+    });
+  });
 }
