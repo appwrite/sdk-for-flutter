@@ -48,7 +48,9 @@ mixin RealtimeMixin {
     _stopHeartbeat();
     _heartbeatTimer = Timer.periodic(Duration(seconds: 20), (_) {
       if (_websok != null) {
-        _websok!.sink.add(jsonEncode({"type": "ping"}));
+        _websok!.sink.add(jsonEncode({
+          "type": "ping"
+        }));
       }
     });
   }
@@ -64,7 +66,7 @@ mixin RealtimeMixin {
     for (var subscription in _subscriptions.values) {
       allChannels.addAll(subscription.channels);
     }
-
+    
     if (_creatingSocket) {
       _pendingSocketRebuild = true;
       return;
@@ -95,14 +97,13 @@ mixin RealtimeMixin {
           case 'connected':
             // channels, user, subscriptions?
             final message = RealtimeResponseConnected.fromMap(data.data);
-
+            
             // Store subscription ID mappings from backend
             // Format: { "0": "sub_a1f9", "1": "sub_b83c", ... }
             _slotToSubscriptionId.clear();
             _subscriptionIdToSlot.clear();
             if (data.data['subscriptions'] != null) {
-              final subscriptions =
-                  data.data['subscriptions'] as Map<String, dynamic>;
+              final subscriptions = data.data['subscriptions'] as Map<String, dynamic>;
               subscriptions.forEach((slotStr, subscriptionId) {
                 final slot = int.tryParse(slotStr);
                 if (slot != null) {
@@ -111,7 +112,7 @@ mixin RealtimeMixin {
                 }
               });
             }
-
+            
             if (message.user.isEmpty) {
               // send fallback cookie if exists
               final cookie = getFallbackCookie?.call();
@@ -132,12 +133,10 @@ mixin RealtimeMixin {
           case 'event':
             final messageData = data.data as Map<String, dynamic>;
             final message = RealtimeMessage.fromMap(messageData);
-            final subscriptions =
-                (messageData['subscriptions'] as List<dynamic>?)
-                        ?.map((x) => x.toString())
-                        .toList() ??
-                    <String>[];
-
+            final subscriptions = (messageData['subscriptions'] as List<dynamic>?)
+                ?.map((x) => x.toString())
+                .toList() ?? <String>[];
+            
             if (subscriptions.isEmpty) {
               break;
             }
@@ -206,21 +205,20 @@ mixin RealtimeMixin {
           "Please set endPointRealtime to connect to realtime server");
     }
     var uri = Uri.parse(client.endPointRealtime!);
-
+    
     // Collect all unique channels from all slots
     final allChannels = <String>{};
     for (var subscription in _subscriptions.values) {
       allChannels.addAll(subscription.channels);
     }
-
+    
     // Build query string from slots → channels → queries
     // Format: channel[slot][]=query (each query sent as separate parameter)
     // For each slot, repeat its queries under each channel it subscribes to
     // Example: slot 1 → channels [tests, prod], queries [q1, q2]
     //   Produces: tests[1][]=q1&tests[1][]=q2&prod[1][]=q1&prod[1][]=q2
-    var queryParams =
-        "project=${Uri.encodeComponent(client.config['project']!)}";
-
+    var queryParams = "project=${Uri.encodeComponent(client.config['project']!)}";
+    
     for (var channel in allChannels) {
       final encodedChannel = Uri.encodeComponent(channel);
       queryParams += "&channels[]=$encodedChannel";
@@ -232,12 +230,10 @@ mixin RealtimeMixin {
     for (var entry in _subscriptions.entries) {
       final slot = entry.key;
       final subscription = entry.value;
-
+      
       // Get queries array - each query is a separate string
-      final queries = subscription.queries.isEmpty
-          ? [selectAllQuery]
-          : subscription.queries;
-
+      final queries = subscription.queries.isEmpty ? [selectAllQuery] : subscription.queries;
+      
       // Repeat this slot's queries under each channel it subscribes to
       // Each query is sent as a separate parameter: channel[slot][]=q1&channel[slot][]=q2
       for (var channel in subscription.channels) {
@@ -252,8 +248,7 @@ mixin RealtimeMixin {
     final portPart = (uri.hasPort && uri.port != 80 && uri.port != 443)
         ? ':${uri.port}'
         : '';
-    return Uri.parse(
-        "${uri.scheme}://${uri.host}$portPart${uri.path}/realtime?$queryParams");
+    return Uri.parse("${uri.scheme}://${uri.host}$portPart${uri.path}/realtime?$queryParams");
   }
 
   /// Convert channel value to string
@@ -262,11 +257,9 @@ mixin RealtimeMixin {
     return channel is String ? channel : channel.toString();
   }
 
-  RealtimeSubscription subscribeTo(List<Object> channels,
-      [List<String> queries = const []]) {
+  RealtimeSubscription subscribeTo(List<Object> channels, [List<String> queries = const []]) {
     StreamController<RealtimeMessage> controller = StreamController.broadcast();
-    final channelStrings =
-        channels.map((ch) => _channelToString(ch)).toList().cast<String>();
+    final channelStrings = channels.map((ch) => _channelToString(ch)).toList().cast<String>();
     final queryStrings = List<String>.from(queries);
 
     // Allocate a new slot index
@@ -302,7 +295,7 @@ mixin RealtimeMixin {
           }
         });
     _subscriptions[slot] = subscription;
-
+    
     Future.delayed(Duration.zero, () => _createSocket());
     return subscription;
   }
