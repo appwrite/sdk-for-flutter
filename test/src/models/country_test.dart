@@ -12,8 +12,8 @@ void main() {
       final map = model.toMap();
       final result = Country.fromMap(map);
 
-      expect(result.name, 'United States');
-      expect(result.code, 'US');
-    });
+            expect(result.name, 'United States');
+                  expect(result.code, 'US');
+          });
   });
 }
