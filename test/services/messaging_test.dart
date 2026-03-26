@@ -24,11 +24,12 @@ class MockClient extends Mock implements Client {
 
   @override
   Future webAuth(
-    Uri? url, {
-    String? callbackUrlScheme,
-  }) async {
-    return super
-        .noSuchMethod(Invocation.method(#webAuth, [url]), returnValue: 'done');
+    Uri? url,
+    {
+        String? callbackUrlScheme,
+    }
+  ) async {
+    return super.noSuchMethod(Invocation.method(#webAuth, [url]), returnValue: 'done');
   }
 
   @override
@@ -40,68 +41,69 @@ class MockClient extends Mock implements Client {
     Map<String, String>? headers,
     Function(UploadProgress)? onProgress,
   }) async {
-    return super.noSuchMethod(
-        Invocation.method(
-            #chunkedUpload, [path, params, paramName, idParamName, headers]),
-        returnValue: Response(data: {}));
+    return super.noSuchMethod(Invocation.method(#chunkedUpload, [path, params, paramName, idParamName, headers]), returnValue: Response(data: {}));
   }
 }
 
 void main() {
-  group('Messaging test', () {
-    late MockClient client;
-    late Messaging messaging;
+    group('Messaging test', () {
+        late MockClient client;
+        late Messaging messaging;
 
-    setUp(() {
-      client = MockClient();
-      messaging = Messaging(client);
+        setUp(() {
+            client = MockClient();
+            messaging = Messaging(client);
+        });
+
+        test('test method createSubscriber()', () async {
+            final Map<String, dynamic> data = {
+                '\$id': '259125845563242502',
+                '\$createdAt': '2020-10-15T06:38:00.000+00:00',
+                '\$updatedAt': '2020-10-15T06:38:00.000+00:00',
+                'targetId': '259125845563242502',
+                'target': <String, dynamic>{
+    '\$id': '259125845563242502',
+    '\$createdAt': '2020-10-15T06:38:00.000+00:00',
+    '\$updatedAt': '2020-10-15T06:38:00.000+00:00',
+    'name': 'Apple iPhone 12',
+    'userId': '259125845563242502',
+    'providerType': 'email',
+    'identifier': 'token',
+    'expired': true,
+  },
+                'userId': '5e5ea5c16897e',
+                'userName': 'Aegon Targaryen',
+                'topicId': '259125845563242502',
+                'providerType': 'email',};
+
+
+            when(client.call(
+                HttpMethod.post,
+            )).thenAnswer((_) async => Response(data: data));
+
+
+            final response = await messaging.createSubscriber(
+                topicId: '<TOPIC_ID>',
+                subscriberId: '<SUBSCRIBER_ID>',
+                targetId: '<TARGET_ID>',
+            );
+            expect(response, isA<models.Subscriber>());
+
+        });
+
+        test('test method deleteSubscriber()', () async {
+            final data = '';
+
+            when(client.call(
+                HttpMethod.delete,
+            )).thenAnswer((_) async => Response(data: data));
+
+
+            final response = await messaging.deleteSubscriber(
+                topicId: '<TOPIC_ID>',
+                subscriberId: '<SUBSCRIBER_ID>',
+            );
+        });
+
     });
-
-    test('test method createSubscriber()', () async {
-      final Map<String, dynamic> data = {
-        '\$id': '259125845563242502',
-        '\$createdAt': '2020-10-15T06:38:00.000+00:00',
-        '\$updatedAt': '2020-10-15T06:38:00.000+00:00',
-        'targetId': '259125845563242502',
-        'target': <String, dynamic>{
-          '\$id': '259125845563242502',
-          '\$createdAt': '2020-10-15T06:38:00.000+00:00',
-          '\$updatedAt': '2020-10-15T06:38:00.000+00:00',
-          'name': 'Apple iPhone 12',
-          'userId': '259125845563242502',
-          'providerType': 'email',
-          'identifier': 'token',
-          'expired': true,
-        },
-        'userId': '5e5ea5c16897e',
-        'userName': 'Aegon Targaryen',
-        'topicId': '259125845563242502',
-        'providerType': 'email',
-      };
-
-      when(client.call(
-        HttpMethod.post,
-      )).thenAnswer((_) async => Response(data: data));
-
-      final response = await messaging.createSubscriber(
-        topicId: '<TOPIC_ID>',
-        subscriberId: '<SUBSCRIBER_ID>',
-        targetId: '<TARGET_ID>',
-      );
-      expect(response, isA<models.Subscriber>());
-    });
-
-    test('test method deleteSubscriber()', () async {
-      final data = '';
-
-      when(client.call(
-        HttpMethod.delete,
-      )).thenAnswer((_) async => Response(data: data));
-
-      final response = await messaging.deleteSubscriber(
-        topicId: '<TOPIC_ID>',
-        subscriberId: '<SUBSCRIBER_ID>',
-      );
-    });
-  });
 }
