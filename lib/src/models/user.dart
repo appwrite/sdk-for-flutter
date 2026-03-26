@@ -59,6 +59,12 @@ class User implements Model {
   /// Most recent access date in ISO 8601 format. This attribute is only updated again after 24 hours.
   final String accessedAt;
 
+  /// Whether the user can impersonate other users.
+  final bool? impersonator;
+
+  /// ID of the original actor performing the impersonation. Present only when the current request is impersonating another user. Internal audit logs attribute the action to this user, while the impersonated target is recorded only in internal audit payload data.
+  final String? impersonatorUserId;
+
   User({
     required this.$id,
     required this.$createdAt,
@@ -79,6 +85,8 @@ class User implements Model {
     required this.prefs,
     required this.targets,
     required this.accessedAt,
+    this.impersonator,
+    this.impersonatorUserId,
   });
 
   factory User.fromMap(Map<String, dynamic> map) {
@@ -102,6 +110,8 @@ class User implements Model {
       prefs: Preferences.fromMap(map['prefs']),
       targets: List<Target>.from(map['targets'].map((p) => Target.fromMap(p))),
       accessedAt: map['accessedAt'].toString(),
+      impersonator: map['impersonator'],
+      impersonatorUserId: map['impersonatorUserId']?.toString(),
     );
   }
 
@@ -127,6 +137,8 @@ class User implements Model {
       "prefs": prefs.toMap(),
       "targets": targets.map((p) => p.toMap()).toList(),
       "accessedAt": accessedAt,
+      "impersonator": impersonator,
+      "impersonatorUserId": impersonatorUserId,
     };
   }
 }

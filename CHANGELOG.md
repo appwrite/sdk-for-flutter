@@ -1,5 +1,11 @@
 # Change Log
 
+## 23.0.0
+
+* [BREAKING] Changed `$sequence` type from `int` to `string` for rows and documents
+* Updated README badge to API version `1.9.x` and dependency example
+* Updated dependency example to `^21.1.0`
+
 ## 22.0.0
 
 * Breaking: Channel API no longer defaults to '*'; explicit IDs required.

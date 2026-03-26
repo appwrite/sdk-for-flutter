@@ -5,13 +5,13 @@ class Log implements Model {
   /// Event name.
   final String event;
 
-  /// User ID.
+  /// User ID of the actor recorded for this log. During impersonation, this is the original impersonator, not the impersonated target user.
   final String userId;
 
-  /// User Email.
+  /// User email of the actor recorded for this log. During impersonation, this is the original impersonator.
   final String userEmail;
 
-  /// User Name.
+  /// User name of the actor recorded for this log. During impersonation, this is the original impersonator.
   final String userName;
 
   /// API mode when event triggered.

@@ -6,7 +6,7 @@ class Row implements Model {
   final String $id;
 
   /// Row sequence ID.
-  final int $sequence;
+  final String $sequence;
 
   /// Table ID.
   final String $tableId;
@@ -39,7 +39,7 @@ class Row implements Model {
   factory Row.fromMap(Map<String, dynamic> map) {
     return Row(
       $id: map['\$id'].toString(),
-      $sequence: map['\$sequence'],
+      $sequence: map['\$sequence'].toString(),
       $tableId: map['\$tableId'].toString(),
       $databaseId: map['\$databaseId'].toString(),
       $createdAt: map['\$createdAt'].toString(),
