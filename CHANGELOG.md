@@ -2,9 +2,12 @@
 
 ## 23.0.0
 
-* [BREAKING] Changed `$sequence` type from `int` to `string` for rows and documents
-* Updated README badge to API version `1.9.x` and dependency example
-* Updated dependency example to `^21.1.0`
+* [BREAKING] Changed `$sequence` type from `int` to `String` for `Row` and `Document` models
+* Added impersonation support: `setImpersonateUserId()`, `setImpersonateUserEmail()`, `setImpersonateUserPhone()` on `Client`, `ClientBrowser`, and `ClientIO`
+* Added `impersonator` and `impersonatorUserId` optional fields to `User` model
+* Updated `Log` model field descriptions to clarify impersonation behavior for `userId`, `userEmail`, `userName`
+* Updated `X-Appwrite-Response-Format` header to `1.9.0`
+* Updated README badge to API version `1.9.x` and dependency example to `^23.0.0`
 
 ## 22.0.0
 
