@@ -19,7 +19,7 @@ Add this to your package's `pubspec.yaml` file:
 
 ```yml
 dependencies:
-  appwrite: ^23.0.0
+  appwrite: ^23.1.0
 ```
 
 You can install packages from the command line:

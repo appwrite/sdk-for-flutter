@@ -5,15 +5,15 @@ void main() {
   group('MfaType', () {
     test('model', () {
       final model = MfaType(
-        secret: '1',
-        uri: '1',
+        secret: '[SHARED_SECRET]',
+        uri: 'otpauth://totp/appwrite:user@example.com?secret=[SHARED_SECRET]&issuer=appwrite',
       );
 
       final map = model.toMap();
       final result = MfaType.fromMap(map);
 
-      expect(result.secret, '1');
-      expect(result.uri, '1');
-    });
+            expect(result.secret, '[SHARED_SECRET]');
+                  expect(result.uri, 'otpauth://totp/appwrite:user@example.com?secret=[SHARED_SECRET]&issuer=appwrite');
+          });
   });
 }

@@ -27,8 +27,7 @@ abstract class Client {
   factory Client({
     String endPoint = 'https://cloud.appwrite.io/v1',
     bool selfSigned = false,
-  }) =>
-      createClient(endPoint: endPoint, selfSigned: selfSigned);
+  }) => createClient(endPoint: endPoint, selfSigned: selfSigned);
 
   /// Handle OAuth2 session creation.
   Future webAuth(Uri url, {String? callbackUrlScheme});
@@ -96,6 +95,9 @@ abstract class Client {
 
   /// Add headers that should be sent with all API calls.
   Client addHeader(String key, String value);
+
+  /// Get the current request headers.
+  Map<String, String> getHeaders();
 
   /// Sends a "ping" request to Appwrite to verify connectivity.
   Future<String> ping();

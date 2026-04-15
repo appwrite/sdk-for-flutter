@@ -1,5 +1,13 @@
 # Change Log
 
+## 23.1.0
+
+* Added `x` OAuth provider to `OAuthProvider` enum
+* Added `userType` field to `Log` model
+* Added `getHeaders()` method to `Client`
+* Updated `X-Appwrite-Response-Format` header to `1.9.1`
+* Updated TTL description for list caching in Databases and TablesDB
+
 ## 23.0.0
 
 * [BREAKING] Changed `$sequence` type from `int` to `String` for `Row` and `Document` models
