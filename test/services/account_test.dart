@@ -234,8 +234,9 @@ void main() {
 
     test('test method createMfaAuthenticator()', () async {
       final Map<String, dynamic> data = {
-        'secret': '1',
-        'uri': '1',
+        'secret': '[SHARED_SECRET]',
+        'uri':
+            'otpauth://totp/appwrite:user@example.com?secret=[SHARED_SECRET]&issuer=appwrite',
       };
 
       when(client.call(
@@ -250,8 +251,9 @@ void main() {
 
     test('test method createMFAAuthenticator()', () async {
       final Map<String, dynamic> data = {
-        'secret': '1',
-        'uri': '1',
+        'secret': '[SHARED_SECRET]',
+        'uri':
+            'otpauth://totp/appwrite:user@example.com?secret=[SHARED_SECRET]&issuer=appwrite',
       };
 
       when(client.call(

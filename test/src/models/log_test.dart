@@ -10,6 +10,7 @@ void main() {
         userEmail: 'john@appwrite.io',
         userName: 'John Doe',
         mode: 'admin',
+        userType: 'user',
         ip: '127.0.0.1',
         time: '2020-10-15T06:38:00.000+00:00',
         osCode: 'Mac',
@@ -36,6 +37,7 @@ void main() {
       expect(result.userEmail, 'john@appwrite.io');
       expect(result.userName, 'John Doe');
       expect(result.mode, 'admin');
+      expect(result.userType, 'user');
       expect(result.ip, '127.0.0.1');
       expect(result.time, '2020-10-15T06:38:00.000+00:00');
       expect(result.osCode, 'Mac');

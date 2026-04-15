@@ -17,6 +17,9 @@ class Log implements Model {
   /// API mode when event triggered.
   final String mode;
 
+  /// User type who triggered the audit log. Possible values: user, admin, guest, keyProject, keyAccount, keyOrganization.
+  final String userType;
+
   /// IP session in use when the session was created.
   final String ip;
 
@@ -71,6 +74,7 @@ class Log implements Model {
     required this.userEmail,
     required this.userName,
     required this.mode,
+    required this.userType,
     required this.ip,
     required this.time,
     required this.osCode,
@@ -96,6 +100,7 @@ class Log implements Model {
       userEmail: map['userEmail'].toString(),
       userName: map['userName'].toString(),
       mode: map['mode'].toString(),
+      userType: map['userType'].toString(),
       ip: map['ip'].toString(),
       time: map['time'].toString(),
       osCode: map['osCode'].toString(),
@@ -123,6 +128,7 @@ class Log implements Model {
       "userEmail": userEmail,
       "userName": userName,
       "mode": mode,
+      "userType": userType,
       "ip": ip,
       "time": time,
       "osCode": osCode,

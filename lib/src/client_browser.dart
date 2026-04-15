@@ -40,8 +40,8 @@ class ClientBrowser extends ClientBase with ClientMixin {
       'x-sdk-name': 'Flutter',
       'x-sdk-platform': 'client',
       'x-sdk-language': 'flutter',
-      'x-sdk-version': '23.0.0',
-      'X-Appwrite-Response-Format': '1.9.0',
+      'x-sdk-version': '23.1.0',
+      'X-Appwrite-Response-Format': '1.9.1',
     };
 
     config = {};
@@ -153,6 +153,11 @@ class ClientBrowser extends ClientBase with ClientMixin {
     _headers![key] = value;
 
     return this;
+  }
+
+  @override
+  Map<String, String> getHeaders() {
+    return Map<String, String>.from(_headers!);
   }
 
   Future init() async {

@@ -46,6 +46,9 @@ abstract class ClientBase implements Client {
   ClientBase addHeader(String key, String value);
 
   @override
+  Map<String, String> getHeaders();
+
+  @override
   Future<String> ping() async {
     final String apiPath = '/ping';
     final response = await call(
