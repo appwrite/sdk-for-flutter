@@ -1,13 +1,9 @@
 # Change Log
 
-## 23.3.0
-
-* Updated: Regenerated SDK with latest generator output and refreshed compatibility docs
-* Updated: README dependency example moved to `^23.3.0`
-
 ## 23.2.0
 
-* Updated: Regenerated Flutter SDK with latest generator output for client APIs
+* Updated: Regenerated SDK with latest generator output and refreshed compatibility docs
+* Updated: README dependency example moved to `^23.2.0`
 
 ## 23.1.0
 
