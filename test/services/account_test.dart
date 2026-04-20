@@ -56,6 +56,7 @@ void main() {
         });
 
         test('test method get()', () async {
+
             final Map<String, dynamic> data = {
                 '\$id': '5e5ea5c16897e',
                 '\$createdAt': '2020-10-15T06:38:00.000+00:00',
@@ -87,6 +88,7 @@ void main() {
         });
 
         test('test method create()', () async {
+
             final Map<String, dynamic> data = {
                 '\$id': '5e5ea5c16897e',
                 '\$createdAt': '2020-10-15T06:38:00.000+00:00',
@@ -121,6 +123,7 @@ void main() {
         });
 
         test('test method updateEmail()', () async {
+
             final Map<String, dynamic> data = {
                 '\$id': '5e5ea5c16897e',
                 '\$createdAt': '2020-10-15T06:38:00.000+00:00',
@@ -154,6 +157,7 @@ void main() {
         });
 
         test('test method listIdentities()', () async {
+
             final Map<String, dynamic> data = {
                 'total': 5,
                 'identities': [],};
@@ -171,6 +175,7 @@ void main() {
         });
 
         test('test method deleteIdentity()', () async {
+
             final data = '';
 
             when(client.call(
@@ -184,6 +189,7 @@ void main() {
         });
 
         test('test method createJWT()', () async {
+
             final Map<String, dynamic> data = {
                 'jwt': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c',};
 
@@ -200,6 +206,7 @@ void main() {
         });
 
         test('test method listLogs()', () async {
+
             final Map<String, dynamic> data = {
                 'total': 5,
                 'logs': [],};
@@ -217,6 +224,7 @@ void main() {
         });
 
         test('test method updateMFA()', () async {
+
             final Map<String, dynamic> data = {
                 '\$id': '5e5ea5c16897e',
                 '\$createdAt': '2020-10-15T06:38:00.000+00:00',
@@ -249,6 +257,7 @@ void main() {
         });
 
         test('test method createMfaAuthenticator()', () async {
+
             final Map<String, dynamic> data = {
                 'secret': '[SHARED_SECRET]',
                 'uri': 'otpauth://totp/appwrite:user@example.com?secret=[SHARED_SECRET]&issuer=appwrite',};
@@ -267,6 +276,7 @@ void main() {
         });
 
         test('test method createMFAAuthenticator()', () async {
+
             final Map<String, dynamic> data = {
                 'secret': '[SHARED_SECRET]',
                 'uri': 'otpauth://totp/appwrite:user@example.com?secret=[SHARED_SECRET]&issuer=appwrite',};
@@ -285,6 +295,7 @@ void main() {
         });
 
         test('test method updateMfaAuthenticator()', () async {
+
             final Map<String, dynamic> data = {
                 '\$id': '5e5ea5c16897e',
                 '\$createdAt': '2020-10-15T06:38:00.000+00:00',
@@ -318,6 +329,7 @@ void main() {
         });
 
         test('test method updateMFAAuthenticator()', () async {
+
             final Map<String, dynamic> data = {
                 '\$id': '5e5ea5c16897e',
                 '\$createdAt': '2020-10-15T06:38:00.000+00:00',
@@ -351,6 +363,7 @@ void main() {
         });
 
         test('test method deleteMfaAuthenticator()', () async {
+
             final data = '';
 
             when(client.call(
@@ -364,6 +377,7 @@ void main() {
         });
 
         test('test method deleteMFAAuthenticator()', () async {
+
             final data = '';
 
             when(client.call(
@@ -377,6 +391,7 @@ void main() {
         });
 
         test('test method createMfaChallenge()', () async {
+
             final Map<String, dynamic> data = {
                 '\$id': 'bb8ea5c16897e',
                 '\$createdAt': '2020-10-15T06:38:00.000+00:00',
@@ -397,6 +412,7 @@ void main() {
         });
 
         test('test method createMFAChallenge()', () async {
+
             final Map<String, dynamic> data = {
                 '\$id': 'bb8ea5c16897e',
                 '\$createdAt': '2020-10-15T06:38:00.000+00:00',
@@ -417,6 +433,7 @@ void main() {
         });
 
         test('test method updateMfaChallenge()', () async {
+
             final Map<String, dynamic> data = {
                 '\$id': '5e5ea5c16897e',
                 '\$createdAt': '2020-10-15T06:38:00.000+00:00',
@@ -463,6 +480,7 @@ void main() {
         });
 
         test('test method updateMFAChallenge()', () async {
+
             final Map<String, dynamic> data = {
                 '\$id': '5e5ea5c16897e',
                 '\$createdAt': '2020-10-15T06:38:00.000+00:00',
@@ -509,6 +527,7 @@ void main() {
         });
 
         test('test method listMfaFactors()', () async {
+
             final Map<String, dynamic> data = {
                 'totp': true,
                 'phone': true,
@@ -528,6 +547,7 @@ void main() {
         });
 
         test('test method listMFAFactors()', () async {
+
             final Map<String, dynamic> data = {
                 'totp': true,
                 'phone': true,
@@ -547,6 +567,7 @@ void main() {
         });
 
         test('test method getMfaRecoveryCodes()', () async {
+
             final Map<String, dynamic> data = {
                 'recoveryCodes': [],};
 
@@ -563,6 +584,7 @@ void main() {
         });
 
         test('test method getMFARecoveryCodes()', () async {
+
             final Map<String, dynamic> data = {
                 'recoveryCodes': [],};
 
@@ -579,6 +601,7 @@ void main() {
         });
 
         test('test method createMfaRecoveryCodes()', () async {
+
             final Map<String, dynamic> data = {
                 'recoveryCodes': [],};
 
@@ -595,6 +618,7 @@ void main() {
         });
 
         test('test method createMFARecoveryCodes()', () async {
+
             final Map<String, dynamic> data = {
                 'recoveryCodes': [],};
 
@@ -611,6 +635,7 @@ void main() {
         });
 
         test('test method updateMfaRecoveryCodes()', () async {
+
             final Map<String, dynamic> data = {
                 'recoveryCodes': [],};
 
@@ -627,6 +652,7 @@ void main() {
         });
 
         test('test method updateMFARecoveryCodes()', () async {
+
             final Map<String, dynamic> data = {
                 'recoveryCodes': [],};
 
@@ -643,6 +669,7 @@ void main() {
         });
 
         test('test method updateName()', () async {
+
             final Map<String, dynamic> data = {
                 '\$id': '5e5ea5c16897e',
                 '\$createdAt': '2020-10-15T06:38:00.000+00:00',
@@ -675,6 +702,7 @@ void main() {
         });
 
         test('test method updatePassword()', () async {
+
             final Map<String, dynamic> data = {
                 '\$id': '5e5ea5c16897e',
                 '\$createdAt': '2020-10-15T06:38:00.000+00:00',
@@ -707,6 +735,7 @@ void main() {
         });
 
         test('test method updatePhone()', () async {
+
             final Map<String, dynamic> data = {
                 '\$id': '5e5ea5c16897e',
                 '\$createdAt': '2020-10-15T06:38:00.000+00:00',
@@ -740,6 +769,7 @@ void main() {
         });
 
         test('test method getPrefs()', () async {
+
             final Map<String, dynamic> data = {};
 
 
@@ -755,6 +785,7 @@ void main() {
         });
 
         test('test method updatePrefs()', () async {
+
             final Map<String, dynamic> data = {
                 '\$id': '5e5ea5c16897e',
                 '\$createdAt': '2020-10-15T06:38:00.000+00:00',
@@ -787,6 +818,7 @@ void main() {
         });
 
         test('test method createRecovery()', () async {
+
             final Map<String, dynamic> data = {
                 '\$id': 'bb8ea5c16897e',
                 '\$createdAt': '2020-10-15T06:38:00.000+00:00',
@@ -810,6 +842,7 @@ void main() {
         });
 
         test('test method updateRecovery()', () async {
+
             final Map<String, dynamic> data = {
                 '\$id': 'bb8ea5c16897e',
                 '\$createdAt': '2020-10-15T06:38:00.000+00:00',
@@ -834,6 +867,7 @@ void main() {
         });
 
         test('test method listSessions()', () async {
+
             final Map<String, dynamic> data = {
                 'total': 5,
                 'sessions': [],};
@@ -851,6 +885,7 @@ void main() {
         });
 
         test('test method deleteSessions()', () async {
+
             final data = '';
 
             when(client.call(
@@ -863,6 +898,7 @@ void main() {
         });
 
         test('test method createAnonymousSession()', () async {
+
             final Map<String, dynamic> data = {
                 '\$id': '5e5ea5c16897e',
                 '\$createdAt': '2020-10-15T06:38:00.000+00:00',
@@ -907,6 +943,7 @@ void main() {
         });
 
         test('test method createEmailPasswordSession()', () async {
+
             final Map<String, dynamic> data = {
                 '\$id': '5e5ea5c16897e',
                 '\$createdAt': '2020-10-15T06:38:00.000+00:00',
@@ -953,6 +990,7 @@ void main() {
         });
 
         test('test method updateMagicURLSession()', () async {
+
             final Map<String, dynamic> data = {
                 '\$id': '5e5ea5c16897e',
                 '\$createdAt': '2020-10-15T06:38:00.000+00:00',
@@ -1008,9 +1046,12 @@ void main() {
             final response = await account.createOAuth2Session(
                 provider: enums.OAuthProvider.amazon,
             );
+            expect(response, isA<models.Session>());
+
         });
 
         test('test method updatePhoneSession()', () async {
+
             final Map<String, dynamic> data = {
                 '\$id': '5e5ea5c16897e',
                 '\$createdAt': '2020-10-15T06:38:00.000+00:00',
@@ -1057,6 +1098,7 @@ void main() {
         });
 
         test('test method createSession()', () async {
+
             final Map<String, dynamic> data = {
                 '\$id': '5e5ea5c16897e',
                 '\$createdAt': '2020-10-15T06:38:00.000+00:00',
@@ -1103,6 +1145,7 @@ void main() {
         });
 
         test('test method getSession()', () async {
+
             final Map<String, dynamic> data = {
                 '\$id': '5e5ea5c16897e',
                 '\$createdAt': '2020-10-15T06:38:00.000+00:00',
@@ -1148,6 +1191,7 @@ void main() {
         });
 
         test('test method updateSession()', () async {
+
             final Map<String, dynamic> data = {
                 '\$id': '5e5ea5c16897e',
                 '\$createdAt': '2020-10-15T06:38:00.000+00:00',
@@ -1193,6 +1237,7 @@ void main() {
         });
 
         test('test method deleteSession()', () async {
+
             final data = '';
 
             when(client.call(
@@ -1206,6 +1251,7 @@ void main() {
         });
 
         test('test method updateStatus()', () async {
+
             final Map<String, dynamic> data = {
                 '\$id': '5e5ea5c16897e',
                 '\$createdAt': '2020-10-15T06:38:00.000+00:00',
@@ -1237,6 +1283,7 @@ void main() {
         });
 
         test('test method createPushTarget()', () async {
+
             final Map<String, dynamic> data = {
                 '\$id': '259125845563242502',
                 '\$createdAt': '2020-10-15T06:38:00.000+00:00',
@@ -1262,6 +1309,7 @@ void main() {
         });
 
         test('test method updatePushTarget()', () async {
+
             final Map<String, dynamic> data = {
                 '\$id': '259125845563242502',
                 '\$createdAt': '2020-10-15T06:38:00.000+00:00',
@@ -1287,6 +1335,7 @@ void main() {
         });
 
         test('test method deletePushTarget()', () async {
+
             final data = '';
 
             when(client.call(
@@ -1300,6 +1349,7 @@ void main() {
         });
 
         test('test method createEmailToken()', () async {
+
             final Map<String, dynamic> data = {
                 '\$id': 'bb8ea5c16897e',
                 '\$createdAt': '2020-10-15T06:38:00.000+00:00',
@@ -1323,6 +1373,7 @@ void main() {
         });
 
         test('test method createMagicURLToken()', () async {
+
             final Map<String, dynamic> data = {
                 '\$id': 'bb8ea5c16897e',
                 '\$createdAt': '2020-10-15T06:38:00.000+00:00',
@@ -1355,9 +1406,12 @@ void main() {
             final response = await account.createOAuth2Token(
                 provider: enums.OAuthProvider.amazon,
             );
+            expect(response, isA<models.Token>());
+
         });
 
         test('test method createPhoneToken()', () async {
+
             final Map<String, dynamic> data = {
                 '\$id': 'bb8ea5c16897e',
                 '\$createdAt': '2020-10-15T06:38:00.000+00:00',
@@ -1381,6 +1435,7 @@ void main() {
         });
 
         test('test method createEmailVerification()', () async {
+
             final Map<String, dynamic> data = {
                 '\$id': 'bb8ea5c16897e',
                 '\$createdAt': '2020-10-15T06:38:00.000+00:00',
@@ -1403,6 +1458,7 @@ void main() {
         });
 
         test('test method createVerification()', () async {
+
             final Map<String, dynamic> data = {
                 '\$id': 'bb8ea5c16897e',
                 '\$createdAt': '2020-10-15T06:38:00.000+00:00',
@@ -1425,6 +1481,7 @@ void main() {
         });
 
         test('test method updateEmailVerification()', () async {
+
             final Map<String, dynamic> data = {
                 '\$id': 'bb8ea5c16897e',
                 '\$createdAt': '2020-10-15T06:38:00.000+00:00',
@@ -1448,6 +1505,7 @@ void main() {
         });
 
         test('test method updateVerification()', () async {
+
             final Map<String, dynamic> data = {
                 '\$id': 'bb8ea5c16897e',
                 '\$createdAt': '2020-10-15T06:38:00.000+00:00',
@@ -1471,6 +1529,7 @@ void main() {
         });
 
         test('test method createPhoneVerification()', () async {
+
             final Map<String, dynamic> data = {
                 '\$id': 'bb8ea5c16897e',
                 '\$createdAt': '2020-10-15T06:38:00.000+00:00',
@@ -1492,6 +1551,7 @@ void main() {
         });
 
         test('test method updatePhoneVerification()', () async {
+
             final Map<String, dynamic> data = {
                 '\$id': 'bb8ea5c16897e',
                 '\$createdAt': '2020-10-15T06:38:00.000+00:00',

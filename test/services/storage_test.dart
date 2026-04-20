@@ -56,6 +56,7 @@ void main() {
         });
 
         test('test method listFiles()', () async {
+
             final Map<String, dynamic> data = {
                 'total': 5,
                 'files': [],};
@@ -74,6 +75,7 @@ void main() {
         });
 
         test('test method createFile()', () async {
+
             final Map<String, dynamic> data = {
                 '\$id': '5e5ea5c16897e',
                 'bucketId': '5e5ea5c16897e',
@@ -109,6 +111,7 @@ void main() {
         });
 
         test('test method getFile()', () async {
+
             final Map<String, dynamic> data = {
                 '\$id': '5e5ea5c16897e',
                 'bucketId': '5e5ea5c16897e',
@@ -139,6 +142,7 @@ void main() {
         });
 
         test('test method updateFile()', () async {
+
             final Map<String, dynamic> data = {
                 '\$id': '5e5ea5c16897e',
                 'bucketId': '5e5ea5c16897e',
@@ -169,6 +173,7 @@ void main() {
         });
 
         test('test method deleteFile()', () async {
+
             final data = '';
 
             when(client.call(

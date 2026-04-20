@@ -56,6 +56,7 @@ void main() {
         });
 
         test('test method createSubscriber()', () async {
+
             final Map<String, dynamic> data = {
                 '\$id': '259125845563242502',
                 '\$createdAt': '2020-10-15T06:38:00.000+00:00',
@@ -92,6 +93,7 @@ void main() {
         });
 
         test('test method deleteSubscriber()', () async {
+
             final data = '';
 
             when(client.call(

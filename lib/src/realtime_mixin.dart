@@ -22,6 +22,7 @@ mixin RealtimeMixin {
   final Map<int, String> _slotToSubscriptionId = {};
   // Inverse map: subscriptionId -> slot index (for O(1) lookup)
   final Map<String, int> _subscriptionIdToSlot = {};
+  final List<int> _pendingSubscribeSlots = [];
   int _subscriptionsCounter = 0;
   WebSocketChannel? _websok;
   String? _lastUrl;
@@ -80,6 +81,7 @@ mixin RealtimeMixin {
         _lastUrl = uri.toString();
       } else {
         if (_lastUrl == uri.toString() && _websok?.closeCode == null) {
+          _sendSubscribeMessage();
           _creatingSocket = false;
           return;
         }
@@ -99,16 +101,23 @@ mixin RealtimeMixin {
             final message = RealtimeResponseConnected.fromMap(data.data);
             
             // Store subscription ID mappings from backend
-            // Format: { "0": "sub_a1f9", "1": "sub_b83c", ... }
-            _slotToSubscriptionId.clear();
-            _subscriptionIdToSlot.clear();
-            if (data.data['subscriptions'] != null) {
-              final subscriptions = data.data['subscriptions'] as Map<String, dynamic>;
-              subscriptions.forEach((slotStr, subscriptionId) {
-                final slot = int.tryParse(slotStr);
+            // Format: { "0": "sub_a1f9", "1": "sub_b83c", ... }.
+            // Try direct slot first, then slot+1 for zero-based server maps.
+            final rawSubscriptions = data.data['subscriptions'];
+            if (rawSubscriptions is Map) {
+              rawSubscriptions.forEach((slotStr, subscriptionId) {
+                final slot = int.tryParse(slotStr.toString());
                 if (slot != null) {
-                  _slotToSubscriptionId[slot] = subscriptionId.toString();
-                  _subscriptionIdToSlot[subscriptionId.toString()] = slot;
+                  final directSlotExists = _subscriptions.containsKey(slot);
+                  final shiftedSlot = slot + 1;
+                  final shiftedSlotExists = _subscriptions.containsKey(shiftedSlot);
+                  final targetSlot = directSlotExists
+                      ? slot
+                      : shiftedSlotExists
+                          ? shiftedSlot
+                          : slot;
+                  _slotToSubscriptionId[targetSlot] = subscriptionId.toString();
+                  _subscriptionIdToSlot[subscriptionId.toString()] = targetSlot;
                 }
               });
             }
@@ -125,10 +134,30 @@ mixin RealtimeMixin {
                 }));
               }
             }
+            _sendSubscribeMessage();
             _startHeartbeat(); // Start heartbeat after successful connection
             break;
+          case 'response':
+            final actionData = data.data as Map<String, dynamic>;
+            if (actionData['to'] != 'subscribe') {
+              break;
+            }
+            final subscriptions = actionData['subscriptions'] as List<dynamic>?;
+            if (subscriptions == null) {
+              break;
+            }
+            for (var index = 0; index < subscriptions.length; index++) {
+              final slot = index < _pendingSubscribeSlots.length ? _pendingSubscribeSlots[index] : null;
+              final item = subscriptions[index] as Map<String, dynamic>?;
+              final subscriptionId = item?['subscriptionId']?.toString();
+              if (slot == null || subscriptionId == null || subscriptionId.isEmpty) {
+                continue;
+              }
+              _slotToSubscriptionId[slot] = subscriptionId;
+              _subscriptionIdToSlot[subscriptionId] = slot;
+            }
+            break;
           case 'pong':
-            debugPrint('Received heartbeat response from realtime server');
             break;
           case 'event':
             final messageData = data.data as Map<String, dynamic>;
@@ -206,49 +235,46 @@ mixin RealtimeMixin {
     }
     var uri = Uri.parse(client.endPointRealtime!);
     
-    // Collect all unique channels from all slots
-    final allChannels = <String>{};
-    for (var subscription in _subscriptions.values) {
-      allChannels.addAll(subscription.channels);
-    }
-    
-    // Build query string from slots → channels → queries
-    // Format: channel[slot][]=query (each query sent as separate parameter)
-    // For each slot, repeat its queries under each channel it subscribes to
-    // Example: slot 1 → channels [tests, prod], queries [q1, q2]
-    //   Produces: tests[1][]=q1&tests[1][]=q2&prod[1][]=q1&prod[1][]=q2
     var queryParams = "project=${Uri.encodeComponent(client.config['project']!)}";
-    
-    for (var channel in allChannels) {
-      final encodedChannel = Uri.encodeComponent(channel);
-      queryParams += "&channels[]=$encodedChannel";
-    }
-
-    // Hardcode the select query string since Query is not accessible in this mixin
-    // This is equivalent to Query.select(["*"]) which returns: {"method":"select","values":["*"]}
-    final selectAllQuery = '{"method":"select","values":["*"]}';
-    for (var entry in _subscriptions.entries) {
-      final slot = entry.key;
-      final subscription = entry.value;
-      
-      // Get queries array - each query is a separate string
-      final queries = subscription.queries.isEmpty ? [selectAllQuery] : subscription.queries;
-      
-      // Repeat this slot's queries under each channel it subscribes to
-      // Each query is sent as a separate parameter: channel[slot][]=q1&channel[slot][]=q2
-      for (var channel in subscription.channels) {
-        final encodedChannel = Uri.encodeComponent(channel);
-        for (var query in queries) {
-          final encodedQuery = Uri.encodeComponent(query);
-          queryParams += "&$encodedChannel[$slot][]=$encodedQuery";
-        }
-      }
-    }
 
     final portPart = (uri.hasPort && uri.port != 80 && uri.port != 443)
         ? ':${uri.port}'
         : '';
     return Uri.parse("${uri.scheme}://${uri.host}$portPart${uri.path}/realtime?$queryParams");
+  }
+
+  void _sendSubscribeMessage() {
+    if (_websok == null || _websok?.closeCode != null) {
+      return;
+    }
+
+    final rows = <Map<String, dynamic>>[];
+    _pendingSubscribeSlots.clear();
+
+    for (var entry in _subscriptions.entries) {
+      final slot = entry.key;
+      final subscription = entry.value;
+      final queries = subscription.queries;
+      final row = <String, dynamic>{
+        'channels': subscription.channels,
+        'queries': queries,
+      };
+      final knownSubscriptionId = _slotToSubscriptionId[slot];
+      if (knownSubscriptionId != null && knownSubscriptionId.isNotEmpty) {
+        row['subscriptionId'] = knownSubscriptionId;
+      }
+      rows.add(row);
+      _pendingSubscribeSlots.add(slot);
+    }
+
+    if (rows.isEmpty) {
+      return;
+    }
+
+    _websok!.sink.add(jsonEncode({
+      'type': 'subscribe',
+      'data': rows,
+    }));
   }
 
   /// Convert channel value to string
@@ -282,14 +308,12 @@ mixin RealtimeMixin {
           }
           controller.close();
 
-          // Rebuild channels from remaining slots
-          final remainingChannels = <String>{};
-          for (var sub in _subscriptions.values) {
-            remainingChannels.addAll(sub.channels);
-          }
-
-          if (remainingChannels.isNotEmpty) {
-            await Future.delayed(Duration.zero, () => _createSocket());
+          if (_subscriptions.isNotEmpty) {
+            if (_websok != null && _websok?.closeCode == null) {
+              _sendSubscribeMessage();
+            } else {
+              await Future.delayed(Duration.zero, () => _createSocket());
+            }
           } else {
             await _closeConnection();
           }

@@ -56,6 +56,7 @@ void main() {
         });
 
         test('test method get()', () async {
+
             final Map<String, dynamic> data = {
                 'ip': '127.0.0.1',
                 'countryCode': 'US',
@@ -78,6 +79,7 @@ void main() {
         });
 
         test('test method listCodes()', () async {
+
             final Map<String, dynamic> data = {
                 'total': 5,
                 'localeCodes': [],};
@@ -95,6 +97,7 @@ void main() {
         });
 
         test('test method listContinents()', () async {
+
             final Map<String, dynamic> data = {
                 'total': 5,
                 'continents': [],};
@@ -112,6 +115,7 @@ void main() {
         });
 
         test('test method listCountries()', () async {
+
             final Map<String, dynamic> data = {
                 'total': 5,
                 'countries': [],};
@@ -129,6 +133,7 @@ void main() {
         });
 
         test('test method listCountriesEU()', () async {
+
             final Map<String, dynamic> data = {
                 'total': 5,
                 'countries': [],};
@@ -146,6 +151,7 @@ void main() {
         });
 
         test('test method listCountriesPhones()', () async {
+
             final Map<String, dynamic> data = {
                 'total': 5,
                 'phones': [],};
@@ -163,6 +169,7 @@ void main() {
         });
 
         test('test method listCurrencies()', () async {
+
             final Map<String, dynamic> data = {
                 'total': 5,
                 'currencies': [],};
@@ -180,6 +187,7 @@ void main() {
         });
 
         test('test method listLanguages()', () async {
+
             final Map<String, dynamic> data = {
                 'total': 5,
                 'languages': [],};

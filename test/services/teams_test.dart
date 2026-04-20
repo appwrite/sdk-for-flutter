@@ -56,6 +56,7 @@ void main() {
         });
 
         test('test method list()', () async {
+
             final Map<String, dynamic> data = {
                 'total': 5,
                 'teams': [],};
@@ -73,6 +74,7 @@ void main() {
         });
 
         test('test method create()', () async {
+
             final Map<String, dynamic> data = {
                 '\$id': '5e5ea5c16897e',
                 '\$createdAt': '2020-10-15T06:38:00.000+00:00',
@@ -96,6 +98,7 @@ void main() {
         });
 
         test('test method get()', () async {
+
             final Map<String, dynamic> data = {
                 '\$id': '5e5ea5c16897e',
                 '\$createdAt': '2020-10-15T06:38:00.000+00:00',
@@ -118,6 +121,7 @@ void main() {
         });
 
         test('test method updateName()', () async {
+
             final Map<String, dynamic> data = {
                 '\$id': '5e5ea5c16897e',
                 '\$createdAt': '2020-10-15T06:38:00.000+00:00',
@@ -141,6 +145,7 @@ void main() {
         });
 
         test('test method delete()', () async {
+
             final data = '';
 
             when(client.call(
@@ -154,6 +159,7 @@ void main() {
         });
 
         test('test method listMemberships()', () async {
+
             final Map<String, dynamic> data = {
                 'total': 5,
                 'memberships': [],};
@@ -172,6 +178,7 @@ void main() {
         });
 
         test('test method createMembership()', () async {
+
             final Map<String, dynamic> data = {
                 '\$id': '5e5ea5c16897e',
                 '\$createdAt': '2020-10-15T06:38:00.000+00:00',
@@ -202,6 +209,7 @@ void main() {
         });
 
         test('test method getMembership()', () async {
+
             final Map<String, dynamic> data = {
                 '\$id': '5e5ea5c16897e',
                 '\$createdAt': '2020-10-15T06:38:00.000+00:00',
@@ -232,6 +240,7 @@ void main() {
         });
 
         test('test method updateMembership()', () async {
+
             final Map<String, dynamic> data = {
                 '\$id': '5e5ea5c16897e',
                 '\$createdAt': '2020-10-15T06:38:00.000+00:00',
@@ -263,6 +272,7 @@ void main() {
         });
 
         test('test method deleteMembership()', () async {
+
             final data = '';
 
             when(client.call(
@@ -277,6 +287,7 @@ void main() {
         });
 
         test('test method updateMembershipStatus()', () async {
+
             final Map<String, dynamic> data = {
                 '\$id': '5e5ea5c16897e',
                 '\$createdAt': '2020-10-15T06:38:00.000+00:00',
@@ -309,6 +320,7 @@ void main() {
         });
 
         test('test method getPrefs()', () async {
+
             final Map<String, dynamic> data = {};
 
 
@@ -325,6 +337,7 @@ void main() {
         });
 
         test('test method updatePrefs()', () async {
+
             final Map<String, dynamic> data = {};
 
 

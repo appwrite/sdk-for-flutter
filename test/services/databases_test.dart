@@ -56,6 +56,7 @@ void main() {
         });
 
         test('test method listTransactions()', () async {
+
             final Map<String, dynamic> data = {
                 'total': 5,
                 'transactions': [],};
@@ -73,6 +74,7 @@ void main() {
         });
 
         test('test method createTransaction()', () async {
+
             final Map<String, dynamic> data = {
                 '\$id': '259125845563242502',
                 '\$createdAt': '2020-10-15T06:38:00.000+00:00',
@@ -94,6 +96,7 @@ void main() {
         });
 
         test('test method getTransaction()', () async {
+
             final Map<String, dynamic> data = {
                 '\$id': '259125845563242502',
                 '\$createdAt': '2020-10-15T06:38:00.000+00:00',
@@ -116,6 +119,7 @@ void main() {
         });
 
         test('test method updateTransaction()', () async {
+
             final Map<String, dynamic> data = {
                 '\$id': '259125845563242502',
                 '\$createdAt': '2020-10-15T06:38:00.000+00:00',
@@ -138,6 +142,7 @@ void main() {
         });
 
         test('test method deleteTransaction()', () async {
+
             final data = '';
 
             when(client.call(
@@ -151,6 +156,7 @@ void main() {
         });
 
         test('test method createOperations()', () async {
+
             final Map<String, dynamic> data = {
                 '\$id': '259125845563242502',
                 '\$createdAt': '2020-10-15T06:38:00.000+00:00',
@@ -173,6 +179,7 @@ void main() {
         });
 
         test('test method listDocuments()', () async {
+
             final Map<String, dynamic> data = {
                 'total': 5,
                 'documents': [],};
@@ -192,6 +199,7 @@ void main() {
         });
 
         test('test method createDocument()', () async {
+
             final Map<String, dynamic> data = {
                 '\$id': '5e5ea5c16897e',
                 '\$sequence': '1',
@@ -218,6 +226,7 @@ void main() {
         });
 
         test('test method getDocument()', () async {
+
             final Map<String, dynamic> data = {
                 '\$id': '5e5ea5c16897e',
                 '\$sequence': '1',
@@ -243,6 +252,7 @@ void main() {
         });
 
         test('test method upsertDocument()', () async {
+
             final Map<String, dynamic> data = {
                 '\$id': '5e5ea5c16897e',
                 '\$sequence': '1',
@@ -268,6 +278,7 @@ void main() {
         });
 
         test('test method updateDocument()', () async {
+
             final Map<String, dynamic> data = {
                 '\$id': '5e5ea5c16897e',
                 '\$sequence': '1',
@@ -293,6 +304,7 @@ void main() {
         });
 
         test('test method deleteDocument()', () async {
+
             final data = '';
 
             when(client.call(
@@ -308,6 +320,7 @@ void main() {
         });
 
         test('test method decrementDocumentAttribute()', () async {
+
             final Map<String, dynamic> data = {
                 '\$id': '5e5ea5c16897e',
                 '\$sequence': '1',
@@ -334,6 +347,7 @@ void main() {
         });
 
         test('test method incrementDocumentAttribute()', () async {
+
             final Map<String, dynamic> data = {
                 '\$id': '5e5ea5c16897e',
                 '\$sequence': '1',

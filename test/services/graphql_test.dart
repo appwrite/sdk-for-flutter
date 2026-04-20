@@ -56,6 +56,7 @@ void main() {
         });
 
         test('test method query()', () async {
+
             final data = '';
 
             when(client.call(
@@ -69,6 +70,7 @@ void main() {
         });
 
         test('test method mutation()', () async {
+
             final data = '';
 
             when(client.call(
