@@ -49,9 +49,7 @@ mixin RealtimeMixin {
     _stopHeartbeat();
     _heartbeatTimer = Timer.periodic(Duration(seconds: 20), (_) {
       if (_websok != null) {
-        _websok!.sink.add(jsonEncode({
-          "type": "ping"
-        }));
+        _websok!.sink.add(jsonEncode({"type": "ping"}));
       }
     });
   }
@@ -67,7 +65,7 @@ mixin RealtimeMixin {
     for (var subscription in _subscriptions.values) {
       allChannels.addAll(subscription.channels);
     }
-    
+
     if (_creatingSocket) {
       _pendingSocketRebuild = true;
       return;
@@ -99,7 +97,7 @@ mixin RealtimeMixin {
           case 'connected':
             // channels, user, subscriptions?
             final message = RealtimeResponseConnected.fromMap(data.data);
-            
+
             // Store subscription ID mappings from backend
             // Format: { "0": "sub_a1f9", "1": "sub_b83c", ... }.
             // Try direct slot first, then slot+1 for zero-based server maps.
@@ -110,7 +108,8 @@ mixin RealtimeMixin {
                 if (slot != null) {
                   final directSlotExists = _subscriptions.containsKey(slot);
                   final shiftedSlot = slot + 1;
-                  final shiftedSlotExists = _subscriptions.containsKey(shiftedSlot);
+                  final shiftedSlotExists =
+                      _subscriptions.containsKey(shiftedSlot);
                   final targetSlot = directSlotExists
                       ? slot
                       : shiftedSlotExists
@@ -121,7 +120,7 @@ mixin RealtimeMixin {
                 }
               });
             }
-            
+
             if (message.user.isEmpty) {
               // send fallback cookie if exists
               final cookie = getFallbackCookie?.call();
@@ -147,10 +146,14 @@ mixin RealtimeMixin {
               break;
             }
             for (var index = 0; index < subscriptions.length; index++) {
-              final slot = index < _pendingSubscribeSlots.length ? _pendingSubscribeSlots[index] : null;
+              final slot = index < _pendingSubscribeSlots.length
+                  ? _pendingSubscribeSlots[index]
+                  : null;
               final item = subscriptions[index] as Map<String, dynamic>?;
               final subscriptionId = item?['subscriptionId']?.toString();
-              if (slot == null || subscriptionId == null || subscriptionId.isEmpty) {
+              if (slot == null ||
+                  subscriptionId == null ||
+                  subscriptionId.isEmpty) {
                 continue;
               }
               _slotToSubscriptionId[slot] = subscriptionId;
@@ -162,10 +165,12 @@ mixin RealtimeMixin {
           case 'event':
             final messageData = data.data as Map<String, dynamic>;
             final message = RealtimeMessage.fromMap(messageData);
-            final subscriptions = (messageData['subscriptions'] as List<dynamic>?)
-                ?.map((x) => x.toString())
-                .toList() ?? <String>[];
-            
+            final subscriptions =
+                (messageData['subscriptions'] as List<dynamic>?)
+                        ?.map((x) => x.toString())
+                        .toList() ??
+                    <String>[];
+
             if (subscriptions.isEmpty) {
               break;
             }
@@ -234,13 +239,15 @@ mixin RealtimeMixin {
           "Please set endPointRealtime to connect to realtime server");
     }
     var uri = Uri.parse(client.endPointRealtime!);
-    
-    var queryParams = "project=${Uri.encodeComponent(client.config['project']!)}";
+
+    var queryParams =
+        "project=${Uri.encodeComponent(client.config['project']!)}";
 
     final portPart = (uri.hasPort && uri.port != 80 && uri.port != 443)
         ? ':${uri.port}'
         : '';
-    return Uri.parse("${uri.scheme}://${uri.host}$portPart${uri.path}/realtime?$queryParams");
+    return Uri.parse(
+        "${uri.scheme}://${uri.host}$portPart${uri.path}/realtime?$queryParams");
   }
 
   void _sendSubscribeMessage() {
@@ -283,9 +290,11 @@ mixin RealtimeMixin {
     return channel is String ? channel : channel.toString();
   }
 
-  RealtimeSubscription subscribeTo(List<Object> channels, [List<String> queries = const []]) {
+  RealtimeSubscription subscribeTo(List<Object> channels,
+      [List<String> queries = const []]) {
     StreamController<RealtimeMessage> controller = StreamController.broadcast();
-    final channelStrings = channels.map((ch) => _channelToString(ch)).toList().cast<String>();
+    final channelStrings =
+        channels.map((ch) => _channelToString(ch)).toList().cast<String>();
     final queryStrings = List<String>.from(queries);
 
     // Allocate a new slot index
@@ -319,7 +328,7 @@ mixin RealtimeMixin {
           }
         });
     _subscriptions[slot] = subscription;
-    
+
     Future.delayed(Duration.zero, () => _createSocket());
     return subscription;
   }
