@@ -1,5 +1,9 @@
 # Change Log
 
+## 23.2.0
+
+* Updated: Regenerated Flutter SDK with latest generator output for client APIs
+
 ## 23.1.0
 
 * Added `x` OAuth provider to `OAuthProvider` enum
