@@ -55,9 +55,7 @@ mixin RealtimeMixin {
     _stopHeartbeat();
     _heartbeatTimer = Timer.periodic(Duration(seconds: 20), (_) {
       if (_websok != null) {
-        _websok!.sink.add(jsonEncode({
-          "type": "ping"
-        }));
+        _websok!.sink.add(jsonEncode({"type": "ping"}));
       }
     });
   }
@@ -72,7 +70,7 @@ mixin RealtimeMixin {
     for (var subscription in _subscriptions.values) {
       allChannels.addAll(subscription.channels);
     }
-    
+
     if (_creatingSocket) {
       _pendingSocketRebuild = true;
       return;
@@ -136,9 +134,11 @@ mixin RealtimeMixin {
           case 'event':
             final messageData = data.data as Map<String, dynamic>;
             final message = RealtimeMessage.fromMap(messageData);
-            final subscriptions = (messageData['subscriptions'] as List<dynamic>?)
-                ?.map((x) => x.toString())
-                .toList() ?? <String>[];
+            final subscriptions =
+                (messageData['subscriptions'] as List<dynamic>?)
+                        ?.map((x) => x.toString())
+                        .toList() ??
+                    <String>[];
 
             if (subscriptions.isEmpty) {
               break;
@@ -203,13 +203,15 @@ mixin RealtimeMixin {
           "Please set endPointRealtime to connect to realtime server");
     }
     var uri = Uri.parse(client.endPointRealtime!);
-    
-    var queryParams = "project=${Uri.encodeComponent(client.config['project']!)}";
+
+    var queryParams =
+        "project=${Uri.encodeComponent(client.config['project']!)}";
 
     final portPart = (uri.hasPort && uri.port != 80 && uri.port != 443)
         ? ':${uri.port}'
         : '';
-    return Uri.parse("${uri.scheme}://${uri.host}$portPart${uri.path}/realtime?$queryParams");
+    return Uri.parse(
+        "${uri.scheme}://${uri.host}$portPart${uri.path}/realtime?$queryParams");
   }
 
   void _sendUnsubscribeMessage(List<String> subscriptionIds) {
@@ -285,9 +287,11 @@ mixin RealtimeMixin {
     return channel is String ? channel : channel.toString();
   }
 
-  RealtimeSubscription subscribeTo(List<Object> channels, [List<String> queries = const []]) {
+  RealtimeSubscription subscribeTo(List<Object> channels,
+      [List<String> queries = const []]) {
     StreamController<RealtimeMessage> controller = StreamController.broadcast();
-    final channelStrings = channels.map((ch) => _channelToString(ch)).toList().cast<String>();
+    final channelStrings =
+        channels.map((ch) => _channelToString(ch)).toList().cast<String>();
     final queryStrings = List<String>.from(queries);
 
     final subscriptionId = _generateUniqueSubscriptionId();
@@ -304,8 +308,7 @@ mixin RealtimeMixin {
       _sendUnsubscribeMessage([subscriptionId]);
     }
 
-    Future<void> update(
-        {List<Object>? channels, List<String>? queries}) async {
+    Future<void> update({List<Object>? channels, List<String>? queries}) async {
       final current = _subscriptions[subscriptionId];
       if (current == null) {
         return;
