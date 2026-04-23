@@ -1,9 +1,10 @@
 # Change Log
 
-## 23.2.0
+## 24.0.0
 
-* Updated: Regenerated SDK with latest generator output and refreshed compatibility docs
-* Updated: README dependency example moved to `^23.2.0`
+* Breaking: Added `unsubscribe()`, `update()`, and `close()` for Realtime subscription lifecycle.
+* Added: Added `userPhone` to the `Membership` model.
+* Updated: Updated `X-Appwrite-Response-Format` header to `1.9.2`.
 
 ## 23.1.0
 

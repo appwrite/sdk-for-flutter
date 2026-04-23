@@ -10,9 +10,9 @@ abstract class Realtime extends Service {
   /// Initializes a [Realtime] service
   factory Realtime(Client client) => createRealtime(client);
 
-  /// Subscribes to Appwrite events and returns a `RealtimeSubscription` object, which can be used
+  /// Subscribes to Appwrite events and returns a `RealtimeSubscription` object, which can be used 
   /// to listen to events on the channels in realtime and to close the subscription to stop listening.
-  ///
+  /// 
   /// Possible channels are:
   /// - account
   /// - collections
@@ -41,7 +41,7 @@ abstract class Realtime extends Service {
   ///
   /// subscription.close();
   /// ```
-  ///
+  /// 
   /// You can also use Channel builders:
   /// ```dart
   /// final subscription = realtime.subscribe([
@@ -54,6 +54,11 @@ abstract class Realtime extends Service {
     List<Object> channels, {
     List<String> queries = const [],
   }); // Object can be String or Channel<T>
+
+  /// Close the WebSocket connection and drop all active subscriptions client-side.
+  /// Use this instead of calling [RealtimeSubscription.unsubscribe] on every
+  /// subscription when you want to tear everything down.
+  Future<void> disconnect();
 
   /// The [close code](https://datatracker.ietf.org/doc/html/rfc6455#section-7.1.5) set when the WebSocket connection is closed.
   ///
