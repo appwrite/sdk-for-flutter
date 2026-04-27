@@ -7,4 +7,7 @@ abstract class RealtimeBase implements Realtime {
     List<Object> channels, {
     List<String> queries = const [],
   }); // Object can be String or Channel<T>
+
+  @override
+  Future<void> disconnect();
 }

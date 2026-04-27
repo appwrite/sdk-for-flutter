@@ -55,6 +55,11 @@ abstract class Realtime extends Service {
     List<String> queries = const [],
   }); // Object can be String or Channel<T>
 
+  /// Close the WebSocket connection and drop all active subscriptions client-side.
+  /// Use this instead of calling [RealtimeSubscription.unsubscribe] on every
+  /// subscription when you want to tear everything down.
+  Future<void> disconnect();
+
   /// The [close code](https://datatracker.ietf.org/doc/html/rfc6455#section-7.1.5) set when the WebSocket connection is closed.
   ///
   /// Before the connection has been closed, this will be `null`.

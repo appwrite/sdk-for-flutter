@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:convert';
+import 'dart:math';
 import 'package:flutter/foundation.dart';
 import 'package:web_socket_channel/web_socket_channel.dart';
 import 'package:web_socket_channel/status.dart' as status;
@@ -13,16 +14,22 @@ import 'realtime_response_connected.dart';
 typedef WebSocketFactory = Future<WebSocketChannel> Function(Uri uri);
 typedef GetFallbackCookie = String? Function();
 
+String _uniqueSubscriptionId() {
+  final now = DateTime.now();
+  final sec = (now.millisecondsSinceEpoch / 1000).floor();
+  final usec = now.microsecondsSinceEpoch - (sec * 1000000);
+  final base = sec.toRadixString(16) + usec.toRadixString(16).padLeft(5, '0');
+  final rand = StringBuffer();
+  for (var i = 0; i < 7; i++) {
+    rand.write(Random().nextInt(16).toRadixString(16));
+  }
+  return base + rand.toString();
+}
+
 mixin RealtimeMixin {
   late Client client;
-  // Slot-centric state: Map<slot, RealtimeSubscription>
-  // Each subscription stores its own channels and queries
-  final Map<int, RealtimeSubscription> _subscriptions = {};
-  // Map slot index -> subscriptionId (from backend)
-  final Map<int, String> _slotToSubscriptionId = {};
-  // Inverse map: subscriptionId -> slot index (for O(1) lookup)
-  final Map<String, int> _subscriptionIdToSlot = {};
-  int _subscriptionsCounter = 0;
+  final Map<String, RealtimeSubscription> _subscriptions = {};
+  final Map<String, Map<String, dynamic>> _pendingSubscribes = {};
   WebSocketChannel? _websok;
   String? _lastUrl;
   late WebSocketFactory getWebSocket;
@@ -59,7 +66,6 @@ mixin RealtimeMixin {
   }
 
   Future<void> _createSocket() async {
-    // Rebuild channels from all slots
     final allChannels = <String>{};
     for (var subscription in _subscriptions.values) {
       allChannels.addAll(subscription.channels);
@@ -78,6 +84,7 @@ mixin RealtimeMixin {
         _lastUrl = uri.toString();
       } else {
         if (_lastUrl == uri.toString() && _websok?.closeCode == null) {
+          _sendPendingSubscribes();
           _creatingSocket = false;
           return;
         }
@@ -93,24 +100,7 @@ mixin RealtimeMixin {
             handleError(data);
             break;
           case 'connected':
-            // channels, user, subscriptions?
             final message = RealtimeResponseConnected.fromMap(data.data);
-
-            // Store subscription ID mappings from backend
-            // Format: { "0": "sub_a1f9", "1": "sub_b83c", ... }
-            _slotToSubscriptionId.clear();
-            _subscriptionIdToSlot.clear();
-            if (data.data['subscriptions'] != null) {
-              final subscriptions =
-                  data.data['subscriptions'] as Map<String, dynamic>;
-              subscriptions.forEach((slotStr, subscriptionId) {
-                final slot = int.tryParse(slotStr);
-                if (slot != null) {
-                  _slotToSubscriptionId[slot] = subscriptionId.toString();
-                  _subscriptionIdToSlot[subscriptionId.toString()] = slot;
-                }
-              });
-            }
 
             if (message.user.isEmpty) {
               // send fallback cookie if exists
@@ -124,10 +114,22 @@ mixin RealtimeMixin {
                 }));
               }
             }
+            for (var entry in _subscriptions.entries) {
+              _pendingSubscribes[entry.key] = {
+                'subscriptionId': entry.key,
+                'channels': entry.value.channels,
+                'queries': entry.value.queries,
+              };
+            }
+            _sendPendingSubscribes();
             _startHeartbeat(); // Start heartbeat after successful connection
             break;
+          case 'response':
+            // The SDK generates subscriptionIds client-side and sends them on
+            // every subscribe/unsubscribe, so subscribe/unsubscribe acks carry
+            // no state the SDK needs to reconcile.
+            break;
           case 'pong':
-            debugPrint('Received heartbeat response from realtime server');
             break;
           case 'event':
             final messageData = data.data as Map<String, dynamic>;
@@ -142,15 +144,10 @@ mixin RealtimeMixin {
               break;
             }
 
-            // Iterate over all matching subscriptionIds and call callback for each
             for (var subscriptionId in subscriptions) {
-              // O(1) lookup using subscriptionId
-              final slot = _subscriptionIdToSlot[subscriptionId];
-              if (slot != null) {
-                final subscription = _subscriptions[slot];
-                if (subscription != null) {
-                  subscription.controller.add(message);
-                }
+              final subscription = _subscriptions[subscriptionId];
+              if (subscription != null) {
+                subscription.controller.add(message);
               }
             }
             break;
@@ -207,53 +204,81 @@ mixin RealtimeMixin {
     }
     var uri = Uri.parse(client.endPointRealtime!);
 
-    // Collect all unique channels from all slots
-    final allChannels = <String>{};
-    for (var subscription in _subscriptions.values) {
-      allChannels.addAll(subscription.channels);
-    }
-
-    // Build query string from slots → channels → queries
-    // Format: channel[slot][]=query (each query sent as separate parameter)
-    // For each slot, repeat its queries under each channel it subscribes to
-    // Example: slot 1 → channels [tests, prod], queries [q1, q2]
-    //   Produces: tests[1][]=q1&tests[1][]=q2&prod[1][]=q1&prod[1][]=q2
     var queryParams =
         "project=${Uri.encodeComponent(client.config['project']!)}";
-
-    for (var channel in allChannels) {
-      final encodedChannel = Uri.encodeComponent(channel);
-      queryParams += "&channels[]=$encodedChannel";
-    }
-
-    // Hardcode the select query string since Query is not accessible in this mixin
-    // This is equivalent to Query.select(["*"]) which returns: {"method":"select","values":["*"]}
-    final selectAllQuery = '{"method":"select","values":["*"]}';
-    for (var entry in _subscriptions.entries) {
-      final slot = entry.key;
-      final subscription = entry.value;
-
-      // Get queries array - each query is a separate string
-      final queries = subscription.queries.isEmpty
-          ? [selectAllQuery]
-          : subscription.queries;
-
-      // Repeat this slot's queries under each channel it subscribes to
-      // Each query is sent as a separate parameter: channel[slot][]=q1&channel[slot][]=q2
-      for (var channel in subscription.channels) {
-        final encodedChannel = Uri.encodeComponent(channel);
-        for (var query in queries) {
-          final encodedQuery = Uri.encodeComponent(query);
-          queryParams += "&$encodedChannel[$slot][]=$encodedQuery";
-        }
-      }
-    }
 
     final portPart = (uri.hasPort && uri.port != 80 && uri.port != 443)
         ? ':${uri.port}'
         : '';
     return Uri.parse(
         "${uri.scheme}://${uri.host}$portPart${uri.path}/realtime?$queryParams");
+  }
+
+  void _sendUnsubscribeMessage(List<String> subscriptionIds) {
+    if (subscriptionIds.isEmpty) {
+      return;
+    }
+    if (_websok == null || _websok?.closeCode != null) {
+      return;
+    }
+    _websok!.sink.add(jsonEncode({
+      'type': 'unsubscribe',
+      'data': subscriptionIds.map((id) => {'subscriptionId': id}).toList(),
+    }));
+  }
+
+  String _generateUniqueSubscriptionId() {
+    final attempts = _subscriptions.length + 1;
+    for (var i = 0; i < attempts; i++) {
+      final id = _uniqueSubscriptionId();
+      if (!_subscriptions.containsKey(id)) {
+        return id;
+      }
+    }
+    throw AppwriteException('Failed to generate unique subscription id');
+  }
+
+  void _enqueuePendingSubscribe(String subscriptionId) {
+    final subscription = _subscriptions[subscriptionId];
+    if (subscription == null) {
+      return;
+    }
+    _pendingSubscribes[subscriptionId] = {
+      'subscriptionId': subscriptionId,
+      'channels': List<String>.from(subscription.channels),
+      'queries': List<String>.from(subscription.queries),
+    };
+  }
+
+  /// Close the WebSocket connection and drop all active subscriptions client-side.
+  /// Use this instead of calling [RealtimeSubscription.unsubscribe] on every subscription
+  /// when you want to tear everything down.
+  Future<void> disconnect() async {
+    for (var subscription in _subscriptions.values) {
+      await subscription.controller.close();
+    }
+    _subscriptions.clear();
+    _pendingSubscribes.clear();
+    await _closeConnection();
+    _reconnect = true; // allow future subscribeTo() calls to reconnect
+  }
+
+  void _sendPendingSubscribes() {
+    if (_websok == null || _websok?.closeCode != null) {
+      return;
+    }
+
+    if (_pendingSubscribes.isEmpty) {
+      return;
+    }
+
+    final rows = _pendingSubscribes.values.toList();
+    _pendingSubscribes.clear();
+
+    _websok!.sink.add(jsonEncode({
+      'type': 'subscribe',
+      'data': rows,
+    }));
   }
 
   /// Convert channel value to string
@@ -269,46 +294,66 @@ mixin RealtimeMixin {
         channels.map((ch) => _channelToString(ch)).toList().cast<String>();
     final queryStrings = List<String>.from(queries);
 
-    // Allocate a new slot index
-    _subscriptionsCounter++;
-    final slot = _subscriptionsCounter;
+    final subscriptionId = _generateUniqueSubscriptionId();
 
-    // Store slot-centric data: channels, queries, and callback belong to the slot
-    // queries is stored as List<String> (array of query strings)
-    // No channel mutation occurs here - channels are derived from slots in _createSocket()
-    RealtimeSubscription subscription = RealtimeSubscription(
-        controller: controller,
-        channels: channelStrings,
-        queries: queryStrings,
-        close: () async {
-          final subscriptionId = _slotToSubscriptionId[slot];
-          _subscriptions.remove(slot);
-          _slotToSubscriptionId.remove(slot);
-          if (subscriptionId != null) {
-            _subscriptionIdToSlot.remove(subscriptionId);
-          }
-          controller.close();
+    late RealtimeSubscription subscription;
 
-          // Rebuild channels from remaining slots
-          final remainingChannels = <String>{};
-          for (var sub in _subscriptions.values) {
-            remainingChannels.addAll(sub.channels);
-          }
+    Future<void> unsubscribe() async {
+      if (!_subscriptions.containsKey(subscriptionId)) {
+        return;
+      }
+      _subscriptions.remove(subscriptionId);
+      _pendingSubscribes.remove(subscriptionId);
+      await controller.close();
+      _sendUnsubscribeMessage([subscriptionId]);
+    }
 
-          if (remainingChannels.isNotEmpty) {
-            await Future.delayed(Duration.zero, () => _createSocket());
-          } else {
-            await _closeConnection();
-          }
-        });
-    _subscriptions[slot] = subscription;
+    Future<void> update({List<Object>? channels, List<String>? queries}) async {
+      final current = _subscriptions[subscriptionId];
+      if (current == null) {
+        return;
+      }
+      if (channels != null) {
+        final nextChannels =
+            channels.map((ch) => _channelToString(ch)).toList().cast<String>();
+        current.channels
+          ..clear()
+          ..addAll(nextChannels);
+      }
+      if (queries != null) {
+        current.queries
+          ..clear()
+          ..addAll(queries);
+      }
+      _enqueuePendingSubscribe(subscriptionId);
+      if (_websok != null && _websok?.closeCode == null) {
+        await Future.delayed(Duration.zero, _sendPendingSubscribes);
+      } else {
+        await Future.delayed(Duration.zero, () => _createSocket());
+      }
+    }
+
+    Future<void> close() async {
+      await unsubscribe();
+      if (_subscriptions.isEmpty) {
+        await _closeConnection();
+      }
+    }
+
+    subscription = RealtimeSubscription(
+      controller: controller,
+      channels: channelStrings,
+      queries: queryStrings,
+      unsubscribe: unsubscribe,
+      update: update,
+      close: close,
+    );
+    _subscriptions[subscriptionId] = subscription;
+    _enqueuePendingSubscribe(subscriptionId);
 
     Future.delayed(Duration.zero, () => _createSocket());
     return subscription;
   }
-
-  // _cleanup is no longer needed - slots are removed directly in subscribeTo().close()
-  // Channels are automatically rebuilt from remaining slots in _createSocket()
 
   void handleError(RealtimeResponse response) {
     if (response.data['code'] == status.policyViolation) {

@@ -922,6 +922,7 @@ void main() {
       final response = await account.createOAuth2Session(
         provider: enums.OAuthProvider.amazon,
       );
+      expect(response, isA<models.Session>());
     });
 
     test('test method updatePhoneSession()', () async {
@@ -1246,6 +1247,7 @@ void main() {
       final response = await account.createOAuth2Token(
         provider: enums.OAuthProvider.amazon,
       );
+      expect(response, isA<models.Token>());
     });
 
     test('test method createPhoneToken()', () async {

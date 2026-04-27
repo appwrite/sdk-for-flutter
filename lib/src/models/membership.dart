@@ -20,6 +20,9 @@ class Membership implements Model {
   /// User email address. Hide this attribute by toggling membership privacy in the Console.
   final String userEmail;
 
+  /// User phone number. Hide this attribute by toggling membership privacy in the Console.
+  final String userPhone;
+
   /// Team ID.
   final String teamId;
 
@@ -48,6 +51,7 @@ class Membership implements Model {
     required this.userId,
     required this.userName,
     required this.userEmail,
+    required this.userPhone,
     required this.teamId,
     required this.teamName,
     required this.invited,
@@ -65,6 +69,7 @@ class Membership implements Model {
       userId: map['userId'].toString(),
       userName: map['userName'].toString(),
       userEmail: map['userEmail'].toString(),
+      userPhone: map['userPhone'].toString(),
       teamId: map['teamId'].toString(),
       teamName: map['teamName'].toString(),
       invited: map['invited'].toString(),
@@ -84,6 +89,7 @@ class Membership implements Model {
       "userId": userId,
       "userName": userName,
       "userEmail": userEmail,
+      "userPhone": userPhone,
       "teamId": teamId,
       "teamName": teamName,
       "invited": invited,
