@@ -27,8 +27,7 @@ abstract class Client {
   factory Client({
     String endPoint = 'https://cloud.appwrite.io/v1',
     bool selfSigned = false,
-  }) =>
-      createClient(endPoint: endPoint, selfSigned: selfSigned);
+  }) => createClient(endPoint: endPoint, selfSigned: selfSigned);
 
   /// Handle OAuth2 session creation.
   Future webAuth(Uri url, {String? callbackUrlScheme});
@@ -78,6 +77,11 @@ abstract class Client {
   ///
   /// Your secret dev API key.
   Client setDevKey(String value);
+
+  /// Set Cookie.
+  ///
+  /// The user cookie to authenticate with. Used by SDKs that forward an incoming Cookie header in server-side runtimes..
+  Client setCookie(String value);
 
   /// Set ImpersonateUserId.
   ///
