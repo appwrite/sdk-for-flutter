@@ -12,8 +12,8 @@ void main() {
       final map = model.toMap();
       final result = InsightList.fromMap(map);
 
-      expect(result.total, 5);
-      expect(result.insights, []);
-    });
+            expect(result.total, 5);
+                  expect(result.insights, []);
+          });
   });
 }

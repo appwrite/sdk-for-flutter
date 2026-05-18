@@ -14,10 +14,10 @@ void main() {
       final map = model.toMap();
       final result = InsightCTA.fromMap(map);
 
-      expect(result.label, 'Create missing index');
-      expect(result.service, 'tablesDB');
-      expect(result.method, 'createIndex');
-      expect(result.params, {});
-    });
+            expect(result.label, 'Create missing index');
+                  expect(result.service, 'tablesDB');
+                  expect(result.method, 'createIndex');
+                  expect(result.params, {});
+          });
   });
 }
