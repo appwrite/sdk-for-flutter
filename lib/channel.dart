@@ -2,31 +2,19 @@ part of appwrite;
 
 // Marker classes for type safety
 class _Root {}
-
 class _Database {}
-
 class _Collection {}
-
 class _Document {}
-
 class _TablesDB {}
-
 class _Table {}
-
 class _Row {}
-
 class _Bucket {}
-
 class _File {}
-
 class _Func {}
-
 class _Execution {}
-
 class _Team {}
-
 class _Membership {}
-
+class _Presence {}
 class _Resolved {}
 
 // Helper function for normalizing ID
@@ -85,6 +73,9 @@ class Channel<T> {
   static Channel<_Membership> membership(String id) =>
       Channel<_Membership>._(['memberships', _normalize(id)]);
 
+  static Channel<_Presence> presence(String id) =>
+      Channel<_Presence>._(['presences', _normalize(id)]);
+
   static String account() => 'account';
 
   // Global events
@@ -94,6 +85,7 @@ class Channel<T> {
   static String executions() => 'executions';
   static String teams() => 'teams';
   static String memberships() => 'memberships';
+  static String presences() => 'presences';
 }
 
 // --- DATABASE ROUTE ---
@@ -107,15 +99,15 @@ extension DatabaseChannel on Channel<_Database> {
 
 /// Only available on Channel<_Collection>
 extension CollectionChannel on Channel<_Collection> {
-  Channel<_Document> document([String? id]) =>
-      _next<_Document>('documents', id);
+  Channel<_Document> document([String? id]) => _next<_Document>('documents', id);
 }
 
 // --- TABLESDB ROUTE ---
 
 /// Only available on Channel<_TablesDB>
 extension TablesDBChannel on Channel<_TablesDB> {
-  Channel<_Table> table(String id) => _next<_Table>('tables', id);
+  Channel<_Table> table(String id) =>
+      _next<_Table>('tables', id);
 }
 
 /// Only available on Channel<_Table>
@@ -166,6 +158,14 @@ extension TeamChannel on Channel<_Team> {
 /// Only available on Channel<_Membership>
 extension MembershipChannel on Channel<_Membership> {
   Channel<_Resolved> create() => _resolve('create');
+  Channel<_Resolved> update() => _resolve('update');
+  Channel<_Resolved> delete() => _resolve('delete');
+}
+
+/// Only available on Channel<_Presence>
+extension PresenceChannel on Channel<_Presence> {
+  Channel<_Resolved> create() => _resolve('create');
+  Channel<_Resolved> upsert() => _resolve('upsert');
   Channel<_Resolved> update() => _resolve('update');
   Channel<_Resolved> delete() => _resolve('delete');
 }

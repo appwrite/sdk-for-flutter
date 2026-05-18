@@ -10,4 +10,12 @@ abstract class RealtimeBase implements Realtime {
 
   @override
   Future<void> disconnect();
+
+  @override
+  void upsertPresence({
+    required String status,
+    required String presenceId,
+    List<String>? permissions,
+    Map<String, dynamic>? metadata,
+  });
 }

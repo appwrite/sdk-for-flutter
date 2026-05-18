@@ -59,7 +59,7 @@ class ClientIO extends ClientBase with ClientMixin {
       'x-sdk-platform': 'client',
       'x-sdk-language': 'flutter',
       'x-sdk-version': '24.1.0',
-      'X-Appwrite-Response-Format': '1.9.4',
+      'X-Appwrite-Response-Format': '1.9.5',
     };
 
     config = {};
@@ -89,7 +89,6 @@ class ClientIO extends ClientBase with ClientMixin {
     addHeader('X-Appwrite-Project', value);
     return this;
   }
-
   /// Your secret JSON Web Token
   @override
   ClientIO setJWT(value) {
@@ -97,14 +96,12 @@ class ClientIO extends ClientBase with ClientMixin {
     addHeader('X-Appwrite-JWT', value);
     return this;
   }
-
   @override
   ClientIO setLocale(value) {
     config['locale'] = value;
     addHeader('X-Appwrite-Locale', value);
     return this;
   }
-
   /// The user session to authenticate with
   @override
   ClientIO setSession(value) {
@@ -112,7 +109,6 @@ class ClientIO extends ClientBase with ClientMixin {
     addHeader('X-Appwrite-Session', value);
     return this;
   }
-
   /// Your secret dev API key
   @override
   ClientIO setDevKey(value) {
@@ -120,7 +116,6 @@ class ClientIO extends ClientBase with ClientMixin {
     addHeader('X-Appwrite-Dev-Key', value);
     return this;
   }
-
   /// The user cookie to authenticate with. Used by SDKs that forward an incoming Cookie header in server-side runtimes.
   @override
   ClientIO setCookie(value) {
@@ -128,7 +123,6 @@ class ClientIO extends ClientBase with ClientMixin {
     addHeader('Cookie', value);
     return this;
   }
-
   /// Impersonate a user by ID on an already user-authenticated request. Requires the current request to be authenticated as a user with impersonator capability; X-Appwrite-Key alone is not sufficient. Impersonator users are intentionally granted users.read so they can discover a target before impersonation begins. Internal audit logs still attribute actions to the original impersonator and record the impersonated target only in internal audit payload data.
   @override
   ClientIO setImpersonateUserId(value) {
@@ -136,7 +130,6 @@ class ClientIO extends ClientBase with ClientMixin {
     addHeader('X-Appwrite-Impersonate-User-Id', value);
     return this;
   }
-
   /// Impersonate a user by email on an already user-authenticated request. Requires the current request to be authenticated as a user with impersonator capability; X-Appwrite-Key alone is not sufficient. Impersonator users are intentionally granted users.read so they can discover a target before impersonation begins. Internal audit logs still attribute actions to the original impersonator and record the impersonated target only in internal audit payload data.
   @override
   ClientIO setImpersonateUserEmail(value) {
@@ -144,7 +137,6 @@ class ClientIO extends ClientBase with ClientMixin {
     addHeader('X-Appwrite-Impersonate-User-Email', value);
     return this;
   }
-
   /// Impersonate a user by phone on an already user-authenticated request. Requires the current request to be authenticated as a user with impersonator capability; X-Appwrite-Key alone is not sufficient. Impersonator users are intentionally granted users.read so they can discover a target before impersonation begins. Internal audit logs still attribute actions to the original impersonator and record the impersonated target only in internal audit payload data.
   @override
   ClientIO setImpersonateUserPhone(value) {
@@ -241,7 +233,6 @@ class ClientIO extends ClientBase with ClientMixin {
         '${packageInfo.packageName}/${packageInfo.version} $device',
       );
     } catch (e) {
-      debugPrint('Error getting device info: $e');
       device = Platform.operatingSystem;
       addHeader('user-agent', device);
     }

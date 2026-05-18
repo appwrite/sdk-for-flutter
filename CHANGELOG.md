@@ -2,10 +2,11 @@
 
 ## 24.1.0
 
-* Added: Added `setCookie()` method to `Client`, `ClientIO`, and `ClientBrowser` for forwarding incoming `Cookie` headers in server-side runtimes
-* Added: Added `fusionauth`, `keycloak`, and `kick` OAuth providers to `OAuthProvider` enum
-* Updated: Updated `X-Appwrite-Response-Format` header to `1.9.4`
-* Updated: Reformatted generated code to use 4-space indentation
+* Added: Realtime `presences` channel and `RealtimePresence` types for presence subscriptions
+* Added: `Advisor` and `Presences` services
+* Added: `Insight`, `Presence`, and `Report` models with list variants
+* Added: `fusionauth`, `keycloak`, and `kick` providers to `OAuthProvider` enum
+* Updated: `X-Appwrite-Response-Format` header to `1.9.5`
 
 ## 24.0.0
 

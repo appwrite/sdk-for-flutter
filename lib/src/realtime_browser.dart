@@ -41,4 +41,19 @@ class RealtimeBrowser extends RealtimeBase with RealtimeMixin {
   }) {
     return subscribeTo(channels, queries);
   }
+
+  @override
+  void upsertPresence({
+    required String status,
+    required String presenceId,
+    List<String>? permissions,
+    Map<String, dynamic>? metadata,
+  }) {
+    upsertPresenceTo(
+      status: status,
+      presenceId: presenceId,
+      permissions: permissions,
+      metadata: metadata,
+    );
+  }
 }
