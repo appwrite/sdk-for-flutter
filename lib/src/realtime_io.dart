@@ -6,7 +6,6 @@ import 'client.dart';
 RealtimeBase createRealtime(ClientAuth client) => RealtimeIO(client);
 
 class RealtimeIO extends RealtimeBase with RealtimeMixin {
-
   RealtimeIO(ClientAuth client) {
     this.client = client;
     getWebSocket = client.realtimeWebSocket;

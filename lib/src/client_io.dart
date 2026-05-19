@@ -93,6 +93,7 @@ class ClientIO extends ClientBase with ClientMixin {
     addHeader('X-Appwrite-Project', value);
     return this;
   }
+
   /// Your secret JSON Web Token
   @Deprecated('Use Client.from or another factory constructor instead.')
   @override
@@ -101,6 +102,7 @@ class ClientIO extends ClientBase with ClientMixin {
     addHeader('X-Appwrite-JWT', value);
     return this;
   }
+
   @Deprecated('Use Client.from or another factory constructor instead.')
   @override
   ClientIO setLocale(value) {
@@ -108,6 +110,7 @@ class ClientIO extends ClientBase with ClientMixin {
     addHeader('X-Appwrite-Locale', value);
     return this;
   }
+
   /// The user session to authenticate with
   @Deprecated('Use Client.from or another factory constructor instead.')
   @override
@@ -116,6 +119,7 @@ class ClientIO extends ClientBase with ClientMixin {
     addHeader('X-Appwrite-Session', value);
     return this;
   }
+
   /// Your secret dev API key
   @Deprecated('Use Client.from or another factory constructor instead.')
   @override
@@ -124,6 +128,7 @@ class ClientIO extends ClientBase with ClientMixin {
     addHeader('X-Appwrite-Dev-Key', value);
     return this;
   }
+
   /// The user cookie to authenticate with. Used by SDKs that forward an incoming Cookie header in server-side runtimes.
   @Deprecated('Use Client.from or another factory constructor instead.')
   @override
@@ -132,6 +137,7 @@ class ClientIO extends ClientBase with ClientMixin {
     addHeader('Cookie', value);
     return this;
   }
+
   /// Impersonate a user by ID on an already user-authenticated request. Requires the current request to be authenticated as a user with impersonator capability; X-Appwrite-Key alone is not sufficient. Impersonator users are intentionally granted users.read so they can discover a target before impersonation begins. Internal audit logs still attribute actions to the original impersonator and record the impersonated target only in internal audit payload data.
   @Deprecated('Use Client.from or another factory constructor instead.')
   @override
@@ -140,6 +146,7 @@ class ClientIO extends ClientBase with ClientMixin {
     addHeader('X-Appwrite-Impersonate-User-Id', value);
     return this;
   }
+
   /// Impersonate a user by email on an already user-authenticated request. Requires the current request to be authenticated as a user with impersonator capability; X-Appwrite-Key alone is not sufficient. Impersonator users are intentionally granted users.read so they can discover a target before impersonation begins. Internal audit logs still attribute actions to the original impersonator and record the impersonated target only in internal audit payload data.
   @Deprecated('Use Client.from or another factory constructor instead.')
   @override
@@ -148,6 +155,7 @@ class ClientIO extends ClientBase with ClientMixin {
     addHeader('X-Appwrite-Impersonate-User-Email', value);
     return this;
   }
+
   /// Impersonate a user by phone on an already user-authenticated request. Requires the current request to be authenticated as a user with impersonator capability; X-Appwrite-Key alone is not sufficient. Impersonator users are intentionally granted users.read so they can discover a target before impersonation begins. Internal audit logs still attribute actions to the original impersonator and record the impersonated target only in internal audit payload data.
   @Deprecated('Use Client.from or another factory constructor instead.')
   @override

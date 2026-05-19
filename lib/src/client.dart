@@ -61,7 +61,8 @@ abstract class Client implements ClientAuth {
   factory Client({
     String endPoint = 'https://cloud.appwrite.io/v1',
     bool selfSigned = false,
-  }) => createClient(endPoint: endPoint, selfSigned: selfSigned);
+  }) =>
+      createClient(endPoint: endPoint, selfSigned: selfSigned);
 
   /// Initializes a client with project authentication.
   static ClientAuth from({
@@ -70,7 +71,8 @@ abstract class Client implements ClientAuth {
     String? endPointRealtime,
     String? locale,
     bool selfSigned = false,
-  }) => _fromClient(
+  }) =>
+      _fromClient(
         endPoint: endPoint,
         projectId: projectId,
         endPointRealtime: endPointRealtime,
@@ -121,8 +123,10 @@ abstract class Client implements ClientAuth {
   }
 
   static void _validateRealtimeEndpoint(String endPointRealtime) {
-    if (!endPointRealtime.startsWith('ws://') && !endPointRealtime.startsWith('wss://')) {
-      throw AppwriteException('Invalid realtime endpoint URL: $endPointRealtime');
+    if (!endPointRealtime.startsWith('ws://') &&
+        !endPointRealtime.startsWith('wss://')) {
+      throw AppwriteException(
+          'Invalid realtime endpoint URL: $endPointRealtime');
     }
   }
 
