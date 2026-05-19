@@ -1,5 +1,14 @@
 # Change Log
 
+## 25.0.0
+
+* Added: `ClientAuth` interface returned by static factory constructors
+* Added: Static factory constructors `Client.from`, `Client.fromSession`, `Client.fromDevKey`, and `Client.fromImpersonation`
+* Added: Endpoint scheme validation in factory setup (rejects non-`http(s)`/`ws(s)` URLs)
+* Added: `Realtime` and generated services accept factory-created `ClientAuth` clients
+* Deprecated: `Client()` constructor and setter pattern remain for backwards compatibility but are marked deprecated where the analyzer supports it
+* Updated: Consolidated realtime IO and browser implementations into the shared client
+
 ## 24.1.1
 
 * Fixed: Removed `Advisor` service and `Insight`, `InsightCTA`, `InsightList`, `Report`, `ReportList` models (admin-only endpoints, not intended for client SDKs)

@@ -1,37 +1,17 @@
-import 'dart:convert';
-import 'dart:async';
-import 'package:web/web.dart' as web;
-import 'package:web_socket_channel/html.dart';
-import 'package:web_socket_channel/web_socket_channel.dart';
 import 'realtime_subscription.dart';
 import 'realtime_base.dart';
 import 'client.dart';
-import 'client_browser.dart';
 import 'realtime_mixin.dart';
 
-RealtimeBase createRealtime(Client client) => RealtimeBrowser(client);
+RealtimeBase createRealtime(ClientAuth client) => RealtimeBrowser(client);
 
 class RealtimeBrowser extends RealtimeBase with RealtimeMixin {
   Map<String, dynamic>? lastMessage;
 
-  RealtimeBrowser(Client client) {
+  RealtimeBrowser(ClientAuth client) {
     this.client = client;
-    getWebSocket = _getWebSocket;
-    getFallbackCookie = _getFallbackCookie;
-  }
-
-  Future<WebSocketChannel> _getWebSocket(Uri uri) async {
-    await (client as ClientBrowser).init();
-    return HtmlWebSocketChannel.connect(uri);
-  }
-
-  String? _getFallbackCookie() {
-    final fallbackCookie = web.window.localStorage.getItem('cookieFallback');
-    if (fallbackCookie != null) {
-      final cookie = Map<String, dynamic>.from(jsonDecode(fallbackCookie));
-      return cookie.values.first;
-    }
-    return null;
+    getWebSocket = client.realtimeWebSocket;
+    getFallbackCookie = client.realtimeFallbackCookie;
   }
 
   @override

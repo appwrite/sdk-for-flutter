@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'dart:math';
+import 'dart:convert';
 import 'package:cookie_jar/cookie_jar.dart';
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:http/http.dart' as http;
@@ -17,6 +18,8 @@ import 'response.dart';
 import 'package:flutter/foundation.dart';
 import 'input_file.dart';
 import 'upload_progress.dart';
+import 'package:web_socket_channel/io.dart';
+import 'package:web_socket_channel/web_socket_channel.dart';
 
 ClientBase createClient({required String endPoint, required bool selfSigned}) =>
     ClientIO(endPoint: endPoint, selfSigned: selfSigned);
@@ -58,7 +61,7 @@ class ClientIO extends ClientBase with ClientMixin {
       'x-sdk-name': 'Flutter',
       'x-sdk-platform': 'client',
       'x-sdk-language': 'flutter',
-      'x-sdk-version': '24.1.1',
+      'x-sdk-version': '25.0.0',
       'X-Appwrite-Response-Format': '1.9.5',
     };
 
@@ -83,69 +86,70 @@ class ClientIO extends ClientBase with ClientMixin {
   }
 
   /// Your project ID
+  @Deprecated('Use Client.from or another factory constructor instead.')
   @override
   ClientIO setProject(value) {
     config['project'] = value;
     addHeader('X-Appwrite-Project', value);
     return this;
   }
-
   /// Your secret JSON Web Token
+  @Deprecated('Use Client.from or another factory constructor instead.')
   @override
   ClientIO setJWT(value) {
     config['jWT'] = value;
     addHeader('X-Appwrite-JWT', value);
     return this;
   }
-
+  @Deprecated('Use Client.from or another factory constructor instead.')
   @override
   ClientIO setLocale(value) {
     config['locale'] = value;
     addHeader('X-Appwrite-Locale', value);
     return this;
   }
-
   /// The user session to authenticate with
+  @Deprecated('Use Client.from or another factory constructor instead.')
   @override
   ClientIO setSession(value) {
     config['session'] = value;
     addHeader('X-Appwrite-Session', value);
     return this;
   }
-
   /// Your secret dev API key
+  @Deprecated('Use Client.from or another factory constructor instead.')
   @override
   ClientIO setDevKey(value) {
     config['devKey'] = value;
     addHeader('X-Appwrite-Dev-Key', value);
     return this;
   }
-
   /// The user cookie to authenticate with. Used by SDKs that forward an incoming Cookie header in server-side runtimes.
+  @Deprecated('Use Client.from or another factory constructor instead.')
   @override
   ClientIO setCookie(value) {
     config['cookie'] = value;
     addHeader('Cookie', value);
     return this;
   }
-
   /// Impersonate a user by ID on an already user-authenticated request. Requires the current request to be authenticated as a user with impersonator capability; X-Appwrite-Key alone is not sufficient. Impersonator users are intentionally granted users.read so they can discover a target before impersonation begins. Internal audit logs still attribute actions to the original impersonator and record the impersonated target only in internal audit payload data.
+  @Deprecated('Use Client.from or another factory constructor instead.')
   @override
   ClientIO setImpersonateUserId(value) {
     config['impersonateUserId'] = value;
     addHeader('X-Appwrite-Impersonate-User-Id', value);
     return this;
   }
-
   /// Impersonate a user by email on an already user-authenticated request. Requires the current request to be authenticated as a user with impersonator capability; X-Appwrite-Key alone is not sufficient. Impersonator users are intentionally granted users.read so they can discover a target before impersonation begins. Internal audit logs still attribute actions to the original impersonator and record the impersonated target only in internal audit payload data.
+  @Deprecated('Use Client.from or another factory constructor instead.')
   @override
   ClientIO setImpersonateUserEmail(value) {
     config['impersonateUserEmail'] = value;
     addHeader('X-Appwrite-Impersonate-User-Email', value);
     return this;
   }
-
   /// Impersonate a user by phone on an already user-authenticated request. Requires the current request to be authenticated as a user with impersonator capability; X-Appwrite-Key alone is not sufficient. Impersonator users are intentionally granted users.read so they can discover a target before impersonation begins. Internal audit logs still attribute actions to the original impersonator and record the impersonated target only in internal audit payload data.
+  @Deprecated('Use Client.from or another factory constructor instead.')
   @override
   ClientIO setImpersonateUserPhone(value) {
     config['impersonateUserPhone'] = value;
@@ -153,6 +157,7 @@ class ClientIO extends ClientBase with ClientMixin {
     return this;
   }
 
+  @Deprecated('Use Client.from or another factory constructor instead.')
   @override
   ClientIO setSelfSigned({bool status = true}) {
     selfSigned = status;
@@ -161,6 +166,7 @@ class ClientIO extends ClientBase with ClientMixin {
     return this;
   }
 
+  @Deprecated('Use Client.from or another factory constructor instead.')
   @override
   ClientIO setEndpoint(String endPoint) {
     if (!endPoint.startsWith('http://') && !endPoint.startsWith('https://')) {
@@ -175,6 +181,7 @@ class ClientIO extends ClientBase with ClientMixin {
     return this;
   }
 
+  @Deprecated('Use Client.from or another factory constructor instead.')
   @override
   ClientIO setEndPointRealtime(String endPoint) {
     if (!endPoint.startsWith('ws://') && !endPoint.startsWith('wss://')) {
@@ -247,6 +254,71 @@ class ClientIO extends ClientBase with ClientMixin {
 
     _initialized = true;
     _initProgress = false;
+  }
+
+  @override
+  Future<WebSocketChannel> realtimeWebSocket(Uri uri) async {
+    Map<String, String>? headers;
+    while (!_initialized && _initProgress) {
+      await Future.delayed(Duration(milliseconds: 10));
+    }
+    if (!_initialized) {
+      await init();
+    }
+    final cookies = await _cookieJar.loadForRequest(uri);
+    headers = {HttpHeaders.cookieHeader: CookieManager.getCookies(cookies)};
+
+    return IOWebSocketChannel(selfSigned
+        ? await _connectRealtimeForSelfSignedCert(uri, headers)
+        : await WebSocket.connect(uri.toString(), headers: headers));
+  }
+
+  @override
+  String? realtimeFallbackCookie() => null;
+
+  // https://github.com/jonataslaw/getsocket/blob/f25b3a264d8cc6f82458c949b86d286cd0343792/lib/src/io.dart#L104
+  // and from official dart sdk websocket_impl.dart connect method
+  Future<WebSocket> _connectRealtimeForSelfSignedCert(
+      Uri uri, Map<String, dynamic> headers) async {
+    try {
+      var r = Random();
+      var key = base64.encode(List<int>.generate(16, (_) => r.nextInt(255)));
+      var client = HttpClient(context: SecurityContext());
+      client.badCertificateCallback =
+          (X509Certificate cert, String host, int port) {
+        return true;
+      };
+
+      uri = Uri(
+        scheme: uri.scheme == 'wss' ? 'https' : 'http',
+        userInfo: uri.userInfo,
+        host: uri.host,
+        port: uri.port,
+        path: uri.path,
+        query: uri.query,
+        fragment: uri.fragment,
+      );
+
+      var request = await client.getUrl(uri);
+
+      headers.forEach((key, value) => request.headers.add(key, value));
+
+      request.headers
+        ..set(HttpHeaders.connectionHeader, "Upgrade")
+        ..set(HttpHeaders.upgradeHeader, "websocket")
+        ..set("Sec-WebSocket-Key", key)
+        ..set("Cache-Control", "no-cache")
+        ..set("Sec-WebSocket-Version", "13");
+
+      var response = await request.close();
+
+      // ignore: close_sinks
+      var socket = await response.detachSocket();
+      var webSocket = WebSocket.fromUpgradedSocket(socket, serverSide: false);
+      return webSocket;
+    } catch (e) {
+      rethrow;
+    }
   }
 
   Future<http.BaseRequest> _interceptRequest(http.BaseRequest request) async {

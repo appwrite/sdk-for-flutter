@@ -1,9 +1,12 @@
+import 'dart:convert';
 import 'dart:math';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_web_auth_2/flutter_web_auth_2.dart';
 import 'package:http/http.dart' as http;
 import 'package:http/browser_client.dart';
 import 'package:web/web.dart' as web;
+import 'package:web_socket_channel/html.dart';
+import 'package:web_socket_channel/web_socket_channel.dart';
 import 'client_mixin.dart';
 import 'enums.dart';
 import 'exception.dart';
@@ -40,7 +43,7 @@ class ClientBrowser extends ClientBase with ClientMixin {
       'x-sdk-name': 'Flutter',
       'x-sdk-platform': 'client',
       'x-sdk-language': 'flutter',
-      'x-sdk-version': '24.1.1',
+      'x-sdk-version': '25.0.0',
       'X-Appwrite-Response-Format': '1.9.5',
     };
 
@@ -57,69 +60,70 @@ class ClientBrowser extends ClientBase with ClientMixin {
   String get endPoint => _endPoint;
 
   /// Your project ID
+  @Deprecated('Use Client.from or another factory constructor instead.')
   @override
   ClientBrowser setProject(value) {
     config['project'] = value;
     addHeader('X-Appwrite-Project', value);
     return this;
   }
-
   /// Your secret JSON Web Token
+  @Deprecated('Use Client.from or another factory constructor instead.')
   @override
   ClientBrowser setJWT(value) {
     config['jWT'] = value;
     addHeader('X-Appwrite-JWT', value);
     return this;
   }
-
+  @Deprecated('Use Client.from or another factory constructor instead.')
   @override
   ClientBrowser setLocale(value) {
     config['locale'] = value;
     addHeader('X-Appwrite-Locale', value);
     return this;
   }
-
   /// The user session to authenticate with
+  @Deprecated('Use Client.from or another factory constructor instead.')
   @override
   ClientBrowser setSession(value) {
     config['session'] = value;
     addHeader('X-Appwrite-Session', value);
     return this;
   }
-
   /// Your secret dev API key
+  @Deprecated('Use Client.from or another factory constructor instead.')
   @override
   ClientBrowser setDevKey(value) {
     config['devKey'] = value;
     addHeader('X-Appwrite-Dev-Key', value);
     return this;
   }
-
   /// The user cookie to authenticate with. Used by SDKs that forward an incoming Cookie header in server-side runtimes.
+  @Deprecated('Use Client.from or another factory constructor instead.')
   @override
   ClientBrowser setCookie(value) {
     config['cookie'] = value;
     addHeader('Cookie', value);
     return this;
   }
-
   /// Impersonate a user by ID on an already user-authenticated request. Requires the current request to be authenticated as a user with impersonator capability; X-Appwrite-Key alone is not sufficient. Impersonator users are intentionally granted users.read so they can discover a target before impersonation begins. Internal audit logs still attribute actions to the original impersonator and record the impersonated target only in internal audit payload data.
+  @Deprecated('Use Client.from or another factory constructor instead.')
   @override
   ClientBrowser setImpersonateUserId(value) {
     config['impersonateUserId'] = value;
     addHeader('X-Appwrite-Impersonate-User-Id', value);
     return this;
   }
-
   /// Impersonate a user by email on an already user-authenticated request. Requires the current request to be authenticated as a user with impersonator capability; X-Appwrite-Key alone is not sufficient. Impersonator users are intentionally granted users.read so they can discover a target before impersonation begins. Internal audit logs still attribute actions to the original impersonator and record the impersonated target only in internal audit payload data.
+  @Deprecated('Use Client.from or another factory constructor instead.')
   @override
   ClientBrowser setImpersonateUserEmail(value) {
     config['impersonateUserEmail'] = value;
     addHeader('X-Appwrite-Impersonate-User-Email', value);
     return this;
   }
-
   /// Impersonate a user by phone on an already user-authenticated request. Requires the current request to be authenticated as a user with impersonator capability; X-Appwrite-Key alone is not sufficient. Impersonator users are intentionally granted users.read so they can discover a target before impersonation begins. Internal audit logs still attribute actions to the original impersonator and record the impersonated target only in internal audit payload data.
+  @Deprecated('Use Client.from or another factory constructor instead.')
   @override
   ClientBrowser setImpersonateUserPhone(value) {
     config['impersonateUserPhone'] = value;
@@ -127,11 +131,13 @@ class ClientBrowser extends ClientBase with ClientMixin {
     return this;
   }
 
+  @Deprecated('Use Client.from or another factory constructor instead.')
   @override
   ClientBrowser setSelfSigned({bool status = true}) {
     return this;
   }
 
+  @Deprecated('Use Client.from or another factory constructor instead.')
   @override
   ClientBrowser setEndpoint(String endPoint) {
     if (!endPoint.startsWith('http://') && !endPoint.startsWith('https://')) {
@@ -146,6 +152,7 @@ class ClientBrowser extends ClientBase with ClientMixin {
     return this;
   }
 
+  @Deprecated('Use Client.from or another factory constructor instead.')
   @override
   ClientBrowser setEndPointRealtime(String endPoint) {
     if (!endPoint.startsWith('ws://') && !endPoint.startsWith('wss://')) {
@@ -173,6 +180,22 @@ class ClientBrowser extends ClientBase with ClientMixin {
     if (cookieFallback != null) {
       addHeader('x-fallback-cookies', cookieFallback);
     }
+  }
+
+  @override
+  Future<WebSocketChannel> realtimeWebSocket(Uri uri) async {
+    await init();
+    return HtmlWebSocketChannel.connect(uri);
+  }
+
+  @override
+  String? realtimeFallbackCookie() {
+    final fallbackCookie = web.window.localStorage.getItem('cookieFallback');
+    if (fallbackCookie != null) {
+      final cookie = Map<String, dynamic>.from(jsonDecode(fallbackCookie));
+      return cookie.values.first;
+    }
+    return null;
   }
 
   @override
