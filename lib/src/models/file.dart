@@ -29,6 +29,9 @@ class File implements Model {
   /// File original size in bytes.
   final int sizeOriginal;
 
+  /// File actual stored size in bytes after compression and/or encryption.
+  final int sizeActual;
+
   /// Total number of chunks available
   final int chunksTotal;
 
@@ -51,6 +54,7 @@ class File implements Model {
     required this.signature,
     required this.mimeType,
     required this.sizeOriginal,
+    required this.sizeActual,
     required this.chunksTotal,
     required this.chunksUploaded,
     required this.encryption,
@@ -68,6 +72,7 @@ class File implements Model {
       signature: map['signature'].toString(),
       mimeType: map['mimeType'].toString(),
       sizeOriginal: map['sizeOriginal'],
+      sizeActual: map['sizeActual'],
       chunksTotal: map['chunksTotal'],
       chunksUploaded: map['chunksUploaded'],
       encryption: map['encryption'],
@@ -87,6 +92,7 @@ class File implements Model {
       "signature": signature,
       "mimeType": mimeType,
       "sizeOriginal": sizeOriginal,
+      "sizeActual": sizeActual,
       "chunksTotal": chunksTotal,
       "chunksUploaded": chunksUploaded,
       "encryption": encryption,

@@ -40,7 +40,6 @@ part 'services/graphql.dart';
 part 'services/locale.dart';
 part 'services/messaging.dart';
 part 'services/presences.dart';
-part 'services/advisor.dart';
 part 'services/storage.dart';
 part 'services/tables_db.dart';
 part 'services/teams.dart';

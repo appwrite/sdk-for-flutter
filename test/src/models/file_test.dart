@@ -14,6 +14,7 @@ void main() {
         signature: '5d529fd02b544198ae075bd57c1762bb',
         mimeType: 'image/png',
         sizeOriginal: 17890,
+        sizeActual: 12345,
         chunksTotal: 17890,
         chunksUploaded: 17890,
         encryption: true,
@@ -32,6 +33,7 @@ void main() {
       expect(result.signature, '5d529fd02b544198ae075bd57c1762bb');
       expect(result.mimeType, 'image/png');
       expect(result.sizeOriginal, 17890);
+      expect(result.sizeActual, 12345);
       expect(result.chunksTotal, 17890);
       expect(result.chunksUploaded, 17890);
       expect(result.encryption, true);
