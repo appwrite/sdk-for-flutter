@@ -40,8 +40,8 @@ class ClientBrowser extends ClientBase with ClientMixin {
       'x-sdk-name': 'Flutter',
       'x-sdk-platform': 'client',
       'x-sdk-language': 'flutter',
-      'x-sdk-version': '24.0.0',
-      'X-Appwrite-Response-Format': '1.9.2',
+      'x-sdk-version': '24.1.0',
+      'X-Appwrite-Response-Format': '1.9.5',
     };
 
     config = {};
@@ -92,6 +92,14 @@ class ClientBrowser extends ClientBase with ClientMixin {
   ClientBrowser setDevKey(value) {
     config['devKey'] = value;
     addHeader('X-Appwrite-Dev-Key', value);
+    return this;
+  }
+
+  /// The user cookie to authenticate with. Used by SDKs that forward an incoming Cookie header in server-side runtimes.
+  @override
+  ClientBrowser setCookie(value) {
+    config['cookie'] = value;
+    addHeader('Cookie', value);
     return this;
   }
 

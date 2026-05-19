@@ -125,4 +125,38 @@ void main() {
           'memberships.membership1.update');
     });
   });
+
+  group('presences()', () {
+    test('returns presences global channel', () {
+      expect(Channel.presences(), 'presences');
+    });
+
+    test('throws when presence id is missing', () {
+      expect(() => Channel.presence(''), throwsArgumentError);
+    });
+
+    test('returns presence channel with specific presence ID', () {
+      expect(Channel.presence('presence1').toString(), 'presences.presence1');
+    });
+
+    test('returns presence channel with create action', () {
+      expect(Channel.presence('presence1').create().toString(),
+          'presences.presence1.create');
+    });
+
+    test('returns presence channel with upsert action', () {
+      expect(Channel.presence('presence1').upsert().toString(),
+          'presences.presence1.upsert');
+    });
+
+    test('returns presence channel with update action', () {
+      expect(Channel.presence('presence1').update().toString(),
+          'presences.presence1.update');
+    });
+
+    test('returns presence channel with delete action', () {
+      expect(Channel.presence('presence1').delete().toString(),
+          'presences.presence1.delete');
+    });
+  });
 }

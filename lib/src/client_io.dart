@@ -58,8 +58,8 @@ class ClientIO extends ClientBase with ClientMixin {
       'x-sdk-name': 'Flutter',
       'x-sdk-platform': 'client',
       'x-sdk-language': 'flutter',
-      'x-sdk-version': '24.0.0',
-      'X-Appwrite-Response-Format': '1.9.2',
+      'x-sdk-version': '24.1.0',
+      'X-Appwrite-Response-Format': '1.9.5',
     };
 
     config = {};
@@ -118,6 +118,14 @@ class ClientIO extends ClientBase with ClientMixin {
   ClientIO setDevKey(value) {
     config['devKey'] = value;
     addHeader('X-Appwrite-Dev-Key', value);
+    return this;
+  }
+
+  /// The user cookie to authenticate with. Used by SDKs that forward an incoming Cookie header in server-side runtimes.
+  @override
+  ClientIO setCookie(value) {
+    config['cookie'] = value;
+    addHeader('Cookie', value);
     return this;
   }
 
@@ -233,7 +241,6 @@ class ClientIO extends ClientBase with ClientMixin {
         '${packageInfo.packageName}/${packageInfo.version} $device',
       );
     } catch (e) {
-      debugPrint('Error getting device info: $e');
       device = Platform.operatingSystem;
       addHeader('user-agent', device);
     }

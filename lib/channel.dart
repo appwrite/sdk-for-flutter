@@ -27,6 +27,8 @@ class _Team {}
 
 class _Membership {}
 
+class _Presence {}
+
 class _Resolved {}
 
 // Helper function for normalizing ID
@@ -85,6 +87,9 @@ class Channel<T> {
   static Channel<_Membership> membership(String id) =>
       Channel<_Membership>._(['memberships', _normalize(id)]);
 
+  static Channel<_Presence> presence(String id) =>
+      Channel<_Presence>._(['presences', _normalize(id)]);
+
   static String account() => 'account';
 
   // Global events
@@ -94,6 +99,7 @@ class Channel<T> {
   static String executions() => 'executions';
   static String teams() => 'teams';
   static String memberships() => 'memberships';
+  static String presences() => 'presences';
 }
 
 // --- DATABASE ROUTE ---
@@ -166,6 +172,14 @@ extension TeamChannel on Channel<_Team> {
 /// Only available on Channel<_Membership>
 extension MembershipChannel on Channel<_Membership> {
   Channel<_Resolved> create() => _resolve('create');
+  Channel<_Resolved> update() => _resolve('update');
+  Channel<_Resolved> delete() => _resolve('delete');
+}
+
+/// Only available on Channel<_Presence>
+extension PresenceChannel on Channel<_Presence> {
+  Channel<_Resolved> create() => _resolve('create');
+  Channel<_Resolved> upsert() => _resolve('upsert');
   Channel<_Resolved> update() => _resolve('update');
   Channel<_Resolved> delete() => _resolve('delete');
 }

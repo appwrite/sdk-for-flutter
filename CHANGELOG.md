@@ -1,10 +1,18 @@
 # Change Log
 
+## 24.1.0
+
+* Added: Realtime `presences` channel and `RealtimePresence` types for presence subscriptions
+* Added: `Advisor` and `Presences` services
+* Added: `Insight`, `Presence`, and `Report` models with list variants
+* Added: `fusionauth`, `keycloak`, and `kick` providers to `OAuthProvider` enum
+* Updated: `X-Appwrite-Response-Format` header to `1.9.5`
+
 ## 24.0.0
 
-* Breaking: Added `unsubscribe()`, `update()`, and `close()` for Realtime subscription lifecycle.
-* Added: Added `userPhone` to the `Membership` model.
-* Updated: Updated `X-Appwrite-Response-Format` header to `1.9.2`.
+* Breaking: Added `unsubscribe()`, `update()`, and `close()` to Realtime subscriptions
+* Added: Added `userPhone` field to `Membership` model
+* Updated: Updated `X-Appwrite-Response-Format` header to `1.9.2`
 
 ## 23.1.0
 

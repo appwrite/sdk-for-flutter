@@ -79,6 +79,11 @@ abstract class Client {
   /// Your secret dev API key.
   Client setDevKey(String value);
 
+  /// Set Cookie.
+  ///
+  /// The user cookie to authenticate with. Used by SDKs that forward an incoming Cookie header in server-side runtimes..
+  Client setCookie(String value);
+
   /// Set ImpersonateUserId.
   ///
   /// Impersonate a user by ID on an already user-authenticated request. Requires the current request to be authenticated as a user with impersonator capability; X-Appwrite-Key alone is not sufficient. Impersonator users are intentionally granted users.read so they can discover a target before impersonation begins. Internal audit logs still attribute actions to the original impersonator and record the impersonated target only in internal audit payload data..

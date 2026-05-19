@@ -50,6 +50,21 @@ class RealtimeIO extends RealtimeBase with RealtimeMixin {
     return subscribeTo(channels, queries);
   }
 
+  @override
+  void upsertPresence({
+    required String status,
+    required String presenceId,
+    List<String>? permissions,
+    Map<String, dynamic>? metadata,
+  }) {
+    upsertPresenceTo(
+      status: status,
+      presenceId: presenceId,
+      permissions: permissions,
+      metadata: metadata,
+    );
+  }
+
   // https://github.com/jonataslaw/getsocket/blob/f25b3a264d8cc6f82458c949b86d286cd0343792/lib/src/io.dart#L104
   // and from official dart sdk websocket_impl.dart connect method
   Future<WebSocket> _connectForSelfSignedCert(
