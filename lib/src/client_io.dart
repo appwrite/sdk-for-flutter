@@ -89,7 +89,6 @@ class ClientIO extends ClientBase with ClientMixin {
     addHeader('X-Appwrite-Project', value);
     return this;
   }
-
   /// Your secret JSON Web Token
   @override
   ClientIO setJWT(value) {
@@ -97,14 +96,12 @@ class ClientIO extends ClientBase with ClientMixin {
     addHeader('X-Appwrite-JWT', value);
     return this;
   }
-
   @override
   ClientIO setLocale(value) {
     config['locale'] = value;
     addHeader('X-Appwrite-Locale', value);
     return this;
   }
-
   /// The user session to authenticate with
   @override
   ClientIO setSession(value) {
@@ -112,7 +109,6 @@ class ClientIO extends ClientBase with ClientMixin {
     addHeader('X-Appwrite-Session', value);
     return this;
   }
-
   /// Your secret dev API key
   @override
   ClientIO setDevKey(value) {
@@ -120,7 +116,6 @@ class ClientIO extends ClientBase with ClientMixin {
     addHeader('X-Appwrite-Dev-Key', value);
     return this;
   }
-
   /// The user cookie to authenticate with. Used by SDKs that forward an incoming Cookie header in server-side runtimes.
   @override
   ClientIO setCookie(value) {
@@ -128,7 +123,6 @@ class ClientIO extends ClientBase with ClientMixin {
     addHeader('Cookie', value);
     return this;
   }
-
   /// Impersonate a user by ID on an already user-authenticated request. Requires the current request to be authenticated as a user with impersonator capability; X-Appwrite-Key alone is not sufficient. Impersonator users are intentionally granted users.read so they can discover a target before impersonation begins. Internal audit logs still attribute actions to the original impersonator and record the impersonated target only in internal audit payload data.
   @override
   ClientIO setImpersonateUserId(value) {
@@ -136,7 +130,6 @@ class ClientIO extends ClientBase with ClientMixin {
     addHeader('X-Appwrite-Impersonate-User-Id', value);
     return this;
   }
-
   /// Impersonate a user by email on an already user-authenticated request. Requires the current request to be authenticated as a user with impersonator capability; X-Appwrite-Key alone is not sufficient. Impersonator users are intentionally granted users.read so they can discover a target before impersonation begins. Internal audit logs still attribute actions to the original impersonator and record the impersonated target only in internal audit payload data.
   @override
   ClientIO setImpersonateUserEmail(value) {
@@ -144,7 +137,6 @@ class ClientIO extends ClientBase with ClientMixin {
     addHeader('X-Appwrite-Impersonate-User-Email', value);
     return this;
   }
-
   /// Impersonate a user by phone on an already user-authenticated request. Requires the current request to be authenticated as a user with impersonator capability; X-Appwrite-Key alone is not sufficient. Impersonator users are intentionally granted users.read so they can discover a target before impersonation begins. Internal audit logs still attribute actions to the original impersonator and record the impersonated target only in internal audit payload data.
   @override
   ClientIO setImpersonateUserPhone(value) {
@@ -349,18 +341,23 @@ class ClientIO extends ClientBase with ClientMixin {
 
     final totalChunks = (size / chunkSize).ceil();
 
-    Future<Response> uploadChunk(
-        int index, int start, int end, String? id) async {
+    Future<Response> uploadChunk(int index, int start, int end, String? id,
+        [RandomAccessFile? raf]) async {
       List<int> chunk = [];
       if (file.bytes != null) {
         chunk = file.bytes!.getRange(start, end).toList();
       } else {
-        final raf = await iofile!.open(mode: FileMode.read);
-        try {
+        if (raf != null) {
           await raf.setPosition(start);
           chunk = await raf.read(end - start);
-        } finally {
-          await raf.close();
+        } else {
+          final chunkFile = await iofile!.open(mode: FileMode.read);
+          try {
+            await chunkFile.setPosition(start);
+            chunk = await chunkFile.read(end - start);
+          } finally {
+            await chunkFile.close();
+          }
         }
       }
 
@@ -393,13 +390,12 @@ class ClientIO extends ClientBase with ClientMixin {
     var completedChunks = firstIndex + 1;
     var uploadedBytes = firstEnd;
     var lastResponse = res;
+    Response? finalResponse;
 
     bool isUploadComplete(Response response) {
       final chunksUploaded = response.data['chunksUploaded'];
       final chunksTotal = response.data['chunksTotal'] ?? totalChunks;
-      return chunksUploaded is num &&
-          chunksTotal is num &&
-          chunksUploaded >= chunksTotal;
+      return chunksUploaded is num && chunksTotal is num && chunksUploaded >= chunksTotal;
     }
 
     final progress = UploadProgress(
@@ -423,35 +419,42 @@ class ClientIO extends ClientBase with ClientMixin {
 
     var nextChunk = 0;
     Future<void> uploadNext() async {
-      while (nextChunk < chunks.length) {
-        final chunk = chunks[nextChunk++];
-        final chunkResponse = await uploadChunk(
-          chunk['index']!,
-          chunk['start']!,
-          chunk['end']!,
-          uploadId,
-        );
-        completedChunks++;
-        uploadedBytes += chunk['end']! - chunk['start']!;
-        if (isUploadComplete(chunkResponse)) {
+      final raf = file.bytes == null ? await iofile!.open(mode: FileMode.read) : null;
+      try {
+        while (nextChunk < chunks.length) {
+          final chunk = chunks[nextChunk++];
+          final chunkResponse = await uploadChunk(
+            chunk['index']!,
+            chunk['start']!,
+            chunk['end']!,
+            uploadId,
+            raf,
+          );
+          completedChunks++;
+          uploadedBytes += chunk['end']! - chunk['start']!;
           lastResponse = chunkResponse;
-        }
+          if (isUploadComplete(chunkResponse)) {
+            finalResponse = chunkResponse;
+          }
 
-        final progress = UploadProgress(
-          $id: uploadId ?? '',
-          progress: min(uploadedBytes, size) / size * 100,
-          sizeUploaded: min(uploadedBytes, size),
-          chunksTotal: totalChunks,
-          chunksUploaded: completedChunks,
-        );
-        onProgress?.call(progress);
+          final progress = UploadProgress(
+            $id: uploadId ?? '',
+            progress: min(uploadedBytes, size) / size * 100,
+            sizeUploaded: min(uploadedBytes, size),
+            chunksTotal: totalChunks,
+            chunksUploaded: completedChunks,
+          );
+          onProgress?.call(progress);
+        }
+      } finally {
+        await raf?.close();
       }
     }
 
     final concurrency = min(8, chunks.length);
     await Future.wait(List.generate(concurrency, (_) => uploadNext()));
 
-    return lastResponse;
+    return finalResponse ?? lastResponse;
   }
 
   bool get _customSchemeAllowed => Platform.isWindows || Platform.isLinux;
