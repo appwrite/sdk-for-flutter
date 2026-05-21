@@ -58,7 +58,7 @@ class ClientIO extends ClientBase with ClientMixin {
       'x-sdk-name': 'Flutter',
       'x-sdk-platform': 'client',
       'x-sdk-language': 'flutter',
-      'x-sdk-version': '24.1.1',
+      'x-sdk-version': '24.2.0',
       'X-Appwrite-Response-Format': '1.9.5',
     };
 
@@ -328,6 +328,7 @@ class ClientIO extends ClientBase with ClientMixin {
     }
 
     var offset = 0;
+    String? uploadId;
     if (idParamName.isNotEmpty) {
       //make a request to check if a file already exists
       try {
@@ -338,52 +339,133 @@ class ClientIO extends ClientBase with ClientMixin {
         );
         final int chunksUploaded = res.data['chunksUploaded'] as int;
         offset = chunksUploaded * chunkSize;
+        uploadId = res.data['\$id'] ?? params[idParamName]?.toString();
       } on AppwriteException catch (_) {}
     }
 
-    RandomAccessFile? raf;
-    // read chunk and upload each chunk
-    if (iofile != null) {
-      raf = await iofile.open(mode: FileMode.read);
+    if (offset >= size) {
+      return res;
     }
 
-    while (offset < size) {
+    final totalChunks = (size / chunkSize).ceil();
+
+    Future<Response> uploadChunk(int index, int start, int end, String? id,
+        [RandomAccessFile? raf]) async {
       List<int> chunk = [];
       if (file.bytes != null) {
-        final end = min(offset + chunkSize, size);
-        chunk = file.bytes!.getRange(offset, end).toList();
+        chunk = file.bytes!.getRange(start, end).toList();
       } else {
-        raf!.setPositionSync(offset);
-        chunk = raf.readSync(chunkSize);
+        if (raf != null) {
+          await raf.setPosition(start);
+          chunk = await raf.read(end - start);
+        } else {
+          final chunkFile = await iofile!.open(mode: FileMode.read);
+          try {
+            await chunkFile.setPosition(start);
+            chunk = await chunkFile.read(end - start);
+          } finally {
+            await chunkFile.close();
+          }
+        }
       }
-      params[paramName] = http.MultipartFile.fromBytes(
+
+      final chunkParams = Map<String, dynamic>.from(params);
+      chunkParams[paramName] = http.MultipartFile.fromBytes(
         paramName,
         chunk,
         filename: file.filename,
       );
-      headers['content-range'] =
-          'bytes $offset-${min<int>((offset + chunkSize - 1), size - 1)}/$size';
-      res = await call(
+      final chunkHeaders = Map<String, String>.from(headers);
+      if (id != null && id.isNotEmpty) {
+        chunkHeaders['x-appwrite-id'] = id;
+      }
+      chunkHeaders['content-range'] = 'bytes $start-${end - 1}/$size';
+
+      return call(
         HttpMethod.post,
         path: path,
-        headers: headers,
-        params: params,
+        headers: chunkHeaders,
+        params: chunkParams,
       );
-      offset += chunkSize;
-      if (offset < size) {
-        headers['x-appwrite-id'] = res.data['\$id'];
-      }
-      final progress = UploadProgress(
-        $id: res.data['\$id'] ?? '',
-        progress: min(offset, size) / size * 100,
-        sizeUploaded: min(offset, size),
-        chunksTotal: res.data['chunksTotal'] ?? 0,
-        chunksUploaded: res.data['chunksUploaded'] ?? 0,
-      );
-      onProgress?.call(progress);
     }
-    raf?.close();
-    return res;
+
+    final firstStart = offset;
+    final firstEnd = min(firstStart + chunkSize, size);
+    final firstIndex = firstStart ~/ chunkSize;
+    res = await uploadChunk(firstIndex, firstStart, firstEnd, uploadId);
+    uploadId = res.data['\$id'] ?? uploadId;
+
+    var completedChunks = firstIndex + 1;
+    var uploadedBytes = firstEnd;
+    var lastResponse = res;
+    Response? finalResponse;
+
+    bool isUploadComplete(Response response) {
+      final chunksUploaded = response.data['chunksUploaded'];
+      final chunksTotal = response.data['chunksTotal'] ?? totalChunks;
+      return chunksUploaded is num &&
+          chunksTotal is num &&
+          chunksUploaded >= chunksTotal;
+    }
+
+    final progress = UploadProgress(
+      $id: uploadId ?? '',
+      progress: min(uploadedBytes, size) / size * 100,
+      sizeUploaded: min(uploadedBytes, size),
+      chunksTotal: totalChunks,
+      chunksUploaded: completedChunks,
+    );
+    onProgress?.call(progress);
+
+    final chunks = <Map<String, int>>[];
+    for (var start = firstEnd; start < size; start += chunkSize) {
+      final end = min(start + chunkSize, size);
+      chunks.add({
+        'index': start ~/ chunkSize,
+        'start': start,
+        'end': end,
+      });
+    }
+
+    var nextChunk = 0;
+    Future<void> uploadNext() async {
+      final raf =
+          file.bytes == null ? await iofile!.open(mode: FileMode.read) : null;
+      try {
+        while (nextChunk < chunks.length) {
+          final chunk = chunks[nextChunk++];
+          final chunkResponse = await uploadChunk(
+            chunk['index']!,
+            chunk['start']!,
+            chunk['end']!,
+            uploadId,
+            raf,
+          );
+          completedChunks++;
+          uploadedBytes += chunk['end']! - chunk['start']!;
+          lastResponse = chunkResponse;
+          if (isUploadComplete(chunkResponse)) {
+            finalResponse = chunkResponse;
+          }
+
+          final progress = UploadProgress(
+            $id: uploadId ?? '',
+            progress: min(uploadedBytes, size) / size * 100,
+            sizeUploaded: min(uploadedBytes, size),
+            chunksTotal: totalChunks,
+            chunksUploaded: completedChunks,
+          );
+          onProgress?.call(progress);
+        }
+      } finally {
+        await raf?.close();
+      }
+    }
+
+    final concurrency = min(8, chunks.length);
+    await Future.wait(List.generate(concurrency, (_) => uploadNext()));
+
+    return finalResponse ?? lastResponse;
   }
 
   bool get _customSchemeAllowed => Platform.isWindows || Platform.isLinux;
