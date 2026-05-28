@@ -20,7 +20,7 @@ dependencies:
     sdk: flutter
   cookie_jar: ^4.0.8
   device_info_plus: '>=11.5.0 <13.0.0'
-  flutter_web_auth_2: ^5.0.0
+  flutter_web_auth_2: ^5.0.2
   http: '>=0.13.6 <2.0.0'
   package_info_plus: '>=8.0.2 <10.0.0'
   path_provider: ^2.1.4
