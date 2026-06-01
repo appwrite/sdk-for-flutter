@@ -1,7 +1,7 @@
 part of '../appwrite.dart';
 
-/// The Locale service allows you to customize your app based on your users&#039;
-/// location.
+  /// The Locale service allows you to customize your app based on your users&#039;
+  /// location.
 class Locale extends Service {
   /// Initializes a [Locale] service
   Locale(super.client);
@@ -10,19 +10,22 @@ class Locale extends Service {
   /// country code, country name, continent name, continent code, ip address and
   /// suggested currency. You can use the locale header to get the data in a
   /// supported language.
-  ///
+  /// 
   /// ([IP Geolocation by DB-IP](https://db-ip.com))
   Future<models.Locale> get() async {
     const String apiPath = '/locale';
 
-    final Map<String, dynamic> apiParams = {};
+        final Map<String, dynamic> apiParams = {
+        };
 
-    final Map<String, String> apiHeaders = {};
+        final Map<String, String> apiHeaders = {
 
-    final res = await client.call(HttpMethod.get,
-        path: apiPath, params: apiParams, headers: apiHeaders);
+        };
 
-    return models.Locale.fromMap(res.data);
+        final res = await client.call(HttpMethod.get, path: apiPath, params: apiParams, headers: apiHeaders);
+
+        return models.Locale.fromMap(res.data);
+
   }
 
   /// List of all locale codes in [ISO
@@ -30,14 +33,17 @@ class Locale extends Service {
   Future<models.LocaleCodeList> listCodes() async {
     const String apiPath = '/locale/codes';
 
-    final Map<String, dynamic> apiParams = {};
+        final Map<String, dynamic> apiParams = {
+        };
 
-    final Map<String, String> apiHeaders = {};
+        final Map<String, String> apiHeaders = {
 
-    final res = await client.call(HttpMethod.get,
-        path: apiPath, params: apiParams, headers: apiHeaders);
+        };
 
-    return models.LocaleCodeList.fromMap(res.data);
+        final res = await client.call(HttpMethod.get, path: apiPath, params: apiParams, headers: apiHeaders);
+
+        return models.LocaleCodeList.fromMap(res.data);
+
   }
 
   /// List of all continents. You can use the locale header to get the data in a
@@ -45,14 +51,17 @@ class Locale extends Service {
   Future<models.ContinentList> listContinents() async {
     const String apiPath = '/locale/continents';
 
-    final Map<String, dynamic> apiParams = {};
+        final Map<String, dynamic> apiParams = {
+        };
 
-    final Map<String, String> apiHeaders = {};
+        final Map<String, String> apiHeaders = {
 
-    final res = await client.call(HttpMethod.get,
-        path: apiPath, params: apiParams, headers: apiHeaders);
+        };
 
-    return models.ContinentList.fromMap(res.data);
+        final res = await client.call(HttpMethod.get, path: apiPath, params: apiParams, headers: apiHeaders);
+
+        return models.ContinentList.fromMap(res.data);
+
   }
 
   /// List of all countries. You can use the locale header to get the data in a
@@ -60,14 +69,17 @@ class Locale extends Service {
   Future<models.CountryList> listCountries() async {
     const String apiPath = '/locale/countries';
 
-    final Map<String, dynamic> apiParams = {};
+        final Map<String, dynamic> apiParams = {
+        };
 
-    final Map<String, String> apiHeaders = {};
+        final Map<String, String> apiHeaders = {
 
-    final res = await client.call(HttpMethod.get,
-        path: apiPath, params: apiParams, headers: apiHeaders);
+        };
 
-    return models.CountryList.fromMap(res.data);
+        final res = await client.call(HttpMethod.get, path: apiPath, params: apiParams, headers: apiHeaders);
+
+        return models.CountryList.fromMap(res.data);
+
   }
 
   /// List of all countries that are currently members of the EU. You can use the
@@ -75,14 +87,17 @@ class Locale extends Service {
   Future<models.CountryList> listCountriesEU() async {
     const String apiPath = '/locale/countries/eu';
 
-    final Map<String, dynamic> apiParams = {};
+        final Map<String, dynamic> apiParams = {
+        };
 
-    final Map<String, String> apiHeaders = {};
+        final Map<String, String> apiHeaders = {
 
-    final res = await client.call(HttpMethod.get,
-        path: apiPath, params: apiParams, headers: apiHeaders);
+        };
 
-    return models.CountryList.fromMap(res.data);
+        final res = await client.call(HttpMethod.get, path: apiPath, params: apiParams, headers: apiHeaders);
+
+        return models.CountryList.fromMap(res.data);
+
   }
 
   /// List of all countries phone codes. You can use the locale header to get the
@@ -90,14 +105,17 @@ class Locale extends Service {
   Future<models.PhoneList> listCountriesPhones() async {
     const String apiPath = '/locale/countries/phones';
 
-    final Map<String, dynamic> apiParams = {};
+        final Map<String, dynamic> apiParams = {
+        };
 
-    final Map<String, String> apiHeaders = {};
+        final Map<String, String> apiHeaders = {
 
-    final res = await client.call(HttpMethod.get,
-        path: apiPath, params: apiParams, headers: apiHeaders);
+        };
 
-    return models.PhoneList.fromMap(res.data);
+        final res = await client.call(HttpMethod.get, path: apiPath, params: apiParams, headers: apiHeaders);
+
+        return models.PhoneList.fromMap(res.data);
+
   }
 
   /// List of all currencies, including currency symbol, name, plural, and
@@ -106,14 +124,17 @@ class Locale extends Service {
   Future<models.CurrencyList> listCurrencies() async {
     const String apiPath = '/locale/currencies';
 
-    final Map<String, dynamic> apiParams = {};
+        final Map<String, dynamic> apiParams = {
+        };
 
-    final Map<String, String> apiHeaders = {};
+        final Map<String, String> apiHeaders = {
 
-    final res = await client.call(HttpMethod.get,
-        path: apiPath, params: apiParams, headers: apiHeaders);
+        };
 
-    return models.CurrencyList.fromMap(res.data);
+        final res = await client.call(HttpMethod.get, path: apiPath, params: apiParams, headers: apiHeaders);
+
+        return models.CurrencyList.fromMap(res.data);
+
   }
 
   /// List of all languages classified by ISO 639-1 including 2-letter code, name
@@ -121,13 +142,16 @@ class Locale extends Service {
   Future<models.LanguageList> listLanguages() async {
     const String apiPath = '/locale/languages';
 
-    final Map<String, dynamic> apiParams = {};
+        final Map<String, dynamic> apiParams = {
+        };
 
-    final Map<String, String> apiHeaders = {};
+        final Map<String, String> apiHeaders = {
 
-    final res = await client.call(HttpMethod.get,
-        path: apiPath, params: apiParams, headers: apiHeaders);
+        };
 
-    return models.LanguageList.fromMap(res.data);
+        final res = await client.call(HttpMethod.get, path: apiPath, params: apiParams, headers: apiHeaders);
+
+        return models.LanguageList.fromMap(res.data);
+
   }
 }
