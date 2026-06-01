@@ -1,6 +1,5 @@
 import 'dart:io';
 import 'dart:math';
-import 'dart:convert';
 import 'package:cookie_jar/cookie_jar.dart';
 import 'package:device_info_plus/device_info_plus.dart';
 import 'package:http/http.dart' as http;
@@ -18,8 +17,6 @@ import 'response.dart';
 import 'package:flutter/foundation.dart';
 import 'input_file.dart';
 import 'upload_progress.dart';
-import 'package:web_socket_channel/io.dart';
-import 'package:web_socket_channel/web_socket_channel.dart';
 
 ClientBase createClient({required String endPoint, required bool selfSigned}) =>
     ClientIO(endPoint: endPoint, selfSigned: selfSigned);
@@ -86,78 +83,61 @@ class ClientIO extends ClientBase with ClientMixin {
   }
 
   /// Your project ID
-  @Deprecated('Use Client.from or another factory constructor instead.')
   @override
   ClientIO setProject(value) {
     config['project'] = value;
     addHeader('X-Appwrite-Project', value);
     return this;
   }
-
   /// Your secret JSON Web Token
-  @Deprecated('Use Client.from or another factory constructor instead.')
   @override
   ClientIO setJWT(value) {
     config['jWT'] = value;
     addHeader('X-Appwrite-JWT', value);
     return this;
   }
-
-  @Deprecated('Use Client.from or another factory constructor instead.')
   @override
   ClientIO setLocale(value) {
     config['locale'] = value;
     addHeader('X-Appwrite-Locale', value);
     return this;
   }
-
   /// The user session to authenticate with
-  @Deprecated('Use Client.from or another factory constructor instead.')
   @override
   ClientIO setSession(value) {
     config['session'] = value;
     addHeader('X-Appwrite-Session', value);
     return this;
   }
-
   /// Your secret dev API key
-  @Deprecated('Use Client.from or another factory constructor instead.')
   @override
   ClientIO setDevKey(value) {
     config['devKey'] = value;
     addHeader('X-Appwrite-Dev-Key', value);
     return this;
   }
-
   /// The user cookie to authenticate with. Used by SDKs that forward an incoming Cookie header in server-side runtimes.
-  @Deprecated('Use Client.from or another factory constructor instead.')
   @override
   ClientIO setCookie(value) {
     config['cookie'] = value;
     addHeader('Cookie', value);
     return this;
   }
-
   /// Impersonate a user by ID on an already user-authenticated request. Requires the current request to be authenticated as a user with impersonator capability; X-Appwrite-Key alone is not sufficient. Impersonator users are intentionally granted users.read so they can discover a target before impersonation begins. Internal audit logs still attribute actions to the original impersonator and record the impersonated target only in internal audit payload data.
-  @Deprecated('Use Client.from or another factory constructor instead.')
   @override
   ClientIO setImpersonateUserId(value) {
     config['impersonateUserId'] = value;
     addHeader('X-Appwrite-Impersonate-User-Id', value);
     return this;
   }
-
   /// Impersonate a user by email on an already user-authenticated request. Requires the current request to be authenticated as a user with impersonator capability; X-Appwrite-Key alone is not sufficient. Impersonator users are intentionally granted users.read so they can discover a target before impersonation begins. Internal audit logs still attribute actions to the original impersonator and record the impersonated target only in internal audit payload data.
-  @Deprecated('Use Client.from or another factory constructor instead.')
   @override
   ClientIO setImpersonateUserEmail(value) {
     config['impersonateUserEmail'] = value;
     addHeader('X-Appwrite-Impersonate-User-Email', value);
     return this;
   }
-
   /// Impersonate a user by phone on an already user-authenticated request. Requires the current request to be authenticated as a user with impersonator capability; X-Appwrite-Key alone is not sufficient. Impersonator users are intentionally granted users.read so they can discover a target before impersonation begins. Internal audit logs still attribute actions to the original impersonator and record the impersonated target only in internal audit payload data.
-  @Deprecated('Use Client.from or another factory constructor instead.')
   @override
   ClientIO setImpersonateUserPhone(value) {
     config['impersonateUserPhone'] = value;
@@ -165,7 +145,6 @@ class ClientIO extends ClientBase with ClientMixin {
     return this;
   }
 
-  @Deprecated('Use Client.from or another factory constructor instead.')
   @override
   ClientIO setSelfSigned({bool status = true}) {
     selfSigned = status;
@@ -174,7 +153,6 @@ class ClientIO extends ClientBase with ClientMixin {
     return this;
   }
 
-  @Deprecated('Use Client.from or another factory constructor instead.')
   @override
   ClientIO setEndpoint(String endPoint) {
     if (!endPoint.startsWith('http://') && !endPoint.startsWith('https://')) {
@@ -189,7 +167,6 @@ class ClientIO extends ClientBase with ClientMixin {
     return this;
   }
 
-  @Deprecated('Use Client.from or another factory constructor instead.')
   @override
   ClientIO setEndPointRealtime(String endPoint) {
     if (!endPoint.startsWith('ws://') && !endPoint.startsWith('wss://')) {
@@ -262,71 +239,6 @@ class ClientIO extends ClientBase with ClientMixin {
 
     _initialized = true;
     _initProgress = false;
-  }
-
-  @override
-  Future<WebSocketChannel> realtimeWebSocket(Uri uri) async {
-    Map<String, String>? headers;
-    while (!_initialized && _initProgress) {
-      await Future.delayed(Duration(milliseconds: 10));
-    }
-    if (!_initialized) {
-      await init();
-    }
-    final cookies = await _cookieJar.loadForRequest(uri);
-    headers = {HttpHeaders.cookieHeader: CookieManager.getCookies(cookies)};
-
-    return IOWebSocketChannel(selfSigned
-        ? await _connectRealtimeForSelfSignedCert(uri, headers)
-        : await WebSocket.connect(uri.toString(), headers: headers));
-  }
-
-  @override
-  String? realtimeFallbackCookie() => null;
-
-  // https://github.com/jonataslaw/getsocket/blob/f25b3a264d8cc6f82458c949b86d286cd0343792/lib/src/io.dart#L104
-  // and from official dart sdk websocket_impl.dart connect method
-  Future<WebSocket> _connectRealtimeForSelfSignedCert(
-      Uri uri, Map<String, dynamic> headers) async {
-    try {
-      var r = Random();
-      var key = base64.encode(List<int>.generate(16, (_) => r.nextInt(255)));
-      var client = HttpClient(context: SecurityContext());
-      client.badCertificateCallback =
-          (X509Certificate cert, String host, int port) {
-        return true;
-      };
-
-      uri = Uri(
-        scheme: uri.scheme == 'wss' ? 'https' : 'http',
-        userInfo: uri.userInfo,
-        host: uri.host,
-        port: uri.port,
-        path: uri.path,
-        query: uri.query,
-        fragment: uri.fragment,
-      );
-
-      var request = await client.getUrl(uri);
-
-      headers.forEach((key, value) => request.headers.add(key, value));
-
-      request.headers
-        ..set(HttpHeaders.connectionHeader, "Upgrade")
-        ..set(HttpHeaders.upgradeHeader, "websocket")
-        ..set("Sec-WebSocket-Key", key)
-        ..set("Cache-Control", "no-cache")
-        ..set("Sec-WebSocket-Version", "13");
-
-      var response = await request.close();
-
-      // ignore: close_sinks
-      var socket = await response.detachSocket();
-      var webSocket = WebSocket.fromUpgradedSocket(socket, serverSide: false);
-      return webSocket;
-    } catch (e) {
-      rethrow;
-    }
   }
 
   Future<http.BaseRequest> _interceptRequest(http.BaseRequest request) async {
@@ -408,6 +320,7 @@ class ClientIO extends ClientBase with ClientMixin {
     }
 
     var offset = 0;
+    String? uploadId;
     if (idParamName.isNotEmpty) {
       //make a request to check if a file already exists
       try {
@@ -418,52 +331,130 @@ class ClientIO extends ClientBase with ClientMixin {
         );
         final int chunksUploaded = res.data['chunksUploaded'] as int;
         offset = chunksUploaded * chunkSize;
+        uploadId = res.data['\$id'] ?? params[idParamName]?.toString();
       } on AppwriteException catch (_) {}
     }
 
-    RandomAccessFile? raf;
-    // read chunk and upload each chunk
-    if (iofile != null) {
-      raf = await iofile.open(mode: FileMode.read);
+    if (offset >= size) {
+      return res;
     }
 
-    while (offset < size) {
+    final totalChunks = (size / chunkSize).ceil();
+
+    Future<Response> uploadChunk(int index, int start, int end, String? id,
+        [RandomAccessFile? raf]) async {
       List<int> chunk = [];
       if (file.bytes != null) {
-        final end = min(offset + chunkSize, size);
-        chunk = file.bytes!.getRange(offset, end).toList();
+        chunk = file.bytes!.getRange(start, end).toList();
       } else {
-        raf!.setPositionSync(offset);
-        chunk = raf.readSync(chunkSize);
+        if (raf != null) {
+          await raf.setPosition(start);
+          chunk = await raf.read(end - start);
+        } else {
+          final chunkFile = await iofile!.open(mode: FileMode.read);
+          try {
+            await chunkFile.setPosition(start);
+            chunk = await chunkFile.read(end - start);
+          } finally {
+            await chunkFile.close();
+          }
+        }
       }
-      params[paramName] = http.MultipartFile.fromBytes(
+
+      final chunkParams = Map<String, dynamic>.from(params);
+      chunkParams[paramName] = http.MultipartFile.fromBytes(
         paramName,
         chunk,
         filename: file.filename,
       );
-      headers['content-range'] =
-          'bytes $offset-${min<int>((offset + chunkSize - 1), size - 1)}/$size';
-      res = await call(
+      final chunkHeaders = Map<String, String>.from(headers);
+      if (id != null && id.isNotEmpty) {
+        chunkHeaders['x-appwrite-id'] = id;
+      }
+      chunkHeaders['content-range'] = 'bytes $start-${end - 1}/$size';
+
+      return call(
         HttpMethod.post,
         path: path,
-        headers: headers,
-        params: params,
+        headers: chunkHeaders,
+        params: chunkParams,
       );
-      offset += chunkSize;
-      if (offset < size) {
-        headers['x-appwrite-id'] = res.data['\$id'];
-      }
-      final progress = UploadProgress(
-        $id: res.data['\$id'] ?? '',
-        progress: min(offset, size) / size * 100,
-        sizeUploaded: min(offset, size),
-        chunksTotal: res.data['chunksTotal'] ?? 0,
-        chunksUploaded: res.data['chunksUploaded'] ?? 0,
-      );
-      onProgress?.call(progress);
     }
-    raf?.close();
-    return res;
+
+    final firstStart = offset;
+    final firstEnd = min(firstStart + chunkSize, size);
+    final firstIndex = firstStart ~/ chunkSize;
+    res = await uploadChunk(firstIndex, firstStart, firstEnd, uploadId);
+    uploadId = res.data['\$id'] ?? uploadId;
+
+    var completedChunks = firstIndex + 1;
+    var uploadedBytes = firstEnd;
+    var lastResponse = res;
+    Response? finalResponse;
+
+    bool isUploadComplete(Response response) {
+      final chunksUploaded = response.data['chunksUploaded'];
+      final chunksTotal = response.data['chunksTotal'] ?? totalChunks;
+      return chunksUploaded is num && chunksTotal is num && chunksUploaded >= chunksTotal;
+    }
+
+    final progress = UploadProgress(
+      $id: uploadId ?? '',
+      progress: min(uploadedBytes, size) / size * 100,
+      sizeUploaded: min(uploadedBytes, size),
+      chunksTotal: totalChunks,
+      chunksUploaded: completedChunks,
+    );
+    onProgress?.call(progress);
+
+    final chunks = <Map<String, int>>[];
+    for (var start = firstEnd; start < size; start += chunkSize) {
+      final end = min(start + chunkSize, size);
+      chunks.add({
+        'index': start ~/ chunkSize,
+        'start': start,
+        'end': end,
+      });
+    }
+
+    var nextChunk = 0;
+    Future<void> uploadNext() async {
+      final raf = file.bytes == null ? await iofile!.open(mode: FileMode.read) : null;
+      try {
+        while (nextChunk < chunks.length) {
+          final chunk = chunks[nextChunk++];
+          final chunkResponse = await uploadChunk(
+            chunk['index']!,
+            chunk['start']!,
+            chunk['end']!,
+            uploadId,
+            raf,
+          );
+          completedChunks++;
+          uploadedBytes += chunk['end']! - chunk['start']!;
+          lastResponse = chunkResponse;
+          if (isUploadComplete(chunkResponse)) {
+            finalResponse = chunkResponse;
+          }
+
+          final progress = UploadProgress(
+            $id: uploadId ?? '',
+            progress: min(uploadedBytes, size) / size * 100,
+            sizeUploaded: min(uploadedBytes, size),
+            chunksTotal: totalChunks,
+            chunksUploaded: completedChunks,
+          );
+          onProgress?.call(progress);
+        }
+      } finally {
+        await raf?.close();
+      }
+    }
+
+    final concurrency = min(8, chunks.length);
+    await Future.wait(List.generate(concurrency, (_) => uploadNext()));
+
+    return finalResponse ?? lastResponse;
   }
 
   bool get _customSchemeAllowed => Platform.isWindows || Platform.isLinux;

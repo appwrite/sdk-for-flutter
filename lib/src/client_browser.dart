@@ -1,12 +1,9 @@
-import 'dart:convert';
 import 'dart:math';
 import 'package:flutter/foundation.dart';
 import 'package:flutter_web_auth_2/flutter_web_auth_2.dart';
 import 'package:http/http.dart' as http;
 import 'package:http/browser_client.dart';
 import 'package:web/web.dart' as web;
-import 'package:web_socket_channel/html.dart';
-import 'package:web_socket_channel/web_socket_channel.dart';
 import 'client_mixin.dart';
 import 'enums.dart';
 import 'exception.dart';
@@ -60,78 +57,61 @@ class ClientBrowser extends ClientBase with ClientMixin {
   String get endPoint => _endPoint;
 
   /// Your project ID
-  @Deprecated('Use Client.from or another factory constructor instead.')
   @override
   ClientBrowser setProject(value) {
     config['project'] = value;
     addHeader('X-Appwrite-Project', value);
     return this;
   }
-
   /// Your secret JSON Web Token
-  @Deprecated('Use Client.from or another factory constructor instead.')
   @override
   ClientBrowser setJWT(value) {
     config['jWT'] = value;
     addHeader('X-Appwrite-JWT', value);
     return this;
   }
-
-  @Deprecated('Use Client.from or another factory constructor instead.')
   @override
   ClientBrowser setLocale(value) {
     config['locale'] = value;
     addHeader('X-Appwrite-Locale', value);
     return this;
   }
-
   /// The user session to authenticate with
-  @Deprecated('Use Client.from or another factory constructor instead.')
   @override
   ClientBrowser setSession(value) {
     config['session'] = value;
     addHeader('X-Appwrite-Session', value);
     return this;
   }
-
   /// Your secret dev API key
-  @Deprecated('Use Client.from or another factory constructor instead.')
   @override
   ClientBrowser setDevKey(value) {
     config['devKey'] = value;
     addHeader('X-Appwrite-Dev-Key', value);
     return this;
   }
-
   /// The user cookie to authenticate with. Used by SDKs that forward an incoming Cookie header in server-side runtimes.
-  @Deprecated('Use Client.from or another factory constructor instead.')
   @override
   ClientBrowser setCookie(value) {
     config['cookie'] = value;
     addHeader('Cookie', value);
     return this;
   }
-
   /// Impersonate a user by ID on an already user-authenticated request. Requires the current request to be authenticated as a user with impersonator capability; X-Appwrite-Key alone is not sufficient. Impersonator users are intentionally granted users.read so they can discover a target before impersonation begins. Internal audit logs still attribute actions to the original impersonator and record the impersonated target only in internal audit payload data.
-  @Deprecated('Use Client.from or another factory constructor instead.')
   @override
   ClientBrowser setImpersonateUserId(value) {
     config['impersonateUserId'] = value;
     addHeader('X-Appwrite-Impersonate-User-Id', value);
     return this;
   }
-
   /// Impersonate a user by email on an already user-authenticated request. Requires the current request to be authenticated as a user with impersonator capability; X-Appwrite-Key alone is not sufficient. Impersonator users are intentionally granted users.read so they can discover a target before impersonation begins. Internal audit logs still attribute actions to the original impersonator and record the impersonated target only in internal audit payload data.
-  @Deprecated('Use Client.from or another factory constructor instead.')
   @override
   ClientBrowser setImpersonateUserEmail(value) {
     config['impersonateUserEmail'] = value;
     addHeader('X-Appwrite-Impersonate-User-Email', value);
     return this;
   }
-
   /// Impersonate a user by phone on an already user-authenticated request. Requires the current request to be authenticated as a user with impersonator capability; X-Appwrite-Key alone is not sufficient. Impersonator users are intentionally granted users.read so they can discover a target before impersonation begins. Internal audit logs still attribute actions to the original impersonator and record the impersonated target only in internal audit payload data.
-  @Deprecated('Use Client.from or another factory constructor instead.')
   @override
   ClientBrowser setImpersonateUserPhone(value) {
     config['impersonateUserPhone'] = value;
@@ -139,13 +119,11 @@ class ClientBrowser extends ClientBase with ClientMixin {
     return this;
   }
 
-  @Deprecated('Use Client.from or another factory constructor instead.')
   @override
   ClientBrowser setSelfSigned({bool status = true}) {
     return this;
   }
 
-  @Deprecated('Use Client.from or another factory constructor instead.')
   @override
   ClientBrowser setEndpoint(String endPoint) {
     if (!endPoint.startsWith('http://') && !endPoint.startsWith('https://')) {
@@ -160,7 +138,6 @@ class ClientBrowser extends ClientBase with ClientMixin {
     return this;
   }
 
-  @Deprecated('Use Client.from or another factory constructor instead.')
   @override
   ClientBrowser setEndPointRealtime(String endPoint) {
     if (!endPoint.startsWith('ws://') && !endPoint.startsWith('wss://')) {
@@ -188,22 +165,6 @@ class ClientBrowser extends ClientBase with ClientMixin {
     if (cookieFallback != null) {
       addHeader('x-fallback-cookies', cookieFallback);
     }
-  }
-
-  @override
-  Future<WebSocketChannel> realtimeWebSocket(Uri uri) async {
-    await init();
-    return HtmlWebSocketChannel.connect(uri);
-  }
-
-  @override
-  String? realtimeFallbackCookie() {
-    final fallbackCookie = web.window.localStorage.getItem('cookieFallback');
-    if (fallbackCookie != null) {
-      final cookie = Map<String, dynamic>.from(jsonDecode(fallbackCookie));
-      return cookie.values.first;
-    }
-    return null;
   }
 
   @override
@@ -238,6 +199,7 @@ class ClientBrowser extends ClientBase with ClientMixin {
     }
 
     var offset = 0;
+    String? uploadId;
     if (idParamName.isNotEmpty) {
       //make a request to check if a file already exists
       try {
@@ -248,40 +210,108 @@ class ClientBrowser extends ClientBase with ClientMixin {
         );
         final int chunksUploaded = res.data['chunksUploaded'] as int;
         offset = chunksUploaded * chunkSize;
+        uploadId = res.data['\$id'] ?? params[idParamName]?.toString();
       } on AppwriteException catch (_) {}
     }
 
-    while (offset < size) {
+    if (offset >= size) {
+      return res;
+    }
+
+    final totalChunks = (size / chunkSize).ceil();
+
+    Future<Response> uploadChunk(int index, int start, int end, String? id) async {
       List<int> chunk = [];
-      final end = min(offset + chunkSize, size);
-      chunk = file.bytes!.getRange(offset, end).toList();
-      params[paramName] = http.MultipartFile.fromBytes(
+      chunk = file.bytes!.getRange(start, end).toList();
+
+      final chunkParams = Map<String, dynamic>.from(params);
+      chunkParams[paramName] = http.MultipartFile.fromBytes(
         paramName,
         chunk,
         filename: file.filename,
       );
-      headers['content-range'] =
-          'bytes $offset-${min<int>((offset + chunkSize - 1), size - 1)}/$size';
-      res = await call(
+      final chunkHeaders = Map<String, String>.from(headers);
+      if (id != null && id.isNotEmpty) {
+        chunkHeaders['x-appwrite-id'] = id;
+      }
+      chunkHeaders['content-range'] = 'bytes $start-${end - 1}/$size';
+
+      return call(
         HttpMethod.post,
         path: path,
-        headers: headers,
-        params: params,
+        headers: chunkHeaders,
+        params: chunkParams,
       );
-      offset += chunkSize;
-      if (offset < size) {
-        headers['x-appwrite-id'] = res.data['\$id'];
-      }
-      final progress = UploadProgress(
-        $id: res.data['\$id'] ?? '',
-        progress: min(offset, size) / size * 100,
-        sizeUploaded: min(offset, size),
-        chunksTotal: res.data['chunksTotal'] ?? 0,
-        chunksUploaded: res.data['chunksUploaded'] ?? 0,
-      );
-      onProgress?.call(progress);
     }
-    return res;
+
+    final firstStart = offset;
+    final firstEnd = min(firstStart + chunkSize, size);
+    final firstIndex = firstStart ~/ chunkSize;
+    res = await uploadChunk(firstIndex, firstStart, firstEnd, uploadId);
+    uploadId = res.data['\$id'] ?? uploadId;
+
+    var completedChunks = firstIndex + 1;
+    var uploadedBytes = firstEnd;
+    var lastResponse = res;
+    Response? finalResponse;
+
+    bool isUploadComplete(Response response) {
+      final chunksUploaded = response.data['chunksUploaded'];
+      final chunksTotal = response.data['chunksTotal'] ?? totalChunks;
+      return chunksUploaded is num && chunksTotal is num && chunksUploaded >= chunksTotal;
+    }
+
+    final progress = UploadProgress(
+      $id: uploadId ?? '',
+      progress: min(uploadedBytes, size) / size * 100,
+      sizeUploaded: min(uploadedBytes, size),
+      chunksTotal: totalChunks,
+      chunksUploaded: completedChunks,
+    );
+    onProgress?.call(progress);
+
+    final chunks = <Map<String, int>>[];
+    for (var start = firstEnd; start < size; start += chunkSize) {
+      final end = min(start + chunkSize, size);
+      chunks.add({
+        'index': start ~/ chunkSize,
+        'start': start,
+        'end': end,
+      });
+    }
+
+    var nextChunk = 0;
+    Future<void> uploadNext() async {
+      while (nextChunk < chunks.length) {
+        final chunk = chunks[nextChunk++];
+        final chunkResponse = await uploadChunk(
+          chunk['index']!,
+          chunk['start']!,
+          chunk['end']!,
+          uploadId,
+        );
+        completedChunks++;
+        uploadedBytes += chunk['end']! - chunk['start']!;
+        lastResponse = chunkResponse;
+        if (isUploadComplete(chunkResponse)) {
+          finalResponse = chunkResponse;
+        }
+
+        final progress = UploadProgress(
+          $id: uploadId ?? '',
+          progress: min(uploadedBytes, size) / size * 100,
+          sizeUploaded: min(uploadedBytes, size),
+          chunksTotal: totalChunks,
+          chunksUploaded: completedChunks,
+        );
+        onProgress?.call(progress);
+      }
+    }
+
+    final concurrency = min(8, chunks.length);
+    await Future.wait(List.generate(concurrency, (_) => uploadNext()));
+
+    return finalResponse ?? lastResponse;
   }
 
   @override

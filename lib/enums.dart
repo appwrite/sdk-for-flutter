@@ -7,7 +7,7 @@ part 'src/enums/o_auth_provider.dart';
 part 'src/enums/browser.dart';
 part 'src/enums/credit_card.dart';
 part 'src/enums/flag.dart';
-part 'src/enums/theme.dart';
+part 'src/enums/browser_theme.dart';
 part 'src/enums/timezone.dart';
 part 'src/enums/browser_permission.dart';
 part 'src/enums/image_format.dart';

@@ -1,5 +1,8 @@
+import '../models.dart' as models;
 import 'client.dart';
 
 class Service {
-  const Service(ClientAuth _);
+  final Client client;
+
+  const Service(this.client);
 }
