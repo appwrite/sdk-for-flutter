@@ -12,8 +12,8 @@ void main() {
       final map = model.toMap();
       final result = TransactionList.fromMap(map);
 
-            expect(result.total, 5);
-                  expect(result.transactions, []);
-          });
+      expect(result.total, 5);
+      expect(result.transactions, []);
+    });
   });
 }
