@@ -354,4 +354,3 @@ void main() {
     expect(query['method'], 'between');
   });
 }
-
