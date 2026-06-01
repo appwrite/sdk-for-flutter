@@ -205,7 +205,7 @@ class Avatars extends Service {
       int? viewportWidth,
       int? viewportHeight,
       double? scale,
-      enums.Theme? theme,
+      enums.BrowserTheme? theme,
       String? userAgent,
       bool? fullpage,
       String? locale,

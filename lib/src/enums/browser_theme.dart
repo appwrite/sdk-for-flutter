@@ -1,10 +1,10 @@
 part of '../../enums.dart';
 
-enum Theme {
+enum BrowserTheme {
   light(value: 'light'),
   dark(value: 'dark');
 
-  const Theme({required this.value});
+  const BrowserTheme({required this.value});
 
   final String value;
 

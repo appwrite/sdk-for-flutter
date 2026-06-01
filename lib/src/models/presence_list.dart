@@ -28,7 +28,4 @@ class PresenceList implements Model {
       "presences": presences.map((p) => p.toMap()).toList(),
     };
   }
-
-  List<T> convertTo<T>(T Function(Map) fromJson) =>
-      presences.map((d) => d.convertTo<T>(fromJson)).toList();
 }

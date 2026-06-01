@@ -1,5 +1,12 @@
 # Change Log
 
+## 25.0.0
+
+* Breaking: `avatars.getScreenshot` `theme` parameter now uses the `BrowserTheme` enum
+* Breaking: Removed generic type parameters from `presences` service methods
+* Added: `BrowserTheme` enum
+* Updated: `Presence` model is now concrete and adds a `metadata` field
+
 ## 24.1.1
 
 * Fixed: Removed `Advisor` service and `Insight`, `InsightCTA`, `InsightList`, `Report`, `ReportList` models (admin-only endpoints, not intended for client SDKs)

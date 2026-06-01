@@ -11,7 +11,6 @@ void main() {
         $permissions: [],
         userId: '674af8f3e12a5f9ac0be',
         source: 'HTTP',
-        metadata: {},
       );
 
       final map = model.toMap();

@@ -26,7 +26,8 @@ class Presence implements Model {
   /// Presence expiry date in ISO 8601 format.
   final String? expiresAt;
 
-  final Map<String, dynamic> metadata;
+  /// Presence metadata.
+  final Map<String, dynamic>? metadata;
 
   Presence({
     required this.$id,
@@ -37,7 +38,7 @@ class Presence implements Model {
     this.status,
     required this.source,
     this.expiresAt,
-    required this.metadata,
+    this.metadata,
   });
 
   factory Presence.fromMap(Map<String, dynamic> map) {
@@ -50,7 +51,7 @@ class Presence implements Model {
       status: map['status']?.toString(),
       source: map['source'].toString(),
       expiresAt: map['expiresAt']?.toString(),
-      metadata: Map<String, dynamic>.from(map["metadata"] ?? {}),
+      metadata: map['metadata'],
     );
   }
 
@@ -68,7 +69,4 @@ class Presence implements Model {
       "metadata": metadata,
     };
   }
-
-  T convertTo<T>(T Function(Map<String, dynamic>) fromJson) =>
-      fromJson(metadata);
 }
