@@ -12,8 +12,8 @@ void main() {
       final map = model.toMap();
       final result = LocaleCode.fromMap(map);
 
-      expect(result.code, 'en-us');
-      expect(result.name, 'US');
-    });
+            expect(result.code, 'en-us');
+                  expect(result.name, 'US');
+          });
   });
 }
