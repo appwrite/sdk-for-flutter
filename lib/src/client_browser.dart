@@ -228,7 +228,11 @@ class ClientBrowser extends ClientBase with ClientMixin {
     final totalChunks = (size / chunkSize).ceil();
 
     Future<Response> uploadChunk(
-        int index, int start, int end, String? id) async {
+      int index,
+      int start,
+      int end,
+      String? id,
+    ) async {
       List<int> chunk = [];
       chunk = file.bytes!.getRange(start, end).toList();
 
@@ -283,11 +287,7 @@ class ClientBrowser extends ClientBase with ClientMixin {
     final chunks = <Map<String, int>>[];
     for (var start = firstEnd; start < size; start += chunkSize) {
       final end = min(start + chunkSize, size);
-      chunks.add({
-        'index': start ~/ chunkSize,
-        'start': start,
-        'end': end,
-      });
+      chunks.add({'index': start ~/ chunkSize, 'start': start, 'end': end});
     }
 
     var nextChunk = 0;

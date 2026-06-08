@@ -7,13 +7,16 @@ class Storage extends Service {
 
   /// Get a list of all the user files. You can use the query params to filter
   /// your results.
-  Future<models.FileList> listFiles(
-      {required String bucketId,
-      List<String>? queries,
-      String? search,
-      bool? total}) async {
-    final String apiPath =
-        '/storage/buckets/{bucketId}/files'.replaceAll('{bucketId}', bucketId);
+  Future<models.FileList> listFiles({
+    required String bucketId,
+    List<String>? queries,
+    String? search,
+    bool? total,
+  }) async {
+    final String apiPath = '/storage/buckets/{bucketId}/files'.replaceAll(
+      '{bucketId}',
+      bucketId,
+    );
 
     final Map<String, dynamic> apiParams = {
       if (queries != null) 'queries': queries,
@@ -26,8 +29,12 @@ class Storage extends Service {
       'accept': 'application/json',
     };
 
-    final res = await client.call(HttpMethod.get,
-        path: apiPath, params: apiParams, headers: apiHeaders);
+    final res = await client.call(
+      HttpMethod.get,
+      path: apiPath,
+      params: apiParams,
+      headers: apiHeaders,
+    );
 
     return models.FileList.fromMap(res.data);
   }
@@ -50,14 +57,17 @@ class Storage extends Service {
   /// If you're creating a new file using one of the Appwrite SDKs, all the
   /// chunking logic will be managed by the SDK internally.
   ///
-  Future<models.File> createFile(
-      {required String bucketId,
-      required String fileId,
-      required InputFile file,
-      List<String>? permissions,
-      Function(UploadProgress)? onProgress}) async {
-    final String apiPath =
-        '/storage/buckets/{bucketId}/files'.replaceAll('{bucketId}', bucketId);
+  Future<models.File> createFile({
+    required String bucketId,
+    required String fileId,
+    required InputFile file,
+    List<String>? permissions,
+    Function(UploadProgress)? onProgress,
+  }) async {
+    final String apiPath = '/storage/buckets/{bucketId}/files'.replaceAll(
+      '{bucketId}',
+      bucketId,
+    );
 
     final Map<String, dynamic> apiParams = {
       'fileId': fileId,
@@ -88,8 +98,10 @@ class Storage extends Service {
 
   /// Get a file by its unique ID. This endpoint response returns a JSON object
   /// with the file metadata.
-  Future<models.File> getFile(
-      {required String bucketId, required String fileId}) async {
+  Future<models.File> getFile({
+    required String bucketId,
+    required String fileId,
+  }) async {
     final String apiPath = '/storage/buckets/{bucketId}/files/{fileId}'
         .replaceAll('{bucketId}', bucketId)
         .replaceAll('{fileId}', fileId);
@@ -101,19 +113,24 @@ class Storage extends Service {
       'accept': 'application/json',
     };
 
-    final res = await client.call(HttpMethod.get,
-        path: apiPath, params: apiParams, headers: apiHeaders);
+    final res = await client.call(
+      HttpMethod.get,
+      path: apiPath,
+      params: apiParams,
+      headers: apiHeaders,
+    );
 
     return models.File.fromMap(res.data);
   }
 
   /// Update a file by its unique ID. Only users with write permissions have
   /// access to update this resource.
-  Future<models.File> updateFile(
-      {required String bucketId,
-      required String fileId,
-      String? name,
-      List<String>? permissions}) async {
+  Future<models.File> updateFile({
+    required String bucketId,
+    required String fileId,
+    String? name,
+    List<String>? permissions,
+  }) async {
     final String apiPath = '/storage/buckets/{bucketId}/files/{fileId}'
         .replaceAll('{bucketId}', bucketId)
         .replaceAll('{fileId}', fileId);
@@ -129,8 +146,12 @@ class Storage extends Service {
       'accept': 'application/json',
     };
 
-    final res = await client.call(HttpMethod.put,
-        path: apiPath, params: apiParams, headers: apiHeaders);
+    final res = await client.call(
+      HttpMethod.put,
+      path: apiPath,
+      params: apiParams,
+      headers: apiHeaders,
+    );
 
     return models.File.fromMap(res.data);
   }
@@ -149,8 +170,12 @@ class Storage extends Service {
       'content-type': 'application/json',
     };
 
-    final res = await client.call(HttpMethod.delete,
-        path: apiPath, params: apiParams, headers: apiHeaders);
+    final res = await client.call(
+      HttpMethod.delete,
+      path: apiPath,
+      params: apiParams,
+      headers: apiHeaders,
+    );
 
     return res.data;
   }
@@ -158,8 +183,11 @@ class Storage extends Service {
   /// Get a file content by its unique ID. The endpoint response return with a
   /// 'Content-Disposition: attachment' header that tells the browser to start
   /// downloading the file to user downloads directory.
-  Future<Uint8List> getFileDownload(
-      {required String bucketId, required String fileId, String? token}) async {
+  Future<Uint8List> getFileDownload({
+    required String bucketId,
+    required String fileId,
+    String? token,
+  }) async {
     final String apiPath = '/storage/buckets/{bucketId}/files/{fileId}/download'
         .replaceAll('{bucketId}', bucketId)
         .replaceAll('{fileId}', fileId);
@@ -169,8 +197,12 @@ class Storage extends Service {
       'project': client.config['project'],
     };
 
-    final res = await client.call(HttpMethod.get,
-        path: apiPath, params: params, responseType: ResponseType.bytes);
+    final res = await client.call(
+      HttpMethod.get,
+      path: apiPath,
+      params: params,
+      responseType: ResponseType.bytes,
+    );
     return res.data;
   }
 
@@ -179,21 +211,22 @@ class Storage extends Service {
   /// and spreadsheets, will return the file icon image. You can also pass query
   /// string arguments for cutting and resizing your preview image. Preview is
   /// supported only for image files smaller than 10MB.
-  Future<Uint8List> getFilePreview(
-      {required String bucketId,
-      required String fileId,
-      int? width,
-      int? height,
-      enums.ImageGravity? gravity,
-      int? quality,
-      int? borderWidth,
-      String? borderColor,
-      int? borderRadius,
-      double? opacity,
-      int? rotation,
-      String? background,
-      enums.ImageFormat? output,
-      String? token}) async {
+  Future<Uint8List> getFilePreview({
+    required String bucketId,
+    required String fileId,
+    int? width,
+    int? height,
+    enums.ImageGravity? gravity,
+    int? quality,
+    int? borderWidth,
+    String? borderColor,
+    int? borderRadius,
+    double? opacity,
+    int? rotation,
+    String? background,
+    enums.ImageFormat? output,
+    String? token,
+  }) async {
     final String apiPath = '/storage/buckets/{bucketId}/files/{fileId}/preview'
         .replaceAll('{bucketId}', bucketId)
         .replaceAll('{fileId}', fileId);
@@ -214,16 +247,23 @@ class Storage extends Service {
       'project': client.config['project'],
     };
 
-    final res = await client.call(HttpMethod.get,
-        path: apiPath, params: params, responseType: ResponseType.bytes);
+    final res = await client.call(
+      HttpMethod.get,
+      path: apiPath,
+      params: params,
+      responseType: ResponseType.bytes,
+    );
     return res.data;
   }
 
   /// Get a file content by its unique ID. This endpoint is similar to the
   /// download method but returns with no  'Content-Disposition: attachment'
   /// header.
-  Future<Uint8List> getFileView(
-      {required String bucketId, required String fileId, String? token}) async {
+  Future<Uint8List> getFileView({
+    required String bucketId,
+    required String fileId,
+    String? token,
+  }) async {
     final String apiPath = '/storage/buckets/{bucketId}/files/{fileId}/view'
         .replaceAll('{bucketId}', bucketId)
         .replaceAll('{fileId}', fileId);
@@ -233,8 +273,12 @@ class Storage extends Service {
       'project': client.config['project'],
     };
 
-    final res = await client.call(HttpMethod.get,
-        path: apiPath, params: params, responseType: ResponseType.bytes);
+    final res = await client.call(
+      HttpMethod.get,
+      path: apiPath,
+      params: params,
+      responseType: ResponseType.bytes,
+    );
     return res.data;
   }
 }

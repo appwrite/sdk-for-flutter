@@ -18,17 +18,18 @@ class MockClient extends Mock implements Client {
     Map<String, dynamic> params = const {},
     ResponseType? responseType,
   }) async {
-    return super.noSuchMethod(Invocation.method(#call, [method]),
-        returnValue: Response());
+    return super.noSuchMethod(
+      Invocation.method(#call, [method]),
+      returnValue: Response(),
+    );
   }
 
   @override
-  Future webAuth(
-    Uri? url, {
-    String? callbackUrlScheme,
-  }) async {
-    return super
-        .noSuchMethod(Invocation.method(#webAuth, [url]), returnValue: 'done');
+  Future webAuth(Uri? url, {String? callbackUrlScheme}) async {
+    return super.noSuchMethod(
+      Invocation.method(#webAuth, [url]),
+      returnValue: 'done',
+    );
   }
 
   @override
@@ -41,9 +42,15 @@ class MockClient extends Mock implements Client {
     Function(UploadProgress)? onProgress,
   }) async {
     return super.noSuchMethod(
-        Invocation.method(
-            #chunkedUpload, [path, params, paramName, idParamName, headers]),
-        returnValue: Response(data: {}));
+      Invocation.method(#chunkedUpload, [
+        path,
+        params,
+        paramName,
+        idParamName,
+        headers,
+      ]),
+      returnValue: Response(data: {}),
+    );
   }
 }
 
@@ -58,14 +65,11 @@ void main() {
     });
 
     test('test method list()', () async {
-      final Map<String, dynamic> data = {
-        'total': 5,
-        'presences': [],
-      };
+      final Map<String, dynamic> data = {'total': 5, 'presences': []};
 
-      when(client.call(
-        HttpMethod.get,
-      )).thenAnswer((_) async => Response(data: data));
+      when(
+        client.call(HttpMethod.get),
+      ).thenAnswer((_) async => Response(data: data));
 
       final response = await presences.list();
       expect(response, isA<models.PresenceList>());
@@ -81,13 +85,11 @@ void main() {
         'source': 'HTTP',
       };
 
-      when(client.call(
-        HttpMethod.get,
-      )).thenAnswer((_) async => Response(data: data));
+      when(
+        client.call(HttpMethod.get),
+      ).thenAnswer((_) async => Response(data: data));
 
-      final response = await presences.get(
-        presenceId: '<PRESENCE_ID>',
-      );
+      final response = await presences.get(presenceId: '<PRESENCE_ID>');
       expect(response, isA<models.Presence>());
     });
 
@@ -101,9 +103,9 @@ void main() {
         'source': 'HTTP',
       };
 
-      when(client.call(
-        HttpMethod.put,
-      )).thenAnswer((_) async => Response(data: data));
+      when(
+        client.call(HttpMethod.put),
+      ).thenAnswer((_) async => Response(data: data));
 
       final response = await presences.upsert(
         presenceId: '<PRESENCE_ID>',
@@ -122,26 +124,22 @@ void main() {
         'source': 'HTTP',
       };
 
-      when(client.call(
-        HttpMethod.patch,
-      )).thenAnswer((_) async => Response(data: data));
+      when(
+        client.call(HttpMethod.patch),
+      ).thenAnswer((_) async => Response(data: data));
 
-      final response = await presences.update(
-        presenceId: '<PRESENCE_ID>',
-      );
+      final response = await presences.update(presenceId: '<PRESENCE_ID>');
       expect(response, isA<models.Presence>());
     });
 
     test('test method delete()', () async {
       final data = '';
 
-      when(client.call(
-        HttpMethod.delete,
-      )).thenAnswer((_) async => Response(data: data));
+      when(
+        client.call(HttpMethod.delete),
+      ).thenAnswer((_) async => Response(data: data));
 
-      final response = await presences.delete(
-        presenceId: '<PRESENCE_ID>',
-      );
+      final response = await presences.delete(presenceId: '<PRESENCE_ID>');
     });
   });
 }

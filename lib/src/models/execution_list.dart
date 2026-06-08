@@ -8,16 +8,14 @@ class ExecutionList implements Model {
   /// List of executions.
   final List<Execution> executions;
 
-  ExecutionList({
-    required this.total,
-    required this.executions,
-  });
+  ExecutionList({required this.total, required this.executions});
 
   factory ExecutionList.fromMap(Map<String, dynamic> map) {
     return ExecutionList(
       total: map['total'],
       executions: List<Execution>.from(
-          map['executions'].map((p) => Execution.fromMap(p))),
+        map['executions'].map((p) => Execution.fromMap(p)),
+      ),
     );
   }
 

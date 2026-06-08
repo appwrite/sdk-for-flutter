@@ -8,10 +8,7 @@ class Continent implements Model {
   /// Continent two letter code.
   final String code;
 
-  Continent({
-    required this.name,
-    required this.code,
-  });
+  Continent({required this.name, required this.code});
 
   factory Continent.fromMap(Map<String, dynamic> map) {
     return Continent(
@@ -22,9 +19,6 @@ class Continent implements Model {
 
   @override
   Map<String, dynamic> toMap() {
-    return {
-      "name": name,
-      "code": code,
-    };
+    return {"name": name, "code": code};
   }
 }

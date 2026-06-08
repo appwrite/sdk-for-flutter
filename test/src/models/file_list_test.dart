@@ -4,10 +4,7 @@ import 'package:flutter_test/flutter_test.dart';
 void main() {
   group('FileList', () {
     test('model', () {
-      final model = FileList(
-        total: 5,
-        files: [],
-      );
+      final model = FileList(total: 5, files: []);
 
       final map = model.toMap();
       final result = FileList.fromMap(map);

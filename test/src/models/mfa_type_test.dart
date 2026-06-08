@@ -14,8 +14,10 @@ void main() {
       final result = MfaType.fromMap(map);
 
       expect(result.secret, '[SHARED_SECRET]');
-      expect(result.uri,
-          'otpauth://totp/appwrite:user@example.com?secret=[SHARED_SECRET]&issuer=appwrite');
+      expect(
+        result.uri,
+        'otpauth://totp/appwrite:user@example.com?secret=[SHARED_SECRET]&issuer=appwrite',
+      );
     });
   });
 }

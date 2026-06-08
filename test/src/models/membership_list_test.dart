@@ -4,10 +4,7 @@ import 'package:flutter_test/flutter_test.dart';
 void main() {
   group('MembershipList', () {
     test('model', () {
-      final model = MembershipList(
-        total: 5,
-        memberships: [],
-      );
+      final model = MembershipList(total: 5, memberships: []);
 
       final map = model.toMap();
       final result = MembershipList.fromMap(map);
