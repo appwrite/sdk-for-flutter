@@ -10,9 +10,9 @@ abstract class Realtime extends Service {
   /// Initializes a [Realtime] service
   factory Realtime(Client client) => createRealtime(client);
 
-  /// Subscribes to Appwrite events and returns a `RealtimeSubscription` object, which can be used
+  /// Subscribes to Appwrite events and returns a `RealtimeSubscription` object, which can be used 
   /// to listen to events on the channels in realtime and to close the subscription to stop listening.
-  ///
+  /// 
   /// Possible channels are:
   /// - account
   /// - collections
@@ -41,7 +41,7 @@ abstract class Realtime extends Service {
   ///
   /// subscription.close();
   /// ```
-  ///
+  /// 
   /// You can also use Channel builders:
   /// ```dart
   /// final subscription = realtime.subscribe([
