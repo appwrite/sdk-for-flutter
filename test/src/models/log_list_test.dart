@@ -12,8 +12,8 @@ void main() {
       final map = model.toMap();
       final result = LogList.fromMap(map);
 
-      expect(result.total, 5);
-      expect(result.logs, []);
-    });
+            expect(result.total, 5);
+                  expect(result.logs, []);
+          });
   });
 }
