@@ -1,10 +1,16 @@
 # Change Log
 
+## 25.1.0
+
+* Added: Email metadata fields to `User` (`emailCanonical`, `emailIsFree`, `emailIsDisposable`, `emailIsCorporate`, `emailIsCanonical`).
+* Added: `Membership.userAccessedAt` field.
+* Updated: Requests now send an explicit `accept` header matching each endpoint's response type.
+
 ## 25.0.0
 
 * Breaking: `avatars.getScreenshot` `theme` parameter now uses the `BrowserTheme` enum
 * Breaking: Removed generic type parameters from `presences` service methods
-* Added: `BrowserTheme` enum
+* Replaced: `BrowserTheme` enum
 * Updated: `Presence` model is now concrete and adds a `metadata` field
 
 ## 24.1.1

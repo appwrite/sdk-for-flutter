@@ -4,26 +4,14 @@ import 'package:flutter/foundation.dart';
 class RealtimeResponse {
   final String type; // error, event, connected, response
   final Map<String, dynamic> data;
-  RealtimeResponse({
-    required this.type,
-    required this.data,
-  });
+  RealtimeResponse({required this.type, required this.data});
 
-  RealtimeResponse copyWith({
-    String? type,
-    Map<String, dynamic>? data,
-  }) {
-    return RealtimeResponse(
-      type: type ?? this.type,
-      data: data ?? this.data,
-    );
+  RealtimeResponse copyWith({String? type, Map<String, dynamic>? data}) {
+    return RealtimeResponse(type: type ?? this.type, data: data ?? this.data);
   }
 
   Map<String, dynamic> toMap() {
-    return {
-      'type': type,
-      'data': data,
-    };
+    return {'type': type, 'data': data};
   }
 
   factory RealtimeResponse.fromMap(Map<String, dynamic> map) {

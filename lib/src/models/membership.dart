@@ -41,6 +41,9 @@ class Membership implements Model {
   /// Multi factor authentication status, true if the user has MFA enabled or false otherwise. Hide this attribute by toggling membership privacy in the Console.
   final bool mfa;
 
+  /// Most recent access date in ISO 8601 format. Show this attribute by toggling membership privacy in the Console.
+  final String userAccessedAt;
+
   /// User list of roles
   final List<String> roles;
 
@@ -58,6 +61,7 @@ class Membership implements Model {
     required this.joined,
     required this.confirm,
     required this.mfa,
+    required this.userAccessedAt,
     required this.roles,
   });
 
@@ -76,6 +80,7 @@ class Membership implements Model {
       joined: map['joined'].toString(),
       confirm: map['confirm'],
       mfa: map['mfa'],
+      userAccessedAt: map['userAccessedAt'].toString(),
       roles: List.from(map['roles'] ?? []),
     );
   }
@@ -96,6 +101,7 @@ class Membership implements Model {
       "joined": joined,
       "confirm": confirm,
       "mfa": mfa,
+      "userAccessedAt": userAccessedAt,
       "roles": roles,
     };
   }

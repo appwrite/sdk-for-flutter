@@ -58,6 +58,7 @@ abstract class ClientBase implements Client {
     final response = await call(
       HttpMethod.get,
       path: apiPath,
+      headers: {'X-Appwrite-Project': config['project'] ?? ''},
       responseType: ResponseType.plain,
     );
     return response.data;

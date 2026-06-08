@@ -62,7 +62,7 @@ mixin ClientMixin {
         path: uri.path,
         host: uri.host,
         scheme: uri.scheme,
-        queryParameters: params,
+        queryParameters: {...uri.queryParameters, ...params},
         port: uri.port,
       );
       request = http.Request(method.name(), uri);
@@ -130,10 +130,11 @@ mixin ClientMixin {
       return http.Response(
         '',
         streamedResponse.statusCode,
-        headers: streamedResponse.headers.map((k, v) =>
-            k.toLowerCase() == 'content-type'
-                ? MapEntry(k, 'text/plain')
-                : MapEntry(k, v)),
+        headers: streamedResponse.headers.map(
+          (k, v) => k.toLowerCase() == 'content-type'
+              ? MapEntry(k, 'text/plain')
+              : MapEntry(k, v),
+        ),
         request: streamedResponse.request,
         isRedirect: streamedResponse.isRedirect,
         persistentConnection: streamedResponse.persistentConnection,

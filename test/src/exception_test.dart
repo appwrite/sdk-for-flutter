@@ -20,9 +20,7 @@ void main() {
       );
       expect(
         exception3.toString(),
-        equals(
-          'AppwriteException: ValidationError, Invalid request (400)',
-        ),
+        equals('AppwriteException: ValidationError, Invalid request (400)'),
       );
     });
   });

@@ -58,7 +58,7 @@ class ClientIO extends ClientBase with ClientMixin {
       'x-sdk-name': 'Flutter',
       'x-sdk-platform': 'client',
       'x-sdk-language': 'flutter',
-      'x-sdk-version': '25.0.0',
+      'x-sdk-version': '25.1.0',
       'X-Appwrite-Response-Format': '1.9.5',
     };
 
@@ -86,7 +86,6 @@ class ClientIO extends ClientBase with ClientMixin {
   @override
   ClientIO setProject(value) {
     config['project'] = value;
-    addHeader('X-Appwrite-Project', value);
     return this;
   }
 
@@ -349,8 +348,13 @@ class ClientIO extends ClientBase with ClientMixin {
 
     final totalChunks = (size / chunkSize).ceil();
 
-    Future<Response> uploadChunk(int index, int start, int end, String? id,
-        [RandomAccessFile? raf]) async {
+    Future<Response> uploadChunk(
+      int index,
+      int start,
+      int end,
+      String? id, [
+      RandomAccessFile? raf,
+    ]) async {
       List<int> chunk = [];
       if (file.bytes != null) {
         chunk = file.bytes!.getRange(start, end).toList();
@@ -420,11 +424,7 @@ class ClientIO extends ClientBase with ClientMixin {
     final chunks = <Map<String, int>>[];
     for (var start = firstEnd; start < size; start += chunkSize) {
       final end = min(start + chunkSize, size);
-      chunks.add({
-        'index': start ~/ chunkSize,
-        'start': start,
-        'end': end,
-      });
+      chunks.add({'index': start ~/ chunkSize, 'start': start, 'end': end});
     }
 
     var nextChunk = 0;
@@ -477,9 +477,7 @@ class ClientIO extends ClientBase with ClientMixin {
       callbackUrlScheme: callbackUrlScheme != null && _customSchemeAllowed
           ? callbackUrlScheme
           : "appwrite-callback-${config['project']!}",
-      options: const FlutterWebAuth2Options(
-        useWebview: false,
-      ),
+      options: const FlutterWebAuth2Options(useWebview: false),
     ).then((value) async {
       Uri url = Uri.parse(value);
       final key = url.queryParameters['key'];

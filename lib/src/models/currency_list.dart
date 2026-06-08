@@ -8,16 +8,14 @@ class CurrencyList implements Model {
   /// List of currencies.
   final List<Currency> currencies;
 
-  CurrencyList({
-    required this.total,
-    required this.currencies,
-  });
+  CurrencyList({required this.total, required this.currencies});
 
   factory CurrencyList.fromMap(Map<String, dynamic> map) {
     return CurrencyList(
       total: map['total'],
       currencies: List<Currency>.from(
-          map['currencies'].map((p) => Currency.fromMap(p))),
+        map['currencies'].map((p) => Currency.fromMap(p)),
+      ),
     );
   }
 

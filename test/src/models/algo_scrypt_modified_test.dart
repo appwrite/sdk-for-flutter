@@ -18,8 +18,10 @@ void main() {
       expect(result.type, 'scryptMod');
       expect(result.salt, 'UxLMreBr6tYyjQ==');
       expect(result.saltSeparator, 'Bw==');
-      expect(result.signerKey,
-          'XyEKE9RcTDeLEsL/RjwPDBv/RqDl8fb3gpYEOQaPihbxf1ZAtSOHCjuAAa7Q3oHpCYhXSN9tizHgVOwn6krflQ==');
+      expect(
+        result.signerKey,
+        'XyEKE9RcTDeLEsL/RjwPDBv/RqDl8fb3gpYEOQaPihbxf1ZAtSOHCjuAAa7Q3oHpCYhXSN9tizHgVOwn6krflQ==',
+      );
     });
   });
 }

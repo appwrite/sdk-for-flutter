@@ -11,10 +11,7 @@ void main() {
         Cookie('name2', 'value2'),
       ];
 
-      expect(
-        CookieManager.getCookies(cookies),
-        "name=value; name2=value2",
-      );
+      expect(CookieManager.getCookies(cookies), "name=value; name2=value2");
     });
   });
 
@@ -35,17 +32,12 @@ void main() {
 
     test('with cookie', () async {
       final uri = Uri.parse('https://appwrite.io');
-      final cookies = [
-        Cookie('name', 'value'),
-        Cookie('name2', 'value2'),
-      ];
+      final cookies = [Cookie('name', 'value'), Cookie('name2', 'value2')];
       cookieJar.saveFromResponse(uri, cookies);
 
       final request = Request('GET', uri);
       await cookieManager.onRequest(request);
-      expect(request.headers, {
-        'cookie': 'name=value; name2=value2',
-      });
+      expect(request.headers, {'cookie': 'name=value; name2=value2'});
     });
   });
 
@@ -61,12 +53,7 @@ void main() {
     test('without cookie', () async {
       final uri = Uri.parse('https://appwrite.io');
       final request = Request('POST', uri);
-      final response = Response(
-        'body',
-        200,
-        headers: {},
-        request: request,
-      );
+      final response = Response('body', 200, headers: {}, request: request);
 
       await cookieManager.onResponse(response);
 
@@ -81,9 +68,7 @@ void main() {
       final response = Response(
         'body',
         200,
-        headers: {
-          'set-cookie': 'name=value',
-        },
+        headers: {'set-cookie': 'name=value'},
         request: request,
       );
 

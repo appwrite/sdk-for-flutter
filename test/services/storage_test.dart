@@ -18,17 +18,18 @@ class MockClient extends Mock implements Client {
     Map<String, dynamic> params = const {},
     ResponseType? responseType,
   }) async {
-    return super.noSuchMethod(Invocation.method(#call, [method]),
-        returnValue: Response());
+    return super.noSuchMethod(
+      Invocation.method(#call, [method]),
+      returnValue: Response(),
+    );
   }
 
   @override
-  Future webAuth(
-    Uri? url, {
-    String? callbackUrlScheme,
-  }) async {
-    return super
-        .noSuchMethod(Invocation.method(#webAuth, [url]), returnValue: 'done');
+  Future webAuth(Uri? url, {String? callbackUrlScheme}) async {
+    return super.noSuchMethod(
+      Invocation.method(#webAuth, [url]),
+      returnValue: 'done',
+    );
   }
 
   @override
@@ -41,9 +42,15 @@ class MockClient extends Mock implements Client {
     Function(UploadProgress)? onProgress,
   }) async {
     return super.noSuchMethod(
-        Invocation.method(
-            #chunkedUpload, [path, params, paramName, idParamName, headers]),
-        returnValue: Response(data: {}));
+      Invocation.method(#chunkedUpload, [
+        path,
+        params,
+        paramName,
+        idParamName,
+        headers,
+      ]),
+      returnValue: Response(data: {}),
+    );
   }
 }
 
@@ -58,18 +65,13 @@ void main() {
     });
 
     test('test method listFiles()', () async {
-      final Map<String, dynamic> data = {
-        'total': 5,
-        'files': [],
-      };
+      final Map<String, dynamic> data = {'total': 5, 'files': []};
 
-      when(client.call(
-        HttpMethod.get,
-      )).thenAnswer((_) async => Response(data: data));
+      when(
+        client.call(HttpMethod.get),
+      ).thenAnswer((_) async => Response(data: data));
 
-      final response = await storage.listFiles(
-        bucketId: '<BUCKET_ID>',
-      );
+      final response = await storage.listFiles(bucketId: '<BUCKET_ID>');
       expect(response, isA<models.FileList>());
     });
 
@@ -91,13 +93,15 @@ void main() {
         'compression': 'gzip',
       };
 
-      when(client.chunkedUpload(
-        path: argThat(isNotNull),
-        params: argThat(isNotNull),
-        paramName: argThat(isNotNull),
-        idParamName: argThat(isNotNull),
-        headers: argThat(isNotNull),
-      )).thenAnswer((_) async => Response(data: data));
+      when(
+        client.chunkedUpload(
+          path: argThat(isNotNull),
+          params: argThat(isNotNull),
+          paramName: argThat(isNotNull),
+          idParamName: argThat(isNotNull),
+          headers: argThat(isNotNull),
+        ),
+      ).thenAnswer((_) async => Response(data: data));
 
       final response = await storage.createFile(
         bucketId: '<BUCKET_ID>',
@@ -125,9 +129,9 @@ void main() {
         'compression': 'gzip',
       };
 
-      when(client.call(
-        HttpMethod.get,
-      )).thenAnswer((_) async => Response(data: data));
+      when(
+        client.call(HttpMethod.get),
+      ).thenAnswer((_) async => Response(data: data));
 
       final response = await storage.getFile(
         bucketId: '<BUCKET_ID>',
@@ -154,9 +158,9 @@ void main() {
         'compression': 'gzip',
       };
 
-      when(client.call(
-        HttpMethod.put,
-      )).thenAnswer((_) async => Response(data: data));
+      when(
+        client.call(HttpMethod.put),
+      ).thenAnswer((_) async => Response(data: data));
 
       final response = await storage.updateFile(
         bucketId: '<BUCKET_ID>',
@@ -168,9 +172,9 @@ void main() {
     test('test method deleteFile()', () async {
       final data = '';
 
-      when(client.call(
-        HttpMethod.delete,
-      )).thenAnswer((_) async => Response(data: data));
+      when(
+        client.call(HttpMethod.delete),
+      ).thenAnswer((_) async => Response(data: data));
 
       final response = await storage.deleteFile(
         bucketId: '<BUCKET_ID>',
@@ -181,9 +185,9 @@ void main() {
     test('test method getFileDownload()', () async {
       final Uint8List data = Uint8List.fromList([]);
 
-      when(client.call(
-        HttpMethod.get,
-      )).thenAnswer((_) async => Response(data: data));
+      when(
+        client.call(HttpMethod.get),
+      ).thenAnswer((_) async => Response(data: data));
 
       final response = await storage.getFileDownload(
         bucketId: '<BUCKET_ID>',
@@ -195,9 +199,9 @@ void main() {
     test('test method getFilePreview()', () async {
       final Uint8List data = Uint8List.fromList([]);
 
-      when(client.call(
-        HttpMethod.get,
-      )).thenAnswer((_) async => Response(data: data));
+      when(
+        client.call(HttpMethod.get),
+      ).thenAnswer((_) async => Response(data: data));
 
       final response = await storage.getFilePreview(
         bucketId: '<BUCKET_ID>',
@@ -209,9 +213,9 @@ void main() {
     test('test method getFileView()', () async {
       final Uint8List data = Uint8List.fromList([]);
 
-      when(client.call(
-        HttpMethod.get,
-      )).thenAnswer((_) async => Response(data: data));
+      when(
+        client.call(HttpMethod.get),
+      ).thenAnswer((_) async => Response(data: data));
 
       final response = await storage.getFileView(
         bucketId: '<BUCKET_ID>',

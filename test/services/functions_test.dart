@@ -18,17 +18,18 @@ class MockClient extends Mock implements Client {
     Map<String, dynamic> params = const {},
     ResponseType? responseType,
   }) async {
-    return super.noSuchMethod(Invocation.method(#call, [method]),
-        returnValue: Response());
+    return super.noSuchMethod(
+      Invocation.method(#call, [method]),
+      returnValue: Response(),
+    );
   }
 
   @override
-  Future webAuth(
-    Uri? url, {
-    String? callbackUrlScheme,
-  }) async {
-    return super
-        .noSuchMethod(Invocation.method(#webAuth, [url]), returnValue: 'done');
+  Future webAuth(Uri? url, {String? callbackUrlScheme}) async {
+    return super.noSuchMethod(
+      Invocation.method(#webAuth, [url]),
+      returnValue: 'done',
+    );
   }
 
   @override
@@ -41,9 +42,15 @@ class MockClient extends Mock implements Client {
     Function(UploadProgress)? onProgress,
   }) async {
     return super.noSuchMethod(
-        Invocation.method(
-            #chunkedUpload, [path, params, paramName, idParamName, headers]),
-        returnValue: Response(data: {}));
+      Invocation.method(#chunkedUpload, [
+        path,
+        params,
+        paramName,
+        idParamName,
+        headers,
+      ]),
+      returnValue: Response(data: {}),
+    );
   }
 }
 
@@ -58,14 +65,11 @@ void main() {
     });
 
     test('test method listExecutions()', () async {
-      final Map<String, dynamic> data = {
-        'total': 5,
-        'executions': [],
-      };
+      final Map<String, dynamic> data = {'total': 5, 'executions': []};
 
-      when(client.call(
-        HttpMethod.get,
-      )).thenAnswer((_) async => Response(data: data));
+      when(
+        client.call(HttpMethod.get),
+      ).thenAnswer((_) async => Response(data: data));
 
       final response = await functions.listExecutions(
         functionId: '<FUNCTION_ID>',
@@ -94,9 +98,9 @@ void main() {
         'duration': 0.4,
       };
 
-      when(client.call(
-        HttpMethod.post,
-      )).thenAnswer((_) async => Response(data: data));
+      when(
+        client.call(HttpMethod.post),
+      ).thenAnswer((_) async => Response(data: data));
 
       final response = await functions.createExecution(
         functionId: '<FUNCTION_ID>',
@@ -125,9 +129,9 @@ void main() {
         'duration': 0.4,
       };
 
-      when(client.call(
-        HttpMethod.get,
-      )).thenAnswer((_) async => Response(data: data));
+      when(
+        client.call(HttpMethod.get),
+      ).thenAnswer((_) async => Response(data: data));
 
       final response = await functions.getExecution(
         functionId: '<FUNCTION_ID>',

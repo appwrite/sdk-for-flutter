@@ -44,6 +44,21 @@ class User implements Model {
   /// Email verification status.
   final bool emailVerification;
 
+  /// Canonical form of the user email address.
+  final String? emailCanonical;
+
+  /// Whether the user email is from a free email provider.
+  final bool? emailIsFree;
+
+  /// Whether the user email is from a disposable email provider.
+  final bool? emailIsDisposable;
+
+  /// Whether the user email is from a corporate domain.
+  final bool? emailIsCorporate;
+
+  /// Whether the user email is in its canonical form.
+  final bool? emailIsCanonical;
+
   /// Phone verification status.
   final bool phoneVerification;
 
@@ -80,6 +95,11 @@ class User implements Model {
     required this.email,
     required this.phone,
     required this.emailVerification,
+    this.emailCanonical,
+    this.emailIsFree,
+    this.emailIsDisposable,
+    this.emailIsCorporate,
+    this.emailIsCanonical,
     required this.phoneVerification,
     required this.mfa,
     required this.prefs,
@@ -105,6 +125,11 @@ class User implements Model {
       email: map['email'].toString(),
       phone: map['phone'].toString(),
       emailVerification: map['emailVerification'],
+      emailCanonical: map['emailCanonical']?.toString(),
+      emailIsFree: map['emailIsFree'],
+      emailIsDisposable: map['emailIsDisposable'],
+      emailIsCorporate: map['emailIsCorporate'],
+      emailIsCanonical: map['emailIsCanonical'],
       phoneVerification: map['phoneVerification'],
       mfa: map['mfa'],
       prefs: Preferences.fromMap(map['prefs']),
@@ -132,6 +157,11 @@ class User implements Model {
       "email": email,
       "phone": phone,
       "emailVerification": emailVerification,
+      "emailCanonical": emailCanonical,
+      "emailIsFree": emailIsFree,
+      "emailIsDisposable": emailIsDisposable,
+      "emailIsCorporate": emailIsCorporate,
+      "emailIsCanonical": emailIsCanonical,
       "phoneVerification": phoneVerification,
       "mfa": mfa,
       "prefs": prefs.toMap(),
