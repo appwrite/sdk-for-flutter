@@ -1,10 +1,19 @@
 # Change Log
 
+## 25.1.0
+
+* Added: `apps` service with app and secret management methods.
+* Added: `oauth2` service with `authorize`, `approve`, `reject`, `createGrant`, and `getGrant`.
+* Added: `App`, `AppSecret`, `AppSecretPlaintext`, `AppsList`, and `AppSecretList` models.
+* Added: `Oauth2Authorize`, `Oauth2Approve`, `Oauth2Reject`, and `Oauth2Grant` models.
+* Added: Email metadata fields to `User` (`emailCanonical`, `emailIsFree`, `emailIsDisposable`, `emailIsCorporate`, `emailIsCanonical`).
+* Added: `Membership.userAccessedAt` field.
+
 ## 25.0.0
 
 * Breaking: `avatars.getScreenshot` `theme` parameter now uses the `BrowserTheme` enum
 * Breaking: Removed generic type parameters from `presences` service methods
-* Added: `BrowserTheme` enum
+* Replaced: `BrowserTheme` enum
 * Updated: `Presence` model is now concrete and adds a `metadata` field
 
 ## 24.1.1

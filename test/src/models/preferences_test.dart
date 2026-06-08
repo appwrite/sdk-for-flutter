@@ -10,6 +10,7 @@ void main() {
 
       final map = model.toMap();
       final result = Preferences.fromMap(map);
+
     });
   });
 }
