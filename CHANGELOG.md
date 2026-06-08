@@ -2,10 +2,6 @@
 
 ## 25.1.0
 
-* Added: `apps` service with app and secret management methods.
-* Added: `oauth2` service with `authorize`, `approve`, `reject`, `createGrant`, and `getGrant`.
-* Added: `App`, `AppSecret`, `AppSecretPlaintext`, `AppsList`, and `AppSecretList` models.
-* Added: `Oauth2Authorize`, `Oauth2Approve`, `Oauth2Reject`, and `Oauth2Grant` models.
 * Added: Email metadata fields to `User` (`emailCanonical`, `emailIsFree`, `emailIsDisposable`, `emailIsCorporate`, `emailIsCanonical`).
 * Added: `Membership.userAccessedAt` field.
 

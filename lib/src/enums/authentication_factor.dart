@@ -1,14 +1,16 @@
 part of '../../enums.dart';
 
 enum AuthenticationFactor {
-  email(value: 'email'),
-  phone(value: 'phone'),
-  totp(value: 'totp'),
-  recoverycode(value: 'recoverycode');
+    email(value: 'email'),
+    phone(value: 'phone'),
+    totp(value: 'totp'),
+    recoverycode(value: 'recoverycode');
 
-  const AuthenticationFactor({required this.value});
+    const AuthenticationFactor({
+        required this.value
+    });
 
-  final String value;
+    final String value;
 
-  String toJson() => value;
+    String toJson() => value;
 }
