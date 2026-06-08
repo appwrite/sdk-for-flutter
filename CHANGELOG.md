@@ -4,6 +4,7 @@
 
 * Added: Email metadata fields to `User` (`emailCanonical`, `emailIsFree`, `emailIsDisposable`, `emailIsCorporate`, `emailIsCanonical`).
 * Added: `Membership.userAccessedAt` field.
+* Updated: Requests now send an explicit `accept` header matching each endpoint's response type.
 
 ## 25.0.0
 
