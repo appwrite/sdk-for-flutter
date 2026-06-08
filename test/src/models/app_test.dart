@@ -21,17 +21,17 @@ void main() {
       final map = model.toMap();
       final result = App.fromMap(map);
 
-            expect(result.$id, '5e5ea5c16897e');
-                  expect(result.$createdAt, '2020-10-15T06:38:00.000+00:00');
-                  expect(result.$updatedAt, '2020-10-15T06:38:00.000+00:00');
-                  expect(result.name, 'My Application');
-                  expect(result.redirectUris, []);
-                  expect(result.enabled, true);
-                  expect(result.type, 'confidential');
-                  expect(result.deviceFlow, true);
-                  expect(result.teamId, '5e5ea5c16897e');
-                  expect(result.userId, '5e5ea5c16897e');
-                  expect(result.secrets, []);
-          });
+      expect(result.$id, '5e5ea5c16897e');
+      expect(result.$createdAt, '2020-10-15T06:38:00.000+00:00');
+      expect(result.$updatedAt, '2020-10-15T06:38:00.000+00:00');
+      expect(result.name, 'My Application');
+      expect(result.redirectUris, []);
+      expect(result.enabled, true);
+      expect(result.type, 'confidential');
+      expect(result.deviceFlow, true);
+      expect(result.teamId, '5e5ea5c16897e');
+      expect(result.userId, '5e5ea5c16897e');
+      expect(result.secrets, []);
+    });
   });
 }

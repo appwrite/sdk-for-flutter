@@ -12,8 +12,8 @@ void main() {
       final map = model.toMap();
       final result = AppSecretList.fromMap(map);
 
-            expect(result.total, 5);
-                  expect(result.secrets, []);
-          });
+      expect(result.total, 5);
+      expect(result.secrets, []);
+    });
   });
 }

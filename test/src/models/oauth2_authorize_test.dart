@@ -12,8 +12,9 @@ void main() {
       final map = model.toMap();
       final result = Oauth2Authorize.fromMap(map);
 
-            expect(result.grantId, '5e5ea5c16897e');
-                  expect(result.redirectUrl, 'https://example.com/callback?code=abcde&state=fghij');
-          });
+      expect(result.grantId, '5e5ea5c16897e');
+      expect(result.redirectUrl,
+          'https://example.com/callback?code=abcde&state=fghij');
+    });
   });
 }
