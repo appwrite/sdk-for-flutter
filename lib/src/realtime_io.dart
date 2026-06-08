@@ -79,8 +79,8 @@ class RealtimeIO extends RealtimeBase with RealtimeMixin {
       var client = HttpClient(context: SecurityContext());
       client.badCertificateCallback =
           (X509Certificate cert, String host, int port) {
-            return true;
-          };
+        return true;
+      };
 
       uri = Uri(
         scheme: uri.scheme == 'wss' ? 'https' : 'http',

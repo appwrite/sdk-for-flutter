@@ -141,9 +141,9 @@ mixin RealtimeMixin {
               final message = RealtimeMessage.fromMap(messageData);
               final subscriptions =
                   (messageData['subscriptions'] as List<dynamic>?)
-                      ?.map((x) => x.toString())
-                      .toList() ??
-                  <String>[];
+                          ?.map((x) => x.toString())
+                          .toList() ??
+                      <String>[];
 
               if (subscriptions.isEmpty) {
                 break;
@@ -201,10 +201,10 @@ mixin RealtimeMixin {
     return _retries < 5
         ? 1
         : _retries < 15
-        ? 5
-        : _retries < 100
-        ? 10
-        : 60;
+            ? 5
+            : _retries < 100
+                ? 10
+                : 60;
   }
 
   Uri _prepareUri() {
@@ -322,10 +322,8 @@ mixin RealtimeMixin {
     List<String> queries = const [],
   ]) {
     StreamController<RealtimeMessage> controller = StreamController.broadcast();
-    final channelStrings = channels
-        .map((ch) => _channelToString(ch))
-        .toList()
-        .cast<String>();
+    final channelStrings =
+        channels.map((ch) => _channelToString(ch)).toList().cast<String>();
     final queryStrings = List<String>.from(queries);
 
     final subscriptionId = _generateUniqueSubscriptionId();
@@ -348,10 +346,8 @@ mixin RealtimeMixin {
         return;
       }
       if (channels != null) {
-        final nextChannels = channels
-            .map((ch) => _channelToString(ch))
-            .toList()
-            .cast<String>();
+        final nextChannels =
+            channels.map((ch) => _channelToString(ch)).toList().cast<String>();
         current.channels
           ..clear()
           ..addAll(nextChannels);

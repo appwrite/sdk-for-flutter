@@ -15,15 +15,14 @@ class CookieManager extends Interceptor {
     await cookieJar
         .loadForRequest(Uri(scheme: request.url.scheme, host: request.url.host))
         .then((cookies) {
-          var cookie = getCookies(cookies);
-          if (cookie.isNotEmpty) {
-            request.headers.addAll({HttpHeaders.cookieHeader: cookie});
-          }
-          return request;
-        })
-        .catchError((e, stackTrace) {
-          return request;
-        });
+      var cookie = getCookies(cookies);
+      if (cookie.isNotEmpty) {
+        request.headers.addAll({HttpHeaders.cookieHeader: cookie});
+      }
+      return request;
+    }).catchError((e, stackTrace) {
+      return request;
+    });
     return request;
   }
 

@@ -429,9 +429,8 @@ class ClientIO extends ClientBase with ClientMixin {
 
     var nextChunk = 0;
     Future<void> uploadNext() async {
-      final raf = file.bytes == null
-          ? await iofile!.open(mode: FileMode.read)
-          : null;
+      final raf =
+          file.bytes == null ? await iofile!.open(mode: FileMode.read) : null;
       try {
         while (nextChunk < chunks.length) {
           final chunk = chunks[nextChunk++];
