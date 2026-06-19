@@ -1,17 +1,34 @@
 @TestOn('vm')
+import 'dart:io';
+
 import 'package:flutter_test/flutter_test.dart';
 import 'package:path_provider_platform_interface/path_provider_platform_interface.dart';
 import 'package:appwrite/src/client_io.dart';
 
 class FakePathProvider extends PathProviderPlatform {
+  late String _tempPath;
+
+  FakePathProvider() {
+    _tempPath = Directory.systemTemp.createTempSync('appwrite_test_').path;
+  }
+
   @override
-  Future<String?> getApplicationDocumentsPath() async => '/tmp/test_cookies';
+  Future<String?> getApplicationDocumentsPath() async => _tempPath;
 }
 
 void main() {
   group('ClientIO', () {
+    late FakePathProvider fakePathProvider;
+
     setUp(() {
-      PathProviderPlatform.instance = FakePathProvider();
+      fakePathProvider = FakePathProvider();
+      PathProviderPlatform.instance = fakePathProvider;
+    });
+
+    tearDown(() {
+      try {
+        Directory(fakePathProvider._tempPath).deleteSync(recursive: true);
+      } catch (_) {}
     });
 
     test('constructor should not eagerly call init()', () {
