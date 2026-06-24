@@ -40,7 +40,7 @@ class ClientBrowser extends ClientBase with ClientMixin {
       'x-sdk-name': 'Flutter',
       'x-sdk-platform': 'client',
       'x-sdk-language': 'flutter',
-      'x-sdk-version': '25.1.0',
+      'x-sdk-version': '25.2.0',
       'X-Appwrite-Response-Format': '1.9.5',
     };
 
@@ -62,7 +62,6 @@ class ClientBrowser extends ClientBase with ClientMixin {
     config['project'] = value;
     return this;
   }
-
   /// Your secret JSON Web Token
   @override
   ClientBrowser setJWT(value) {
@@ -70,14 +69,12 @@ class ClientBrowser extends ClientBase with ClientMixin {
     addHeader('X-Appwrite-JWT', value);
     return this;
   }
-
   @override
   ClientBrowser setLocale(value) {
     config['locale'] = value;
     addHeader('X-Appwrite-Locale', value);
     return this;
   }
-
   /// The user session to authenticate with
   @override
   ClientBrowser setSession(value) {
@@ -85,7 +82,6 @@ class ClientBrowser extends ClientBase with ClientMixin {
     addHeader('X-Appwrite-Session', value);
     return this;
   }
-
   /// Your secret dev API key
   @override
   ClientBrowser setDevKey(value) {
@@ -93,7 +89,6 @@ class ClientBrowser extends ClientBase with ClientMixin {
     addHeader('X-Appwrite-Dev-Key', value);
     return this;
   }
-
   /// The user cookie to authenticate with. Used by SDKs that forward an incoming Cookie header in server-side runtimes.
   @override
   ClientBrowser setCookie(value) {
@@ -101,24 +96,21 @@ class ClientBrowser extends ClientBase with ClientMixin {
     addHeader('Cookie', value);
     return this;
   }
-
-  /// Impersonate a user by ID on an already user-authenticated request. Requires the current request to be authenticated as a user with impersonator capability; X-Appwrite-Key alone is not sufficient. Impersonator users are intentionally granted users.read so they can discover a target before impersonation begins. Internal audit logs still attribute actions to the original impersonator and record the impersonated target only in internal audit payload data.
+  /// Impersonate a user by ID
   @override
   ClientBrowser setImpersonateUserId(value) {
     config['impersonateUserId'] = value;
     addHeader('X-Appwrite-Impersonate-User-Id', value);
     return this;
   }
-
-  /// Impersonate a user by email on an already user-authenticated request. Requires the current request to be authenticated as a user with impersonator capability; X-Appwrite-Key alone is not sufficient. Impersonator users are intentionally granted users.read so they can discover a target before impersonation begins. Internal audit logs still attribute actions to the original impersonator and record the impersonated target only in internal audit payload data.
+  /// Impersonate a user by email
   @override
   ClientBrowser setImpersonateUserEmail(value) {
     config['impersonateUserEmail'] = value;
     addHeader('X-Appwrite-Impersonate-User-Email', value);
     return this;
   }
-
-  /// Impersonate a user by phone on an already user-authenticated request. Requires the current request to be authenticated as a user with impersonator capability; X-Appwrite-Key alone is not sufficient. Impersonator users are intentionally granted users.read so they can discover a target before impersonation begins. Internal audit logs still attribute actions to the original impersonator and record the impersonated target only in internal audit payload data.
+  /// Impersonate a user by phone
   @override
   ClientBrowser setImpersonateUserPhone(value) {
     config['impersonateUserPhone'] = value;
@@ -227,12 +219,7 @@ class ClientBrowser extends ClientBase with ClientMixin {
 
     final totalChunks = (size / chunkSize).ceil();
 
-    Future<Response> uploadChunk(
-      int index,
-      int start,
-      int end,
-      String? id,
-    ) async {
+    Future<Response> uploadChunk(int index, int start, int end, String? id) async {
       List<int> chunk = [];
       chunk = file.bytes!.getRange(start, end).toList();
 
@@ -270,9 +257,7 @@ class ClientBrowser extends ClientBase with ClientMixin {
     bool isUploadComplete(Response response) {
       final chunksUploaded = response.data['chunksUploaded'];
       final chunksTotal = response.data['chunksTotal'] ?? totalChunks;
-      return chunksUploaded is num &&
-          chunksTotal is num &&
-          chunksUploaded >= chunksTotal;
+      return chunksUploaded is num && chunksTotal is num && chunksUploaded >= chunksTotal;
     }
 
     final progress = UploadProgress(
@@ -287,7 +272,11 @@ class ClientBrowser extends ClientBase with ClientMixin {
     final chunks = <Map<String, int>>[];
     for (var start = firstEnd; start < size; start += chunkSize) {
       final end = min(start + chunkSize, size);
-      chunks.add({'index': start ~/ chunkSize, 'start': start, 'end': end});
+      chunks.add({
+        'index': start ~/ chunkSize,
+        'start': start,
+        'end': end,
+      });
     }
 
     var nextChunk = 0;

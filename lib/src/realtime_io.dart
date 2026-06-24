@@ -15,6 +15,7 @@ import 'client_io.dart';
 RealtimeBase createRealtime(Client client) => RealtimeIO(client);
 
 class RealtimeIO extends RealtimeBase with RealtimeMixin {
+
   RealtimeIO(Client client) {
     this.client = client;
     getWebSocket = _getWebSocket;
@@ -22,8 +23,7 @@ class RealtimeIO extends RealtimeBase with RealtimeMixin {
 
   Future<WebSocketChannel> _getWebSocket(Uri uri) async {
     Map<String, String>? headers;
-    while (!(client as ClientIO).initialized &&
-        (client as ClientIO).initProgress) {
+    while (!(client as ClientIO).initialized && (client as ClientIO).initProgress) {
       await Future.delayed(Duration(milliseconds: 10));
     }
     if (!(client as ClientIO).initialized) {
@@ -32,11 +32,14 @@ class RealtimeIO extends RealtimeBase with RealtimeMixin {
     final cookies = await (client as ClientIO).cookieJar.loadForRequest(uri);
     headers = {HttpHeaders.cookieHeader: CookieManager.getCookies(cookies)};
 
-    final websok = IOWebSocketChannel(
-      (client as ClientIO).selfSigned
-          ? await _connectForSelfSignedCert(uri, headers)
-          : await WebSocket.connect(uri.toString(), headers: headers),
-    );
+    final jwt = client.config['jwt'];
+    if (jwt != null && jwt.isNotEmpty) {
+      headers['x-appwrite-jwt'] = jwt;
+    }
+
+    final websok = IOWebSocketChannel((client as ClientIO).selfSigned
+        ? await _connectForSelfSignedCert(uri, headers)
+        : await WebSocket.connect(uri.toString(), headers: headers));
     return websok;
   }
 
@@ -70,9 +73,7 @@ class RealtimeIO extends RealtimeBase with RealtimeMixin {
   // https://github.com/jonataslaw/getsocket/blob/f25b3a264d8cc6f82458c949b86d286cd0343792/lib/src/io.dart#L104
   // and from official dart sdk websocket_impl.dart connect method
   Future<WebSocket> _connectForSelfSignedCert(
-    Uri uri,
-    Map<String, dynamic> headers,
-  ) async {
+      Uri uri, Map<String, dynamic> headers) async {
     try {
       var r = Random();
       var key = base64.encode(List<int>.generate(16, (_) => r.nextInt(255)));

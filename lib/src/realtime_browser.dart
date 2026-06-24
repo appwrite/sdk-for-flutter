@@ -22,6 +22,15 @@ class RealtimeBrowser extends RealtimeBase with RealtimeMixin {
 
   Future<WebSocketChannel> _getWebSocket(Uri uri) async {
     await (client as ClientBrowser).init();
+
+    final jwt = client.config['jwt'];
+    if (jwt != null && jwt.isNotEmpty) {
+      uri = uri.replace(queryParameters: {
+        ...uri.queryParameters,
+        'jwt': jwt,
+      });
+    }
+
     return HtmlWebSocketChannel.connect(uri);
   }
 

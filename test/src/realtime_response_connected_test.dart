@@ -52,7 +52,9 @@ void main() {
 
       expect(
         responseString,
-        equals('RealtimeResponseConnected(channels: $channels, user: $user)'),
+        equals(
+          'RealtimeResponseConnected(channels: $channels, user: $user)',
+        ),
       );
     });
 

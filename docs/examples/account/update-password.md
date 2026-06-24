@@ -8,7 +8,7 @@ Client client = Client()
 Account account = Account(client);
 
 User result = await account.updatePassword(
-    password: '',
-    oldPassword: '<OLD_PASSWORD>', // optional
+    password: 'password',
+    oldPassword: 'password', // optional
 );
 ```
