@@ -40,7 +40,7 @@ class ClientBrowser extends ClientBase with ClientMixin {
       'x-sdk-name': 'Flutter',
       'x-sdk-platform': 'client',
       'x-sdk-language': 'flutter',
-      'x-sdk-version': '25.1.0',
+      'x-sdk-version': '25.2.0',
       'X-Appwrite-Response-Format': '1.9.5',
     };
 
@@ -102,7 +102,7 @@ class ClientBrowser extends ClientBase with ClientMixin {
     return this;
   }
 
-  /// Impersonate a user by ID on an already user-authenticated request. Requires the current request to be authenticated as a user with impersonator capability; X-Appwrite-Key alone is not sufficient. Impersonator users are intentionally granted users.read so they can discover a target before impersonation begins. Internal audit logs still attribute actions to the original impersonator and record the impersonated target only in internal audit payload data.
+  /// Impersonate a user by ID
   @override
   ClientBrowser setImpersonateUserId(value) {
     config['impersonateUserId'] = value;
@@ -110,7 +110,7 @@ class ClientBrowser extends ClientBase with ClientMixin {
     return this;
   }
 
-  /// Impersonate a user by email on an already user-authenticated request. Requires the current request to be authenticated as a user with impersonator capability; X-Appwrite-Key alone is not sufficient. Impersonator users are intentionally granted users.read so they can discover a target before impersonation begins. Internal audit logs still attribute actions to the original impersonator and record the impersonated target only in internal audit payload data.
+  /// Impersonate a user by email
   @override
   ClientBrowser setImpersonateUserEmail(value) {
     config['impersonateUserEmail'] = value;
@@ -118,7 +118,7 @@ class ClientBrowser extends ClientBase with ClientMixin {
     return this;
   }
 
-  /// Impersonate a user by phone on an already user-authenticated request. Requires the current request to be authenticated as a user with impersonator capability; X-Appwrite-Key alone is not sufficient. Impersonator users are intentionally granted users.read so they can discover a target before impersonation begins. Internal audit logs still attribute actions to the original impersonator and record the impersonated target only in internal audit payload data.
+  /// Impersonate a user by phone
   @override
   ClientBrowser setImpersonateUserPhone(value) {
     config['impersonateUserPhone'] = value;
@@ -228,11 +228,7 @@ class ClientBrowser extends ClientBase with ClientMixin {
     final totalChunks = (size / chunkSize).ceil();
 
     Future<Response> uploadChunk(
-      int index,
-      int start,
-      int end,
-      String? id,
-    ) async {
+        int index, int start, int end, String? id) async {
       List<int> chunk = [];
       chunk = file.bytes!.getRange(start, end).toList();
 
@@ -287,7 +283,11 @@ class ClientBrowser extends ClientBase with ClientMixin {
     final chunks = <Map<String, int>>[];
     for (var start = firstEnd; start < size; start += chunkSize) {
       final end = min(start + chunkSize, size);
-      chunks.add({'index': start ~/ chunkSize, 'start': start, 'end': end});
+      chunks.add({
+        'index': start ~/ chunkSize,
+        'start': start,
+        'end': end,
+      });
     }
 
     var nextChunk = 0;

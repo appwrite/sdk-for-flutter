@@ -22,12 +22,8 @@ class Locale extends Service {
       'accept': 'application/json',
     };
 
-    final res = await client.call(
-      HttpMethod.get,
-      path: apiPath,
-      params: apiParams,
-      headers: apiHeaders,
-    );
+    final res = await client.call(HttpMethod.get,
+        path: apiPath, params: apiParams, headers: apiHeaders);
 
     return models.Locale.fromMap(res.data);
   }
@@ -44,12 +40,8 @@ class Locale extends Service {
       'accept': 'application/json',
     };
 
-    final res = await client.call(
-      HttpMethod.get,
-      path: apiPath,
-      params: apiParams,
-      headers: apiHeaders,
-    );
+    final res = await client.call(HttpMethod.get,
+        path: apiPath, params: apiParams, headers: apiHeaders);
 
     return models.LocaleCodeList.fromMap(res.data);
   }
@@ -66,12 +58,8 @@ class Locale extends Service {
       'accept': 'application/json',
     };
 
-    final res = await client.call(
-      HttpMethod.get,
-      path: apiPath,
-      params: apiParams,
-      headers: apiHeaders,
-    );
+    final res = await client.call(HttpMethod.get,
+        path: apiPath, params: apiParams, headers: apiHeaders);
 
     return models.ContinentList.fromMap(res.data);
   }
@@ -88,12 +76,8 @@ class Locale extends Service {
       'accept': 'application/json',
     };
 
-    final res = await client.call(
-      HttpMethod.get,
-      path: apiPath,
-      params: apiParams,
-      headers: apiHeaders,
-    );
+    final res = await client.call(HttpMethod.get,
+        path: apiPath, params: apiParams, headers: apiHeaders);
 
     return models.CountryList.fromMap(res.data);
   }
@@ -110,12 +94,8 @@ class Locale extends Service {
       'accept': 'application/json',
     };
 
-    final res = await client.call(
-      HttpMethod.get,
-      path: apiPath,
-      params: apiParams,
-      headers: apiHeaders,
-    );
+    final res = await client.call(HttpMethod.get,
+        path: apiPath, params: apiParams, headers: apiHeaders);
 
     return models.CountryList.fromMap(res.data);
   }
@@ -132,12 +112,8 @@ class Locale extends Service {
       'accept': 'application/json',
     };
 
-    final res = await client.call(
-      HttpMethod.get,
-      path: apiPath,
-      params: apiParams,
-      headers: apiHeaders,
-    );
+    final res = await client.call(HttpMethod.get,
+        path: apiPath, params: apiParams, headers: apiHeaders);
 
     return models.PhoneList.fromMap(res.data);
   }
@@ -155,12 +131,8 @@ class Locale extends Service {
       'accept': 'application/json',
     };
 
-    final res = await client.call(
-      HttpMethod.get,
-      path: apiPath,
-      params: apiParams,
-      headers: apiHeaders,
-    );
+    final res = await client.call(HttpMethod.get,
+        path: apiPath, params: apiParams, headers: apiHeaders);
 
     return models.CurrencyList.fromMap(res.data);
   }
@@ -177,12 +149,8 @@ class Locale extends Service {
       'accept': 'application/json',
     };
 
-    final res = await client.call(
-      HttpMethod.get,
-      path: apiPath,
-      params: apiParams,
-      headers: apiHeaders,
-    );
+    final res = await client.call(HttpMethod.get,
+        path: apiPath, params: apiParams, headers: apiHeaders);
 
     return models.LanguageList.fromMap(res.data);
   }

@@ -18,18 +18,17 @@ class MockClient extends Mock implements Client {
     Map<String, dynamic> params = const {},
     ResponseType? responseType,
   }) async {
-    return super.noSuchMethod(
-      Invocation.method(#call, [method]),
-      returnValue: Response(),
-    );
+    return super.noSuchMethod(Invocation.method(#call, [method]),
+        returnValue: Response());
   }
 
   @override
-  Future webAuth(Uri? url, {String? callbackUrlScheme}) async {
-    return super.noSuchMethod(
-      Invocation.method(#webAuth, [url]),
-      returnValue: 'done',
-    );
+  Future webAuth(
+    Uri? url, {
+    String? callbackUrlScheme,
+  }) async {
+    return super
+        .noSuchMethod(Invocation.method(#webAuth, [url]), returnValue: 'done');
   }
 
   @override
@@ -42,15 +41,9 @@ class MockClient extends Mock implements Client {
     Function(UploadProgress)? onProgress,
   }) async {
     return super.noSuchMethod(
-      Invocation.method(#chunkedUpload, [
-        path,
-        params,
-        paramName,
-        idParamName,
-        headers,
-      ]),
-      returnValue: Response(data: {}),
-    );
+        Invocation.method(
+            #chunkedUpload, [path, params, paramName, idParamName, headers]),
+        returnValue: Response(data: {}));
   }
 }
 
@@ -84,9 +77,9 @@ void main() {
         'accessedAt': '2020-10-15T06:38:00.000+00:00',
       };
 
-      when(
-        client.call(HttpMethod.get),
-      ).thenAnswer((_) async => Response(data: data));
+      when(client.call(
+        HttpMethod.get,
+      )).thenAnswer((_) async => Response(data: data));
 
       final response = await account.get();
       expect(response, isA<models.User>());
@@ -112,14 +105,14 @@ void main() {
         'accessedAt': '2020-10-15T06:38:00.000+00:00',
       };
 
-      when(
-        client.call(HttpMethod.post),
-      ).thenAnswer((_) async => Response(data: data));
+      when(client.call(
+        HttpMethod.post,
+      )).thenAnswer((_) async => Response(data: data));
 
       final response = await account.create(
         userId: '<USER_ID>',
         email: 'email@example.com',
-        password: '',
+        password: 'password',
       );
       expect(response, isA<models.User>());
     });
@@ -144,9 +137,9 @@ void main() {
         'accessedAt': '2020-10-15T06:38:00.000+00:00',
       };
 
-      when(
-        client.call(HttpMethod.patch),
-      ).thenAnswer((_) async => Response(data: data));
+      when(client.call(
+        HttpMethod.patch,
+      )).thenAnswer((_) async => Response(data: data));
 
       final response = await account.updateEmail(
         email: 'email@example.com',
@@ -156,11 +149,14 @@ void main() {
     });
 
     test('test method listIdentities()', () async {
-      final Map<String, dynamic> data = {'total': 5, 'identities': []};
+      final Map<String, dynamic> data = {
+        'total': 5,
+        'identities': [],
+      };
 
-      when(
-        client.call(HttpMethod.get),
-      ).thenAnswer((_) async => Response(data: data));
+      when(client.call(
+        HttpMethod.get,
+      )).thenAnswer((_) async => Response(data: data));
 
       final response = await account.listIdentities();
       expect(response, isA<models.IdentityList>());
@@ -169,9 +165,9 @@ void main() {
     test('test method deleteIdentity()', () async {
       final data = '';
 
-      when(
-        client.call(HttpMethod.delete),
-      ).thenAnswer((_) async => Response(data: data));
+      when(client.call(
+        HttpMethod.delete,
+      )).thenAnswer((_) async => Response(data: data));
 
       final response = await account.deleteIdentity(
         identityId: '<IDENTITY_ID>',
@@ -184,20 +180,23 @@ void main() {
             'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c',
       };
 
-      when(
-        client.call(HttpMethod.post),
-      ).thenAnswer((_) async => Response(data: data));
+      when(client.call(
+        HttpMethod.post,
+      )).thenAnswer((_) async => Response(data: data));
 
       final response = await account.createJWT();
       expect(response, isA<models.Jwt>());
     });
 
     test('test method listLogs()', () async {
-      final Map<String, dynamic> data = {'total': 5, 'logs': []};
+      final Map<String, dynamic> data = {
+        'total': 5,
+        'logs': [],
+      };
 
-      when(
-        client.call(HttpMethod.get),
-      ).thenAnswer((_) async => Response(data: data));
+      when(client.call(
+        HttpMethod.get,
+      )).thenAnswer((_) async => Response(data: data));
 
       final response = await account.listLogs();
       expect(response, isA<models.LogList>());
@@ -223,11 +222,13 @@ void main() {
         'accessedAt': '2020-10-15T06:38:00.000+00:00',
       };
 
-      when(
-        client.call(HttpMethod.patch),
-      ).thenAnswer((_) async => Response(data: data));
+      when(client.call(
+        HttpMethod.patch,
+      )).thenAnswer((_) async => Response(data: data));
 
-      final response = await account.updateMFA(mfa: true);
+      final response = await account.updateMFA(
+        mfa: true,
+      );
       expect(response, isA<models.User>());
     });
 
@@ -238,9 +239,9 @@ void main() {
             'otpauth://totp/appwrite:user@example.com?secret=[SHARED_SECRET]&issuer=appwrite',
       };
 
-      when(
-        client.call(HttpMethod.post),
-      ).thenAnswer((_) async => Response(data: data));
+      when(client.call(
+        HttpMethod.post,
+      )).thenAnswer((_) async => Response(data: data));
 
       final response = await account.createMfaAuthenticator(
         type: enums.AuthenticatorType.totp,
@@ -255,9 +256,9 @@ void main() {
             'otpauth://totp/appwrite:user@example.com?secret=[SHARED_SECRET]&issuer=appwrite',
       };
 
-      when(
-        client.call(HttpMethod.post),
-      ).thenAnswer((_) async => Response(data: data));
+      when(client.call(
+        HttpMethod.post,
+      )).thenAnswer((_) async => Response(data: data));
 
       final response = await account.createMFAAuthenticator(
         type: enums.AuthenticatorType.totp,
@@ -285,9 +286,9 @@ void main() {
         'accessedAt': '2020-10-15T06:38:00.000+00:00',
       };
 
-      when(
-        client.call(HttpMethod.put),
-      ).thenAnswer((_) async => Response(data: data));
+      when(client.call(
+        HttpMethod.put,
+      )).thenAnswer((_) async => Response(data: data));
 
       final response = await account.updateMfaAuthenticator(
         type: enums.AuthenticatorType.totp,
@@ -316,9 +317,9 @@ void main() {
         'accessedAt': '2020-10-15T06:38:00.000+00:00',
       };
 
-      when(
-        client.call(HttpMethod.put),
-      ).thenAnswer((_) async => Response(data: data));
+      when(client.call(
+        HttpMethod.put,
+      )).thenAnswer((_) async => Response(data: data));
 
       final response = await account.updateMFAAuthenticator(
         type: enums.AuthenticatorType.totp,
@@ -330,9 +331,9 @@ void main() {
     test('test method deleteMfaAuthenticator()', () async {
       final data = '';
 
-      when(
-        client.call(HttpMethod.delete),
-      ).thenAnswer((_) async => Response(data: data));
+      when(client.call(
+        HttpMethod.delete,
+      )).thenAnswer((_) async => Response(data: data));
 
       final response = await account.deleteMfaAuthenticator(
         type: enums.AuthenticatorType.totp,
@@ -342,9 +343,9 @@ void main() {
     test('test method deleteMFAAuthenticator()', () async {
       final data = '';
 
-      when(
-        client.call(HttpMethod.delete),
-      ).thenAnswer((_) async => Response(data: data));
+      when(client.call(
+        HttpMethod.delete,
+      )).thenAnswer((_) async => Response(data: data));
 
       final response = await account.deleteMFAAuthenticator(
         type: enums.AuthenticatorType.totp,
@@ -359,9 +360,9 @@ void main() {
         'expire': '2020-10-15T06:38:00.000+00:00',
       };
 
-      when(
-        client.call(HttpMethod.post),
-      ).thenAnswer((_) async => Response(data: data));
+      when(client.call(
+        HttpMethod.post,
+      )).thenAnswer((_) async => Response(data: data));
 
       final response = await account.createMfaChallenge(
         factor: enums.AuthenticationFactor.email,
@@ -377,9 +378,9 @@ void main() {
         'expire': '2020-10-15T06:38:00.000+00:00',
       };
 
-      when(
-        client.call(HttpMethod.post),
-      ).thenAnswer((_) async => Response(data: data));
+      when(client.call(
+        HttpMethod.post,
+      )).thenAnswer((_) async => Response(data: data));
 
       final response = await account.createMFAChallenge(
         factor: enums.AuthenticationFactor.email,
@@ -420,9 +421,9 @@ void main() {
         'mfaUpdatedAt': '2020-10-15T06:38:00.000+00:00',
       };
 
-      when(
-        client.call(HttpMethod.put),
-      ).thenAnswer((_) async => Response(data: data));
+      when(client.call(
+        HttpMethod.put,
+      )).thenAnswer((_) async => Response(data: data));
 
       final response = await account.updateMfaChallenge(
         challengeId: '<CHALLENGE_ID>',
@@ -464,9 +465,9 @@ void main() {
         'mfaUpdatedAt': '2020-10-15T06:38:00.000+00:00',
       };
 
-      when(
-        client.call(HttpMethod.put),
-      ).thenAnswer((_) async => Response(data: data));
+      when(client.call(
+        HttpMethod.put,
+      )).thenAnswer((_) async => Response(data: data));
 
       final response = await account.updateMFAChallenge(
         challengeId: '<CHALLENGE_ID>',
@@ -483,9 +484,9 @@ void main() {
         'recoveryCode': true,
       };
 
-      when(
-        client.call(HttpMethod.get),
-      ).thenAnswer((_) async => Response(data: data));
+      when(client.call(
+        HttpMethod.get,
+      )).thenAnswer((_) async => Response(data: data));
 
       final response = await account.listMfaFactors();
       expect(response, isA<models.MfaFactors>());
@@ -499,75 +500,87 @@ void main() {
         'recoveryCode': true,
       };
 
-      when(
-        client.call(HttpMethod.get),
-      ).thenAnswer((_) async => Response(data: data));
+      when(client.call(
+        HttpMethod.get,
+      )).thenAnswer((_) async => Response(data: data));
 
       final response = await account.listMFAFactors();
       expect(response, isA<models.MfaFactors>());
     });
 
     test('test method getMfaRecoveryCodes()', () async {
-      final Map<String, dynamic> data = {'recoveryCodes': []};
+      final Map<String, dynamic> data = {
+        'recoveryCodes': [],
+      };
 
-      when(
-        client.call(HttpMethod.get),
-      ).thenAnswer((_) async => Response(data: data));
+      when(client.call(
+        HttpMethod.get,
+      )).thenAnswer((_) async => Response(data: data));
 
       final response = await account.getMfaRecoveryCodes();
       expect(response, isA<models.MfaRecoveryCodes>());
     });
 
     test('test method getMFARecoveryCodes()', () async {
-      final Map<String, dynamic> data = {'recoveryCodes': []};
+      final Map<String, dynamic> data = {
+        'recoveryCodes': [],
+      };
 
-      when(
-        client.call(HttpMethod.get),
-      ).thenAnswer((_) async => Response(data: data));
+      when(client.call(
+        HttpMethod.get,
+      )).thenAnswer((_) async => Response(data: data));
 
       final response = await account.getMFARecoveryCodes();
       expect(response, isA<models.MfaRecoveryCodes>());
     });
 
     test('test method createMfaRecoveryCodes()', () async {
-      final Map<String, dynamic> data = {'recoveryCodes': []};
+      final Map<String, dynamic> data = {
+        'recoveryCodes': [],
+      };
 
-      when(
-        client.call(HttpMethod.post),
-      ).thenAnswer((_) async => Response(data: data));
+      when(client.call(
+        HttpMethod.post,
+      )).thenAnswer((_) async => Response(data: data));
 
       final response = await account.createMfaRecoveryCodes();
       expect(response, isA<models.MfaRecoveryCodes>());
     });
 
     test('test method createMFARecoveryCodes()', () async {
-      final Map<String, dynamic> data = {'recoveryCodes': []};
+      final Map<String, dynamic> data = {
+        'recoveryCodes': [],
+      };
 
-      when(
-        client.call(HttpMethod.post),
-      ).thenAnswer((_) async => Response(data: data));
+      when(client.call(
+        HttpMethod.post,
+      )).thenAnswer((_) async => Response(data: data));
 
       final response = await account.createMFARecoveryCodes();
       expect(response, isA<models.MfaRecoveryCodes>());
     });
 
     test('test method updateMfaRecoveryCodes()', () async {
-      final Map<String, dynamic> data = {'recoveryCodes': []};
+      final Map<String, dynamic> data = {
+        'recoveryCodes': [],
+      };
 
-      when(
-        client.call(HttpMethod.patch),
-      ).thenAnswer((_) async => Response(data: data));
+      when(client.call(
+        HttpMethod.patch,
+      )).thenAnswer((_) async => Response(data: data));
 
       final response = await account.updateMfaRecoveryCodes();
       expect(response, isA<models.MfaRecoveryCodes>());
     });
 
     test('test method updateMFARecoveryCodes()', () async {
-      final Map<String, dynamic> data = {'recoveryCodes': []};
+      final Map<String, dynamic> data = {
+        'recoveryCodes': [],
+      };
 
-      when(
-        client.call(HttpMethod.patch),
-      ).thenAnswer((_) async => Response(data: data));
+      when(client.call(
+        HttpMethod.patch,
+      )).thenAnswer((_) async => Response(data: data));
 
       final response = await account.updateMFARecoveryCodes();
       expect(response, isA<models.MfaRecoveryCodes>());
@@ -593,11 +606,13 @@ void main() {
         'accessedAt': '2020-10-15T06:38:00.000+00:00',
       };
 
-      when(
-        client.call(HttpMethod.patch),
-      ).thenAnswer((_) async => Response(data: data));
+      when(client.call(
+        HttpMethod.patch,
+      )).thenAnswer((_) async => Response(data: data));
 
-      final response = await account.updateName(name: '<NAME>');
+      final response = await account.updateName(
+        name: '<NAME>',
+      );
       expect(response, isA<models.User>());
     });
 
@@ -621,11 +636,13 @@ void main() {
         'accessedAt': '2020-10-15T06:38:00.000+00:00',
       };
 
-      when(
-        client.call(HttpMethod.patch),
-      ).thenAnswer((_) async => Response(data: data));
+      when(client.call(
+        HttpMethod.patch,
+      )).thenAnswer((_) async => Response(data: data));
 
-      final response = await account.updatePassword(password: '');
+      final response = await account.updatePassword(
+        password: 'password',
+      );
       expect(response, isA<models.User>());
     });
 
@@ -649,9 +666,9 @@ void main() {
         'accessedAt': '2020-10-15T06:38:00.000+00:00',
       };
 
-      when(
-        client.call(HttpMethod.patch),
-      ).thenAnswer((_) async => Response(data: data));
+      when(client.call(
+        HttpMethod.patch,
+      )).thenAnswer((_) async => Response(data: data));
 
       final response = await account.updatePhone(
         phone: '+12065550100',
@@ -663,9 +680,9 @@ void main() {
     test('test method getPrefs()', () async {
       final Map<String, dynamic> data = {};
 
-      when(
-        client.call(HttpMethod.get),
-      ).thenAnswer((_) async => Response(data: data));
+      when(client.call(
+        HttpMethod.get,
+      )).thenAnswer((_) async => Response(data: data));
 
       final response = await account.getPrefs();
       expect(response, isA<models.Preferences>());
@@ -691,11 +708,13 @@ void main() {
         'accessedAt': '2020-10-15T06:38:00.000+00:00',
       };
 
-      when(
-        client.call(HttpMethod.patch),
-      ).thenAnswer((_) async => Response(data: data));
+      when(client.call(
+        HttpMethod.patch,
+      )).thenAnswer((_) async => Response(data: data));
 
-      final response = await account.updatePrefs(prefs: {});
+      final response = await account.updatePrefs(
+        prefs: {},
+      );
       expect(response, isA<models.User>());
     });
 
@@ -709,9 +728,9 @@ void main() {
         'phrase': 'Golden Fox',
       };
 
-      when(
-        client.call(HttpMethod.post),
-      ).thenAnswer((_) async => Response(data: data));
+      when(client.call(
+        HttpMethod.post,
+      )).thenAnswer((_) async => Response(data: data));
 
       final response = await account.createRecovery(
         email: 'email@example.com',
@@ -730,24 +749,27 @@ void main() {
         'phrase': 'Golden Fox',
       };
 
-      when(
-        client.call(HttpMethod.put),
-      ).thenAnswer((_) async => Response(data: data));
+      when(client.call(
+        HttpMethod.put,
+      )).thenAnswer((_) async => Response(data: data));
 
       final response = await account.updateRecovery(
         userId: '<USER_ID>',
         secret: '<SECRET>',
-        password: '',
+        password: 'password',
       );
       expect(response, isA<models.Token>());
     });
 
     test('test method listSessions()', () async {
-      final Map<String, dynamic> data = {'total': 5, 'sessions': []};
+      final Map<String, dynamic> data = {
+        'total': 5,
+        'sessions': [],
+      };
 
-      when(
-        client.call(HttpMethod.get),
-      ).thenAnswer((_) async => Response(data: data));
+      when(client.call(
+        HttpMethod.get,
+      )).thenAnswer((_) async => Response(data: data));
 
       final response = await account.listSessions();
       expect(response, isA<models.SessionList>());
@@ -756,9 +778,9 @@ void main() {
     test('test method deleteSessions()', () async {
       final data = '';
 
-      when(
-        client.call(HttpMethod.delete),
-      ).thenAnswer((_) async => Response(data: data));
+      when(client.call(
+        HttpMethod.delete,
+      )).thenAnswer((_) async => Response(data: data));
 
       final response = await account.deleteSessions();
     });
@@ -796,9 +818,9 @@ void main() {
         'mfaUpdatedAt': '2020-10-15T06:38:00.000+00:00',
       };
 
-      when(
-        client.call(HttpMethod.post),
-      ).thenAnswer((_) async => Response(data: data));
+      when(client.call(
+        HttpMethod.post,
+      )).thenAnswer((_) async => Response(data: data));
 
       final response = await account.createAnonymousSession();
       expect(response, isA<models.Session>());
@@ -837,9 +859,9 @@ void main() {
         'mfaUpdatedAt': '2020-10-15T06:38:00.000+00:00',
       };
 
-      when(
-        client.call(HttpMethod.post),
-      ).thenAnswer((_) async => Response(data: data));
+      when(client.call(
+        HttpMethod.post,
+      )).thenAnswer((_) async => Response(data: data));
 
       final response = await account.createEmailPasswordSession(
         email: 'email@example.com',
@@ -881,9 +903,9 @@ void main() {
         'mfaUpdatedAt': '2020-10-15T06:38:00.000+00:00',
       };
 
-      when(
-        client.call(HttpMethod.put),
-      ).thenAnswer((_) async => Response(data: data));
+      when(client.call(
+        HttpMethod.put,
+      )).thenAnswer((_) async => Response(data: data));
 
       final response = await account.updateMagicURLSession(
         userId: '<USER_ID>',
@@ -893,7 +915,9 @@ void main() {
     });
 
     test('test method createOAuth2Session()', () async {
-      when(client.webAuth(argThat(isNotNull))).thenAnswer((_) async => 'done');
+      when(client.webAuth(
+        argThat(isNotNull),
+      )).thenAnswer((_) async => 'done');
 
       final response = await account.createOAuth2Session(
         provider: enums.OAuthProvider.amazon,
@@ -934,9 +958,9 @@ void main() {
         'mfaUpdatedAt': '2020-10-15T06:38:00.000+00:00',
       };
 
-      when(
-        client.call(HttpMethod.put),
-      ).thenAnswer((_) async => Response(data: data));
+      when(client.call(
+        HttpMethod.put,
+      )).thenAnswer((_) async => Response(data: data));
 
       final response = await account.updatePhoneSession(
         userId: '<USER_ID>',
@@ -978,9 +1002,9 @@ void main() {
         'mfaUpdatedAt': '2020-10-15T06:38:00.000+00:00',
       };
 
-      when(
-        client.call(HttpMethod.post),
-      ).thenAnswer((_) async => Response(data: data));
+      when(client.call(
+        HttpMethod.post,
+      )).thenAnswer((_) async => Response(data: data));
 
       final response = await account.createSession(
         userId: '<USER_ID>',
@@ -1022,11 +1046,13 @@ void main() {
         'mfaUpdatedAt': '2020-10-15T06:38:00.000+00:00',
       };
 
-      when(
-        client.call(HttpMethod.get),
-      ).thenAnswer((_) async => Response(data: data));
+      when(client.call(
+        HttpMethod.get,
+      )).thenAnswer((_) async => Response(data: data));
 
-      final response = await account.getSession(sessionId: '<SESSION_ID>');
+      final response = await account.getSession(
+        sessionId: '<SESSION_ID>',
+      );
       expect(response, isA<models.Session>());
     });
 
@@ -1063,22 +1089,26 @@ void main() {
         'mfaUpdatedAt': '2020-10-15T06:38:00.000+00:00',
       };
 
-      when(
-        client.call(HttpMethod.patch),
-      ).thenAnswer((_) async => Response(data: data));
+      when(client.call(
+        HttpMethod.patch,
+      )).thenAnswer((_) async => Response(data: data));
 
-      final response = await account.updateSession(sessionId: '<SESSION_ID>');
+      final response = await account.updateSession(
+        sessionId: '<SESSION_ID>',
+      );
       expect(response, isA<models.Session>());
     });
 
     test('test method deleteSession()', () async {
       final data = '';
 
-      when(
-        client.call(HttpMethod.delete),
-      ).thenAnswer((_) async => Response(data: data));
+      when(client.call(
+        HttpMethod.delete,
+      )).thenAnswer((_) async => Response(data: data));
 
-      final response = await account.deleteSession(sessionId: '<SESSION_ID>');
+      final response = await account.deleteSession(
+        sessionId: '<SESSION_ID>',
+      );
     });
 
     test('test method updateStatus()', () async {
@@ -1101,9 +1131,9 @@ void main() {
         'accessedAt': '2020-10-15T06:38:00.000+00:00',
       };
 
-      when(
-        client.call(HttpMethod.patch),
-      ).thenAnswer((_) async => Response(data: data));
+      when(client.call(
+        HttpMethod.patch,
+      )).thenAnswer((_) async => Response(data: data));
 
       final response = await account.updateStatus();
       expect(response, isA<models.User>());
@@ -1121,9 +1151,9 @@ void main() {
         'expired': true,
       };
 
-      when(
-        client.call(HttpMethod.post),
-      ).thenAnswer((_) async => Response(data: data));
+      when(client.call(
+        HttpMethod.post,
+      )).thenAnswer((_) async => Response(data: data));
 
       final response = await account.createPushTarget(
         targetId: '<TARGET_ID>',
@@ -1144,9 +1174,9 @@ void main() {
         'expired': true,
       };
 
-      when(
-        client.call(HttpMethod.put),
-      ).thenAnswer((_) async => Response(data: data));
+      when(client.call(
+        HttpMethod.put,
+      )).thenAnswer((_) async => Response(data: data));
 
       final response = await account.updatePushTarget(
         targetId: '<TARGET_ID>',
@@ -1158,11 +1188,13 @@ void main() {
     test('test method deletePushTarget()', () async {
       final data = '';
 
-      when(
-        client.call(HttpMethod.delete),
-      ).thenAnswer((_) async => Response(data: data));
+      when(client.call(
+        HttpMethod.delete,
+      )).thenAnswer((_) async => Response(data: data));
 
-      final response = await account.deletePushTarget(targetId: '<TARGET_ID>');
+      final response = await account.deletePushTarget(
+        targetId: '<TARGET_ID>',
+      );
     });
 
     test('test method createEmailToken()', () async {
@@ -1175,9 +1207,9 @@ void main() {
         'phrase': 'Golden Fox',
       };
 
-      when(
-        client.call(HttpMethod.post),
-      ).thenAnswer((_) async => Response(data: data));
+      when(client.call(
+        HttpMethod.post,
+      )).thenAnswer((_) async => Response(data: data));
 
       final response = await account.createEmailToken(
         userId: '<USER_ID>',
@@ -1196,9 +1228,9 @@ void main() {
         'phrase': 'Golden Fox',
       };
 
-      when(
-        client.call(HttpMethod.post),
-      ).thenAnswer((_) async => Response(data: data));
+      when(client.call(
+        HttpMethod.post,
+      )).thenAnswer((_) async => Response(data: data));
 
       final response = await account.createMagicURLToken(
         userId: '<USER_ID>',
@@ -1208,7 +1240,9 @@ void main() {
     });
 
     test('test method createOAuth2Token()', () async {
-      when(client.webAuth(argThat(isNotNull))).thenAnswer((_) async => 'done');
+      when(client.webAuth(
+        argThat(isNotNull),
+      )).thenAnswer((_) async => 'done');
 
       final response = await account.createOAuth2Token(
         provider: enums.OAuthProvider.amazon,
@@ -1226,9 +1260,9 @@ void main() {
         'phrase': 'Golden Fox',
       };
 
-      when(
-        client.call(HttpMethod.post),
-      ).thenAnswer((_) async => Response(data: data));
+      when(client.call(
+        HttpMethod.post,
+      )).thenAnswer((_) async => Response(data: data));
 
       final response = await account.createPhoneToken(
         userId: '<USER_ID>',
@@ -1247,9 +1281,9 @@ void main() {
         'phrase': 'Golden Fox',
       };
 
-      when(
-        client.call(HttpMethod.post),
-      ).thenAnswer((_) async => Response(data: data));
+      when(client.call(
+        HttpMethod.post,
+      )).thenAnswer((_) async => Response(data: data));
 
       final response = await account.createEmailVerification(
         url: 'https://example.com',
@@ -1267,9 +1301,9 @@ void main() {
         'phrase': 'Golden Fox',
       };
 
-      when(
-        client.call(HttpMethod.post),
-      ).thenAnswer((_) async => Response(data: data));
+      when(client.call(
+        HttpMethod.post,
+      )).thenAnswer((_) async => Response(data: data));
 
       final response = await account.createVerification(
         url: 'https://example.com',
@@ -1287,9 +1321,9 @@ void main() {
         'phrase': 'Golden Fox',
       };
 
-      when(
-        client.call(HttpMethod.put),
-      ).thenAnswer((_) async => Response(data: data));
+      when(client.call(
+        HttpMethod.put,
+      )).thenAnswer((_) async => Response(data: data));
 
       final response = await account.updateEmailVerification(
         userId: '<USER_ID>',
@@ -1308,9 +1342,9 @@ void main() {
         'phrase': 'Golden Fox',
       };
 
-      when(
-        client.call(HttpMethod.put),
-      ).thenAnswer((_) async => Response(data: data));
+      when(client.call(
+        HttpMethod.put,
+      )).thenAnswer((_) async => Response(data: data));
 
       final response = await account.updateVerification(
         userId: '<USER_ID>',
@@ -1329,9 +1363,9 @@ void main() {
         'phrase': 'Golden Fox',
       };
 
-      when(
-        client.call(HttpMethod.post),
-      ).thenAnswer((_) async => Response(data: data));
+      when(client.call(
+        HttpMethod.post,
+      )).thenAnswer((_) async => Response(data: data));
 
       final response = await account.createPhoneVerification();
       expect(response, isA<models.Token>());
@@ -1347,9 +1381,9 @@ void main() {
         'phrase': 'Golden Fox',
       };
 
-      when(
-        client.call(HttpMethod.put),
-      ).thenAnswer((_) async => Response(data: data));
+      when(client.call(
+        HttpMethod.put,
+      )).thenAnswer((_) async => Response(data: data));
 
       final response = await account.updatePhoneVerification(
         userId: '<USER_ID>',

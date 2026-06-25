@@ -1,5 +1,10 @@
 # Change Log
 
+## 25.2.0
+
+* Added: Realtime connections now authenticate with the configured JWT.
+* Added: Forwarded `impersonateUserId` on `avatars` and `storage` file requests.
+
 ## 25.1.0
 
 * Added: Email metadata fields to `User` (`emailCanonical`, `emailIsFree`, `emailIsDisposable`, `emailIsCorporate`, `emailIsCanonical`).

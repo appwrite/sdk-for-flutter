@@ -63,12 +63,16 @@ void main() {
 
     group('notEqual()', () {
       for (var t in tests) {
-        test(t.description, () {
-          final query = jsonDecode(Query.notEqual('attr', t.value));
-          expect(query['attribute'], 'attr');
-          expect(query['values'], t.expectedValues);
-          expect(query['method'], 'notEqual');
-        }, skip: t.value is List);
+        test(
+          t.description,
+          () {
+            final query = jsonDecode(Query.notEqual('attr', t.value));
+            expect(query['attribute'], 'attr');
+            expect(query['values'], t.expectedValues);
+            expect(query['method'], 'notEqual');
+          },
+          skip: t.value is List,
+        );
       }
     });
 

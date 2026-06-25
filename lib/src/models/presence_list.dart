@@ -8,14 +8,16 @@ class PresenceList implements Model {
   /// List of presences.
   final List<Presence> presences;
 
-  PresenceList({required this.total, required this.presences});
+  PresenceList({
+    required this.total,
+    required this.presences,
+  });
 
   factory PresenceList.fromMap(Map<String, dynamic> map) {
     return PresenceList(
       total: map['total'],
-      presences: List<Presence>.from(
-        map['presences'].map((p) => Presence.fromMap(p)),
-      ),
+      presences:
+          List<Presence>.from(map['presences'].map((p) => Presence.fromMap(p))),
     );
   }
 

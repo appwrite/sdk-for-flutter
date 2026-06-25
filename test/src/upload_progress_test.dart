@@ -14,7 +14,7 @@ void main() {
       "progress": progress,
       "sizeUploaded": sizeUploaded,
       "chunksTotal": chunksTotal,
-      "chunksUploaded": chunksUploaded,
+      "chunksUploaded": chunksUploaded
     };
     final uploadProgress = UploadProgress(
       $id: id,

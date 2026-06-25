@@ -4,7 +4,10 @@ import 'package:flutter_test/flutter_test.dart';
 void main() {
   group('PresenceList', () {
     test('model', () {
-      final model = PresenceList(total: 5, presences: []);
+      final model = PresenceList(
+        total: 5,
+        presences: [],
+      );
 
       final map = model.toMap();
       final result = PresenceList.fromMap(map);

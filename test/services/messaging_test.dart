@@ -18,18 +18,17 @@ class MockClient extends Mock implements Client {
     Map<String, dynamic> params = const {},
     ResponseType? responseType,
   }) async {
-    return super.noSuchMethod(
-      Invocation.method(#call, [method]),
-      returnValue: Response(),
-    );
+    return super.noSuchMethod(Invocation.method(#call, [method]),
+        returnValue: Response());
   }
 
   @override
-  Future webAuth(Uri? url, {String? callbackUrlScheme}) async {
-    return super.noSuchMethod(
-      Invocation.method(#webAuth, [url]),
-      returnValue: 'done',
-    );
+  Future webAuth(
+    Uri? url, {
+    String? callbackUrlScheme,
+  }) async {
+    return super
+        .noSuchMethod(Invocation.method(#webAuth, [url]), returnValue: 'done');
   }
 
   @override
@@ -42,15 +41,9 @@ class MockClient extends Mock implements Client {
     Function(UploadProgress)? onProgress,
   }) async {
     return super.noSuchMethod(
-      Invocation.method(#chunkedUpload, [
-        path,
-        params,
-        paramName,
-        idParamName,
-        headers,
-      ]),
-      returnValue: Response(data: {}),
-    );
+        Invocation.method(
+            #chunkedUpload, [path, params, paramName, idParamName, headers]),
+        returnValue: Response(data: {}));
   }
 }
 
@@ -86,9 +79,9 @@ void main() {
         'providerType': 'email',
       };
 
-      when(
-        client.call(HttpMethod.post),
-      ).thenAnswer((_) async => Response(data: data));
+      when(client.call(
+        HttpMethod.post,
+      )).thenAnswer((_) async => Response(data: data));
 
       final response = await messaging.createSubscriber(
         topicId: '<TOPIC_ID>',
@@ -101,9 +94,9 @@ void main() {
     test('test method deleteSubscriber()', () async {
       final data = '';
 
-      when(
-        client.call(HttpMethod.delete),
-      ).thenAnswer((_) async => Response(data: data));
+      when(client.call(
+        HttpMethod.delete,
+      )).thenAnswer((_) async => Response(data: data));
 
       final response = await messaging.deleteSubscriber(
         topicId: '<TOPIC_ID>',

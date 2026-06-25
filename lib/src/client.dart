@@ -86,17 +86,17 @@ abstract class Client {
 
   /// Set ImpersonateUserId.
   ///
-  /// Impersonate a user by ID on an already user-authenticated request. Requires the current request to be authenticated as a user with impersonator capability; X-Appwrite-Key alone is not sufficient. Impersonator users are intentionally granted users.read so they can discover a target before impersonation begins. Internal audit logs still attribute actions to the original impersonator and record the impersonated target only in internal audit payload data..
+  /// Impersonate a user by ID.
   Client setImpersonateUserId(String value);
 
   /// Set ImpersonateUserEmail.
   ///
-  /// Impersonate a user by email on an already user-authenticated request. Requires the current request to be authenticated as a user with impersonator capability; X-Appwrite-Key alone is not sufficient. Impersonator users are intentionally granted users.read so they can discover a target before impersonation begins. Internal audit logs still attribute actions to the original impersonator and record the impersonated target only in internal audit payload data..
+  /// Impersonate a user by email.
   Client setImpersonateUserEmail(String value);
 
   /// Set ImpersonateUserPhone.
   ///
-  /// Impersonate a user by phone on an already user-authenticated request. Requires the current request to be authenticated as a user with impersonator capability; X-Appwrite-Key alone is not sufficient. Impersonator users are intentionally granted users.read so they can discover a target before impersonation begins. Internal audit logs still attribute actions to the original impersonator and record the impersonated target only in internal audit payload data..
+  /// Impersonate a user by phone.
   Client setImpersonateUserPhone(String value);
 
   /// Add headers that should be sent with all API calls.
@@ -105,7 +105,7 @@ abstract class Client {
   /// Get the current request headers.
   Map<String, String> getHeaders();
 
-  /// Sends a "ping" request to Appwrite to verify connectivity.
+  /// Send a ping to project as part of onboarding.
   Future<String> ping();
 
   /// Send the API request.

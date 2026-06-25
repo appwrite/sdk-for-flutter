@@ -4,7 +4,10 @@ import 'package:flutter_test/flutter_test.dart';
 void main() {
   group('Continent', () {
     test('model', () {
-      final model = Continent(name: 'Europe', code: 'EU');
+      final model = Continent(
+        name: 'Europe',
+        code: 'EU',
+      );
 
       final map = model.toMap();
       final result = Continent.fromMap(map);
