@@ -4,7 +4,6 @@
 
 * Added: Realtime connections now authenticate with the configured JWT.
 * Added: Forwarded `impersonateUserId` on `avatars` and `storage` file requests.
-* Deprecated: `databases` transaction and document methods in favor of `TablesDB`.
 
 ## 25.1.0
 
