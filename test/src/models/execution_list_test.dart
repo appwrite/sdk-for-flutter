@@ -1,4 +1,5 @@
 import 'package:appwrite/models.dart';
+import 'package:appwrite/enums.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {
@@ -12,8 +13,8 @@ void main() {
       final map = model.toMap();
       final result = ExecutionList.fromMap(map);
 
-      expect(result.total, 5);
-      expect(result.executions, []);
-    });
+            expect(result.total, 5);
+                  expect(result.executions, []);
+          });
   });
 }
