@@ -1,5 +1,13 @@
 # Change Log
 
+## 25.3.0
+
+* Added: `Client.setBearer()` method for OAuth access token authentication
+* Added: `Query.vectorDot`, `Query.vectorCosine`, `Query.vectorEuclidean` vector similarity query methods
+* Added: `appwrite` value to `OAuthProvider` enum
+* Added: `Locale` model fields: `city`, `timeZone`, `postalCode`, `latitude`, `longitude`, ISP and connection details
+* Updated: `Log` model docs now include `hidden` user type
+
 ## 25.2.0
 
 * Added: Realtime connections now authenticate with the configured JWT.

@@ -10,6 +10,11 @@ abstract class ClientBase implements Client {
   /// Your secret JSON Web Token
   @override
   ClientBase setJWT(value);
+
+  /// The OAuth access token to authenticate with
+  @override
+  ClientBase setBearer(value);
+
   @override
   ClientBase setLocale(value);
 

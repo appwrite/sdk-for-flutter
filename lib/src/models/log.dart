@@ -17,7 +17,7 @@ class Log implements Model {
   /// API mode when event triggered.
   final String mode;
 
-  /// User type who triggered the audit log. Possible values: user, admin, guest, keyProject, keyAccount, keyOrganization.
+  /// User type who triggered the audit log. Possible values: user, admin, guest, hidden, keyProject, keyAccount, keyOrganization.
   final String userType;
 
   /// IP session in use when the session was created.

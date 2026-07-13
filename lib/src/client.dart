@@ -66,6 +66,11 @@ abstract class Client {
   /// Your secret JSON Web Token.
   Client setJWT(String value);
 
+  /// Set Bearer.
+  ///
+  /// The OAuth access token to authenticate with.
+  Client setBearer(String value);
+
   /// Set Locale.
   Client setLocale(String value);
 

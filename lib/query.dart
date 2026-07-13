@@ -252,6 +252,18 @@ class Query {
         [values, distance, meters]
       ]).toString();
 
+  /// Filter resources using vector dot product similarity.
+  static String vectorDot(String attribute, List<num> vector) =>
+      Query._('vectorDot', attribute, [vector]).toString();
+
+  /// Filter resources using vector cosine similarity.
+  static String vectorCosine(String attribute, List<num> vector) =>
+      Query._('vectorCosine', attribute, [vector]).toString();
+
+  /// Filter resources using vector Euclidean distance.
+  static String vectorEuclidean(String attribute, List<num> vector) =>
+      Query._('vectorEuclidean', attribute, [vector]).toString();
+
   /// Filter resources where [attribute] intersects with the given geometry.
   static String intersects(String attribute, List<dynamic> values) =>
       Query._('intersects', attribute, [values]).toString();

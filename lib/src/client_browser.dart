@@ -40,7 +40,7 @@ class ClientBrowser extends ClientBase with ClientMixin {
       'x-sdk-name': 'Flutter',
       'x-sdk-platform': 'client',
       'x-sdk-language': 'flutter',
-      'x-sdk-version': '25.2.0',
+      'x-sdk-version': '25.3.0',
       'X-Appwrite-Response-Format': '1.9.5',
     };
 
@@ -68,6 +68,14 @@ class ClientBrowser extends ClientBase with ClientMixin {
   ClientBrowser setJWT(value) {
     config['jWT'] = value;
     addHeader('X-Appwrite-JWT', value);
+    return this;
+  }
+
+  /// The OAuth access token to authenticate with
+  @override
+  ClientBrowser setBearer(value) {
+    config['bearer'] = value;
+    addHeader('Authorization', 'Bearer $value');
     return this;
   }
 

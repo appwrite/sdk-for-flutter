@@ -3,6 +3,7 @@ part of '../../enums.dart';
 enum OAuthProvider {
   amazon(value: 'amazon'),
   apple(value: 'apple'),
+  appwrite(value: 'appwrite'),
   auth0(value: 'auth0'),
   authentik(value: 'authentik'),
   autodesk(value: 'autodesk'),

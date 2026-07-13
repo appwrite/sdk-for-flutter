@@ -23,6 +23,39 @@ class Locale implements Model {
   /// Currency code in [ISO 4217-1](http://en.wikipedia.org/wiki/ISO_4217) three-character format
   final String currency;
 
+  /// City
+  final String? city;
+
+  /// Name of timezone
+  final String? timeZone;
+
+  /// Postal code
+  final String? postalCode;
+
+  /// Latitude
+  final double? latitude;
+
+  /// Longitude
+  final double? longitude;
+
+  /// Autonomous System Number (ASN) of the IP
+  final String? autonomousSystemNumber;
+
+  /// Organization that owns the ASN
+  final String? autonomousSystemOrganization;
+
+  /// Internet service provider of the IP
+  final String? isp;
+
+  /// Connection type of the IP (e.g. cable, cellular, corporate)
+  final String? connectionType;
+
+  /// User type classification of the IP (e.g. residential, business, hosting)
+  final String? connectionUsageType;
+
+  /// Registered organization of the IP
+  final String? connectionOrganization;
+
   Locale({
     required this.ip,
     required this.countryCode,
@@ -31,6 +64,17 @@ class Locale implements Model {
     required this.continent,
     required this.eu,
     required this.currency,
+    this.city,
+    this.timeZone,
+    this.postalCode,
+    this.latitude,
+    this.longitude,
+    this.autonomousSystemNumber,
+    this.autonomousSystemOrganization,
+    this.isp,
+    this.connectionType,
+    this.connectionUsageType,
+    this.connectionOrganization,
   });
 
   factory Locale.fromMap(Map<String, dynamic> map) {
@@ -42,6 +86,18 @@ class Locale implements Model {
       continent: map['continent'].toString(),
       eu: map['eu'],
       currency: map['currency'].toString(),
+      city: map['city']?.toString(),
+      timeZone: map['timeZone']?.toString(),
+      postalCode: map['postalCode']?.toString(),
+      latitude: map['latitude']?.toDouble(),
+      longitude: map['longitude']?.toDouble(),
+      autonomousSystemNumber: map['autonomousSystemNumber']?.toString(),
+      autonomousSystemOrganization:
+          map['autonomousSystemOrganization']?.toString(),
+      isp: map['isp']?.toString(),
+      connectionType: map['connectionType']?.toString(),
+      connectionUsageType: map['connectionUsageType']?.toString(),
+      connectionOrganization: map['connectionOrganization']?.toString(),
     );
   }
 
@@ -55,6 +111,17 @@ class Locale implements Model {
       "continent": continent,
       "eu": eu,
       "currency": currency,
+      "city": city,
+      "timeZone": timeZone,
+      "postalCode": postalCode,
+      "latitude": latitude,
+      "longitude": longitude,
+      "autonomousSystemNumber": autonomousSystemNumber,
+      "autonomousSystemOrganization": autonomousSystemOrganization,
+      "isp": isp,
+      "connectionType": connectionType,
+      "connectionUsageType": connectionUsageType,
+      "connectionOrganization": connectionOrganization,
     };
   }
 }
