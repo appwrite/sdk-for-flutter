@@ -12,8 +12,8 @@ void main() {
       final map = model.toMap();
       final result = Headers.fromMap(map);
 
-            expect(result.name, 'Content-Type');
-                  expect(result.value, 'application/json');
-          });
+      expect(result.name, 'Content-Type');
+      expect(result.value, 'application/json');
+    });
   });
 }

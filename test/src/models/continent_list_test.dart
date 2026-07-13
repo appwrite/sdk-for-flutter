@@ -12,8 +12,8 @@ void main() {
       final map = model.toMap();
       final result = ContinentList.fromMap(map);
 
-            expect(result.total, 5);
-                  expect(result.continents, []);
-          });
+      expect(result.total, 5);
+      expect(result.continents, []);
+    });
   });
 }
