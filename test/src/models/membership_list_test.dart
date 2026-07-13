@@ -12,8 +12,8 @@ void main() {
       final map = model.toMap();
       final result = MembershipList.fromMap(map);
 
-      expect(result.total, 5);
-      expect(result.memberships, []);
-    });
+            expect(result.total, 5);
+                  expect(result.memberships, []);
+          });
   });
 }

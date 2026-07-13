@@ -27,8 +27,7 @@ abstract class Client {
   factory Client({
     String endPoint = 'https://cloud.appwrite.io/v1',
     bool selfSigned = false,
-  }) =>
-      createClient(endPoint: endPoint, selfSigned: selfSigned);
+  }) => createClient(endPoint: endPoint, selfSigned: selfSigned);
 
   /// Handle OAuth2 session creation.
   Future webAuth(Uri url, {String? callbackUrlScheme});
@@ -112,6 +111,7 @@ abstract class Client {
 
   /// Send a ping to project as part of onboarding.
   Future<String> ping();
+
 
   /// Send the API request.
   Future<Response> call(

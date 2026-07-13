@@ -12,8 +12,8 @@ void main() {
       final map = model.toMap();
       final result = PresenceList.fromMap(map);
 
-      expect(result.total, 5);
-      expect(result.presences, []);
-    });
+            expect(result.total, 5);
+                  expect(result.presences, []);
+          });
   });
 }
