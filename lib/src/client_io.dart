@@ -88,6 +88,7 @@ class ClientIO extends ClientBase with ClientMixin {
     config['project'] = value;
     return this;
   }
+
   /// Your secret JSON Web Token
   @override
   ClientIO setJWT(value) {
@@ -95,6 +96,7 @@ class ClientIO extends ClientBase with ClientMixin {
     addHeader('X-Appwrite-JWT', value);
     return this;
   }
+
   /// The OAuth access token to authenticate with
   @override
   ClientIO setBearer(value) {
@@ -102,12 +104,14 @@ class ClientIO extends ClientBase with ClientMixin {
     addHeader('Authorization', 'Bearer $value');
     return this;
   }
+
   @override
   ClientIO setLocale(value) {
     config['locale'] = value;
     addHeader('X-Appwrite-Locale', value);
     return this;
   }
+
   /// The user session to authenticate with
   @override
   ClientIO setSession(value) {
@@ -115,6 +119,7 @@ class ClientIO extends ClientBase with ClientMixin {
     addHeader('X-Appwrite-Session', value);
     return this;
   }
+
   /// Your secret dev API key
   @override
   ClientIO setDevKey(value) {
@@ -122,6 +127,7 @@ class ClientIO extends ClientBase with ClientMixin {
     addHeader('X-Appwrite-Dev-Key', value);
     return this;
   }
+
   /// The user cookie to authenticate with. Used by SDKs that forward an incoming Cookie header in server-side runtimes.
   @override
   ClientIO setCookie(value) {
@@ -129,6 +135,7 @@ class ClientIO extends ClientBase with ClientMixin {
     addHeader('Cookie', value);
     return this;
   }
+
   /// Impersonate a user by ID
   @override
   ClientIO setImpersonateUserId(value) {
@@ -136,6 +143,7 @@ class ClientIO extends ClientBase with ClientMixin {
     addHeader('X-Appwrite-Impersonate-User-Id', value);
     return this;
   }
+
   /// Impersonate a user by email
   @override
   ClientIO setImpersonateUserEmail(value) {
@@ -143,6 +151,7 @@ class ClientIO extends ClientBase with ClientMixin {
     addHeader('X-Appwrite-Impersonate-User-Email', value);
     return this;
   }
+
   /// Impersonate a user by phone
   @override
   ClientIO setImpersonateUserPhone(value) {
@@ -401,7 +410,9 @@ class ClientIO extends ClientBase with ClientMixin {
     bool isUploadComplete(Response response) {
       final chunksUploaded = response.data['chunksUploaded'];
       final chunksTotal = response.data['chunksTotal'] ?? totalChunks;
-      return chunksUploaded is num && chunksTotal is num && chunksUploaded >= chunksTotal;
+      return chunksUploaded is num &&
+          chunksTotal is num &&
+          chunksUploaded >= chunksTotal;
     }
 
     final progress = UploadProgress(
@@ -425,7 +436,8 @@ class ClientIO extends ClientBase with ClientMixin {
 
     var nextChunk = 0;
     Future<void> uploadNext() async {
-      final raf = file.bytes == null ? await iofile!.open(mode: FileMode.read) : null;
+      final raf =
+          file.bytes == null ? await iofile!.open(mode: FileMode.read) : null;
       try {
         while (nextChunk < chunks.length) {
           final chunk = chunks[nextChunk++];
