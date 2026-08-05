@@ -12,8 +12,8 @@ void main() {
       final map = model.toMap();
       final result = Oauth2ConsentList.fromMap(map);
 
-            expect(result.total, 5);
-                  expect(result.consents, []);
-          });
+      expect(result.total, 5);
+      expect(result.consents, []);
+    });
   });
 }

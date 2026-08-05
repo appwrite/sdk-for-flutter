@@ -19,15 +19,15 @@ void main() {
       final map = model.toMap();
       final result = AppInstallation.fromMap(map);
 
-            expect(result.$id, '5e5ea5c16897e');
-                  expect(result.$createdAt, '2020-10-15T06:38:00.000+00:00');
-                  expect(result.$updatedAt, '2020-10-15T06:38:00.000+00:00');
-                  expect(result.appId, '5e5ea5c16897e');
-                  expect(result.teamId, '5e5ea5c16897e');
-                  expect(result.scopes, []);
-                  expect(result.authorizationDetails, {});
-                  expect(result.createdById, '5e5ea5c16897e');
-                  expect(result.createdByName, 'Walter White');
-          });
+      expect(result.$id, '5e5ea5c16897e');
+      expect(result.$createdAt, '2020-10-15T06:38:00.000+00:00');
+      expect(result.$updatedAt, '2020-10-15T06:38:00.000+00:00');
+      expect(result.appId, '5e5ea5c16897e');
+      expect(result.teamId, '5e5ea5c16897e');
+      expect(result.scopes, []);
+      expect(result.authorizationDetails, {});
+      expect(result.createdById, '5e5ea5c16897e');
+      expect(result.createdByName, 'Walter White');
+    });
   });
 }

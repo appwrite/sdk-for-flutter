@@ -42,7 +42,6 @@ abstract class ClientBase implements Client {
   @override
   ClientBase setImpersonateUserPhone(value);
 
-
   @override
   ClientBase setSelfSigned({bool status = true});
 

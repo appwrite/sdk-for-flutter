@@ -12,8 +12,8 @@ void main() {
       final map = model.toMap();
       final result = AppInstallationList.fromMap(map);
 
-            expect(result.total, 5);
-                  expect(result.installations, []);
-          });
+      expect(result.total, 5);
+      expect(result.installations, []);
+    });
   });
 }
