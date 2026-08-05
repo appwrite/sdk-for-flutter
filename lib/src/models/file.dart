@@ -20,6 +20,12 @@ class File implements Model {
   /// File name.
   final String name;
 
+  /// Virtual folder containing the file, with a trailing slash. Empty for the bucket root.
+  final String folder;
+
+  /// Full virtual path of the file: the folder followed by the file name.
+  final String key;
+
   /// File MD5 signature.
   final String signature;
 
@@ -51,6 +57,8 @@ class File implements Model {
     required this.$updatedAt,
     required this.$permissions,
     required this.name,
+    required this.folder,
+    required this.key,
     required this.signature,
     required this.mimeType,
     required this.sizeOriginal,
@@ -69,6 +77,8 @@ class File implements Model {
       $updatedAt: map['\$updatedAt'].toString(),
       $permissions: List.from(map['\$permissions'] ?? []),
       name: map['name'].toString(),
+      folder: map['folder'].toString(),
+      key: map['key'].toString(),
       signature: map['signature'].toString(),
       mimeType: map['mimeType'].toString(),
       sizeOriginal: map['sizeOriginal'],
@@ -89,6 +99,8 @@ class File implements Model {
       "\$updatedAt": $updatedAt,
       "\$permissions": $permissions,
       "name": name,
+      "folder": folder,
+      "key": key,
       "signature": signature,
       "mimeType": mimeType,
       "sizeOriginal": sizeOriginal,

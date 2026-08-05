@@ -55,6 +55,7 @@ class Storage extends Service {
       required String fileId,
       required InputFile file,
       List<String>? permissions,
+      String? folder,
       Function(UploadProgress)? onProgress}) async {
     final String apiPath =
         '/storage/buckets/{bucketId}/files'.replaceAll('{bucketId}', bucketId);
@@ -63,6 +64,7 @@ class Storage extends Service {
       'fileId': fileId,
       'file': file,
       if (permissions != null) 'permissions': permissions,
+      if (folder != null) 'folder': folder,
     };
 
     final Map<String, String> apiHeaders = {
@@ -120,7 +122,7 @@ class Storage extends Service {
 
     final Map<String, dynamic> apiParams = {
       if (name != null) 'name': name,
-      'permissions': permissions,
+      if (permissions != null) 'permissions': permissions,
     };
 
     final Map<String, String> apiHeaders = {
@@ -164,14 +166,20 @@ class Storage extends Service {
         .replaceAll('{bucketId}', bucketId)
         .replaceAll('{fileId}', fileId);
 
-    final Map<String, dynamic> params = {
+    final Map<String, dynamic> apiParams = {
       if (token != null) 'token': token,
-      'project': client.config['project'],
-      'impersonateuserid': client.config['impersonateuserid'],
+    };
+
+    final Map<String, String> apiHeaders = {
+      'X-Appwrite-Project': client.config['project'] ?? '',
+      'accept': '*/*',
     };
 
     final res = await client.call(HttpMethod.get,
-        path: apiPath, params: params, responseType: ResponseType.bytes);
+        path: apiPath,
+        params: apiParams,
+        headers: apiHeaders,
+        responseType: ResponseType.bytes);
     return res.data;
   }
 
@@ -199,7 +207,7 @@ class Storage extends Service {
         .replaceAll('{bucketId}', bucketId)
         .replaceAll('{fileId}', fileId);
 
-    final Map<String, dynamic> params = {
+    final Map<String, dynamic> apiParams = {
       if (width != null) 'width': width,
       if (height != null) 'height': height,
       if (gravity != null) 'gravity': gravity.value,
@@ -212,12 +220,18 @@ class Storage extends Service {
       if (background != null) 'background': background,
       if (output != null) 'output': output.value,
       if (token != null) 'token': token,
-      'project': client.config['project'],
-      'impersonateuserid': client.config['impersonateuserid'],
+    };
+
+    final Map<String, String> apiHeaders = {
+      'X-Appwrite-Project': client.config['project'] ?? '',
+      'accept': 'image/*',
     };
 
     final res = await client.call(HttpMethod.get,
-        path: apiPath, params: params, responseType: ResponseType.bytes);
+        path: apiPath,
+        params: apiParams,
+        headers: apiHeaders,
+        responseType: ResponseType.bytes);
     return res.data;
   }
 
@@ -230,14 +244,20 @@ class Storage extends Service {
         .replaceAll('{bucketId}', bucketId)
         .replaceAll('{fileId}', fileId);
 
-    final Map<String, dynamic> params = {
+    final Map<String, dynamic> apiParams = {
       if (token != null) 'token': token,
-      'project': client.config['project'],
-      'impersonateuserid': client.config['impersonateuserid'],
+    };
+
+    final Map<String, String> apiHeaders = {
+      'X-Appwrite-Project': client.config['project'] ?? '',
+      'accept': '*/*',
     };
 
     final res = await client.call(HttpMethod.get,
-        path: apiPath, params: params, responseType: ResponseType.bytes);
+        path: apiPath,
+        params: apiParams,
+        headers: apiHeaders,
+        responseType: ResponseType.bytes);
     return res.data;
   }
 }

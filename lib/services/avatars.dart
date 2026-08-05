@@ -24,16 +24,22 @@ class Avatars extends Service {
     final String apiPath =
         '/avatars/browsers/{code}'.replaceAll('{code}', code.value);
 
-    final Map<String, dynamic> params = {
+    final Map<String, dynamic> apiParams = {
       if (width != null) 'width': width,
       if (height != null) 'height': height,
       if (quality != null) 'quality': quality,
-      'project': client.config['project'],
-      'impersonateuserid': client.config['impersonateuserid'],
+    };
+
+    final Map<String, String> apiHeaders = {
+      'X-Appwrite-Project': client.config['project'] ?? '',
+      'accept': 'image/png',
     };
 
     final res = await client.call(HttpMethod.get,
-        path: apiPath, params: params, responseType: ResponseType.bytes);
+        path: apiPath,
+        params: apiParams,
+        headers: apiHeaders,
+        responseType: ResponseType.bytes);
     return res.data;
   }
 
@@ -54,16 +60,22 @@ class Avatars extends Service {
     final String apiPath =
         '/avatars/credit-cards/{code}'.replaceAll('{code}', code.value);
 
-    final Map<String, dynamic> params = {
+    final Map<String, dynamic> apiParams = {
       if (width != null) 'width': width,
       if (height != null) 'height': height,
       if (quality != null) 'quality': quality,
-      'project': client.config['project'],
-      'impersonateuserid': client.config['impersonateuserid'],
+    };
+
+    final Map<String, String> apiHeaders = {
+      'X-Appwrite-Project': client.config['project'] ?? '',
+      'accept': 'image/png',
     };
 
     final res = await client.call(HttpMethod.get,
-        path: apiPath, params: params, responseType: ResponseType.bytes);
+        path: apiPath,
+        params: apiParams,
+        headers: apiHeaders,
+        responseType: ResponseType.bytes);
     return res.data;
   }
 
@@ -74,14 +86,20 @@ class Avatars extends Service {
   Future<Uint8List> getFavicon({required String url}) async {
     final String apiPath = '/avatars/favicon';
 
-    final Map<String, dynamic> params = {
+    final Map<String, dynamic> apiParams = {
       'url': url,
-      'project': client.config['project'],
-      'impersonateuserid': client.config['impersonateuserid'],
+    };
+
+    final Map<String, String> apiHeaders = {
+      'X-Appwrite-Project': client.config['project'] ?? '',
+      'accept': 'image/*',
     };
 
     final res = await client.call(HttpMethod.get,
-        path: apiPath, params: params, responseType: ResponseType.bytes);
+        path: apiPath,
+        params: apiParams,
+        headers: apiHeaders,
+        responseType: ResponseType.bytes);
     return res.data;
   }
 
@@ -100,16 +118,22 @@ class Avatars extends Service {
     final String apiPath =
         '/avatars/flags/{code}'.replaceAll('{code}', code.value);
 
-    final Map<String, dynamic> params = {
+    final Map<String, dynamic> apiParams = {
       if (width != null) 'width': width,
       if (height != null) 'height': height,
       if (quality != null) 'quality': quality,
-      'project': client.config['project'],
-      'impersonateuserid': client.config['impersonateuserid'],
+    };
+
+    final Map<String, String> apiHeaders = {
+      'X-Appwrite-Project': client.config['project'] ?? '',
+      'accept': 'image/png',
     };
 
     final res = await client.call(HttpMethod.get,
-        path: apiPath, params: params, responseType: ResponseType.bytes);
+        path: apiPath,
+        params: apiParams,
+        headers: apiHeaders,
+        responseType: ResponseType.bytes);
     return res.data;
   }
 
@@ -128,16 +152,22 @@ class Avatars extends Service {
       {required String url, int? width, int? height}) async {
     final String apiPath = '/avatars/image';
 
-    final Map<String, dynamic> params = {
+    final Map<String, dynamic> apiParams = {
       'url': url,
       if (width != null) 'width': width,
       if (height != null) 'height': height,
-      'project': client.config['project'],
-      'impersonateuserid': client.config['impersonateuserid'],
+    };
+
+    final Map<String, String> apiHeaders = {
+      'X-Appwrite-Project': client.config['project'] ?? '',
+      'accept': 'image/*',
     };
 
     final res = await client.call(HttpMethod.get,
-        path: apiPath, params: params, responseType: ResponseType.bytes);
+        path: apiPath,
+        params: apiParams,
+        headers: apiHeaders,
+        responseType: ResponseType.bytes);
     return res.data;
   }
 
@@ -161,17 +191,23 @@ class Avatars extends Service {
       {String? name, int? width, int? height, String? background}) async {
     final String apiPath = '/avatars/initials';
 
-    final Map<String, dynamic> params = {
+    final Map<String, dynamic> apiParams = {
       if (name != null) 'name': name,
       if (width != null) 'width': width,
       if (height != null) 'height': height,
       if (background != null) 'background': background,
-      'project': client.config['project'],
-      'impersonateuserid': client.config['impersonateuserid'],
+    };
+
+    final Map<String, String> apiHeaders = {
+      'X-Appwrite-Project': client.config['project'] ?? '',
+      'accept': 'image/png',
     };
 
     final res = await client.call(HttpMethod.get,
-        path: apiPath, params: params, responseType: ResponseType.bytes);
+        path: apiPath,
+        params: apiParams,
+        headers: apiHeaders,
+        responseType: ResponseType.bytes);
     return res.data;
   }
 
@@ -182,17 +218,23 @@ class Avatars extends Service {
       {required String text, int? size, int? margin, bool? download}) async {
     final String apiPath = '/avatars/qr';
 
-    final Map<String, dynamic> params = {
+    final Map<String, dynamic> apiParams = {
       'text': text,
       if (size != null) 'size': size,
       if (margin != null) 'margin': margin,
       if (download != null) 'download': download,
-      'project': client.config['project'],
-      'impersonateuserid': client.config['impersonateuserid'],
+    };
+
+    final Map<String, String> apiHeaders = {
+      'X-Appwrite-Project': client.config['project'] ?? '',
+      'accept': 'image/png',
     };
 
     final res = await client.call(HttpMethod.get,
-        path: apiPath, params: params, responseType: ResponseType.bytes);
+        path: apiPath,
+        params: apiParams,
+        headers: apiHeaders,
+        responseType: ResponseType.bytes);
     return res.data;
   }
 
@@ -229,7 +271,7 @@ class Avatars extends Service {
       enums.ImageFormat? output}) async {
     final String apiPath = '/avatars/screenshots';
 
-    final Map<String, dynamic> params = {
+    final Map<String, dynamic> apiParams = {
       'url': url,
       if (headers != null) 'headers': headers,
       if (viewportWidth != null) 'viewportWidth': viewportWidth,
@@ -251,12 +293,18 @@ class Avatars extends Service {
       if (height != null) 'height': height,
       if (quality != null) 'quality': quality,
       if (output != null) 'output': output.value,
-      'project': client.config['project'],
-      'impersonateuserid': client.config['impersonateuserid'],
+    };
+
+    final Map<String, String> apiHeaders = {
+      'X-Appwrite-Project': client.config['project'] ?? '',
+      'accept': 'image/png',
     };
 
     final res = await client.call(HttpMethod.get,
-        path: apiPath, params: params, responseType: ResponseType.bytes);
+        path: apiPath,
+        params: apiParams,
+        headers: apiHeaders,
+        responseType: ResponseType.bytes);
     return res.data;
   }
 }

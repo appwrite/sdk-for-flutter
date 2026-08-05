@@ -1,5 +1,15 @@
 # Change Log
 
+## 25.4.0
+
+* Added: `Organization` service for managing app installations
+* Added: app installation management methods to the `Teams` service
+* Added: account OAuth2 consent methods `listConsents`, `getConsent`, `deleteConsent`
+* Added: account consent token methods `listConsentTokens`, `getConsentToken`, `deleteConsentToken`
+* Added: `folder` parameter to `storage.createFile`, and `folder` and `key` to `File`
+* Fixed: Null optional parameters are no longer sent in request bodies
+* Fixed: Binary endpoints now authenticate with headers, not query parameters
+
 ## 25.3.0
 
 * Added: `Client.setBearer()` method for OAuth access token authentication

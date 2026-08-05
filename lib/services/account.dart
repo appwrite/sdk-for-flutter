@@ -55,6 +55,136 @@ class Account extends Service {
     return models.User.fromMap(res.data);
   }
 
+  /// Get a list of the OAuth2 consents the current user has given to third-party
+  /// apps.
+  Future<models.Oauth2ConsentList> listConsents(
+      {List<String>? queries, bool? total}) async {
+    final String apiPath = '/account/consents';
+
+    final Map<String, dynamic> apiParams = {
+      if (queries != null) 'queries': queries,
+      if (total != null) 'total': total,
+    };
+
+    final Map<String, String> apiHeaders = {
+      'X-Appwrite-Project': client.config['project'] ?? '',
+      'accept': 'application/json',
+    };
+
+    final res = await client.call(HttpMethod.get,
+        path: apiPath, params: apiParams, headers: apiHeaders);
+
+    return models.Oauth2ConsentList.fromMap(res.data);
+  }
+
+  /// Get an OAuth2 consent the current user has given to a third-party app by
+  /// its unique ID.
+  Future<models.Oauth2Consent> getConsent({required String consentId}) async {
+    final String apiPath =
+        '/account/consents/{consentId}'.replaceAll('{consentId}', consentId);
+
+    final Map<String, dynamic> apiParams = {};
+
+    final Map<String, String> apiHeaders = {
+      'X-Appwrite-Project': client.config['project'] ?? '',
+      'accept': 'application/json',
+    };
+
+    final res = await client.call(HttpMethod.get,
+        path: apiPath, params: apiParams, headers: apiHeaders);
+
+    return models.Oauth2Consent.fromMap(res.data);
+  }
+
+  /// Delete an OAuth2 consent by its unique ID. All token families issued under
+  /// the consent are revoked, and the app must ask for consent again to regain
+  /// access.
+  Future deleteConsent({required String consentId}) async {
+    final String apiPath =
+        '/account/consents/{consentId}'.replaceAll('{consentId}', consentId);
+
+    final Map<String, dynamic> apiParams = {};
+
+    final Map<String, String> apiHeaders = {
+      'X-Appwrite-Project': client.config['project'] ?? '',
+      'content-type': 'application/json',
+      'accept': 'application/json',
+    };
+
+    final res = await client.call(HttpMethod.delete,
+        path: apiPath, params: apiParams, headers: apiHeaders);
+
+    return res.data;
+  }
+
+  /// Get a list of the token families issued under an OAuth2 consent. Each entry
+  /// represents one authorized device or session; the token secrets themselves
+  /// are never returned.
+  Future<models.Oauth2ConsentTokenList> listConsentTokens(
+      {required String consentId, List<String>? queries, bool? total}) async {
+    final String apiPath = '/account/consents/{consentId}/tokens'
+        .replaceAll('{consentId}', consentId);
+
+    final Map<String, dynamic> apiParams = {
+      if (queries != null) 'queries': queries,
+      if (total != null) 'total': total,
+    };
+
+    final Map<String, String> apiHeaders = {
+      'X-Appwrite-Project': client.config['project'] ?? '',
+      'accept': 'application/json',
+    };
+
+    final res = await client.call(HttpMethod.get,
+        path: apiPath, params: apiParams, headers: apiHeaders);
+
+    return models.Oauth2ConsentTokenList.fromMap(res.data);
+  }
+
+  /// Get a token family issued under an OAuth2 consent by its unique ID. The
+  /// token secrets themselves are never returned.
+  Future<models.Oauth2ConsentToken> getConsentToken(
+      {required String consentId, required String tokenId}) async {
+    final String apiPath = '/account/consents/{consentId}/tokens/{tokenId}'
+        .replaceAll('{consentId}', consentId)
+        .replaceAll('{tokenId}', tokenId);
+
+    final Map<String, dynamic> apiParams = {};
+
+    final Map<String, String> apiHeaders = {
+      'X-Appwrite-Project': client.config['project'] ?? '',
+      'accept': 'application/json',
+    };
+
+    final res = await client.call(HttpMethod.get,
+        path: apiPath, params: apiParams, headers: apiHeaders);
+
+    return models.Oauth2ConsentToken.fromMap(res.data);
+  }
+
+  /// Delete a token family issued under an OAuth2 consent by its unique ID. The
+  /// access and refresh tokens of the family stop working immediately; other
+  /// token families and the consent itself are unaffected.
+  Future deleteConsentToken(
+      {required String consentId, required String tokenId}) async {
+    final String apiPath = '/account/consents/{consentId}/tokens/{tokenId}'
+        .replaceAll('{consentId}', consentId)
+        .replaceAll('{tokenId}', tokenId);
+
+    final Map<String, dynamic> apiParams = {};
+
+    final Map<String, String> apiHeaders = {
+      'X-Appwrite-Project': client.config['project'] ?? '',
+      'content-type': 'application/json',
+      'accept': 'application/json',
+    };
+
+    final res = await client.call(HttpMethod.delete,
+        path: apiPath, params: apiParams, headers: apiHeaders);
+
+    return res.data;
+  }
+
   /// Update currently logged in user account email address. After changing user
   /// address, the user confirmation status will get reset. A new confirmation
   /// email is not sent automatically however you can use the send confirmation

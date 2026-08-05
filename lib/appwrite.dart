@@ -39,6 +39,7 @@ part 'services/functions.dart';
 part 'services/graphql.dart';
 part 'services/locale.dart';
 part 'services/messaging.dart';
+part 'services/organization.dart';
 part 'services/presences.dart';
 part 'services/storage.dart';
 part 'services/tables_db.dart';

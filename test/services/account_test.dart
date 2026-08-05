@@ -117,6 +117,113 @@ void main() {
       expect(response, isA<models.User>());
     });
 
+    test('test method listConsents()', () async {
+      final Map<String, dynamic> data = {
+        'total': 5,
+        'consents': [],
+      };
+
+      when(client.call(
+        HttpMethod.get,
+      )).thenAnswer((_) async => Response(data: data));
+
+      final response = await account.listConsents();
+      expect(response, isA<models.Oauth2ConsentList>());
+    });
+
+    test('test method getConsent()', () async {
+      final Map<String, dynamic> data = {
+        '\$id': '5e5ea5c16897e',
+        '\$createdAt': '2020-10-15T06:38:00.000+00:00',
+        '\$updatedAt': '2020-10-15T06:38:00.000+00:00',
+        'userId': '5e5ea5c16897e',
+        'appId': '5e5ea5c16897e',
+        'cimdUrl': 'https://example.com/.well-known/client-metadata.json',
+        'scopes': [],
+        'resources': [],
+        'authorizationDetails':
+            '[{\"type\":\"calendar\",\"identifier\":\"primary\",\"actions\":[\"read_events\",\"create_event\"]}]',
+        'expire': '2020-10-15T06:38:00.000+00:00',
+      };
+
+      when(client.call(
+        HttpMethod.get,
+      )).thenAnswer((_) async => Response(data: data));
+
+      final response = await account.getConsent(
+        consentId: '<CONSENT_ID>',
+      );
+      expect(response, isA<models.Oauth2Consent>());
+    });
+
+    test('test method deleteConsent()', () async {
+      final data = '';
+
+      when(client.call(
+        HttpMethod.delete,
+      )).thenAnswer((_) async => Response(data: data));
+
+      final response = await account.deleteConsent(
+        consentId: '<CONSENT_ID>',
+      );
+    });
+
+    test('test method listConsentTokens()', () async {
+      final Map<String, dynamic> data = {
+        'total': 5,
+        'tokens': [],
+      };
+
+      when(client.call(
+        HttpMethod.get,
+      )).thenAnswer((_) async => Response(data: data));
+
+      final response = await account.listConsentTokens(
+        consentId: '<CONSENT_ID>',
+      );
+      expect(response, isA<models.Oauth2ConsentTokenList>());
+    });
+
+    test('test method getConsentToken()', () async {
+      final Map<String, dynamic> data = {
+        '\$id': '5e5ea5c16897e',
+        '\$createdAt': '2020-10-15T06:38:00.000+00:00',
+        '\$updatedAt': '2020-10-15T06:38:00.000+00:00',
+        'consentId': '5e5ea5c16897e',
+        'userId': '5e5ea5c16897e',
+        'appId': '5e5ea5c16897e',
+        'cimdUrl': 'https://example.com/.well-known/client-metadata.json',
+        'scopes': [],
+        'resources': [],
+        'authorizationDetails':
+            '[{\"type\":\"calendar\",\"identifier\":\"primary\",\"actions\":[\"read_events\",\"create_event\"]}]',
+        'expire': '2020-10-15T06:38:00.000+00:00',
+      };
+
+      when(client.call(
+        HttpMethod.get,
+      )).thenAnswer((_) async => Response(data: data));
+
+      final response = await account.getConsentToken(
+        consentId: '<CONSENT_ID>',
+        tokenId: '<TOKEN_ID>',
+      );
+      expect(response, isA<models.Oauth2ConsentToken>());
+    });
+
+    test('test method deleteConsentToken()', () async {
+      final data = '';
+
+      when(client.call(
+        HttpMethod.delete,
+      )).thenAnswer((_) async => Response(data: data));
+
+      final response = await account.deleteConsentToken(
+        consentId: '<CONSENT_ID>',
+        tokenId: '<TOKEN_ID>',
+      );
+    });
+
     test('test method updateEmail()', () async {
       final Map<String, dynamic> data = {
         '\$id': '5e5ea5c16897e',

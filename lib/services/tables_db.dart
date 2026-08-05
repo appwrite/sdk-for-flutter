@@ -1,5 +1,7 @@
 part of '../appwrite.dart';
 
+/// The TablesDB service allows you to create structured tables of columns,
+/// query and filter lists of rows
 class TablesDB extends Service {
   /// Initializes a [TablesDB] service
   TablesDB(super.client);
@@ -175,8 +177,8 @@ class TablesDB extends Service {
     final Map<String, dynamic> apiParams = {
       'rowId': rowId,
       'data': data,
-      'permissions': permissions,
-      'transactionId': transactionId,
+      if (permissions != null) 'permissions': permissions,
+      if (transactionId != null) 'transactionId': transactionId,
     };
 
     final Map<String, String> apiHeaders = {
@@ -240,8 +242,8 @@ class TablesDB extends Service {
 
     final Map<String, dynamic> apiParams = {
       if (data != null) 'data': data,
-      'permissions': permissions,
-      'transactionId': transactionId,
+      if (permissions != null) 'permissions': permissions,
+      if (transactionId != null) 'transactionId': transactionId,
     };
 
     final Map<String, String> apiHeaders = {
@@ -273,8 +275,8 @@ class TablesDB extends Service {
 
     final Map<String, dynamic> apiParams = {
       if (data != null) 'data': data,
-      'permissions': permissions,
-      'transactionId': transactionId,
+      if (permissions != null) 'permissions': permissions,
+      if (transactionId != null) 'transactionId': transactionId,
     };
 
     final Map<String, String> apiHeaders = {
@@ -334,8 +336,8 @@ class TablesDB extends Service {
 
     final Map<String, dynamic> apiParams = {
       if (value != null) 'value': value,
-      'min': min,
-      'transactionId': transactionId,
+      if (min != null) 'min': min,
+      if (transactionId != null) 'transactionId': transactionId,
     };
 
     final Map<String, String> apiHeaders = {
@@ -368,8 +370,8 @@ class TablesDB extends Service {
 
     final Map<String, dynamic> apiParams = {
       if (value != null) 'value': value,
-      'max': max,
-      'transactionId': transactionId,
+      if (max != null) 'max': max,
+      if (transactionId != null) 'transactionId': transactionId,
     };
 
     final Map<String, String> apiHeaders = {
