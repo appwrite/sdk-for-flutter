@@ -39,6 +39,8 @@ mixin RealtimeMixin {
   bool _pendingSocketRebuild = false;
   int? get closeCode => _websok?.closeCode;
   bool _reconnect = true;
+  AppwriteException? _fatalError;
+  bool _retryScheduled = false;
   int _retries = 0;
   StreamSubscription? _websocketSubscription;
   bool _creatingSocket = false;
@@ -90,7 +92,13 @@ mixin RealtimeMixin {
         _websok = await getWebSocket(uri);
         _lastUrl = uri.toString();
       } else {
-        if (_lastUrl == uri.toString() && _websok?.closeCode == null) {
+        // A rejected socket is unusable even while its `closeCode` is still
+        // null, because the close it was sent has not completed yet. Reusing
+        // it here would push the pending subscribes into a dying connection
+        // and leave `_fatalError` set, so the client would never recover.
+        if (_lastUrl == uri.toString() &&
+            _websok?.closeCode == null &&
+            _fatalError == null) {
           _sendPendingSubscribes();
           _creatingSocket = false;
           return;
@@ -99,7 +107,14 @@ mixin RealtimeMixin {
         _lastUrl = uri.toString();
         _websok = await getWebSocket(uri);
       }
-      _retries = 0;
+      // A freshly requested connection clears any recorded fatal state, so a
+      // caller that re-authenticates and subscribes again gets a working
+      // client back.
+      _reconnect = true;
+      _fatalError = null;
+      _retryScheduled = false;
+
+      await _websocketSubscription?.cancel();
       _websocketSubscription = _websok?.stream.listen((response) {
         final data = RealtimeResponse.fromJson(response);
         switch (data.type) {
@@ -128,6 +143,11 @@ mixin RealtimeMixin {
                 'queries': entry.value.queries,
               };
             }
+            // Reset the backoff only once the application-level handshake
+            // succeeded. Resetting it as soon as the transport connects makes
+            // every attempt look like the first one, so a server that keeps
+            // rejecting the connection is retried once a second forever.
+            _retries = 0;
             _appConnected = true;
             _sendPendingSubscribes();
             _flushPendingPresence();
@@ -159,14 +179,14 @@ mixin RealtimeMixin {
       }, onDone: () {
         _appConnected = false;
         _stopHeartbeat();
-        _retry();
+        _scheduleRetry();
       }, onError: (err, stack) {
         _appConnected = false;
         _stopHeartbeat();
         for (var subscription in _subscriptions.values) {
           subscription.controller.addError(err, stack);
         }
-        _retry();
+        _scheduleRetry();
       });
     } catch (e) {
       if (e is AppwriteException) {
@@ -183,9 +203,26 @@ mixin RealtimeMixin {
     }
   }
 
+  /// A single connection failure can surface more than once — the browser
+  /// channel emits error-then-done, and a server error frame is usually
+  /// followed by the stream terminating. Without this guard each of those
+  /// paths schedules its own reconnect and bumps `_retries`, so one failure
+  /// looks like several and rebuilds the socket twice.
+  void _scheduleRetry() {
+    if (_retryScheduled) return;
+    _retryScheduled = true;
+    _retry();
+  }
+
   void _retry() async {
-    if (!_reconnect || _websok?.closeCode == status.policyViolation) {
-      _reconnect = true;
+    // `closeCode` is an unreliable signal for a policy violation: it is null
+    // when the failure surfaces through the channel's onError path, and it is
+    // 1006/1000 when a proxy or tunnel tears the connection down without
+    // forwarding the server's 1008 close frame. `_fatalError` records the
+    // rejection itself, so it holds in all of those cases.
+    if (!_reconnect ||
+        _fatalError != null ||
+        _websok?.closeCode == status.policyViolation) {
       return;
     }
     _retries++;
@@ -382,9 +419,33 @@ mixin RealtimeMixin {
 
   void handleError(RealtimeResponse response) {
     if (response.data['code'] == status.policyViolation) {
-      throw AppwriteException(response.data["message"], response.data["code"]);
+      _handleFatalError(
+          AppwriteException(response.data["message"], response.data["code"]));
     } else {
-      _retry();
+      _scheduleRetry();
+    }
+  }
+
+  /// A policy violation (1008) means the server rejected this connection at the
+  /// application level, so reconnecting only gets rejected the same way.
+  ///
+  /// Throwing from here would escape into the zone's uncaught error handler —
+  /// this runs inside the WebSocket stream listener — leaving the socket open,
+  /// the retry loop running and the exception unreachable for app code.
+  /// Instead the connection is torn down and the exception is delivered to
+  /// every subscriber, so callers can react (e.g. re-authenticate and
+  /// subscribe again).
+  void _handleFatalError(AppwriteException error) {
+    _fatalError = error;
+    _reconnect = false;
+    _appConnected = false;
+    _stopHeartbeat();
+    final subscription = _websocketSubscription;
+    _websocketSubscription = null;
+    subscription?.cancel();
+    _websok?.sink.close(status.policyViolation, error.message);
+    for (var subscription in _subscriptions.values) {
+      subscription.controller.addError(error);
     }
   }
 
