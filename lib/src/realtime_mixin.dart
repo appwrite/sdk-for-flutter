@@ -40,6 +40,7 @@ mixin RealtimeMixin {
   int? get closeCode => _websok?.closeCode;
   bool _reconnect = true;
   AppwriteException? _fatalError;
+  bool _retryScheduled = false;
   int _retries = 0;
   StreamSubscription? _websocketSubscription;
   bool _creatingSocket = false;
@@ -91,7 +92,13 @@ mixin RealtimeMixin {
         _websok = await getWebSocket(uri);
         _lastUrl = uri.toString();
       } else {
-        if (_lastUrl == uri.toString() && _websok?.closeCode == null) {
+        // A rejected socket is unusable even while its `closeCode` is still
+        // null, because the close it was sent has not completed yet. Reusing
+        // it here would push the pending subscribes into a dying connection
+        // and leave `_fatalError` set, so the client would never recover.
+        if (_lastUrl == uri.toString() &&
+            _websok?.closeCode == null &&
+            _fatalError == null) {
           _sendPendingSubscribes();
           _creatingSocket = false;
           return;
@@ -105,15 +112,7 @@ mixin RealtimeMixin {
       // client back.
       _reconnect = true;
       _fatalError = null;
-      // onError and onDone both fire for a single failure on some platforms
-      // (the browser channel emits error-then-done), which would otherwise
-      // schedule two reconnects and double-count the retries.
-      var retryScheduled = false;
-      void scheduleRetry() {
-        if (retryScheduled) return;
-        retryScheduled = true;
-        _retry();
-      }
+      _retryScheduled = false;
 
       await _websocketSubscription?.cancel();
       _websocketSubscription = _websok?.stream.listen((response) {
@@ -180,14 +179,14 @@ mixin RealtimeMixin {
       }, onDone: () {
         _appConnected = false;
         _stopHeartbeat();
-        scheduleRetry();
+        _scheduleRetry();
       }, onError: (err, stack) {
         _appConnected = false;
         _stopHeartbeat();
         for (var subscription in _subscriptions.values) {
           subscription.controller.addError(err, stack);
         }
-        scheduleRetry();
+        _scheduleRetry();
       });
     } catch (e) {
       if (e is AppwriteException) {
@@ -202,6 +201,17 @@ mixin RealtimeMixin {
         Future.microtask(_createSocket);
       }
     }
+  }
+
+  /// A single connection failure can surface more than once — the browser
+  /// channel emits error-then-done, and a server error frame is usually
+  /// followed by the stream terminating. Without this guard each of those
+  /// paths schedules its own reconnect and bumps `_retries`, so one failure
+  /// looks like several and rebuilds the socket twice.
+  void _scheduleRetry() {
+    if (_retryScheduled) return;
+    _retryScheduled = true;
+    _retry();
   }
 
   void _retry() async {
@@ -412,7 +422,7 @@ mixin RealtimeMixin {
       _handleFatalError(
           AppwriteException(response.data["message"], response.data["code"]));
     } else {
-      _retry();
+      _scheduleRetry();
     }
   }
 

@@ -135,6 +135,13 @@ void main() {
       // scheduled — previously the client hammered the server once a second.
       await Future.delayed(Duration(milliseconds: 1500));
       expect(channels, hasLength(1));
+
+      // Once the application has reacted to the error (e.g. re-authenticated),
+      // subscribing again must open a fresh socket rather than reusing the
+      // rejected one, whose close has not completed yet.
+      realtime.subscribe(['tables']);
+      await Future.delayed(Duration(milliseconds: 50));
+      expect(channels, hasLength(2));
     });
 
     test('still reconnects after a recoverable error', () async {
