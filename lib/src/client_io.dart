@@ -479,11 +479,25 @@ class ClientIO extends ClientBase with ClientMixin {
 
   @override
   Future webAuth(Uri url, {String? callbackUrlScheme}) {
+    // Derive the actual URI scheme to listen for.
+    // If the caller passed a full URL (e.g. "https://myapp.com/callback"),
+    // extract just the scheme ("https"). Otherwise use it as-is if it looks
+    // like a bare scheme, or fall back to the default appwrite-callback scheme.
+    String resolvedScheme = "appwrite-callback-${config['project']!}";
+    if (callbackUrlScheme != null && _customSchemeAllowed) {
+      final parsed = Uri.tryParse(callbackUrlScheme);
+      if (parsed != null && parsed.hasScheme && parsed.host.isNotEmpty) {
+        // full URL passed — use just the scheme portion
+        resolvedScheme = parsed.scheme;
+      } else {
+        // bare scheme passed (e.g. "myapp") — use as-is
+        resolvedScheme = callbackUrlScheme;
+      }
+    }
+
     return FlutterWebAuth2.authenticate(
       url: url.toString(),
-      callbackUrlScheme: callbackUrlScheme != null && _customSchemeAllowed
-          ? callbackUrlScheme
-          : "appwrite-callback-${config['project']!}",
+      callbackUrlScheme: resolvedScheme,
       options: const FlutterWebAuth2Options(
         useWebview: false,
       ),

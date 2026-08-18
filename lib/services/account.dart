@@ -1033,8 +1033,15 @@ class Account extends Service {
     final String apiPath = '/account/sessions/oauth2/{provider}'
         .replaceAll('{provider}', provider.value);
 
+    // Do NOT forward the custom success URL to the server.
+    // The server only appends key/secret to the redirect when the success path
+    // matches its internal default (/auth/oauth2/success). Sending a custom URL
+    // causes the server to skip adding key/secret, so the Flutter webAuth
+    // callback never receives them → "Invalid OAuth2 Response" (500).
+    // Let the server use its default success path so key/secret are always
+    // added. The custom success URL is used only as the callbackUrlScheme so
+    // Flutter can intercept the redirect after key/secret have been appended.
     final Map<String, dynamic> params = {
-      if (success != null) 'success': success,
       if (failure != null) 'failure': failure,
       if (scopes != null) 'scopes': scopes,
       'project': client.config['project'],
@@ -1369,8 +1376,14 @@ class Account extends Service {
     final String apiPath = '/account/tokens/oauth2/{provider}'
         .replaceAll('{provider}', provider.value);
 
+    // Do NOT forward the custom success URL to the server.
+    // The server (account.php) only appends userId/secret to the redirect
+    // when the success path matches its internal default. Sending a custom
+    // URL causes the server to skip adding them → "Invalid OAuth2 Response"
+    // (500) or "Invalid success param" (400) if the URL is not registered.
+    // Let the server use its default path; use the custom success URL only
+    // as the callbackUrlScheme so Flutter can intercept the redirect.
     final Map<String, dynamic> params = {
-      if (success != null) 'success': success,
       if (failure != null) 'failure': failure,
       if (scopes != null) 'scopes': scopes,
       'project': client.config['project'],
