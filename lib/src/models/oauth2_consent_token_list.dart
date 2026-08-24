@@ -12,12 +12,14 @@ class Oauth2ConsentTokenList implements Model {
     required this.total,
     required this.tokens,
   });
-
-  factory Oauth2ConsentTokenList.fromMap(Map<String, dynamic> map) {
+  factory Oauth2ConsentTokenList.fromMap(
+    Map<String, dynamic> map,
+  ) {
     return Oauth2ConsentTokenList(
       total: map['total'],
       tokens: List<Oauth2ConsentToken>.from(
-          map['tokens'].map((p) => Oauth2ConsentToken.fromMap(p))),
+        map['tokens'].map((p) => Oauth2ConsentToken.fromMap(p)),
+      ),
     );
   }
 

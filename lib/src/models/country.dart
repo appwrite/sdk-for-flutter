@@ -12,8 +12,9 @@ class Country implements Model {
     required this.name,
     required this.code,
   });
-
-  factory Country.fromMap(Map<String, dynamic> map) {
+  factory Country.fromMap(
+    Map<String, dynamic> map,
+  ) {
     return Country(
       name: map['name'].toString(),
       code: map['code'].toString(),

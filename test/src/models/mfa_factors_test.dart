@@ -9,6 +9,7 @@ void main() {
         phone: true,
         email: true,
         recoveryCode: true,
+        custom: true,
       );
 
       final map = model.toMap();
@@ -18,6 +19,7 @@ void main() {
       expect(result.phone, true);
       expect(result.email, true);
       expect(result.recoveryCode, true);
+      expect(result.custom, true);
     });
   });
 }

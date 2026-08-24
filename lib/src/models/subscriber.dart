@@ -40,14 +40,17 @@ class Subscriber implements Model {
     required this.topicId,
     required this.providerType,
   });
-
-  factory Subscriber.fromMap(Map<String, dynamic> map) {
+  factory Subscriber.fromMap(
+    Map<String, dynamic> map,
+  ) {
     return Subscriber(
       $id: map['\$id'].toString(),
       $createdAt: map['\$createdAt'].toString(),
       $updatedAt: map['\$updatedAt'].toString(),
       targetId: map['targetId'].toString(),
-      target: Target.fromMap(map['target']),
+      target: Target.fromMap(
+        map['target'],
+      ),
       userId: map['userId'].toString(),
       userName: map['userName'].toString(),
       topicId: map['topicId'].toString(),

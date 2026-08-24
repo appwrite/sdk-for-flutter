@@ -44,8 +44,9 @@ class Identity implements Model {
     required this.providerAccessTokenExpiry,
     required this.providerRefreshToken,
   });
-
-  factory Identity.fromMap(Map<String, dynamic> map) {
+  factory Identity.fromMap(
+    Map<String, dynamic> map,
+  ) {
     return Identity(
       $id: map['\$id'].toString(),
       $createdAt: map['\$createdAt'].toString(),

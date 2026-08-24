@@ -35,8 +35,9 @@ class Document implements Model {
     required this.$permissions,
     required this.data,
   });
-
-  factory Document.fromMap(Map<String, dynamic> map) {
+  factory Document.fromMap(
+    Map<String, dynamic> map,
+  ) {
     return Document(
       $id: map['\$id'].toString(),
       $sequence: map['\$sequence'].toString(),

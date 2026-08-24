@@ -12,8 +12,9 @@ class Continent implements Model {
     required this.name,
     required this.code,
   });
-
-  factory Continent.fromMap(Map<String, dynamic> map) {
+  factory Continent.fromMap(
+    Map<String, dynamic> map,
+  ) {
     return Continent(
       name: map['name'].toString(),
       code: map['code'].toString(),

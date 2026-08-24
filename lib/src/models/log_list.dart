@@ -12,11 +12,14 @@ class LogList implements Model {
     required this.total,
     required this.logs,
   });
-
-  factory LogList.fromMap(Map<String, dynamic> map) {
+  factory LogList.fromMap(
+    Map<String, dynamic> map,
+  ) {
     return LogList(
       total: map['total'],
-      logs: List<Log>.from(map['logs'].map((p) => Log.fromMap(p))),
+      logs: List<Log>.from(
+        map['logs'].map((p) => Log.fromMap(p)),
+      ),
     );
   }
 

@@ -12,8 +12,9 @@ class Headers implements Model {
     required this.name,
     required this.value,
   });
-
-  factory Headers.fromMap(Map<String, dynamic> map) {
+  factory Headers.fromMap(
+    Map<String, dynamic> map,
+  ) {
     return Headers(
       name: map['name'].toString(),
       value: map['value'].toString(),

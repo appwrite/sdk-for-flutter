@@ -92,8 +92,9 @@ class Log implements Model {
     required this.countryCode,
     required this.countryName,
   });
-
-  factory Log.fromMap(Map<String, dynamic> map) {
+  factory Log.fromMap(
+    Map<String, dynamic> map,
+  ) {
     return Log(
       event: map['event'].toString(),
       userId: map['userId'].toString(),

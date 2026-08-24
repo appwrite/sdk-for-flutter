@@ -1,4 +1,7 @@
 ```dart
+import 'dart:io';
+import 'dart:typed_data';
+import 'package:flutter/material.dart';
 import 'package:appwrite/appwrite.dart';
 import 'package:appwrite/enums.dart' as enums;
 
@@ -24,33 +27,33 @@ Uint8List bytes = await storage.getFilePreview(
     background: '', // optional
     output: enums.ImageFormat.jpg, // optional
     token: '<TOKEN>', // optional
-)
+);
 
 final file = File('path_to_file/filename.ext');
 file.writeAsBytesSync(bytes);
 
 // Displaying image preview
-FutureBuilder(
+FutureBuilder<Uint8List>(
     future: storage.getFilePreview(
-    bucketId:'<BUCKET_ID>' ,
-    fileId:'<FILE_ID>' ,
-    width:0 , // optional
-    height:0 , // optional
-    gravity: enums.ImageGravity.center, // optional
-    quality:-1 , // optional
-    borderWidth:0 , // optional
-    borderColor:'' , // optional
-    borderRadius:0 , // optional
-    opacity:0 , // optional
-    rotation:-360 , // optional
-    background:'' , // optional
-    output: enums.ImageFormat.jpg, // optional
-    token:'<TOKEN>' , // optional
-), // Works for both public file and private file, for private files you need to be logged in
+        bucketId: '<BUCKET_ID>',
+        fileId: '<FILE_ID>',
+        width: 0, // optional
+        height: 0, // optional
+        gravity: enums.ImageGravity.center, // optional
+        quality: -1, // optional
+        borderWidth: 0, // optional
+        borderColor: '', // optional
+        borderRadius: 0, // optional
+        opacity: 0, // optional
+        rotation: -360, // optional
+        background: '', // optional
+        output: enums.ImageFormat.jpg, // optional
+        token: '<TOKEN>', // optional
+    ), // Works for both public file and private file, for private files you need to be logged in
     builder: (context, snapshot) {
-      return snapshot.hasData && snapshot.data != null
-          ? Image.memory(snapshot.data)
-          : CircularProgressIndicator();
-    }
+        return snapshot.hasData && snapshot.data != null
+            ? Image.memory(snapshot.data!)
+            : const CircularProgressIndicator();
+    },
 );
 ```

@@ -12,12 +12,14 @@ class LanguageList implements Model {
     required this.total,
     required this.languages,
   });
-
-  factory LanguageList.fromMap(Map<String, dynamic> map) {
+  factory LanguageList.fromMap(
+    Map<String, dynamic> map,
+  ) {
     return LanguageList(
       total: map['total'],
-      languages:
-          List<Language>.from(map['languages'].map((p) => Language.fromMap(p))),
+      languages: List<Language>.from(
+        map['languages'].map((p) => Language.fromMap(p)),
+      ),
     );
   }
 

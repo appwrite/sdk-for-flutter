@@ -64,8 +64,9 @@ class Membership implements Model {
     required this.userAccessedAt,
     required this.roles,
   });
-
-  factory Membership.fromMap(Map<String, dynamic> map) {
+  factory Membership.fromMap(
+    Map<String, dynamic> map,
+  ) {
     return Membership(
       $id: map['\$id'].toString(),
       $createdAt: map['\$createdAt'].toString(),

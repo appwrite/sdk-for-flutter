@@ -8,8 +8,9 @@ class AlgoBcrypt implements Model {
   AlgoBcrypt({
     required this.type,
   });
-
-  factory AlgoBcrypt.fromMap(Map<String, dynamic> map) {
+  factory AlgoBcrypt.fromMap(
+    Map<String, dynamic> map,
+  ) {
     return AlgoBcrypt(
       type: map['type'].toString(),
     );

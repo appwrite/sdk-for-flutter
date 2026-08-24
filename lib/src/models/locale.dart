@@ -76,8 +76,9 @@ class Locale implements Model {
     this.connectionUsageType,
     this.connectionOrganization,
   });
-
-  factory Locale.fromMap(Map<String, dynamic> map) {
+  factory Locale.fromMap(
+    Map<String, dynamic> map,
+  ) {
     return Locale(
       ip: map['ip'].toString(),
       countryCode: map['countryCode'].toString(),

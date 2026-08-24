@@ -13,5 +13,6 @@ part 'src/enums/browser_permission.dart';
 part 'src/enums/image_format.dart';
 part 'src/enums/execution_method.dart';
 part 'src/enums/image_gravity.dart';
+part 'src/enums/execution_resource_type.dart';
 part 'src/enums/execution_trigger.dart';
 part 'src/enums/execution_status.dart';

@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:io';
 import 'dart:math';
 import 'package:cookie_jar/cookie_jar.dart';
@@ -58,7 +59,7 @@ class ClientIO extends ClientBase with ClientMixin {
       'x-sdk-name': 'Flutter',
       'x-sdk-platform': 'client',
       'x-sdk-language': 'flutter',
-      'x-sdk-version': '25.4.0',
+      'x-sdk-version': '25.5.0',
       'X-Appwrite-Response-Format': '1.9.6',
     };
 
@@ -336,7 +337,7 @@ class ClientIO extends ClientBase with ClientMixin {
 
     var offset = 0;
     String? uploadId;
-    if (idParamName.isNotEmpty) {
+    if (idParamName.isNotEmpty && params[idParamName] != null) {
       //make a request to check if a file already exists
       try {
         res = await call(
@@ -492,6 +493,29 @@ class ClientIO extends ClientBase with ClientMixin {
       final key = url.queryParameters['key'];
       final secret = url.queryParameters['secret'];
       if (key == null || secret == null) {
+        final error = url.queryParameters['error'];
+        if (error != null && error.isNotEmpty) {
+          try {
+            final parsed = jsonDecode(error);
+            if (parsed is Map) {
+              final codeValue = parsed['code'];
+              final int? code = codeValue is int
+                  ? codeValue
+                  : int.tryParse('${codeValue ?? ''}');
+              throw AppwriteException(
+                parsed['message']?.toString() ?? error,
+                code,
+                parsed['type']?.toString(),
+                error,
+              );
+            }
+          } on AppwriteException {
+            rethrow;
+          } catch (_) {
+            // Fall through to a plain-string error when JSON is malformed.
+          }
+          throw AppwriteException(error);
+        }
         throw AppwriteException(
           "Invalid OAuth2 Response. Key and Secret not available.",
           500,

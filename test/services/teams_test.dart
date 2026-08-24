@@ -10,6 +10,7 @@ import 'package:appwrite/appwrite.dart';
 class MockClient extends Mock implements Client {
   Map<String, String> config = {'project': 'testproject'};
   String endPoint = 'https://localhost/v1';
+
   @override
   Future<Response> call(
     HttpMethod? method, {
@@ -18,17 +19,18 @@ class MockClient extends Mock implements Client {
     Map<String, dynamic> params = const {},
     ResponseType? responseType,
   }) async {
-    return super.noSuchMethod(Invocation.method(#call, [method]),
-        returnValue: Response());
+    return super.noSuchMethod(
+      Invocation.method(#call, [method]),
+      returnValue: Response(),
+    );
   }
 
   @override
-  Future webAuth(
-    Uri? url, {
-    String? callbackUrlScheme,
-  }) async {
-    return super
-        .noSuchMethod(Invocation.method(#webAuth, [url]), returnValue: 'done');
+  Future webAuth(Uri? url, {String? callbackUrlScheme}) async {
+    return super.noSuchMethod(
+      Invocation.method(#webAuth, [url]),
+      returnValue: 'done',
+    );
   }
 
   @override
@@ -41,9 +43,15 @@ class MockClient extends Mock implements Client {
     Function(UploadProgress)? onProgress,
   }) async {
     return super.noSuchMethod(
-        Invocation.method(
-            #chunkedUpload, [path, params, paramName, idParamName, headers]),
-        returnValue: Response(data: {}));
+      Invocation.method(#chunkedUpload, [
+        path,
+        params,
+        paramName,
+        idParamName,
+        headers,
+      ]),
+      returnValue: Response(data: {}),
+    );
   }
 }
 
@@ -63,9 +71,9 @@ void main() {
         'teams': [],
       };
 
-      when(client.call(
-        HttpMethod.get,
-      )).thenAnswer((_) async => Response(data: data));
+      when(
+        client.call(HttpMethod.get),
+      ).thenAnswer((_) async => Response(data: data));
 
       final response = await teams.list();
       expect(response, isA<models.TeamList>());
@@ -73,62 +81,62 @@ void main() {
 
     test('test method create()', () async {
       final Map<String, dynamic> data = {
-        '\$id': '5e5ea5c16897e',
-        '\$createdAt': '2020-10-15T06:38:00.000+00:00',
-        '\$updatedAt': '2020-10-15T06:38:00.000+00:00',
-        'name': 'VIP',
+        '\$id': "5e5ea5c16897e",
+        '\$createdAt': "2020-10-15T06:38:00.000+00:00",
+        '\$updatedAt': "2020-10-15T06:38:00.000+00:00",
+        'name': "VIP",
         'total': 7,
         'prefs': <String, dynamic>{},
       };
 
-      when(client.call(
-        HttpMethod.post,
-      )).thenAnswer((_) async => Response(data: data));
+      when(
+        client.call(HttpMethod.post),
+      ).thenAnswer((_) async => Response(data: data));
 
       final response = await teams.create(
-        teamId: '<TEAM_ID>',
-        name: '<NAME>',
+        teamId: "<TEAM_ID>",
+        name: "<NAME>",
       );
       expect(response, isA<models.Team>());
     });
 
     test('test method get()', () async {
       final Map<String, dynamic> data = {
-        '\$id': '5e5ea5c16897e',
-        '\$createdAt': '2020-10-15T06:38:00.000+00:00',
-        '\$updatedAt': '2020-10-15T06:38:00.000+00:00',
-        'name': 'VIP',
+        '\$id': "5e5ea5c16897e",
+        '\$createdAt': "2020-10-15T06:38:00.000+00:00",
+        '\$updatedAt': "2020-10-15T06:38:00.000+00:00",
+        'name': "VIP",
         'total': 7,
         'prefs': <String, dynamic>{},
       };
 
-      when(client.call(
-        HttpMethod.get,
-      )).thenAnswer((_) async => Response(data: data));
+      when(
+        client.call(HttpMethod.get),
+      ).thenAnswer((_) async => Response(data: data));
 
       final response = await teams.get(
-        teamId: '<TEAM_ID>',
+        teamId: "<TEAM_ID>",
       );
       expect(response, isA<models.Team>());
     });
 
     test('test method updateName()', () async {
       final Map<String, dynamic> data = {
-        '\$id': '5e5ea5c16897e',
-        '\$createdAt': '2020-10-15T06:38:00.000+00:00',
-        '\$updatedAt': '2020-10-15T06:38:00.000+00:00',
-        'name': 'VIP',
+        '\$id': "5e5ea5c16897e",
+        '\$createdAt': "2020-10-15T06:38:00.000+00:00",
+        '\$updatedAt': "2020-10-15T06:38:00.000+00:00",
+        'name': "VIP",
         'total': 7,
         'prefs': <String, dynamic>{},
       };
 
-      when(client.call(
-        HttpMethod.put,
-      )).thenAnswer((_) async => Response(data: data));
+      when(
+        client.call(HttpMethod.put),
+      ).thenAnswer((_) async => Response(data: data));
 
       final response = await teams.updateName(
-        teamId: '<TEAM_ID>',
-        name: '<NAME>',
+        teamId: "<TEAM_ID>",
+        name: "<NAME>",
       );
       expect(response, isA<models.Team>());
     });
@@ -136,12 +144,12 @@ void main() {
     test('test method delete()', () async {
       final data = '';
 
-      when(client.call(
-        HttpMethod.delete,
-      )).thenAnswer((_) async => Response(data: data));
+      when(
+        client.call(HttpMethod.delete),
+      ).thenAnswer((_) async => Response(data: data));
 
       final response = await teams.delete(
-        teamId: '<TEAM_ID>',
+        teamId: "<TEAM_ID>",
       );
     });
 
@@ -151,84 +159,84 @@ void main() {
         'installations': [],
       };
 
-      when(client.call(
-        HttpMethod.get,
-      )).thenAnswer((_) async => Response(data: data));
+      when(
+        client.call(HttpMethod.get),
+      ).thenAnswer((_) async => Response(data: data));
 
       final response = await teams.listInstallations(
-        teamId: '<TEAM_ID>',
+        teamId: "<TEAM_ID>",
       );
       expect(response, isA<models.AppInstallationList>());
     });
 
     test('test method createInstallation()', () async {
       final Map<String, dynamic> data = {
-        '\$id': '5e5ea5c16897e',
-        '\$createdAt': '2020-10-15T06:38:00.000+00:00',
-        '\$updatedAt': '2020-10-15T06:38:00.000+00:00',
-        'appId': '5e5ea5c16897e',
-        'teamId': '5e5ea5c16897e',
+        '\$id': "5e5ea5c16897e",
+        '\$createdAt': "2020-10-15T06:38:00.000+00:00",
+        '\$updatedAt': "2020-10-15T06:38:00.000+00:00",
+        'appId': "5e5ea5c16897e",
+        'teamId': "5e5ea5c16897e",
         'scopes': [],
-        'authorizationDetails': <String, dynamic>{},
-        'createdById': '5e5ea5c16897e',
-        'createdByName': 'Walter White',
+        'authorizationDetails': [],
+        'createdById': "5e5ea5c16897e",
+        'createdByName': "Walter White",
       };
 
-      when(client.call(
-        HttpMethod.post,
-      )).thenAnswer((_) async => Response(data: data));
+      when(
+        client.call(HttpMethod.post),
+      ).thenAnswer((_) async => Response(data: data));
 
       final response = await teams.createInstallation(
-        teamId: '<TEAM_ID>',
-        appId: '<APP_ID>',
+        teamId: "<TEAM_ID>",
+        appId: "<APP_ID>",
       );
       expect(response, isA<models.AppInstallation>());
     });
 
     test('test method getInstallation()', () async {
       final Map<String, dynamic> data = {
-        '\$id': '5e5ea5c16897e',
-        '\$createdAt': '2020-10-15T06:38:00.000+00:00',
-        '\$updatedAt': '2020-10-15T06:38:00.000+00:00',
-        'appId': '5e5ea5c16897e',
-        'teamId': '5e5ea5c16897e',
+        '\$id': "5e5ea5c16897e",
+        '\$createdAt': "2020-10-15T06:38:00.000+00:00",
+        '\$updatedAt': "2020-10-15T06:38:00.000+00:00",
+        'appId': "5e5ea5c16897e",
+        'teamId': "5e5ea5c16897e",
         'scopes': [],
-        'authorizationDetails': <String, dynamic>{},
-        'createdById': '5e5ea5c16897e',
-        'createdByName': 'Walter White',
+        'authorizationDetails': [],
+        'createdById': "5e5ea5c16897e",
+        'createdByName': "Walter White",
       };
 
-      when(client.call(
-        HttpMethod.get,
-      )).thenAnswer((_) async => Response(data: data));
+      when(
+        client.call(HttpMethod.get),
+      ).thenAnswer((_) async => Response(data: data));
 
       final response = await teams.getInstallation(
-        teamId: '<TEAM_ID>',
-        installationId: '<INSTALLATION_ID>',
+        teamId: "<TEAM_ID>",
+        installationId: "<INSTALLATION_ID>",
       );
       expect(response, isA<models.AppInstallation>());
     });
 
     test('test method updateInstallation()', () async {
       final Map<String, dynamic> data = {
-        '\$id': '5e5ea5c16897e',
-        '\$createdAt': '2020-10-15T06:38:00.000+00:00',
-        '\$updatedAt': '2020-10-15T06:38:00.000+00:00',
-        'appId': '5e5ea5c16897e',
-        'teamId': '5e5ea5c16897e',
+        '\$id': "5e5ea5c16897e",
+        '\$createdAt': "2020-10-15T06:38:00.000+00:00",
+        '\$updatedAt': "2020-10-15T06:38:00.000+00:00",
+        'appId': "5e5ea5c16897e",
+        'teamId': "5e5ea5c16897e",
         'scopes': [],
-        'authorizationDetails': <String, dynamic>{},
-        'createdById': '5e5ea5c16897e',
-        'createdByName': 'Walter White',
+        'authorizationDetails': [],
+        'createdById': "5e5ea5c16897e",
+        'createdByName': "Walter White",
       };
 
-      when(client.call(
-        HttpMethod.put,
-      )).thenAnswer((_) async => Response(data: data));
+      when(
+        client.call(HttpMethod.put),
+      ).thenAnswer((_) async => Response(data: data));
 
       final response = await teams.updateInstallation(
-        teamId: '<TEAM_ID>',
-        installationId: '<INSTALLATION_ID>',
+        teamId: "<TEAM_ID>",
+        installationId: "<INSTALLATION_ID>",
       );
       expect(response, isA<models.AppInstallation>());
     });
@@ -236,13 +244,13 @@ void main() {
     test('test method deleteInstallation()', () async {
       final data = '';
 
-      when(client.call(
-        HttpMethod.delete,
-      )).thenAnswer((_) async => Response(data: data));
+      when(
+        client.call(HttpMethod.delete),
+      ).thenAnswer((_) async => Response(data: data));
 
       final response = await teams.deleteInstallation(
-        teamId: '<TEAM_ID>',
-        installationId: '<INSTALLATION_ID>',
+        teamId: "<TEAM_ID>",
+        installationId: "<INSTALLATION_ID>",
       );
     });
 
@@ -252,41 +260,41 @@ void main() {
         'memberships': [],
       };
 
-      when(client.call(
-        HttpMethod.get,
-      )).thenAnswer((_) async => Response(data: data));
+      when(
+        client.call(HttpMethod.get),
+      ).thenAnswer((_) async => Response(data: data));
 
       final response = await teams.listMemberships(
-        teamId: '<TEAM_ID>',
+        teamId: "<TEAM_ID>",
       );
       expect(response, isA<models.MembershipList>());
     });
 
     test('test method createMembership()', () async {
       final Map<String, dynamic> data = {
-        '\$id': '5e5ea5c16897e',
-        '\$createdAt': '2020-10-15T06:38:00.000+00:00',
-        '\$updatedAt': '2020-10-15T06:38:00.000+00:00',
-        'userId': '5e5ea5c16897e',
-        'userName': 'John Doe',
-        'userEmail': 'john@appwrite.io',
-        'userPhone': '+1 555 555 5555',
-        'teamId': '5e5ea5c16897e',
-        'teamName': 'VIP',
-        'invited': '2020-10-15T06:38:00.000+00:00',
-        'joined': '2020-10-15T06:38:00.000+00:00',
+        '\$id': "5e5ea5c16897e",
+        '\$createdAt': "2020-10-15T06:38:00.000+00:00",
+        '\$updatedAt': "2020-10-15T06:38:00.000+00:00",
+        'userId': "5e5ea5c16897e",
+        'userName': "John Doe",
+        'userEmail': "john@appwrite.io",
+        'userPhone': "+1 555 555 5555",
+        'teamId': "5e5ea5c16897e",
+        'teamName': "VIP",
+        'invited': "2020-10-15T06:38:00.000+00:00",
+        'joined': "2020-10-15T06:38:00.000+00:00",
         'confirm': true,
         'mfa': true,
-        'userAccessedAt': '2020-10-15T06:38:00.000+00:00',
+        'userAccessedAt': "2020-10-15T06:38:00.000+00:00",
         'roles': [],
       };
 
-      when(client.call(
-        HttpMethod.post,
-      )).thenAnswer((_) async => Response(data: data));
+      when(
+        client.call(HttpMethod.post),
+      ).thenAnswer((_) async => Response(data: data));
 
       final response = await teams.createMembership(
-        teamId: '<TEAM_ID>',
+        teamId: "<TEAM_ID>",
         roles: [],
       );
       expect(response, isA<models.Membership>());
@@ -294,60 +302,60 @@ void main() {
 
     test('test method getMembership()', () async {
       final Map<String, dynamic> data = {
-        '\$id': '5e5ea5c16897e',
-        '\$createdAt': '2020-10-15T06:38:00.000+00:00',
-        '\$updatedAt': '2020-10-15T06:38:00.000+00:00',
-        'userId': '5e5ea5c16897e',
-        'userName': 'John Doe',
-        'userEmail': 'john@appwrite.io',
-        'userPhone': '+1 555 555 5555',
-        'teamId': '5e5ea5c16897e',
-        'teamName': 'VIP',
-        'invited': '2020-10-15T06:38:00.000+00:00',
-        'joined': '2020-10-15T06:38:00.000+00:00',
+        '\$id': "5e5ea5c16897e",
+        '\$createdAt': "2020-10-15T06:38:00.000+00:00",
+        '\$updatedAt': "2020-10-15T06:38:00.000+00:00",
+        'userId': "5e5ea5c16897e",
+        'userName': "John Doe",
+        'userEmail': "john@appwrite.io",
+        'userPhone': "+1 555 555 5555",
+        'teamId': "5e5ea5c16897e",
+        'teamName': "VIP",
+        'invited': "2020-10-15T06:38:00.000+00:00",
+        'joined': "2020-10-15T06:38:00.000+00:00",
         'confirm': true,
         'mfa': true,
-        'userAccessedAt': '2020-10-15T06:38:00.000+00:00',
+        'userAccessedAt': "2020-10-15T06:38:00.000+00:00",
         'roles': [],
       };
 
-      when(client.call(
-        HttpMethod.get,
-      )).thenAnswer((_) async => Response(data: data));
+      when(
+        client.call(HttpMethod.get),
+      ).thenAnswer((_) async => Response(data: data));
 
       final response = await teams.getMembership(
-        teamId: '<TEAM_ID>',
-        membershipId: '<MEMBERSHIP_ID>',
+        teamId: "<TEAM_ID>",
+        membershipId: "<MEMBERSHIP_ID>",
       );
       expect(response, isA<models.Membership>());
     });
 
     test('test method updateMembership()', () async {
       final Map<String, dynamic> data = {
-        '\$id': '5e5ea5c16897e',
-        '\$createdAt': '2020-10-15T06:38:00.000+00:00',
-        '\$updatedAt': '2020-10-15T06:38:00.000+00:00',
-        'userId': '5e5ea5c16897e',
-        'userName': 'John Doe',
-        'userEmail': 'john@appwrite.io',
-        'userPhone': '+1 555 555 5555',
-        'teamId': '5e5ea5c16897e',
-        'teamName': 'VIP',
-        'invited': '2020-10-15T06:38:00.000+00:00',
-        'joined': '2020-10-15T06:38:00.000+00:00',
+        '\$id': "5e5ea5c16897e",
+        '\$createdAt': "2020-10-15T06:38:00.000+00:00",
+        '\$updatedAt': "2020-10-15T06:38:00.000+00:00",
+        'userId': "5e5ea5c16897e",
+        'userName': "John Doe",
+        'userEmail': "john@appwrite.io",
+        'userPhone': "+1 555 555 5555",
+        'teamId': "5e5ea5c16897e",
+        'teamName': "VIP",
+        'invited': "2020-10-15T06:38:00.000+00:00",
+        'joined': "2020-10-15T06:38:00.000+00:00",
         'confirm': true,
         'mfa': true,
-        'userAccessedAt': '2020-10-15T06:38:00.000+00:00',
+        'userAccessedAt': "2020-10-15T06:38:00.000+00:00",
         'roles': [],
       };
 
-      when(client.call(
-        HttpMethod.patch,
-      )).thenAnswer((_) async => Response(data: data));
+      when(
+        client.call(HttpMethod.patch),
+      ).thenAnswer((_) async => Response(data: data));
 
       final response = await teams.updateMembership(
-        teamId: '<TEAM_ID>',
-        membershipId: '<MEMBERSHIP_ID>',
+        teamId: "<TEAM_ID>",
+        membershipId: "<MEMBERSHIP_ID>",
         roles: [],
       );
       expect(response, isA<models.Membership>());
@@ -356,44 +364,44 @@ void main() {
     test('test method deleteMembership()', () async {
       final data = '';
 
-      when(client.call(
-        HttpMethod.delete,
-      )).thenAnswer((_) async => Response(data: data));
+      when(
+        client.call(HttpMethod.delete),
+      ).thenAnswer((_) async => Response(data: data));
 
       final response = await teams.deleteMembership(
-        teamId: '<TEAM_ID>',
-        membershipId: '<MEMBERSHIP_ID>',
+        teamId: "<TEAM_ID>",
+        membershipId: "<MEMBERSHIP_ID>",
       );
     });
 
     test('test method updateMembershipStatus()', () async {
       final Map<String, dynamic> data = {
-        '\$id': '5e5ea5c16897e',
-        '\$createdAt': '2020-10-15T06:38:00.000+00:00',
-        '\$updatedAt': '2020-10-15T06:38:00.000+00:00',
-        'userId': '5e5ea5c16897e',
-        'userName': 'John Doe',
-        'userEmail': 'john@appwrite.io',
-        'userPhone': '+1 555 555 5555',
-        'teamId': '5e5ea5c16897e',
-        'teamName': 'VIP',
-        'invited': '2020-10-15T06:38:00.000+00:00',
-        'joined': '2020-10-15T06:38:00.000+00:00',
+        '\$id': "5e5ea5c16897e",
+        '\$createdAt': "2020-10-15T06:38:00.000+00:00",
+        '\$updatedAt': "2020-10-15T06:38:00.000+00:00",
+        'userId': "5e5ea5c16897e",
+        'userName': "John Doe",
+        'userEmail': "john@appwrite.io",
+        'userPhone': "+1 555 555 5555",
+        'teamId': "5e5ea5c16897e",
+        'teamName': "VIP",
+        'invited': "2020-10-15T06:38:00.000+00:00",
+        'joined': "2020-10-15T06:38:00.000+00:00",
         'confirm': true,
         'mfa': true,
-        'userAccessedAt': '2020-10-15T06:38:00.000+00:00',
+        'userAccessedAt': "2020-10-15T06:38:00.000+00:00",
         'roles': [],
       };
 
-      when(client.call(
-        HttpMethod.patch,
-      )).thenAnswer((_) async => Response(data: data));
+      when(
+        client.call(HttpMethod.patch),
+      ).thenAnswer((_) async => Response(data: data));
 
       final response = await teams.updateMembershipStatus(
-        teamId: '<TEAM_ID>',
-        membershipId: '<MEMBERSHIP_ID>',
-        userId: '<USER_ID>',
-        secret: '<SECRET>',
+        teamId: "<TEAM_ID>",
+        membershipId: "<MEMBERSHIP_ID>",
+        userId: "<USER_ID>",
+        secret: "<SECRET>",
       );
       expect(response, isA<models.Membership>());
     });
@@ -401,12 +409,12 @@ void main() {
     test('test method getPrefs()', () async {
       final Map<String, dynamic> data = {};
 
-      when(client.call(
-        HttpMethod.get,
-      )).thenAnswer((_) async => Response(data: data));
+      when(
+        client.call(HttpMethod.get),
+      ).thenAnswer((_) async => Response(data: data));
 
       final response = await teams.getPrefs(
-        teamId: '<TEAM_ID>',
+        teamId: "<TEAM_ID>",
       );
       expect(response, isA<models.Preferences>());
     });
@@ -414,12 +422,12 @@ void main() {
     test('test method updatePrefs()', () async {
       final Map<String, dynamic> data = {};
 
-      when(client.call(
-        HttpMethod.put,
-      )).thenAnswer((_) async => Response(data: data));
+      when(
+        client.call(HttpMethod.put),
+      ).thenAnswer((_) async => Response(data: data));
 
       final response = await teams.updatePrefs(
-        teamId: '<TEAM_ID>',
+        teamId: "<TEAM_ID>",
         prefs: {},
       );
       expect(response, isA<models.Preferences>());

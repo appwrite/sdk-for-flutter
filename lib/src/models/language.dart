@@ -16,8 +16,9 @@ class Language implements Model {
     required this.code,
     required this.nativeName,
   });
-
-  factory Language.fromMap(Map<String, dynamic> map) {
+  factory Language.fromMap(
+    Map<String, dynamic> map,
+  ) {
     return Language(
       name: map['name'].toString(),
       code: map['code'].toString(),

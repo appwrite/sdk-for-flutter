@@ -40,8 +40,9 @@ class Target implements Model {
     required this.identifier,
     required this.expired,
   });
-
-  factory Target.fromMap(Map<String, dynamic> map) {
+  factory Target.fromMap(
+    Map<String, dynamic> map,
+  ) {
     return Target(
       $id: map['\$id'].toString(),
       $createdAt: map['\$createdAt'].toString(),

@@ -12,11 +12,14 @@ class FileList implements Model {
     required this.total,
     required this.files,
   });
-
-  factory FileList.fromMap(Map<String, dynamic> map) {
+  factory FileList.fromMap(
+    Map<String, dynamic> map,
+  ) {
     return FileList(
       total: map['total'],
-      files: List<File>.from(map['files'].map((p) => File.fromMap(p))),
+      files: List<File>.from(
+        map['files'].map((p) => File.fromMap(p)),
+      ),
     );
   }
 

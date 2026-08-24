@@ -5,15 +5,15 @@ void main() {
   group('Country', () {
     test('model', () {
       final model = Country(
-        name: 'United States',
-        code: 'US',
+        name: "United States",
+        code: "US",
       );
 
       final map = model.toMap();
       final result = Country.fromMap(map);
 
-      expect(result.name, 'United States');
-      expect(result.code, 'US');
+      expect(result.name, "United States");
+      expect(result.code, "US");
     });
   });
 }

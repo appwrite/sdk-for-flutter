@@ -12,12 +12,14 @@ class AppInstallationList implements Model {
     required this.total,
     required this.installations,
   });
-
-  factory AppInstallationList.fromMap(Map<String, dynamic> map) {
+  factory AppInstallationList.fromMap(
+    Map<String, dynamic> map,
+  ) {
     return AppInstallationList(
       total: map['total'],
       installations: List<AppInstallation>.from(
-          map['installations'].map((p) => AppInstallation.fromMap(p))),
+        map['installations'].map((p) => AppInstallation.fromMap(p)),
+      ),
     );
   }
 

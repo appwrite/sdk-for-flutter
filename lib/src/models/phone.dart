@@ -16,8 +16,9 @@ class Phone implements Model {
     required this.countryCode,
     required this.countryName,
   });
-
-  factory Phone.fromMap(Map<String, dynamic> map) {
+  factory Phone.fromMap(
+    Map<String, dynamic> map,
+  ) {
     return Phone(
       code: map['code'].toString(),
       countryCode: map['countryCode'].toString(),

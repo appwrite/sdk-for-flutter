@@ -40,8 +40,9 @@ class Presence implements Model {
     this.expiresAt,
     this.metadata,
   });
-
-  factory Presence.fromMap(Map<String, dynamic> map) {
+  factory Presence.fromMap(
+    Map<String, dynamic> map,
+  ) {
     return Presence(
       $id: map['\$id'].toString(),
       $createdAt: map['\$createdAt'].toString(),

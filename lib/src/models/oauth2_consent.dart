@@ -44,8 +44,9 @@ class Oauth2Consent implements Model {
     required this.authorizationDetails,
     required this.expire,
   });
-
-  factory Oauth2Consent.fromMap(Map<String, dynamic> map) {
+  factory Oauth2Consent.fromMap(
+    Map<String, dynamic> map,
+  ) {
     return Oauth2Consent(
       $id: map['\$id'].toString(),
       $createdAt: map['\$createdAt'].toString(),

@@ -28,8 +28,9 @@ class Transaction implements Model {
     required this.operations,
     required this.expiresAt,
   });
-
-  factory Transaction.fromMap(Map<String, dynamic> map) {
+  factory Transaction.fromMap(
+    Map<String, dynamic> map,
+  ) {
     return Transaction(
       $id: map['\$id'].toString(),
       $createdAt: map['\$createdAt'].toString(),

@@ -10,6 +10,7 @@ import 'package:appwrite/appwrite.dart';
 class MockClient extends Mock implements Client {
   Map<String, String> config = {'project': 'testproject'};
   String endPoint = 'https://localhost/v1';
+
   @override
   Future<Response> call(
     HttpMethod? method, {
@@ -18,17 +19,18 @@ class MockClient extends Mock implements Client {
     Map<String, dynamic> params = const {},
     ResponseType? responseType,
   }) async {
-    return super.noSuchMethod(Invocation.method(#call, [method]),
-        returnValue: Response());
+    return super.noSuchMethod(
+      Invocation.method(#call, [method]),
+      returnValue: Response(),
+    );
   }
 
   @override
-  Future webAuth(
-    Uri? url, {
-    String? callbackUrlScheme,
-  }) async {
-    return super
-        .noSuchMethod(Invocation.method(#webAuth, [url]), returnValue: 'done');
+  Future webAuth(Uri? url, {String? callbackUrlScheme}) async {
+    return super.noSuchMethod(
+      Invocation.method(#webAuth, [url]),
+      returnValue: 'done',
+    );
   }
 
   @override
@@ -41,9 +43,15 @@ class MockClient extends Mock implements Client {
     Function(UploadProgress)? onProgress,
   }) async {
     return super.noSuchMethod(
-        Invocation.method(
-            #chunkedUpload, [path, params, paramName, idParamName, headers]),
-        returnValue: Response(data: {}));
+      Invocation.method(#chunkedUpload, [
+        path,
+        params,
+        paramName,
+        idParamName,
+        headers,
+      ]),
+      returnValue: Response(data: {}),
+    );
   }
 }
 
@@ -59,18 +67,18 @@ void main() {
 
     test('test method get()', () async {
       final Map<String, dynamic> data = {
-        'ip': '127.0.0.1',
-        'countryCode': 'US',
-        'country': 'United States',
-        'continentCode': 'NA',
-        'continent': 'North America',
+        'ip': "127.0.0.1",
+        'countryCode': "US",
+        'country': "United States",
+        'continentCode': "NA",
+        'continent': "North America",
         'eu': true,
-        'currency': 'USD',
+        'currency': "USD",
       };
 
-      when(client.call(
-        HttpMethod.get,
-      )).thenAnswer((_) async => Response(data: data));
+      when(
+        client.call(HttpMethod.get),
+      ).thenAnswer((_) async => Response(data: data));
 
       final response = await locale.get();
       expect(response, isA<models.Locale>());
@@ -82,9 +90,9 @@ void main() {
         'localeCodes': [],
       };
 
-      when(client.call(
-        HttpMethod.get,
-      )).thenAnswer((_) async => Response(data: data));
+      when(
+        client.call(HttpMethod.get),
+      ).thenAnswer((_) async => Response(data: data));
 
       final response = await locale.listCodes();
       expect(response, isA<models.LocaleCodeList>());
@@ -96,9 +104,9 @@ void main() {
         'continents': [],
       };
 
-      when(client.call(
-        HttpMethod.get,
-      )).thenAnswer((_) async => Response(data: data));
+      when(
+        client.call(HttpMethod.get),
+      ).thenAnswer((_) async => Response(data: data));
 
       final response = await locale.listContinents();
       expect(response, isA<models.ContinentList>());
@@ -110,9 +118,9 @@ void main() {
         'countries': [],
       };
 
-      when(client.call(
-        HttpMethod.get,
-      )).thenAnswer((_) async => Response(data: data));
+      when(
+        client.call(HttpMethod.get),
+      ).thenAnswer((_) async => Response(data: data));
 
       final response = await locale.listCountries();
       expect(response, isA<models.CountryList>());
@@ -124,9 +132,9 @@ void main() {
         'countries': [],
       };
 
-      when(client.call(
-        HttpMethod.get,
-      )).thenAnswer((_) async => Response(data: data));
+      when(
+        client.call(HttpMethod.get),
+      ).thenAnswer((_) async => Response(data: data));
 
       final response = await locale.listCountriesEU();
       expect(response, isA<models.CountryList>());
@@ -138,9 +146,9 @@ void main() {
         'phones': [],
       };
 
-      when(client.call(
-        HttpMethod.get,
-      )).thenAnswer((_) async => Response(data: data));
+      when(
+        client.call(HttpMethod.get),
+      ).thenAnswer((_) async => Response(data: data));
 
       final response = await locale.listCountriesPhones();
       expect(response, isA<models.PhoneList>());
@@ -152,9 +160,9 @@ void main() {
         'currencies': [],
       };
 
-      when(client.call(
-        HttpMethod.get,
-      )).thenAnswer((_) async => Response(data: data));
+      when(
+        client.call(HttpMethod.get),
+      ).thenAnswer((_) async => Response(data: data));
 
       final response = await locale.listCurrencies();
       expect(response, isA<models.CurrencyList>());
@@ -166,9 +174,9 @@ void main() {
         'languages': [],
       };
 
-      when(client.call(
-        HttpMethod.get,
-      )).thenAnswer((_) async => Response(data: data));
+      when(
+        client.call(HttpMethod.get),
+      ).thenAnswer((_) async => Response(data: data));
 
       final response = await locale.listLanguages();
       expect(response, isA<models.LanguageList>());

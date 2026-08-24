@@ -11,11 +11,12 @@ Client client = Client()
 Avatars avatars = Avatars(client);
 
 // Downloading file
-Uint8List bytes = await avatars.getQR(
-    text: '<TEXT>',
-    size: 1, // optional
-    margin: 0, // optional
-    download: false, // optional
+Uint8List bytes = await avatars.getPhoto(
+    width: 0, // optional
+    height: 0, // optional
+    quality: 0, // optional
+    output: 'png', // optional
+    rating: 'g', // optional
 );
 
 final file = File('path_to_file/filename.ext');
@@ -23,11 +24,12 @@ file.writeAsBytesSync(bytes);
 
 // Displaying image preview
 FutureBuilder<Uint8List>(
-    future: avatars.getQR(
-        text: '<TEXT>',
-        size: 1, // optional
-        margin: 0, // optional
-        download: false, // optional
+    future: avatars.getPhoto(
+        width: 0, // optional
+        height: 0, // optional
+        quality: 0, // optional
+        output: 'png', // optional
+        rating: 'g', // optional
     ), // Works for both public file and private file, for private files you need to be logged in
     builder: (context, snapshot) {
         return snapshot.hasData && snapshot.data != null

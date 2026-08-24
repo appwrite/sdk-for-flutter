@@ -20,8 +20,9 @@ class AlgoArgon2 implements Model {
     required this.timeCost,
     required this.threads,
   });
-
-  factory AlgoArgon2.fromMap(Map<String, dynamic> map) {
+  factory AlgoArgon2.fromMap(
+    Map<String, dynamic> map,
+  ) {
     return AlgoArgon2(
       type: map['type'].toString(),
       memoryCost: map['memoryCost'],

@@ -8,8 +8,9 @@ class Jwt implements Model {
   Jwt({
     required this.jwt,
   });
-
-  factory Jwt.fromMap(Map<String, dynamic> map) {
+  factory Jwt.fromMap(
+    Map<String, dynamic> map,
+  ) {
     return Jwt(
       jwt: map['jwt'].toString(),
     );

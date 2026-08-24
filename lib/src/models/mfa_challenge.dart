@@ -20,8 +20,9 @@ class MfaChallenge implements Model {
     required this.userId,
     required this.expire,
   });
-
-  factory MfaChallenge.fromMap(Map<String, dynamic> map) {
+  factory MfaChallenge.fromMap(
+    Map<String, dynamic> map,
+  ) {
     return MfaChallenge(
       $id: map['\$id'].toString(),
       $createdAt: map['\$createdAt'].toString(),

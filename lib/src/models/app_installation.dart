@@ -21,7 +21,7 @@ class AppInstallation implements Model {
   final List<String> scopes;
 
   /// Authorization details granted to the application. Rich authorization request (RFC 9396) style entries; the Appwrite Console stores authorized project IDs here.
-  final Map<String, dynamic> authorizationDetails;
+  final List<Map> authorizationDetails;
 
   /// ID of the user who created the installation.
   final String createdById;
@@ -44,8 +44,9 @@ class AppInstallation implements Model {
     required this.createdByName,
     this.lastAccessedAt,
   });
-
-  factory AppInstallation.fromMap(Map<String, dynamic> map) {
+  factory AppInstallation.fromMap(
+    Map<String, dynamic> map,
+  ) {
     return AppInstallation(
       $id: map['\$id'].toString(),
       $createdAt: map['\$createdAt'].toString(),
@@ -53,7 +54,7 @@ class AppInstallation implements Model {
       appId: map['appId'].toString(),
       teamId: map['teamId'].toString(),
       scopes: List.from(map['scopes'] ?? []),
-      authorizationDetails: map['authorizationDetails'],
+      authorizationDetails: List.from(map['authorizationDetails'] ?? []),
       createdById: map['createdById'].toString(),
       createdByName: map['createdByName'].toString(),
       lastAccessedAt: map['lastAccessedAt']?.toString(),

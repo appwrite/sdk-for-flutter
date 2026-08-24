@@ -5,13 +5,13 @@ void main() {
   group('AlgoPhpass', () {
     test('model', () {
       final model = AlgoPhpass(
-        type: 'phpass',
+        type: "phpass",
       );
 
       final map = model.toMap();
       final result = AlgoPhpass.fromMap(map);
 
-      expect(result.type, 'phpass');
+      expect(result.type, "phpass");
     });
   });
 }

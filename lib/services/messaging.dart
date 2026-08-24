@@ -7,12 +7,15 @@ class Messaging extends Service {
   Messaging(super.client);
 
   /// Create a new subscriber.
-  Future<models.Subscriber> createSubscriber(
-      {required String topicId,
-      required String subscriberId,
-      required String targetId}) async {
-    final String apiPath = '/messaging/topics/{topicId}/subscribers'
-        .replaceAll('{topicId}', topicId);
+  Future<models.Subscriber> createSubscriber({
+    required String topicId,
+    required String subscriberId,
+    required String targetId,
+  }) async {
+    final String apiPath = '/messaging/topics/{topicId}/subscribers'.replaceAll(
+      '{topicId}',
+      topicId,
+    );
 
     final Map<String, dynamic> apiParams = {
       'subscriberId': subscriberId,
@@ -25,19 +28,31 @@ class Messaging extends Service {
       'accept': 'application/json',
     };
 
-    final res = await client.call(HttpMethod.post,
-        path: apiPath, params: apiParams, headers: apiHeaders);
+    final res = await client.call(
+      HttpMethod.post,
+      path: apiPath,
+      params: apiParams,
+      headers: apiHeaders,
+    );
 
     return models.Subscriber.fromMap(res.data);
   }
 
   /// Delete a subscriber by its unique ID.
-  Future deleteSubscriber(
-      {required String topicId, required String subscriberId}) async {
+  Future deleteSubscriber({
+    required String topicId,
+    required String subscriberId,
+  }) async {
     final String apiPath =
         '/messaging/topics/{topicId}/subscribers/{subscriberId}'
-            .replaceAll('{topicId}', topicId)
-            .replaceAll('{subscriberId}', subscriberId);
+            .replaceAll(
+              '{topicId}',
+              topicId,
+            )
+            .replaceAll(
+              '{subscriberId}',
+              subscriberId,
+            );
 
     final Map<String, dynamic> apiParams = {};
 
@@ -46,8 +61,12 @@ class Messaging extends Service {
       'content-type': 'application/json',
     };
 
-    final res = await client.call(HttpMethod.delete,
-        path: apiPath, params: apiParams, headers: apiHeaders);
+    final res = await client.call(
+      HttpMethod.delete,
+      path: apiPath,
+      params: apiParams,
+      headers: apiHeaders,
+    );
 
     return res.data;
   }

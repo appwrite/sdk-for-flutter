@@ -28,8 +28,9 @@ class Token implements Model {
     required this.expire,
     required this.phrase,
   });
-
-  factory Token.fromMap(Map<String, dynamic> map) {
+  factory Token.fromMap(
+    Map<String, dynamic> map,
+  ) {
     return Token(
       $id: map['\$id'].toString(),
       $createdAt: map['\$createdAt'].toString(),

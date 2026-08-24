@@ -8,8 +8,9 @@ class AlgoPhpass implements Model {
   AlgoPhpass({
     required this.type,
   });
-
-  factory AlgoPhpass.fromMap(Map<String, dynamic> map) {
+  factory AlgoPhpass.fromMap(
+    Map<String, dynamic> map,
+  ) {
     return AlgoPhpass(
       type: map['type'].toString(),
     );

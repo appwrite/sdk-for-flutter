@@ -12,12 +12,14 @@ class SessionList implements Model {
     required this.total,
     required this.sessions,
   });
-
-  factory SessionList.fromMap(Map<String, dynamic> map) {
+  factory SessionList.fromMap(
+    Map<String, dynamic> map,
+  ) {
     return SessionList(
       total: map['total'],
-      sessions:
-          List<Session>.from(map['sessions'].map((p) => Session.fromMap(p))),
+      sessions: List<Session>.from(
+        map['sessions'].map((p) => Session.fromMap(p)),
+      ),
     );
   }
 

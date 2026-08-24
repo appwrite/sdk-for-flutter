@@ -222,34 +222,46 @@ class Query {
 
   /// Filter resources where [attribute] is at a specific distance from the given coordinates.
   static String distanceEqual(
-          String attribute, List<dynamic> values, num distance,
-          [bool meters = true]) =>
+    String attribute,
+    List<dynamic> values,
+    num distance, [
+    bool meters = true,
+  ]) =>
       Query._('distanceEqual', attribute, [
-        [values, distance, meters]
+        [values, distance, meters],
       ]).toString();
 
   /// Filter resources where [attribute] is not at a specific distance from the given coordinates.
   static String distanceNotEqual(
-          String attribute, List<dynamic> values, num distance,
-          [bool meters = true]) =>
+    String attribute,
+    List<dynamic> values,
+    num distance, [
+    bool meters = true,
+  ]) =>
       Query._('distanceNotEqual', attribute, [
-        [values, distance, meters]
+        [values, distance, meters],
       ]).toString();
 
   /// Filter resources where [attribute] is at a distance greater than the specified value from the given coordinates.
   static String distanceGreaterThan(
-          String attribute, List<dynamic> values, num distance,
-          [bool meters = true]) =>
+    String attribute,
+    List<dynamic> values,
+    num distance, [
+    bool meters = true,
+  ]) =>
       Query._('distanceGreaterThan', attribute, [
-        [values, distance, meters]
+        [values, distance, meters],
       ]).toString();
 
   /// Filter resources where [attribute] is at a distance less than the specified value from the given coordinates.
   static String distanceLessThan(
-          String attribute, List<dynamic> values, num distance,
-          [bool meters = true]) =>
+    String attribute,
+    List<dynamic> values,
+    num distance, [
+    bool meters = true,
+  ]) =>
       Query._('distanceLessThan', attribute, [
-        [values, distance, meters]
+        [values, distance, meters],
       ]).toString();
 
   /// Filter resources using vector dot product similarity.
