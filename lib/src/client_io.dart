@@ -47,9 +47,10 @@ class ClientIO extends ClientBase with ClientMixin {
     String endPoint = 'https://cloud.appwrite.io/v1',
     this.selfSigned = false,
   }) : _endPoint = endPoint {
-    _nativeClient = HttpClient()
-      ..badCertificateCallback =
-          ((X509Certificate cert, String host, int port) => selfSigned);
+    _nativeClient =
+        HttpClient()
+          ..badCertificateCallback =
+              ((X509Certificate cert, String host, int port) => selfSigned);
     _httpClient = IOClient(_nativeClient);
     _endPointRealtime = endPoint
         .replaceFirst('https://', 'wss://')
@@ -357,8 +358,13 @@ class ClientIO extends ClientBase with ClientMixin {
 
     final totalChunks = (size / chunkSize).ceil();
 
-    Future<Response> uploadChunk(int index, int start, int end, String? id,
-        [RandomAccessFile? raf]) async {
+    Future<Response> uploadChunk(
+      int index,
+      int start,
+      int end,
+      String? id, [
+      RandomAccessFile? raf,
+    ]) async {
       List<int> chunk = [];
       if (file.bytes != null) {
         chunk = file.bytes!.getRange(start, end).toList();
@@ -482,9 +488,10 @@ class ClientIO extends ClientBase with ClientMixin {
   Future webAuth(Uri url, {String? callbackUrlScheme}) {
     return FlutterWebAuth2.authenticate(
       url: url.toString(),
-      callbackUrlScheme: callbackUrlScheme != null && _customSchemeAllowed
-          ? callbackUrlScheme
-          : "appwrite-callback-${config['project']!}",
+      callbackUrlScheme:
+          callbackUrlScheme != null && _customSchemeAllowed
+              ? callbackUrlScheme
+              : "appwrite-callback-${config['project']!}",
       options: const FlutterWebAuth2Options(
         useWebview: false,
       ),
@@ -499,9 +506,10 @@ class ClientIO extends ClientBase with ClientMixin {
             final parsed = jsonDecode(error);
             if (parsed is Map) {
               final codeValue = parsed['code'];
-              final int? code = codeValue is int
-                  ? codeValue
-                  : int.tryParse('${codeValue ?? ''}');
+              final int? code =
+                  codeValue is int
+                      ? codeValue
+                      : int.tryParse('${codeValue ?? ''}');
               throw AppwriteException(
                 parsed['message']?.toString() ?? error,
                 code,

@@ -25,10 +25,12 @@ class RealtimeBrowser extends RealtimeBase with RealtimeMixin {
 
     final jwt = client.config['jwt'];
     if (jwt != null && jwt.isNotEmpty) {
-      uri = uri.replace(queryParameters: {
-        ...uri.queryParameters,
-        'jwt': jwt,
-      });
+      uri = uri.replace(
+        queryParameters: {
+          ...uri.queryParameters,
+          'jwt': jwt,
+        },
+      );
     }
 
     return HtmlWebSocketChannel.connect(uri);
