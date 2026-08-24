@@ -260,9 +260,11 @@ void main() {
         'installations': [],
       };
 
-      when(client.call(
-        HttpMethod.get,
-      )).thenAnswer((_) async => Response(data: data));
+      when(
+        client.call(
+          HttpMethod.get,
+        ),
+      ).thenAnswer((_) async => Response(data: data));
 
       final response = await teams.listInstallations(
         teamId: '<TEAM_ID>',
@@ -283,9 +285,11 @@ void main() {
         'createdByName': 'Walter White',
       };
 
-      when(client.call(
-        HttpMethod.post,
-      )).thenAnswer((_) async => Response(data: data));
+      when(
+        client.call(
+          HttpMethod.post,
+        ),
+      ).thenAnswer((_) async => Response(data: data));
 
       final response = await teams.createInstallation(
         teamId: '<TEAM_ID>',
@@ -307,9 +311,11 @@ void main() {
         'createdByName': 'Walter White',
       };
 
-      when(client.call(
-        HttpMethod.get,
-      )).thenAnswer((_) async => Response(data: data));
+      when(
+        client.call(
+          HttpMethod.get,
+        ),
+      ).thenAnswer((_) async => Response(data: data));
 
       final response = await teams.getInstallation(
         teamId: '<TEAM_ID>',
@@ -331,9 +337,11 @@ void main() {
         'createdByName': 'Walter White',
       };
 
-      when(client.call(
-        HttpMethod.put,
-      )).thenAnswer((_) async => Response(data: data));
+      when(
+        client.call(
+          HttpMethod.put,
+        ),
+      ).thenAnswer((_) async => Response(data: data));
 
       final response = await teams.updateInstallation(
         teamId: '<TEAM_ID>',
@@ -345,9 +353,11 @@ void main() {
     test('test method deleteInstallation()', () async {
       final data = '';
 
-      when(client.call(
-        HttpMethod.delete,
-      )).thenAnswer((_) async => Response(data: data));
+      when(
+        client.call(
+          HttpMethod.delete,
+        ),
+      ).thenAnswer((_) async => Response(data: data));
 
       final response = await teams.deleteInstallation(
         teamId: '<TEAM_ID>',

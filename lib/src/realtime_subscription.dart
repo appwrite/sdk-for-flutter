@@ -21,7 +21,7 @@ class RealtimeSubscription {
 
   /// Replace the channels and/or queries on this subscription without recreating it.
   final Future<void> Function({List<Object>? channels, List<String>? queries})
-      update;
+  update;
 
   /// Alias of [unsubscribe] that also closes the socket when this was the last active
   /// subscription. Prefer [unsubscribe] plus [Realtime.disconnect] for explicit control.

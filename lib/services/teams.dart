@@ -327,10 +327,15 @@ class Teams extends Service {
   }
 
   /// List app installations on a team. Any team member can read installations.
-  Future<models.AppInstallationList> listInstallations(
-      {required String teamId, List<String>? queries, bool? total}) async {
-    final String apiPath =
-        '/teams/{teamId}/installations'.replaceAll('{teamId}', teamId);
+  Future<models.AppInstallationList> listInstallations({
+    required String teamId,
+    List<String>? queries,
+    bool? total,
+  }) async {
+    final String apiPath = '/teams/{teamId}/installations'.replaceAll(
+      '{teamId}',
+      teamId,
+    );
 
     final Map<String, dynamic> apiParams = {
       if (queries != null) 'queries': queries,
@@ -342,8 +347,12 @@ class Teams extends Service {
       'accept': 'application/json',
     };
 
-    final res = await client.call(HttpMethod.get,
-        path: apiPath, params: apiParams, headers: apiHeaders);
+    final res = await client.call(
+      HttpMethod.get,
+      path: apiPath,
+      params: apiParams,
+      headers: apiHeaders,
+    );
 
     return models.AppInstallationList.fromMap(res.data);
   }
@@ -352,12 +361,15 @@ class Teams extends Service {
   /// with the owner role can install apps. Requests using an API key or in admin
   /// mode can install apps on any team. The installation is granted the scopes
   /// the app currently requests.
-  Future<models.AppInstallation> createInstallation(
-      {required String teamId,
-      required String appId,
-      String? authorizationDetails}) async {
-    final String apiPath =
-        '/teams/{teamId}/installations'.replaceAll('{teamId}', teamId);
+  Future<models.AppInstallation> createInstallation({
+    required String teamId,
+    required String appId,
+    String? authorizationDetails,
+  }) async {
+    final String apiPath = '/teams/{teamId}/installations'.replaceAll(
+      '{teamId}',
+      teamId,
+    );
 
     final Map<String, dynamic> apiParams = {
       'appId': appId,
@@ -371,16 +383,22 @@ class Teams extends Service {
       'accept': 'application/json',
     };
 
-    final res = await client.call(HttpMethod.post,
-        path: apiPath, params: apiParams, headers: apiHeaders);
+    final res = await client.call(
+      HttpMethod.post,
+      path: apiPath,
+      params: apiParams,
+      headers: apiHeaders,
+    );
 
     return models.AppInstallation.fromMap(res.data);
   }
 
   /// Get an app installation on a team by its unique ID. Any team member can
   /// read installations.
-  Future<models.AppInstallation> getInstallation(
-      {required String teamId, required String installationId}) async {
+  Future<models.AppInstallation> getInstallation({
+    required String teamId,
+    required String installationId,
+  }) async {
     final String apiPath = '/teams/{teamId}/installations/{installationId}'
         .replaceAll('{teamId}', teamId)
         .replaceAll('{installationId}', installationId);
@@ -392,8 +410,12 @@ class Teams extends Service {
       'accept': 'application/json',
     };
 
-    final res = await client.call(HttpMethod.get,
-        path: apiPath, params: apiParams, headers: apiHeaders);
+    final res = await client.call(
+      HttpMethod.get,
+      path: apiPath,
+      params: apiParams,
+      headers: apiHeaders,
+    );
 
     return models.AppInstallation.fromMap(res.data);
   }
@@ -402,10 +424,11 @@ class Teams extends Service {
   /// can update installations. The installation's granted scopes are refreshed
   /// to the scopes the app currently requests; previously issued installation
   /// access tokens are revoked.
-  Future<models.AppInstallation> updateInstallation(
-      {required String teamId,
-      required String installationId,
-      String? authorizationDetails}) async {
+  Future<models.AppInstallation> updateInstallation({
+    required String teamId,
+    required String installationId,
+    String? authorizationDetails,
+  }) async {
     final String apiPath = '/teams/{teamId}/installations/{installationId}'
         .replaceAll('{teamId}', teamId)
         .replaceAll('{installationId}', installationId);
@@ -421,8 +444,12 @@ class Teams extends Service {
       'accept': 'application/json',
     };
 
-    final res = await client.call(HttpMethod.put,
-        path: apiPath, params: apiParams, headers: apiHeaders);
+    final res = await client.call(
+      HttpMethod.put,
+      path: apiPath,
+      params: apiParams,
+      headers: apiHeaders,
+    );
 
     return models.AppInstallation.fromMap(res.data);
   }
@@ -430,8 +457,10 @@ class Teams extends Service {
   /// Uninstall an app from a team by its installation ID. Only team members with
   /// the owner role can remove installations. Previously issued installation
   /// access tokens are revoked.
-  Future deleteInstallation(
-      {required String teamId, required String installationId}) async {
+  Future deleteInstallation({
+    required String teamId,
+    required String installationId,
+  }) async {
     final String apiPath = '/teams/{teamId}/installations/{installationId}'
         .replaceAll('{teamId}', teamId)
         .replaceAll('{installationId}', installationId);
@@ -444,8 +473,12 @@ class Teams extends Service {
       'accept': 'application/json',
     };
 
-    final res = await client.call(HttpMethod.delete,
-        path: apiPath, params: apiParams, headers: apiHeaders);
+    final res = await client.call(
+      HttpMethod.delete,
+      path: apiPath,
+      params: apiParams,
+      headers: apiHeaders,
+    );
 
     return res.data;
   }

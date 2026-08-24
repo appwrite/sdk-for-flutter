@@ -164,11 +164,11 @@ class Databases extends Service {
     required String transactionId,
     List<Map>? operations,
   }) async {
-    final String apiPath =
-        '/databases/transactions/{transactionId}/operations'.replaceAll(
-      '{transactionId}',
-      transactionId,
-    );
+    final String apiPath = '/databases/transactions/{transactionId}/operations'
+        .replaceAll(
+          '{transactionId}',
+          transactionId,
+        );
 
     final Map<String, dynamic> apiParams = {
       if (operations != null) 'operations': operations,
