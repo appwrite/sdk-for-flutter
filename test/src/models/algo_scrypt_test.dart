@@ -5,7 +5,7 @@ void main() {
   group('AlgoScrypt', () {
     test('model', () {
       final model = AlgoScrypt(
-        type: 'scrypt',
+        type: "scrypt",
         costCpu: 8,
         costMemory: 14,
         costParallel: 1,
@@ -15,7 +15,7 @@ void main() {
       final map = model.toMap();
       final result = AlgoScrypt.fromMap(map);
 
-      expect(result.type, 'scrypt');
+      expect(result.type, "scrypt");
       expect(result.costCpu, 8);
       expect(result.costMemory, 14);
       expect(result.costParallel, 1);

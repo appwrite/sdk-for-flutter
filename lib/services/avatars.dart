@@ -16,13 +16,16 @@ class Avatars extends Service {
   /// with preserved aspect ratio. If both dimensions are 0, the API provides an
   /// image at source quality. If dimensions are not specified, the default size
   /// of image returned is 100x100px.
-  Future<Uint8List> getBrowser(
-      {required enums.Browser code,
-      int? width,
-      int? height,
-      int? quality}) async {
-    final String apiPath =
-        '/avatars/browsers/{code}'.replaceAll('{code}', code.value);
+  Future<Uint8List> getBrowser({
+    required enums.Browser code,
+    int? width,
+    int? height,
+    int? quality,
+  }) async {
+    final String apiPath = '/avatars/browsers/{code}'.replaceAll(
+      '{code}',
+      code.value,
+    );
 
     final Map<String, dynamic> apiParams = {
       if (width != null) 'width': width,
@@ -35,11 +38,13 @@ class Avatars extends Service {
       'accept': 'image/png',
     };
 
-    final res = await client.call(HttpMethod.get,
-        path: apiPath,
-        params: apiParams,
-        headers: apiHeaders,
-        responseType: ResponseType.bytes);
+    final res = await client.call(
+      HttpMethod.get,
+      path: apiPath,
+      params: apiParams,
+      headers: apiHeaders,
+      responseType: ResponseType.bytes,
+    );
     return res.data;
   }
 
@@ -51,14 +56,16 @@ class Avatars extends Service {
   /// with preserved aspect ratio. If both dimensions are 0, the API provides an
   /// image at source quality. If dimensions are not specified, the default size
   /// of image returned is 100x100px.
-  ///
-  Future<Uint8List> getCreditCard(
-      {required enums.CreditCard code,
-      int? width,
-      int? height,
-      int? quality}) async {
-    final String apiPath =
-        '/avatars/credit-cards/{code}'.replaceAll('{code}', code.value);
+  Future<Uint8List> getCreditCard({
+    required enums.CreditCard code,
+    int? width,
+    int? height,
+    int? quality,
+  }) async {
+    final String apiPath = '/avatars/credit-cards/{code}'.replaceAll(
+      '{code}',
+      code.value,
+    );
 
     final Map<String, dynamic> apiParams = {
       if (width != null) 'width': width,
@@ -71,11 +78,13 @@ class Avatars extends Service {
       'accept': 'image/png',
     };
 
-    final res = await client.call(HttpMethod.get,
-        path: apiPath,
-        params: apiParams,
-        headers: apiHeaders,
-        responseType: ResponseType.bytes);
+    final res = await client.call(
+      HttpMethod.get,
+      path: apiPath,
+      params: apiParams,
+      headers: apiHeaders,
+      responseType: ResponseType.bytes,
+    );
     return res.data;
   }
 
@@ -83,7 +92,9 @@ class Avatars extends Service {
   /// website URL.
   ///
   /// This endpoint does not follow HTTP redirects.
-  Future<Uint8List> getFavicon({required String url}) async {
+  Future<Uint8List> getFavicon({
+    required String url,
+  }) async {
     final String apiPath = '/avatars/favicon';
 
     final Map<String, dynamic> apiParams = {
@@ -95,11 +106,13 @@ class Avatars extends Service {
       'accept': 'image/*',
     };
 
-    final res = await client.call(HttpMethod.get,
-        path: apiPath,
-        params: apiParams,
-        headers: apiHeaders,
-        responseType: ResponseType.bytes);
+    final res = await client.call(
+      HttpMethod.get,
+      path: apiPath,
+      params: apiParams,
+      headers: apiHeaders,
+      responseType: ResponseType.bytes,
+    );
     return res.data;
   }
 
@@ -112,11 +125,16 @@ class Avatars extends Service {
   /// with preserved aspect ratio. If both dimensions are 0, the API provides an
   /// image at source quality. If dimensions are not specified, the default size
   /// of image returned is 100x100px.
-  ///
-  Future<Uint8List> getFlag(
-      {required enums.Flag code, int? width, int? height, int? quality}) async {
-    final String apiPath =
-        '/avatars/flags/{code}'.replaceAll('{code}', code.value);
+  Future<Uint8List> getFlag({
+    required enums.Flag code,
+    int? width,
+    int? height,
+    int? quality,
+  }) async {
+    final String apiPath = '/avatars/flags/{code}'.replaceAll(
+      '{code}',
+      code.value,
+    );
 
     final Map<String, dynamic> apiParams = {
       if (width != null) 'width': width,
@@ -129,11 +147,13 @@ class Avatars extends Service {
       'accept': 'image/png',
     };
 
-    final res = await client.call(HttpMethod.get,
-        path: apiPath,
-        params: apiParams,
-        headers: apiHeaders,
-        responseType: ResponseType.bytes);
+    final res = await client.call(
+      HttpMethod.get,
+      path: apiPath,
+      params: apiParams,
+      headers: apiHeaders,
+      responseType: ResponseType.bytes,
+    );
     return res.data;
   }
 
@@ -148,8 +168,11 @@ class Avatars extends Service {
   /// of image returned is 400x400px.
   ///
   /// This endpoint does not follow HTTP redirects.
-  Future<Uint8List> getImage(
-      {required String url, int? width, int? height}) async {
+  Future<Uint8List> getImage({
+    required String url,
+    int? width,
+    int? height,
+  }) async {
     final String apiPath = '/avatars/image';
 
     final Map<String, dynamic> apiParams = {
@@ -163,11 +186,13 @@ class Avatars extends Service {
       'accept': 'image/*',
     };
 
-    final res = await client.call(HttpMethod.get,
-        path: apiPath,
-        params: apiParams,
-        headers: apiHeaders,
-        responseType: ResponseType.bytes);
+    final res = await client.call(
+      HttpMethod.get,
+      path: apiPath,
+      params: apiParams,
+      headers: apiHeaders,
+      responseType: ResponseType.bytes,
+    );
     return res.data;
   }
 
@@ -186,9 +211,12 @@ class Avatars extends Service {
   /// with preserved aspect ratio. If both dimensions are 0, the API provides an
   /// image at source quality. If dimensions are not specified, the default size
   /// of image returned is 100x100px.
-  ///
-  Future<Uint8List> getInitials(
-      {String? name, int? width, int? height, String? background}) async {
+  Future<Uint8List> getInitials({
+    String? name,
+    int? width,
+    int? height,
+    String? background,
+  }) async {
     final String apiPath = '/avatars/initials';
 
     final Map<String, dynamic> apiParams = {
@@ -203,19 +231,60 @@ class Avatars extends Service {
       'accept': 'image/png',
     };
 
-    final res = await client.call(HttpMethod.get,
-        path: apiPath,
-        params: apiParams,
-        headers: apiHeaders,
-        responseType: ResponseType.bytes);
+    final res = await client.call(
+      HttpMethod.get,
+      path: apiPath,
+      params: apiParams,
+      headers: apiHeaders,
+      responseType: ResponseType.bytes,
+    );
+    return res.data;
+  }
+
+  /// Returns the best available profile photo for the currently authenticated
+  /// user. The endpoint tries each source in priority order and returns the
+  /// first successful result: Gravatar, Libavatar, Appwrite Initials, built-in
+  /// static fallback file.
+  Future<Uint8List> getPhoto({
+    int? width,
+    int? height,
+    int? quality,
+    String? output,
+    String? rating,
+  }) async {
+    final String apiPath = '/avatars/photo';
+
+    final Map<String, dynamic> apiParams = {
+      if (width != null) 'width': width,
+      if (height != null) 'height': height,
+      if (quality != null) 'quality': quality,
+      if (output != null) 'output': output,
+      if (rating != null) 'rating': rating,
+    };
+
+    final Map<String, String> apiHeaders = {
+      'X-Appwrite-Project': client.config['project'] ?? '',
+      'accept': 'image/*',
+    };
+
+    final res = await client.call(
+      HttpMethod.get,
+      path: apiPath,
+      params: apiParams,
+      headers: apiHeaders,
+      responseType: ResponseType.bytes,
+    );
     return res.data;
   }
 
   /// Converts a given plain text to a QR code image. You can use the query
   /// parameters to change the size and style of the resulting image.
-  ///
-  Future<Uint8List> getQR(
-      {required String text, int? size, int? margin, bool? download}) async {
+  Future<Uint8List> getQR({
+    required String text,
+    int? size,
+    int? margin,
+    bool? download,
+  }) async {
     final String apiPath = '/avatars/qr';
 
     final Map<String, dynamic> apiParams = {
@@ -230,11 +299,13 @@ class Avatars extends Service {
       'accept': 'image/png',
     };
 
-    final res = await client.call(HttpMethod.get,
-        path: apiPath,
-        params: apiParams,
-        headers: apiHeaders,
-        responseType: ResponseType.bytes);
+    final res = await client.call(
+      HttpMethod.get,
+      path: apiPath,
+      params: apiParams,
+      headers: apiHeaders,
+      responseType: ResponseType.bytes,
+    );
     return res.data;
   }
 
@@ -248,27 +319,28 @@ class Avatars extends Service {
   /// When width and height are specified, the image is resized accordingly. If
   /// both dimensions are 0, the API provides an image at original size. If
   /// dimensions are not specified, the default viewport size is 1280x720px.
-  Future<Uint8List> getScreenshot(
-      {required String url,
-      Map? headers,
-      int? viewportWidth,
-      int? viewportHeight,
-      double? scale,
-      enums.BrowserTheme? theme,
-      String? userAgent,
-      bool? fullpage,
-      String? locale,
-      enums.Timezone? timezone,
-      double? latitude,
-      double? longitude,
-      double? accuracy,
-      bool? touch,
-      List<enums.BrowserPermission>? permissions,
-      int? sleep,
-      int? width,
-      int? height,
-      int? quality,
-      enums.ImageFormat? output}) async {
+  Future<Uint8List> getScreenshot({
+    required String url,
+    Map? headers,
+    int? viewportWidth,
+    int? viewportHeight,
+    double? scale,
+    enums.BrowserTheme? theme,
+    String? userAgent,
+    bool? fullpage,
+    String? locale,
+    enums.Timezone? timezone,
+    double? latitude,
+    double? longitude,
+    double? accuracy,
+    bool? touch,
+    List<enums.BrowserPermission>? permissions,
+    int? sleep,
+    int? width,
+    int? height,
+    int? quality,
+    enums.ImageFormat? output,
+  }) async {
     final String apiPath = '/avatars/screenshots';
 
     final Map<String, dynamic> apiParams = {
@@ -277,22 +349,22 @@ class Avatars extends Service {
       if (viewportWidth != null) 'viewportWidth': viewportWidth,
       if (viewportHeight != null) 'viewportHeight': viewportHeight,
       if (scale != null) 'scale': scale,
-      if (theme != null) 'theme': theme.value,
+      if (theme != null) 'theme': theme?.value,
       if (userAgent != null) 'userAgent': userAgent,
       if (fullpage != null) 'fullpage': fullpage,
       if (locale != null) 'locale': locale,
-      if (timezone != null) 'timezone': timezone.value,
+      if (timezone != null) 'timezone': timezone?.value,
       if (latitude != null) 'latitude': latitude,
       if (longitude != null) 'longitude': longitude,
       if (accuracy != null) 'accuracy': accuracy,
       if (touch != null) 'touch': touch,
       if (permissions != null)
-        'permissions': permissions.map((e) => e.value).toList(),
+        'permissions': permissions?.map((e) => e.value).toList(),
       if (sleep != null) 'sleep': sleep,
       if (width != null) 'width': width,
       if (height != null) 'height': height,
       if (quality != null) 'quality': quality,
-      if (output != null) 'output': output.value,
+      if (output != null) 'output': output?.value,
     };
 
     final Map<String, String> apiHeaders = {
@@ -300,11 +372,13 @@ class Avatars extends Service {
       'accept': 'image/png',
     };
 
-    final res = await client.call(HttpMethod.get,
-        path: apiPath,
-        params: apiParams,
-        headers: apiHeaders,
-        responseType: ResponseType.bytes);
+    final res = await client.call(
+      HttpMethod.get,
+      path: apiPath,
+      params: apiParams,
+      headers: apiHeaders,
+      responseType: ResponseType.bytes,
+    );
     return res.data;
   }
 }

@@ -12,12 +12,14 @@ class TransactionList implements Model {
     required this.total,
     required this.transactions,
   });
-
-  factory TransactionList.fromMap(Map<String, dynamic> map) {
+  factory TransactionList.fromMap(
+    Map<String, dynamic> map,
+  ) {
     return TransactionList(
       total: map['total'],
       transactions: List<Transaction>.from(
-          map['transactions'].map((p) => Transaction.fromMap(p))),
+        map['transactions'].map((p) => Transaction.fromMap(p)),
+      ),
     );
   }
 

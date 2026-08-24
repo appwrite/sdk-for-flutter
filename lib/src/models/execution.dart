@@ -14,16 +14,19 @@ class Execution implements Model {
   /// Execution roles.
   final List<String> $permissions;
 
-  /// Function ID.
-  final String functionId;
+  /// Function or site ID.
+  final String resourceId;
 
-  /// Function&#039;s deployment ID used to create the execution.
+  /// Execution resource type.
+  final enums.ExecutionResourceType resourceType;
+
+  /// Deployment ID used to create the execution.
   final String deploymentId;
 
-  /// The trigger that caused the function to execute. Possible values can be: `http`, `schedule`, or `event`.
+  /// The trigger that caused the resource to execute. Possible values can be: `http`, `schedule`, or `event`.
   final enums.ExecutionTrigger trigger;
 
-  /// The status of the function execution. Possible values can be: `waiting`, `processing`, `completed`, `failed`, or `scheduled`.
+  /// The status of the resource execution. Possible values can be: `waiting`, `processing`, `completed`, `failed`, or `scheduled`.
   final enums.ExecutionStatus status;
 
   /// HTTP request method type.
@@ -44,10 +47,10 @@ class Execution implements Model {
   /// HTTP response headers as a key-value object. This will return only whitelisted headers. All headers are returned if execution is created as synchronous.
   final List<Headers> responseHeaders;
 
-  /// Function logs. Includes the last 4,000 characters. This will return an empty string unless the response is returned using an API key or as part of a webhook payload.
+  /// Resource logs. Includes the last 4,000 characters. This will return an empty string unless the response is returned using an API key or as part of a webhook payload.
   final String logs;
 
-  /// Function errors. Includes the last 4,000 characters. This will return an empty string unless the response is returned using an API key or as part of a webhook payload.
+  /// Resource errors. Includes the last 4,000 characters. This will return an empty string unless the response is returned using an API key or as part of a webhook payload.
   final String errors;
 
   /// Resource(function/site) execution duration in seconds.
@@ -61,7 +64,8 @@ class Execution implements Model {
     required this.$createdAt,
     required this.$updatedAt,
     required this.$permissions,
-    required this.functionId,
+    required this.resourceId,
+    required this.resourceType,
     required this.deploymentId,
     required this.trigger,
     required this.status,
@@ -76,27 +80,35 @@ class Execution implements Model {
     required this.duration,
     this.scheduledAt,
   });
-
-  factory Execution.fromMap(Map<String, dynamic> map) {
+  factory Execution.fromMap(
+    Map<String, dynamic> map,
+  ) {
     return Execution(
       $id: map['\$id'].toString(),
       $createdAt: map['\$createdAt'].toString(),
       $updatedAt: map['\$updatedAt'].toString(),
       $permissions: List.from(map['\$permissions'] ?? []),
-      functionId: map['functionId'].toString(),
+      resourceId: map['resourceId'].toString(),
+      resourceType: enums.ExecutionResourceType.values.firstWhere(
+        (e) => e.value == map['resourceType'],
+      ),
       deploymentId: map['deploymentId'].toString(),
-      trigger: enums.ExecutionTrigger.values
-          .firstWhere((e) => e.value == map['trigger']),
-      status: enums.ExecutionStatus.values
-          .firstWhere((e) => e.value == map['status']),
+      trigger: enums.ExecutionTrigger.values.firstWhere(
+        (e) => e.value == map['trigger'],
+      ),
+      status: enums.ExecutionStatus.values.firstWhere(
+        (e) => e.value == map['status'],
+      ),
       requestMethod: map['requestMethod'].toString(),
       requestPath: map['requestPath'].toString(),
       requestHeaders: List<Headers>.from(
-          map['requestHeaders'].map((p) => Headers.fromMap(p))),
+        map['requestHeaders'].map((p) => Headers.fromMap(p)),
+      ),
       responseStatusCode: map['responseStatusCode'],
       responseBody: map['responseBody'].toString(),
       responseHeaders: List<Headers>.from(
-          map['responseHeaders'].map((p) => Headers.fromMap(p))),
+        map['responseHeaders'].map((p) => Headers.fromMap(p)),
+      ),
       logs: map['logs'].toString(),
       errors: map['errors'].toString(),
       duration: map['duration'].toDouble(),
@@ -111,7 +123,8 @@ class Execution implements Model {
       "\$createdAt": $createdAt,
       "\$updatedAt": $updatedAt,
       "\$permissions": $permissions,
-      "functionId": functionId,
+      "resourceId": resourceId,
+      "resourceType": resourceType.value,
       "deploymentId": deploymentId,
       "trigger": trigger.value,
       "status": status.value,

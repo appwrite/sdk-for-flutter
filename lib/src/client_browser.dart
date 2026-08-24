@@ -40,7 +40,7 @@ class ClientBrowser extends ClientBase with ClientMixin {
       'x-sdk-name': 'Flutter',
       'x-sdk-platform': 'client',
       'x-sdk-language': 'flutter',
-      'x-sdk-version': '25.4.0',
+      'x-sdk-version': '26.0.0',
       'X-Appwrite-Response-Format': '1.9.6',
     };
 
@@ -215,7 +215,7 @@ class ClientBrowser extends ClientBase with ClientMixin {
 
     var offset = 0;
     String? uploadId;
-    if (idParamName.isNotEmpty) {
+    if (idParamName.isNotEmpty && params[idParamName] != null) {
       //make a request to check if a file already exists
       try {
         res = await call(
@@ -236,7 +236,11 @@ class ClientBrowser extends ClientBase with ClientMixin {
     final totalChunks = (size / chunkSize).ceil();
 
     Future<Response> uploadChunk(
-        int index, int start, int end, String? id) async {
+      int index,
+      int start,
+      int end,
+      String? id,
+    ) async {
       List<int> chunk = [];
       chunk = file.bytes!.getRange(start, end).toList();
 

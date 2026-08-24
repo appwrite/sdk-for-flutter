@@ -1,5 +1,17 @@
 # Change Log
 
+## 26.0.0
+
+* Breaking: `Execution.functionId` replaced by `resourceId` and `resourceType`, now that executions cover both functions and sites
+* Added: `avatars.getPhoto` returning the user's best available profile photo
+* Added: `huggingface` OAuth provider
+* Added: `custom` authentication factor
+* Added: `ExecutionResourceType` enum and `resourceType` attribute on the `Execution` model
+* Fixed: OAuth2 failures now surface the error returned in the callback URL
+* Fixed: empty JSON error responses no longer throw `FormatException`
+* Updated: relaxed `device_info_plus` to `<14.0.0` and `package_info_plus` to `<11.0.0`
+* Updated: minimum Dart SDK is now 3.7.0 and minimum Flutter 3.29.0
+
 ## 25.4.0
 
 * Added: `Organization` service for managing app installations

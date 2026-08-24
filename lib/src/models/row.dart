@@ -35,8 +35,9 @@ class Row implements Model {
     required this.$permissions,
     required this.data,
   });
-
-  factory Row.fromMap(Map<String, dynamic> map) {
+  factory Row.fromMap(
+    Map<String, dynamic> map,
+  ) {
     return Row(
       $id: map['\$id'].toString(),
       $sequence: map['\$sequence'].toString(),

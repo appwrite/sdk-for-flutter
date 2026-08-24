@@ -5,13 +5,13 @@ void main() {
   group('AlgoSha', () {
     test('model', () {
       final model = AlgoSha(
-        type: 'sha',
+        type: "sha",
       );
 
       final map = model.toMap();
       final result = AlgoSha.fromMap(map);
 
-      expect(result.type, 'sha');
+      expect(result.type, "sha");
     });
   });
 }

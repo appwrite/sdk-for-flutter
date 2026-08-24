@@ -20,8 +20,9 @@ class AlgoScryptModified implements Model {
     required this.saltSeparator,
     required this.signerKey,
   });
-
-  factory AlgoScryptModified.fromMap(Map<String, dynamic> map) {
+  factory AlgoScryptModified.fromMap(
+    Map<String, dynamic> map,
+  ) {
     return AlgoScryptModified(
       type: map['type'].toString(),
       salt: map['salt'].toString(),

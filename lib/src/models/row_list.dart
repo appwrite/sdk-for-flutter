@@ -12,11 +12,14 @@ class RowList implements Model {
     required this.total,
     required this.rows,
   });
-
-  factory RowList.fromMap(Map<String, dynamic> map) {
+  factory RowList.fromMap(
+    Map<String, dynamic> map,
+  ) {
     return RowList(
       total: map['total'],
-      rows: List<Row>.from(map['rows'].map((p) => Row.fromMap(p))),
+      rows: List<Row>.from(
+        map['rows'].map((p) => Row.fromMap(p)),
+      ),
     );
   }
 

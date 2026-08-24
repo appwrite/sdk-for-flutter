@@ -12,11 +12,14 @@ class TeamList implements Model {
     required this.total,
     required this.teams,
   });
-
-  factory TeamList.fromMap(Map<String, dynamic> map) {
+  factory TeamList.fromMap(
+    Map<String, dynamic> map,
+  ) {
     return TeamList(
       total: map['total'],
-      teams: List<Team>.from(map['teams'].map((p) => Team.fromMap(p))),
+      teams: List<Team>.from(
+        map['teams'].map((p) => Team.fromMap(p)),
+      ),
     );
   }
 

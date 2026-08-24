@@ -1,8 +1,8 @@
 part of '../../enums.dart';
 
 enum BrowserTheme {
-  light(value: 'light'),
-  dark(value: 'dark');
+  light(value: "light"),
+  dark(value: "dark");
 
   const BrowserTheme({required this.value});
 

@@ -24,8 +24,9 @@ class AlgoScrypt implements Model {
     required this.costParallel,
     required this.length,
   });
-
-  factory AlgoScrypt.fromMap(Map<String, dynamic> map) {
+  factory AlgoScrypt.fromMap(
+    Map<String, dynamic> map,
+  ) {
     return AlgoScrypt(
       type: map['type'].toString(),
       costCpu: map['costCpu'],

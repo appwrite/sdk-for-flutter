@@ -32,8 +32,9 @@ class Currency implements Model {
     required this.code,
     required this.namePlural,
   });
-
-  factory Currency.fromMap(Map<String, dynamic> map) {
+  factory Currency.fromMap(
+    Map<String, dynamic> map,
+  ) {
     return Currency(
       symbol: map['symbol'].toString(),
       name: map['name'].toString(),

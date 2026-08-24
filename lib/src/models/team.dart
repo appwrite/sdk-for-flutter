@@ -28,15 +28,18 @@ class Team implements Model {
     required this.total,
     required this.prefs,
   });
-
-  factory Team.fromMap(Map<String, dynamic> map) {
+  factory Team.fromMap(
+    Map<String, dynamic> map,
+  ) {
     return Team(
       $id: map['\$id'].toString(),
       $createdAt: map['\$createdAt'].toString(),
       $updatedAt: map['\$updatedAt'].toString(),
       name: map['name'].toString(),
       total: map['total'],
-      prefs: Preferences.fromMap(map['prefs']),
+      prefs: Preferences.fromMap(
+        map['prefs'],
+      ),
     );
   }
 

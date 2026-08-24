@@ -10,6 +10,7 @@ import 'package:appwrite/appwrite.dart';
 class MockClient extends Mock implements Client {
   Map<String, String> config = {'project': 'testproject'};
   String endPoint = 'https://localhost/v1';
+
   @override
   Future<Response> call(
     HttpMethod? method, {
@@ -18,17 +19,18 @@ class MockClient extends Mock implements Client {
     Map<String, dynamic> params = const {},
     ResponseType? responseType,
   }) async {
-    return super.noSuchMethod(Invocation.method(#call, [method]),
-        returnValue: Response());
+    return super.noSuchMethod(
+      Invocation.method(#call, [method]),
+      returnValue: Response(),
+    );
   }
 
   @override
-  Future webAuth(
-    Uri? url, {
-    String? callbackUrlScheme,
-  }) async {
-    return super
-        .noSuchMethod(Invocation.method(#webAuth, [url]), returnValue: 'done');
+  Future webAuth(Uri? url, {String? callbackUrlScheme}) async {
+    return super.noSuchMethod(
+      Invocation.method(#webAuth, [url]),
+      returnValue: 'done',
+    );
   }
 
   @override
@@ -41,9 +43,15 @@ class MockClient extends Mock implements Client {
     Function(UploadProgress)? onProgress,
   }) async {
     return super.noSuchMethod(
-        Invocation.method(
-            #chunkedUpload, [path, params, paramName, idParamName, headers]),
-        returnValue: Response(data: {}));
+      Invocation.method(#chunkedUpload, [
+        path,
+        params,
+        paramName,
+        idParamName,
+        headers,
+      ]),
+      returnValue: Response(data: {}),
+    );
   }
 }
 
@@ -59,34 +67,34 @@ void main() {
 
     test('test method createSubscriber()', () async {
       final Map<String, dynamic> data = {
-        '\$id': '259125845563242502',
-        '\$createdAt': '2020-10-15T06:38:00.000+00:00',
-        '\$updatedAt': '2020-10-15T06:38:00.000+00:00',
-        'targetId': '259125845563242502',
+        '\$id': "259125845563242502",
+        '\$createdAt': "2020-10-15T06:38:00.000+00:00",
+        '\$updatedAt': "2020-10-15T06:38:00.000+00:00",
+        'targetId': "259125845563242502",
         'target': <String, dynamic>{
-          '\$id': '259125845563242502',
-          '\$createdAt': '2020-10-15T06:38:00.000+00:00',
-          '\$updatedAt': '2020-10-15T06:38:00.000+00:00',
-          'name': 'Apple iPhone 12',
-          'userId': '259125845563242502',
-          'providerType': 'email',
-          'identifier': 'token',
+          '\$id': "259125845563242502",
+          '\$createdAt': "2020-10-15T06:38:00.000+00:00",
+          '\$updatedAt': "2020-10-15T06:38:00.000+00:00",
+          'name': "Apple iPhone 12",
+          'userId': "259125845563242502",
+          'providerType': "email",
+          'identifier': "token",
           'expired': true,
         },
-        'userId': '5e5ea5c16897e',
-        'userName': 'Aegon Targaryen',
-        'topicId': '259125845563242502',
-        'providerType': 'email',
+        'userId': "5e5ea5c16897e",
+        'userName': "Aegon Targaryen",
+        'topicId': "259125845563242502",
+        'providerType': "email",
       };
 
-      when(client.call(
-        HttpMethod.post,
-      )).thenAnswer((_) async => Response(data: data));
+      when(
+        client.call(HttpMethod.post),
+      ).thenAnswer((_) async => Response(data: data));
 
       final response = await messaging.createSubscriber(
-        topicId: '<TOPIC_ID>',
-        subscriberId: '<SUBSCRIBER_ID>',
-        targetId: '<TARGET_ID>',
+        topicId: "<TOPIC_ID>",
+        subscriberId: "<SUBSCRIBER_ID>",
+        targetId: "<TARGET_ID>",
       );
       expect(response, isA<models.Subscriber>());
     });
@@ -94,13 +102,13 @@ void main() {
     test('test method deleteSubscriber()', () async {
       final data = '';
 
-      when(client.call(
-        HttpMethod.delete,
-      )).thenAnswer((_) async => Response(data: data));
+      when(
+        client.call(HttpMethod.delete),
+      ).thenAnswer((_) async => Response(data: data));
 
       final response = await messaging.deleteSubscriber(
-        topicId: '<TOPIC_ID>',
-        subscriberId: '<SUBSCRIBER_ID>',
+        topicId: "<TOPIC_ID>",
+        subscriberId: "<SUBSCRIBER_ID>",
       );
     });
   });

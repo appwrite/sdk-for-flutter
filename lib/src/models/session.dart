@@ -120,8 +120,9 @@ class Session implements Model {
     required this.secret,
     required this.mfaUpdatedAt,
   });
-
-  factory Session.fromMap(Map<String, dynamic> map) {
+  factory Session.fromMap(
+    Map<String, dynamic> map,
+  ) {
     return Session(
       $id: map['\$id'].toString(),
       $createdAt: map['\$createdAt'].toString(),

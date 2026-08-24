@@ -1,10 +1,11 @@
 part of '../../enums.dart';
 
 enum AuthenticationFactor {
-  email(value: 'email'),
-  phone(value: 'phone'),
-  totp(value: 'totp'),
-  recoverycode(value: 'recoverycode');
+  email(value: "email"),
+  phone(value: "phone"),
+  totp(value: "totp"),
+  recoverycode(value: "recoverycode"),
+  custom(value: "custom");
 
   const AuthenticationFactor({required this.value});
 

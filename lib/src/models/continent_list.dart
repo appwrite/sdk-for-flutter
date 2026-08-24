@@ -12,12 +12,14 @@ class ContinentList implements Model {
     required this.total,
     required this.continents,
   });
-
-  factory ContinentList.fromMap(Map<String, dynamic> map) {
+  factory ContinentList.fromMap(
+    Map<String, dynamic> map,
+  ) {
     return ContinentList(
       total: map['total'],
       continents: List<Continent>.from(
-          map['continents'].map((p) => Continent.fromMap(p))),
+        map['continents'].map((p) => Continent.fromMap(p)),
+      ),
     );
   }
 

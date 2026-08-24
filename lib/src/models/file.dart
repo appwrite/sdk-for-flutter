@@ -68,8 +68,9 @@ class File implements Model {
     required this.encryption,
     required this.compression,
   });
-
-  factory File.fromMap(Map<String, dynamic> map) {
+  factory File.fromMap(
+    Map<String, dynamic> map,
+  ) {
     return File(
       $id: map['\$id'].toString(),
       bucketId: map['bucketId'].toString(),

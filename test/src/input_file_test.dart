@@ -7,22 +7,26 @@ void main() {
     test('throws exception when neither path nor bytes are provided', () {
       expect(
         () => InputFile(),
-        throwsA(isA<AppwriteException>().having(
-          (e) => e.message,
-          'message',
-          'One of `path` or `bytes` is required',
-        )),
+        throwsA(
+          isA<AppwriteException>().having(
+            (e) => e.message,
+            'message',
+            'One of `path` or `bytes` is required',
+          ),
+        ),
       );
     });
 
     test('throws exception when path and bytes are both null', () {
       expect(
         () => InputFile(path: null, bytes: null),
-        throwsA(isA<AppwriteException>().having(
-          (e) => e.message,
-          'message',
-          'One of `path` or `bytes` is required',
-        )),
+        throwsA(
+          isA<AppwriteException>().having(
+            (e) => e.message,
+            'message',
+            'One of `path` or `bytes` is required',
+          ),
+        ),
       );
     });
 

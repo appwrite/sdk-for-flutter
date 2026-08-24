@@ -8,8 +8,9 @@ class AlgoMd5 implements Model {
   AlgoMd5({
     required this.type,
   });
-
-  factory AlgoMd5.fromMap(Map<String, dynamic> map) {
+  factory AlgoMd5.fromMap(
+    Map<String, dynamic> map,
+  ) {
     return AlgoMd5(
       type: map['type'].toString(),
     );

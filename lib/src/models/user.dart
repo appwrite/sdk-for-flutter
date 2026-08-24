@@ -108,8 +108,9 @@ class User implements Model {
     this.impersonator,
     this.impersonatorUserId,
   });
-
-  factory User.fromMap(Map<String, dynamic> map) {
+  factory User.fromMap(
+    Map<String, dynamic> map,
+  ) {
     return User(
       $id: map['\$id'].toString(),
       $createdAt: map['\$createdAt'].toString(),
@@ -132,8 +133,12 @@ class User implements Model {
       emailIsCanonical: map['emailIsCanonical'],
       phoneVerification: map['phoneVerification'],
       mfa: map['mfa'],
-      prefs: Preferences.fromMap(map['prefs']),
-      targets: List<Target>.from(map['targets'].map((p) => Target.fromMap(p))),
+      prefs: Preferences.fromMap(
+        map['prefs'],
+      ),
+      targets: List<Target>.from(
+        map['targets'].map((p) => Target.fromMap(p)),
+      ),
       accessedAt: map['accessedAt'].toString(),
       impersonator: map['impersonator'],
       impersonatorUserId: map['impersonatorUserId']?.toString(),

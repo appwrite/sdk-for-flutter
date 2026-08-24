@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'dart:io';
 import 'dart:math';
 import 'package:cookie_jar/cookie_jar.dart';
@@ -46,9 +47,10 @@ class ClientIO extends ClientBase with ClientMixin {
     String endPoint = 'https://cloud.appwrite.io/v1',
     this.selfSigned = false,
   }) : _endPoint = endPoint {
-    _nativeClient = HttpClient()
-      ..badCertificateCallback =
-          ((X509Certificate cert, String host, int port) => selfSigned);
+    _nativeClient =
+        HttpClient()
+          ..badCertificateCallback =
+              ((X509Certificate cert, String host, int port) => selfSigned);
     _httpClient = IOClient(_nativeClient);
     _endPointRealtime = endPoint
         .replaceFirst('https://', 'wss://')
@@ -58,7 +60,7 @@ class ClientIO extends ClientBase with ClientMixin {
       'x-sdk-name': 'Flutter',
       'x-sdk-platform': 'client',
       'x-sdk-language': 'flutter',
-      'x-sdk-version': '25.4.0',
+      'x-sdk-version': '26.0.0',
       'X-Appwrite-Response-Format': '1.9.6',
     };
 
@@ -336,7 +338,7 @@ class ClientIO extends ClientBase with ClientMixin {
 
     var offset = 0;
     String? uploadId;
-    if (idParamName.isNotEmpty) {
+    if (idParamName.isNotEmpty && params[idParamName] != null) {
       //make a request to check if a file already exists
       try {
         res = await call(
@@ -356,8 +358,13 @@ class ClientIO extends ClientBase with ClientMixin {
 
     final totalChunks = (size / chunkSize).ceil();
 
-    Future<Response> uploadChunk(int index, int start, int end, String? id,
-        [RandomAccessFile? raf]) async {
+    Future<Response> uploadChunk(
+      int index,
+      int start,
+      int end,
+      String? id, [
+      RandomAccessFile? raf,
+    ]) async {
       List<int> chunk = [];
       if (file.bytes != null) {
         chunk = file.bytes!.getRange(start, end).toList();
@@ -481,9 +488,10 @@ class ClientIO extends ClientBase with ClientMixin {
   Future webAuth(Uri url, {String? callbackUrlScheme}) {
     return FlutterWebAuth2.authenticate(
       url: url.toString(),
-      callbackUrlScheme: callbackUrlScheme != null && _customSchemeAllowed
-          ? callbackUrlScheme
-          : "appwrite-callback-${config['project']!}",
+      callbackUrlScheme:
+          callbackUrlScheme != null && _customSchemeAllowed
+              ? callbackUrlScheme
+              : "appwrite-callback-${config['project']!}",
       options: const FlutterWebAuth2Options(
         useWebview: false,
       ),
@@ -492,6 +500,30 @@ class ClientIO extends ClientBase with ClientMixin {
       final key = url.queryParameters['key'];
       final secret = url.queryParameters['secret'];
       if (key == null || secret == null) {
+        final error = url.queryParameters['error'];
+        if (error != null && error.isNotEmpty) {
+          try {
+            final parsed = jsonDecode(error);
+            if (parsed is Map) {
+              final codeValue = parsed['code'];
+              final int? code =
+                  codeValue is int
+                      ? codeValue
+                      : int.tryParse('${codeValue ?? ''}');
+              throw AppwriteException(
+                parsed['message']?.toString() ?? error,
+                code,
+                parsed['type']?.toString(),
+                error,
+              );
+            }
+          } on AppwriteException {
+            rethrow;
+          } catch (_) {
+            // Fall through to a plain-string error when JSON is malformed.
+          }
+          throw AppwriteException(error);
+        }
         throw AppwriteException(
           "Invalid OAuth2 Response. Key and Secret not available.",
           500,

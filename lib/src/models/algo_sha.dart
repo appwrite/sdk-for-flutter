@@ -8,8 +8,9 @@ class AlgoSha implements Model {
   AlgoSha({
     required this.type,
   });
-
-  factory AlgoSha.fromMap(Map<String, dynamic> map) {
+  factory AlgoSha.fromMap(
+    Map<String, dynamic> map,
+  ) {
     return AlgoSha(
       type: map['type'].toString(),
     );

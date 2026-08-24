@@ -12,8 +12,9 @@ class MfaType implements Model {
     required this.secret,
     required this.uri,
   });
-
-  factory MfaType.fromMap(Map<String, dynamic> map) {
+  factory MfaType.fromMap(
+    Map<String, dynamic> map,
+  ) {
     return MfaType(
       secret: map['secret'].toString(),
       uri: map['uri'].toString(),

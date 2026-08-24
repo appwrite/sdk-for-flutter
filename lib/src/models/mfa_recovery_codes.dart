@@ -8,8 +8,9 @@ class MfaRecoveryCodes implements Model {
   MfaRecoveryCodes({
     required this.recoveryCodes,
   });
-
-  factory MfaRecoveryCodes.fromMap(Map<String, dynamic> map) {
+  factory MfaRecoveryCodes.fromMap(
+    Map<String, dynamic> map,
+  ) {
     return MfaRecoveryCodes(
       recoveryCodes: List.from(map['recoveryCodes'] ?? []),
     );

@@ -5,40 +5,40 @@ void main() {
   group('Membership', () {
     test('model', () {
       final model = Membership(
-        $id: '5e5ea5c16897e',
-        $createdAt: '2020-10-15T06:38:00.000+00:00',
-        $updatedAt: '2020-10-15T06:38:00.000+00:00',
-        userId: '5e5ea5c16897e',
-        userName: 'John Doe',
-        userEmail: 'john@appwrite.io',
-        userPhone: '+1 555 555 5555',
-        teamId: '5e5ea5c16897e',
-        teamName: 'VIP',
-        invited: '2020-10-15T06:38:00.000+00:00',
-        joined: '2020-10-15T06:38:00.000+00:00',
+        $id: "5e5ea5c16897e",
+        $createdAt: "2020-10-15T06:38:00.000+00:00",
+        $updatedAt: "2020-10-15T06:38:00.000+00:00",
+        userId: "5e5ea5c16897e",
+        userName: "John Doe",
+        userEmail: "john@appwrite.io",
+        userPhone: "+1 555 555 5555",
+        teamId: "5e5ea5c16897e",
+        teamName: "VIP",
+        invited: "2020-10-15T06:38:00.000+00:00",
+        joined: "2020-10-15T06:38:00.000+00:00",
         confirm: true,
         mfa: true,
-        userAccessedAt: '2020-10-15T06:38:00.000+00:00',
+        userAccessedAt: "2020-10-15T06:38:00.000+00:00",
         roles: [],
       );
 
       final map = model.toMap();
       final result = Membership.fromMap(map);
 
-      expect(result.$id, '5e5ea5c16897e');
-      expect(result.$createdAt, '2020-10-15T06:38:00.000+00:00');
-      expect(result.$updatedAt, '2020-10-15T06:38:00.000+00:00');
-      expect(result.userId, '5e5ea5c16897e');
-      expect(result.userName, 'John Doe');
-      expect(result.userEmail, 'john@appwrite.io');
-      expect(result.userPhone, '+1 555 555 5555');
-      expect(result.teamId, '5e5ea5c16897e');
-      expect(result.teamName, 'VIP');
-      expect(result.invited, '2020-10-15T06:38:00.000+00:00');
-      expect(result.joined, '2020-10-15T06:38:00.000+00:00');
+      expect(result.$id, "5e5ea5c16897e");
+      expect(result.$createdAt, "2020-10-15T06:38:00.000+00:00");
+      expect(result.$updatedAt, "2020-10-15T06:38:00.000+00:00");
+      expect(result.userId, "5e5ea5c16897e");
+      expect(result.userName, "John Doe");
+      expect(result.userEmail, "john@appwrite.io");
+      expect(result.userPhone, "+1 555 555 5555");
+      expect(result.teamId, "5e5ea5c16897e");
+      expect(result.teamName, "VIP");
+      expect(result.invited, "2020-10-15T06:38:00.000+00:00");
+      expect(result.joined, "2020-10-15T06:38:00.000+00:00");
       expect(result.confirm, true);
       expect(result.mfa, true);
-      expect(result.userAccessedAt, '2020-10-15T06:38:00.000+00:00');
+      expect(result.userAccessedAt, "2020-10-15T06:38:00.000+00:00");
       expect(result.roles, []);
     });
   });

@@ -1,7 +1,7 @@
 part of '../../enums.dart';
 
 enum AuthenticatorType {
-  totp(value: 'totp');
+  totp(value: "totp");
 
   const AuthenticatorType({required this.value});
 

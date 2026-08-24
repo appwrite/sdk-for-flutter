@@ -12,11 +12,14 @@ class PhoneList implements Model {
     required this.total,
     required this.phones,
   });
-
-  factory PhoneList.fromMap(Map<String, dynamic> map) {
+  factory PhoneList.fromMap(
+    Map<String, dynamic> map,
+  ) {
     return PhoneList(
       total: map['total'],
-      phones: List<Phone>.from(map['phones'].map((p) => Phone.fromMap(p))),
+      phones: List<Phone>.from(
+        map['phones'].map((p) => Phone.fromMap(p)),
+      ),
     );
   }
 
