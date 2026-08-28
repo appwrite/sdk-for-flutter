@@ -1,5 +1,9 @@
 # Change Log
 
+## 26.1.0
+
+* Fixed: realtime policy-violation errors are now delivered to active subscription streams instead of thrown from the message handler
+
 ## 26.0.0
 
 * Breaking: `Execution.functionId` replaced by `resourceId` and `resourceType`, now that executions cover both functions and sites

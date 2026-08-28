@@ -397,7 +397,11 @@ mixin RealtimeMixin {
 
   void handleError(RealtimeResponse response) {
     if (response.data['code'] == status.policyViolation) {
-      throw AppwriteException(response.data["message"], response.data["code"]);
+      final error = AppwriteException(
+          response.data["message"], response.data["code"]);
+      for (var subscription in _subscriptions.values) {
+        subscription.controller.addError(error);
+      }
     } else {
       _retry();
     }
