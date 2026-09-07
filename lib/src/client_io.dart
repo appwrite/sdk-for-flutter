@@ -69,7 +69,6 @@ class ClientIO extends ClientBase with ClientMixin {
       _endPoint.startsWith(RegExp("http://|https://")),
       "endPoint $_endPoint must start with 'http'",
     );
-    init();
   }
 
   @override
