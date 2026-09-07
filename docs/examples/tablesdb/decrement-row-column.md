@@ -11,8 +11,8 @@ Row result = await tablesDB.decrementRowColumn(
     databaseId: '<DATABASE_ID>',
     tableId: '<TABLE_ID>',
     rowId: '<ROW_ID>',
-    column: '',
-    value: 0, // optional
+    column: '<COLUMN>',
+    value: 1, // optional
     min: 0, // optional
     transactionId: '<TRANSACTION_ID>', // optional
 );

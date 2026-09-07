@@ -15,7 +15,7 @@ Uint8List bytes = await avatars.getInitials(
     name: '<NAME>', // optional
     width: 0, // optional
     height: 0, // optional
-    background: '', // optional
+    background: 'FFFFFF', // optional
 );
 
 final file = File('path_to_file/filename.ext');
@@ -27,7 +27,7 @@ FutureBuilder<Uint8List>(
         name: '<NAME>', // optional
         width: 0, // optional
         height: 0, // optional
-        background: '', // optional
+        background: 'FFFFFF', // optional
     ), // Works for both public file and private file, for private files you need to be logged in
     builder: (context, snapshot) {
         return snapshot.hasData && snapshot.data != null

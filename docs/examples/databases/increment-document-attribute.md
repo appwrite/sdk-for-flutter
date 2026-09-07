@@ -11,9 +11,9 @@ Document result = await databases.incrementDocumentAttribute(
     databaseId: '<DATABASE_ID>',
     collectionId: '<COLLECTION_ID>',
     documentId: '<DOCUMENT_ID>',
-    attribute: '',
-    value: 0, // optional
-    max: 0, // optional
+    attribute: '<ATTRIBUTE>',
+    value: 1, // optional
+    max: 100, // optional
     transactionId: '<TRANSACTION_ID>', // optional
 );
 ```

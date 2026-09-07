@@ -159,15 +159,13 @@ class Query {
   static String updatedBetween(String start, String end) =>
       between('\$updatedAt', start, end);
 
-  static String or(List<String> queries) =>
-      Query._(
+  static String or(List<String> queries) => Query._(
         'or',
         null,
         queries.map((query) => jsonDecode(query)).toList(),
       ).toString();
 
-  static String and(List<String> queries) =>
-      Query._(
+  static String and(List<String> queries) => Query._(
         'and',
         null,
         queries.map((query) => jsonDecode(query)).toList(),
@@ -177,8 +175,7 @@ class Query {
   ///
   /// [attribute] The attribute containing the array to filter on.
   /// [queries] The list of query strings to match against array elements.
-  static String elemMatch(String attribute, List<String> queries) =>
-      Query._(
+  static String elemMatch(String attribute, List<String> queries) => Query._(
         'elemMatch',
         attribute,
         queries.map((query) => jsonDecode(query)).toList(),

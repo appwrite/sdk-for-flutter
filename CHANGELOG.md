@@ -1,5 +1,16 @@
 # Change Log
 
+## 26.2.0
+
+* Added: `DocumentsDB` and `VectorsDB` services for document and vector database access
+* Added: `userId`, `emailHash` and `name` parameters to `Avatars.getPhoto()`
+* Added: `cloudflare` and `resend` values to `OAuthProvider` enum
+* Updated: `X-Appwrite-Response-Format` header to `2.0.0`
+
+## 26.1.0
+
+* Fixed: realtime policy-violation errors are now delivered to active subscription streams instead of thrown from the message handler
+
 ## 26.0.0
 
 * Breaking: `Execution.functionId` replaced by `resourceId` and `resourceType`, now that executions cover both functions and sites

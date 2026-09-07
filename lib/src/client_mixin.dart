@@ -92,9 +92,8 @@ mixin ClientMixin {
     }
 
     if (res.statusCode >= 400) {
-      final isJson = (res.headers['content-type'] ?? '').contains(
-        'application/json',
-      );
+      final isJson =
+          (res.headers['content-type'] ?? '').contains('application/json');
       // Empty bodies still arrive with application/json (e.g. truncated
       // proxy/edge errors). Avoid FormatException from json.decode('').
       if (isJson && res.body.isNotEmpty) {
@@ -142,12 +141,10 @@ mixin ClientMixin {
       return http.Response(
         '',
         streamedResponse.statusCode,
-        headers: streamedResponse.headers.map(
-          (k, v) =>
-              k.toLowerCase() == 'content-type'
-                  ? MapEntry(k, 'text/plain')
-                  : MapEntry(k, v),
-        ),
+        headers: streamedResponse.headers.map((k, v) =>
+            k.toLowerCase() == 'content-type'
+                ? MapEntry(k, 'text/plain')
+                : MapEntry(k, v)),
         request: streamedResponse.request,
         isRedirect: streamedResponse.isRedirect,
         persistentConnection: streamedResponse.persistentConnection,

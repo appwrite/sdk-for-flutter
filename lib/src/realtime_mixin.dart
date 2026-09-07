@@ -100,80 +100,74 @@ mixin RealtimeMixin {
         _websok = await getWebSocket(uri);
       }
       _retries = 0;
-      _websocketSubscription = _websok?.stream.listen(
-        (response) {
-          final data = RealtimeResponse.fromJson(response);
-          switch (data.type) {
-            case 'error':
-              handleError(data);
-              break;
-            case 'connected':
-              final message = RealtimeResponseConnected.fromMap(data.data);
+      _websocketSubscription = _websok?.stream.listen((response) {
+        final data = RealtimeResponse.fromJson(response);
+        switch (data.type) {
+          case 'error':
+            handleError(data);
+            break;
+          case 'connected':
+            final message = RealtimeResponseConnected.fromMap(data.data);
 
-              if (message.user.isEmpty) {
-                // send fallback cookie if exists
-                final cookie = getFallbackCookie?.call();
-                if (cookie != null) {
-                  _websok?.sink.add(
-                    jsonEncode({
-                      "type": "authentication",
-                      "data": {
-                        "session": cookie,
-                      },
-                    }),
-                  );
-                }
+            if (message.user.isEmpty) {
+              // send fallback cookie if exists
+              final cookie = getFallbackCookie?.call();
+              if (cookie != null) {
+                _websok?.sink.add(jsonEncode({
+                  "type": "authentication",
+                  "data": {
+                    "session": cookie,
+                  },
+                }));
               }
-              for (var entry in _subscriptions.entries) {
-                _pendingSubscribes[entry.key] = {
-                  'subscriptionId': entry.key,
-                  'channels': entry.value.channels,
-                  'queries': entry.value.queries,
-                };
-              }
-              _appConnected = true;
-              _sendPendingSubscribes();
-              _flushPendingPresence();
-              _startHeartbeat(); // Start heartbeat after successful connection
-              break;
-            case 'pong':
-              break;
-            case 'event':
-              final messageData = data.data as Map<String, dynamic>;
-              final message = RealtimeMessage.fromMap(messageData);
-              final subscriptions =
-                  (messageData['subscriptions'] as List<dynamic>?)
-                      ?.map((x) => x.toString())
-                      .toList() ??
-                  <String>[];
+            }
+            for (var entry in _subscriptions.entries) {
+              _pendingSubscribes[entry.key] = {
+                'subscriptionId': entry.key,
+                'channels': entry.value.channels,
+                'queries': entry.value.queries,
+              };
+            }
+            _appConnected = true;
+            _sendPendingSubscribes();
+            _flushPendingPresence();
+            _startHeartbeat(); // Start heartbeat after successful connection
+            break;
+          case 'pong':
+            break;
+          case 'event':
+            final messageData = data.data as Map<String, dynamic>;
+            final message = RealtimeMessage.fromMap(messageData);
+            final subscriptions =
+                (messageData['subscriptions'] as List<dynamic>?)
+                        ?.map((x) => x.toString())
+                        .toList() ??
+                    <String>[];
 
-              if (subscriptions.isEmpty) {
-                break;
-              }
-
-              for (var subscriptionId in subscriptions) {
-                final subscription = _subscriptions[subscriptionId];
-                if (subscription != null) {
-                  subscription.controller.add(message);
-                }
-              }
+            if (subscriptions.isEmpty) {
               break;
-          }
-        },
-        onDone: () {
-          _appConnected = false;
-          _stopHeartbeat();
-          _retry();
-        },
-        onError: (err, stack) {
-          _appConnected = false;
-          _stopHeartbeat();
-          for (var subscription in _subscriptions.values) {
-            subscription.controller.addError(err, stack);
-          }
-          _retry();
-        },
-      );
+            }
+
+            for (var subscriptionId in subscriptions) {
+              final subscription = _subscriptions[subscriptionId];
+              if (subscription != null) {
+                subscription.controller.add(message);
+              }
+            }
+            break;
+        }
+      }, onDone: () {
+        _appConnected = false;
+        _stopHeartbeat();
+        _retry();
+      }, onError: (err, stack) {
+        _appConnected = false;
+        _stopHeartbeat();
+        for (var subscription in _subscriptions.values) {
+          subscription.controller.addError(err, stack);
+        }
+        _retry();
+      });
     } catch (e) {
       if (e is AppwriteException) {
         rethrow;
@@ -203,30 +197,27 @@ mixin RealtimeMixin {
     return _retries < 5
         ? 1
         : _retries < 15
-        ? 5
-        : _retries < 100
-        ? 10
-        : 60;
+            ? 5
+            : _retries < 100
+                ? 10
+                : 60;
   }
 
   Uri _prepareUri() {
     if (client.endPointRealtime == null) {
       throw AppwriteException(
-        "Please set endPointRealtime to connect to realtime server",
-      );
+          "Please set endPointRealtime to connect to realtime server");
     }
     var uri = Uri.parse(client.endPointRealtime!);
 
     var queryParams =
         "project=${Uri.encodeComponent(client.config['project']!)}";
 
-    final portPart =
-        (uri.hasPort && uri.port != 80 && uri.port != 443)
-            ? ':${uri.port}'
-            : '';
+    final portPart = (uri.hasPort && uri.port != 80 && uri.port != 443)
+        ? ':${uri.port}'
+        : '';
     return Uri.parse(
-      "${uri.scheme}://${uri.host}$portPart${uri.path}/realtime?$queryParams",
-    );
+        "${uri.scheme}://${uri.host}$portPart${uri.path}/realtime?$queryParams");
   }
 
   void _sendUnsubscribeMessage(List<String> subscriptionIds) {
@@ -236,12 +227,10 @@ mixin RealtimeMixin {
     if (_websok == null || _websok?.closeCode != null) {
       return;
     }
-    _websok!.sink.add(
-      jsonEncode({
-        'type': 'unsubscribe',
-        'data': subscriptionIds.map((id) => {'subscriptionId': id}).toList(),
-      }),
-    );
+    _websok!.sink.add(jsonEncode({
+      'type': 'unsubscribe',
+      'data': subscriptionIds.map((id) => {'subscriptionId': id}).toList(),
+    }));
   }
 
   String _generateUniqueSubscriptionId() {
@@ -303,12 +292,10 @@ mixin RealtimeMixin {
     final rows = _pendingSubscribes.values.toList();
     _pendingSubscribes.clear();
 
-    _websok!.sink.add(
-      jsonEncode({
-        'type': 'subscribe',
-        'data': rows,
-      }),
-    );
+    _websok!.sink.add(jsonEncode({
+      'type': 'subscribe',
+      'data': rows,
+    }));
   }
 
   void _flushPendingPresence() {
@@ -325,10 +312,8 @@ mixin RealtimeMixin {
     return channel is String ? channel : channel.toString();
   }
 
-  RealtimeSubscription subscribeTo(
-    List<Object> channels, [
-    List<String> queries = const [],
-  ]) {
+  RealtimeSubscription subscribeTo(List<Object> channels,
+      [List<String> queries = const []]) {
     StreamController<RealtimeMessage> controller = StreamController.broadcast();
     final channelStrings =
         channels.map((ch) => _channelToString(ch)).toList().cast<String>();
@@ -397,7 +382,11 @@ mixin RealtimeMixin {
 
   void handleError(RealtimeResponse response) {
     if (response.data['code'] == status.policyViolation) {
-      throw AppwriteException(response.data["message"], response.data["code"]);
+      final error = AppwriteException(
+          response.data["message"], response.data["code"]);
+      for (var subscription in _subscriptions.values) {
+        subscription.controller.addError(error);
+      }
     } else {
       _retry();
     }
