@@ -17,7 +17,7 @@ Uint8List bytes = await storage.getFilePreview(
     fileId: '<FILE_ID>',
     width: 0, // optional
     height: 0, // optional
-    gravity: enums.ImageGravity.center, // optional
+    gravity: enums.ImageGravity.auto, // optional
     quality: -1, // optional
     borderWidth: 0, // optional
     borderColor: 'FFFFFF', // optional
@@ -39,7 +39,7 @@ FutureBuilder<Uint8List>(
         fileId: '<FILE_ID>',
         width: 0, // optional
         height: 0, // optional
-        gravity: enums.ImageGravity.center, // optional
+        gravity: enums.ImageGravity.auto, // optional
         quality: -1, // optional
         borderWidth: 0, // optional
         borderColor: 'FFFFFF', // optional
