@@ -312,7 +312,7 @@ void main() {
         databaseId: "<DATABASE_ID>",
         collectionId: "<COLLECTION_ID>",
         documentId: "<DOCUMENT_ID>",
-        attribute: '',
+        attribute: "<ATTRIBUTE>",
       );
       expect(response, isA<models.Document>());
     });
@@ -336,7 +336,7 @@ void main() {
         databaseId: "<DATABASE_ID>",
         collectionId: "<COLLECTION_ID>",
         documentId: "<DOCUMENT_ID>",
-        attribute: '',
+        attribute: "<ATTRIBUTE>",
       );
       expect(response, isA<models.Document>());
     });

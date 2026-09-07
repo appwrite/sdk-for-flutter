@@ -1,6 +1,7 @@
 part of '../../enums.dart';
 
 enum ImageGravity {
+  auto(value: "auto"),
   center(value: "center"),
   topLeft(value: "top-left"),
   top(value: "top"),

@@ -312,7 +312,7 @@ void main() {
         databaseId: "<DATABASE_ID>",
         tableId: "<TABLE_ID>",
         rowId: "<ROW_ID>",
-        column: '',
+        column: "<COLUMN>",
       );
       expect(response, isA<models.Row>());
     });
@@ -336,7 +336,7 @@ void main() {
         databaseId: "<DATABASE_ID>",
         tableId: "<TABLE_ID>",
         rowId: "<ROW_ID>",
-        column: '',
+        column: "<COLUMN>",
       );
       expect(response, isA<models.Row>());
     });

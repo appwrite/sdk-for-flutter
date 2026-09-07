@@ -69,11 +69,11 @@ class Organization extends Service {
   Future<models.AppInstallation> getInstallation({
     required String installationId,
   }) async {
-    final String apiPath = '/organization/installations/{installationId}'
-        .replaceAll(
-          '{installationId}',
-          installationId,
-        );
+    final String apiPath =
+        '/organization/installations/{installationId}'.replaceAll(
+      '{installationId}',
+      installationId,
+    );
 
     final Map<String, dynamic> apiParams = {};
 
@@ -100,11 +100,11 @@ class Organization extends Service {
     required String installationId,
     String? authorizationDetails,
   }) async {
-    final String apiPath = '/organization/installations/{installationId}'
-        .replaceAll(
-          '{installationId}',
-          installationId,
-        );
+    final String apiPath =
+        '/organization/installations/{installationId}'.replaceAll(
+      '{installationId}',
+      installationId,
+    );
 
     final Map<String, dynamic> apiParams = {
       if (authorizationDetails != null)
@@ -133,11 +133,11 @@ class Organization extends Service {
   Future deleteInstallation({
     required String installationId,
   }) async {
-    final String apiPath = '/organization/installations/{installationId}'
-        .replaceAll(
-          '{installationId}',
-          installationId,
-        );
+    final String apiPath =
+        '/organization/installations/{installationId}'.replaceAll(
+      '{installationId}',
+      installationId,
+    );
 
     final Map<String, dynamic> apiParams = {};
 

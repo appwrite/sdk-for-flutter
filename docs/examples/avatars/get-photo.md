@@ -17,6 +17,9 @@ Uint8List bytes = await avatars.getPhoto(
     quality: 0, // optional
     output: 'png', // optional
     rating: 'g', // optional
+    userId: 'current()', // optional
+    emailHash: '<EMAIL_HASH>', // optional
+    name: '<NAME>', // optional
 );
 
 final file = File('path_to_file/filename.ext');
@@ -30,6 +33,9 @@ FutureBuilder<Uint8List>(
         quality: 0, // optional
         output: 'png', // optional
         rating: 'g', // optional
+        userId: 'current()', // optional
+        emailHash: '<EMAIL_HASH>', // optional
+        name: '<NAME>', // optional
     ), // Works for both public file and private file, for private files you need to be logged in
     builder: (context, snapshot) {
         return snapshot.hasData && snapshot.data != null
