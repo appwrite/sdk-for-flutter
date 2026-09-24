@@ -59,6 +59,9 @@ class User implements Model {
   /// Whether the user email is in its canonical form.
   final bool? emailIsCanonical;
 
+  /// Whether the password was found in a known data breach the last time it was checked. Null when the password has never been checked.
+  final bool? passwordPwned;
+
   /// Phone verification status.
   final bool phoneVerification;
 
@@ -100,6 +103,7 @@ class User implements Model {
     this.emailIsDisposable,
     this.emailIsCorporate,
     this.emailIsCanonical,
+    this.passwordPwned,
     required this.phoneVerification,
     required this.mfa,
     required this.prefs,
@@ -131,6 +135,7 @@ class User implements Model {
       emailIsDisposable: map['emailIsDisposable'],
       emailIsCorporate: map['emailIsCorporate'],
       emailIsCanonical: map['emailIsCanonical'],
+      passwordPwned: map['passwordPwned'],
       phoneVerification: map['phoneVerification'],
       mfa: map['mfa'],
       prefs: Preferences.fromMap(
@@ -167,6 +172,7 @@ class User implements Model {
       "emailIsDisposable": emailIsDisposable,
       "emailIsCorporate": emailIsCorporate,
       "emailIsCanonical": emailIsCanonical,
+      "passwordPwned": passwordPwned,
       "phoneVerification": phoneVerification,
       "mfa": mfa,
       "prefs": prefs.toMap(),

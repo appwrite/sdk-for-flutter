@@ -53,7 +53,7 @@ class Execution implements Model {
   /// Resource errors. Includes the last 4,000 characters. This will return an empty string unless the response is returned using an API key or as part of a webhook payload.
   final String errors;
 
-  /// Resource(function/site) execution duration in seconds.
+  /// Total time the resource(function/site) took to respond, in seconds.
   final double duration;
 
   /// The scheduled time for execution. If left empty, execution will be queued immediately.

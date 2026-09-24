@@ -23,7 +23,7 @@ void main() {
         responseHeaders: [],
         logs: "",
         errors: "",
-        duration: 0.4,
+        duration: 1.23,
       );
 
       final map = model.toMap();
@@ -46,7 +46,7 @@ void main() {
       expect(result.responseHeaders, []);
       expect(result.logs, "");
       expect(result.errors, "");
-      expect(result.duration, 0.4);
+      expect(result.duration, 1.23);
     });
   });
 }

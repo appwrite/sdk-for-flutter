@@ -70,6 +70,12 @@ class Databases extends Service {
   Future<models.Transaction> getTransaction({
     required String transactionId,
   }) async {
+    if (transactionId.isEmpty) {
+      throw AppwriteException(
+        'Missing required parameter: "transactionId"',
+      );
+    }
+
     final String apiPath = '/databases/transactions/{transactionId}'.replaceAll(
       '{transactionId}',
       transactionId,
@@ -101,6 +107,12 @@ class Databases extends Service {
     bool? commit,
     bool? rollback,
   }) async {
+    if (transactionId.isEmpty) {
+      throw AppwriteException(
+        'Missing required parameter: "transactionId"',
+      );
+    }
+
     final String apiPath = '/databases/transactions/{transactionId}'.replaceAll(
       '{transactionId}',
       transactionId,
@@ -134,6 +146,12 @@ class Databases extends Service {
   Future deleteTransaction({
     required String transactionId,
   }) async {
+    if (transactionId.isEmpty) {
+      throw AppwriteException(
+        'Missing required parameter: "transactionId"',
+      );
+    }
+
     final String apiPath = '/databases/transactions/{transactionId}'.replaceAll(
       '{transactionId}',
       transactionId,
@@ -144,6 +162,7 @@ class Databases extends Service {
     final Map<String, String> apiHeaders = {
       'X-Appwrite-Project': client.config['project'] ?? '',
       'content-type': 'application/json',
+      'accept': 'application/json',
     };
 
     final res = await client.call(
@@ -164,6 +183,12 @@ class Databases extends Service {
     required String transactionId,
     List<Map>? operations,
   }) async {
+    if (transactionId.isEmpty) {
+      throw AppwriteException(
+        'Missing required parameter: "transactionId"',
+      );
+    }
+
     final String apiPath =
         '/databases/transactions/{transactionId}/operations'.replaceAll(
       '{transactionId}',
@@ -203,6 +228,18 @@ class Databases extends Service {
     bool? total,
     int? ttl,
   }) async {
+    if (databaseId.isEmpty) {
+      throw AppwriteException(
+        'Missing required parameter: "databaseId"',
+      );
+    }
+
+    if (collectionId.isEmpty) {
+      throw AppwriteException(
+        'Missing required parameter: "collectionId"',
+      );
+    }
+
     final String apiPath =
         '/databases/{databaseId}/collections/{collectionId}/documents'
             .replaceAll(
@@ -251,6 +288,18 @@ class Databases extends Service {
     List<String>? permissions,
     String? transactionId,
   }) async {
+    if (databaseId.isEmpty) {
+      throw AppwriteException(
+        'Missing required parameter: "databaseId"',
+      );
+    }
+
+    if (collectionId.isEmpty) {
+      throw AppwriteException(
+        'Missing required parameter: "collectionId"',
+      );
+    }
+
     final String apiPath =
         '/databases/{databaseId}/collections/{collectionId}/documents'
             .replaceAll(
@@ -297,6 +346,24 @@ class Databases extends Service {
     List<String>? queries,
     String? transactionId,
   }) async {
+    if (databaseId.isEmpty) {
+      throw AppwriteException(
+        'Missing required parameter: "databaseId"',
+      );
+    }
+
+    if (collectionId.isEmpty) {
+      throw AppwriteException(
+        'Missing required parameter: "collectionId"',
+      );
+    }
+
+    if (documentId.isEmpty) {
+      throw AppwriteException(
+        'Missing required parameter: "documentId"',
+      );
+    }
+
     final String apiPath =
         '/databases/{databaseId}/collections/{collectionId}/documents/{documentId}'
             .replaceAll(
@@ -347,6 +414,24 @@ class Databases extends Service {
     List<String>? permissions,
     String? transactionId,
   }) async {
+    if (databaseId.isEmpty) {
+      throw AppwriteException(
+        'Missing required parameter: "databaseId"',
+      );
+    }
+
+    if (collectionId.isEmpty) {
+      throw AppwriteException(
+        'Missing required parameter: "collectionId"',
+      );
+    }
+
+    if (documentId.isEmpty) {
+      throw AppwriteException(
+        'Missing required parameter: "documentId"',
+      );
+    }
+
     final String apiPath =
         '/databases/{databaseId}/collections/{collectionId}/documents/{documentId}'
             .replaceAll(
@@ -397,6 +482,24 @@ class Databases extends Service {
     List<String>? permissions,
     String? transactionId,
   }) async {
+    if (databaseId.isEmpty) {
+      throw AppwriteException(
+        'Missing required parameter: "databaseId"',
+      );
+    }
+
+    if (collectionId.isEmpty) {
+      throw AppwriteException(
+        'Missing required parameter: "collectionId"',
+      );
+    }
+
+    if (documentId.isEmpty) {
+      throw AppwriteException(
+        'Missing required parameter: "documentId"',
+      );
+    }
+
     final String apiPath =
         '/databases/{databaseId}/collections/{collectionId}/documents/{documentId}'
             .replaceAll(
@@ -444,6 +547,24 @@ class Databases extends Service {
     required String documentId,
     String? transactionId,
   }) async {
+    if (databaseId.isEmpty) {
+      throw AppwriteException(
+        'Missing required parameter: "databaseId"',
+      );
+    }
+
+    if (collectionId.isEmpty) {
+      throw AppwriteException(
+        'Missing required parameter: "collectionId"',
+      );
+    }
+
+    if (documentId.isEmpty) {
+      throw AppwriteException(
+        'Missing required parameter: "documentId"',
+      );
+    }
+
     final String apiPath =
         '/databases/{databaseId}/collections/{collectionId}/documents/{documentId}'
             .replaceAll(
@@ -466,6 +587,7 @@ class Databases extends Service {
     final Map<String, String> apiHeaders = {
       'X-Appwrite-Project': client.config['project'] ?? '',
       'content-type': 'application/json',
+      'accept': 'application/json',
     };
 
     final res = await client.call(
@@ -491,6 +613,30 @@ class Databases extends Service {
     double? min,
     String? transactionId,
   }) async {
+    if (databaseId.isEmpty) {
+      throw AppwriteException(
+        'Missing required parameter: "databaseId"',
+      );
+    }
+
+    if (collectionId.isEmpty) {
+      throw AppwriteException(
+        'Missing required parameter: "collectionId"',
+      );
+    }
+
+    if (documentId.isEmpty) {
+      throw AppwriteException(
+        'Missing required parameter: "documentId"',
+      );
+    }
+
+    if (attribute.isEmpty) {
+      throw AppwriteException(
+        'Missing required parameter: "attribute"',
+      );
+    }
+
     final String apiPath =
         '/databases/{databaseId}/collections/{collectionId}/documents/{documentId}/{attribute}/decrement'
             .replaceAll(
@@ -545,6 +691,30 @@ class Databases extends Service {
     double? max,
     String? transactionId,
   }) async {
+    if (databaseId.isEmpty) {
+      throw AppwriteException(
+        'Missing required parameter: "databaseId"',
+      );
+    }
+
+    if (collectionId.isEmpty) {
+      throw AppwriteException(
+        'Missing required parameter: "collectionId"',
+      );
+    }
+
+    if (documentId.isEmpty) {
+      throw AppwriteException(
+        'Missing required parameter: "documentId"',
+      );
+    }
+
+    if (attribute.isEmpty) {
+      throw AppwriteException(
+        'Missing required parameter: "attribute"',
+      );
+    }
+
     final String apiPath =
         '/databases/{databaseId}/collections/{collectionId}/documents/{documentId}/{attribute}/increment'
             .replaceAll(

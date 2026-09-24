@@ -100,7 +100,7 @@ void main() {
         'responseHeaders': [],
         'logs': "",
         'errors': "",
-        'duration': 0.4,
+        'duration': 1.23,
       };
 
       when(
@@ -132,7 +132,7 @@ void main() {
         'responseHeaders': [],
         'logs': "",
         'errors': "",
-        'duration': 0.4,
+        'duration': 1.23,
       };
 
       when(

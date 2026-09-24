@@ -22,10 +22,6 @@ abstract class ClientBase implements Client {
   @override
   ClientBase setSession(value);
 
-  /// Your secret dev API key
-  @override
-  ClientBase setDevKey(value);
-
   /// The user cookie to authenticate with. Used by SDKs that forward an incoming Cookie header in server-side runtimes.
   @override
   ClientBase setCookie(value);

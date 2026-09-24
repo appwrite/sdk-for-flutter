@@ -40,8 +40,8 @@ class ClientBrowser extends ClientBase with ClientMixin {
       'x-sdk-name': 'Flutter',
       'x-sdk-platform': 'client',
       'x-sdk-language': 'flutter',
-      'x-sdk-version': '26.2.0',
-      'X-Appwrite-Response-Format': '2.0.0',
+      'x-sdk-version': '27.0.0',
+      'X-Appwrite-Response-Format': '2.3.0',
     };
 
     config = {};
@@ -91,14 +91,6 @@ class ClientBrowser extends ClientBase with ClientMixin {
   ClientBrowser setSession(value) {
     config['session'] = value;
     addHeader('X-Appwrite-Session', value);
-    return this;
-  }
-
-  /// Your secret dev API key
-  @override
-  ClientBrowser setDevKey(value) {
-    config['devKey'] = value;
-    addHeader('X-Appwrite-Dev-Key', value);
     return this;
   }
 
@@ -346,21 +338,13 @@ class ClientBrowser extends ClientBase with ClientMixin {
   }) async {
     await init();
 
-    // Combine headers to check for dev key
-    final combinedHeaders = {..._headers!, ...headers};
-
-    // Only include credentials when dev key is not set
-    if (combinedHeaders['X-Appwrite-Dev-Key'] == null) {
-      _httpClient.withCredentials = true;
-    } else {
-      _httpClient.withCredentials = false;
-    }
+    _httpClient.withCredentials = true;
 
     late http.Response res;
     http.BaseRequest request = prepareRequest(
       method,
       uri: Uri.parse(_endPoint + path),
-      headers: combinedHeaders,
+      headers: {..._headers!, ...headers},
       params: params,
     );
     try {

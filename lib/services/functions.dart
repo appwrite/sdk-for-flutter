@@ -13,6 +13,12 @@ class Functions extends Service {
     List<String>? queries,
     bool? total,
   }) async {
+    if (functionId.isEmpty) {
+      throw AppwriteException(
+        'Missing required parameter: "functionId"',
+      );
+    }
+
     final String apiPath = '/functions/{functionId}/executions'.replaceAll(
       '{functionId}',
       functionId,
@@ -51,6 +57,12 @@ class Functions extends Service {
     Map? headers,
     String? scheduledAt,
   }) async {
+    if (functionId.isEmpty) {
+      throw AppwriteException(
+        'Missing required parameter: "functionId"',
+      );
+    }
+
     final String apiPath = '/functions/{functionId}/executions'.replaceAll(
       '{functionId}',
       functionId,
@@ -86,6 +98,18 @@ class Functions extends Service {
     required String functionId,
     required String executionId,
   }) async {
+    if (functionId.isEmpty) {
+      throw AppwriteException(
+        'Missing required parameter: "functionId"',
+      );
+    }
+
+    if (executionId.isEmpty) {
+      throw AppwriteException(
+        'Missing required parameter: "executionId"',
+      );
+    }
+
     final String apiPath = '/functions/{functionId}/executions/{executionId}'
         .replaceAll(
           '{functionId}',

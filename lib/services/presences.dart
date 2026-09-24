@@ -40,6 +40,12 @@ class Presences extends Service {
   Future<models.Presence> get({
     required String presenceId,
   }) async {
+    if (presenceId.isEmpty) {
+      throw AppwriteException(
+        'Missing required parameter: "presenceId"',
+      );
+    }
+
     final String apiPath = '/presences/{presenceId}'.replaceAll(
       '{presenceId}',
       presenceId,
@@ -70,6 +76,12 @@ class Presences extends Service {
     String? expiresAt,
     Map? metadata,
   }) async {
+    if (presenceId.isEmpty) {
+      throw AppwriteException(
+        'Missing required parameter: "presenceId"',
+      );
+    }
+
     final String apiPath = '/presences/{presenceId}'.replaceAll(
       '{presenceId}',
       presenceId,
@@ -108,6 +120,12 @@ class Presences extends Service {
     List<String>? permissions,
     bool? purge,
   }) async {
+    if (presenceId.isEmpty) {
+      throw AppwriteException(
+        'Missing required parameter: "presenceId"',
+      );
+    }
+
     final String apiPath = '/presences/{presenceId}'.replaceAll(
       '{presenceId}',
       presenceId,
@@ -141,6 +159,12 @@ class Presences extends Service {
   Future delete({
     required String presenceId,
   }) async {
+    if (presenceId.isEmpty) {
+      throw AppwriteException(
+        'Missing required parameter: "presenceId"',
+      );
+    }
+
     final String apiPath = '/presences/{presenceId}'.replaceAll(
       '{presenceId}',
       presenceId,
@@ -151,6 +175,7 @@ class Presences extends Service {
     final Map<String, String> apiHeaders = {
       'X-Appwrite-Project': client.config['project'] ?? '',
       'content-type': 'application/json',
+      'accept': 'application/json',
     };
 
     final res = await client.call(
