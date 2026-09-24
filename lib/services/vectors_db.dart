@@ -59,6 +59,12 @@ class VectorsDB extends Service {
   Future<models.Transaction> getTransaction({
     required String transactionId,
   }) async {
+    if (transactionId.isEmpty) {
+      throw AppwriteException(
+        'Missing required parameter: "transactionId"',
+      );
+    }
+
     final String apiPath = '/vectorsdb/transactions/{transactionId}'.replaceAll(
       '{transactionId}',
       transactionId,
@@ -87,6 +93,12 @@ class VectorsDB extends Service {
     bool? commit,
     bool? rollback,
   }) async {
+    if (transactionId.isEmpty) {
+      throw AppwriteException(
+        'Missing required parameter: "transactionId"',
+      );
+    }
+
     final String apiPath = '/vectorsdb/transactions/{transactionId}'.replaceAll(
       '{transactionId}',
       transactionId,
@@ -117,6 +129,12 @@ class VectorsDB extends Service {
   Future deleteTransaction({
     required String transactionId,
   }) async {
+    if (transactionId.isEmpty) {
+      throw AppwriteException(
+        'Missing required parameter: "transactionId"',
+      );
+    }
+
     final String apiPath = '/vectorsdb/transactions/{transactionId}'.replaceAll(
       '{transactionId}',
       transactionId,
@@ -127,6 +145,7 @@ class VectorsDB extends Service {
     final Map<String, String> apiHeaders = {
       'X-Appwrite-Project': client.config['project'] ?? '',
       'content-type': 'application/json',
+      'accept': 'application/json',
     };
 
     final res = await client.call(
@@ -144,6 +163,12 @@ class VectorsDB extends Service {
     required String transactionId,
     List<Map>? operations,
   }) async {
+    if (transactionId.isEmpty) {
+      throw AppwriteException(
+        'Missing required parameter: "transactionId"',
+      );
+    }
+
     final String apiPath =
         '/vectorsdb/transactions/{transactionId}/operations'.replaceAll(
       '{transactionId}',
@@ -180,6 +205,18 @@ class VectorsDB extends Service {
     bool? total,
     int? ttl,
   }) async {
+    if (databaseId.isEmpty) {
+      throw AppwriteException(
+        'Missing required parameter: "databaseId"',
+      );
+    }
+
+    if (collectionId.isEmpty) {
+      throw AppwriteException(
+        'Missing required parameter: "collectionId"',
+      );
+    }
+
     final String apiPath =
         '/vectorsdb/{databaseId}/collections/{collectionId}/documents'
             .replaceAll(
@@ -225,6 +262,18 @@ class VectorsDB extends Service {
     List<String>? permissions,
     String? transactionId,
   }) async {
+    if (databaseId.isEmpty) {
+      throw AppwriteException(
+        'Missing required parameter: "databaseId"',
+      );
+    }
+
+    if (collectionId.isEmpty) {
+      throw AppwriteException(
+        'Missing required parameter: "collectionId"',
+      );
+    }
+
     final String apiPath =
         '/vectorsdb/{databaseId}/collections/{collectionId}/documents'
             .replaceAll(
@@ -271,6 +320,18 @@ class VectorsDB extends Service {
     bool? total,
     int? ttl,
   }) async {
+    if (databaseId.isEmpty) {
+      throw AppwriteException(
+        'Missing required parameter: "databaseId"',
+      );
+    }
+
+    if (collectionId.isEmpty) {
+      throw AppwriteException(
+        'Missing required parameter: "collectionId"',
+      );
+    }
+
     final String apiPath =
         '/vectorsdb/{databaseId}/collections/{collectionId}/documents/query'
             .replaceAll(
@@ -314,6 +375,24 @@ class VectorsDB extends Service {
     List<String>? queries,
     String? transactionId,
   }) async {
+    if (databaseId.isEmpty) {
+      throw AppwriteException(
+        'Missing required parameter: "databaseId"',
+      );
+    }
+
+    if (collectionId.isEmpty) {
+      throw AppwriteException(
+        'Missing required parameter: "collectionId"',
+      );
+    }
+
+    if (documentId.isEmpty) {
+      throw AppwriteException(
+        'Missing required parameter: "documentId"',
+      );
+    }
+
     final String apiPath =
         '/vectorsdb/{databaseId}/collections/{collectionId}/documents/{documentId}'
             .replaceAll(
@@ -361,6 +440,24 @@ class VectorsDB extends Service {
     List<String>? permissions,
     String? transactionId,
   }) async {
+    if (databaseId.isEmpty) {
+      throw AppwriteException(
+        'Missing required parameter: "databaseId"',
+      );
+    }
+
+    if (collectionId.isEmpty) {
+      throw AppwriteException(
+        'Missing required parameter: "collectionId"',
+      );
+    }
+
+    if (documentId.isEmpty) {
+      throw AppwriteException(
+        'Missing required parameter: "documentId"',
+      );
+    }
+
     final String apiPath =
         '/vectorsdb/{databaseId}/collections/{collectionId}/documents/{documentId}'
             .replaceAll(
@@ -408,6 +505,24 @@ class VectorsDB extends Service {
     List<String>? permissions,
     String? transactionId,
   }) async {
+    if (databaseId.isEmpty) {
+      throw AppwriteException(
+        'Missing required parameter: "databaseId"',
+      );
+    }
+
+    if (collectionId.isEmpty) {
+      throw AppwriteException(
+        'Missing required parameter: "collectionId"',
+      );
+    }
+
+    if (documentId.isEmpty) {
+      throw AppwriteException(
+        'Missing required parameter: "documentId"',
+      );
+    }
+
     final String apiPath =
         '/vectorsdb/{databaseId}/collections/{collectionId}/documents/{documentId}'
             .replaceAll(
@@ -452,6 +567,24 @@ class VectorsDB extends Service {
     required String documentId,
     String? transactionId,
   }) async {
+    if (databaseId.isEmpty) {
+      throw AppwriteException(
+        'Missing required parameter: "databaseId"',
+      );
+    }
+
+    if (collectionId.isEmpty) {
+      throw AppwriteException(
+        'Missing required parameter: "collectionId"',
+      );
+    }
+
+    if (documentId.isEmpty) {
+      throw AppwriteException(
+        'Missing required parameter: "documentId"',
+      );
+    }
+
     final String apiPath =
         '/vectorsdb/{databaseId}/collections/{collectionId}/documents/{documentId}'
             .replaceAll(
@@ -474,6 +607,7 @@ class VectorsDB extends Service {
     final Map<String, String> apiHeaders = {
       'X-Appwrite-Project': client.config['project'] ?? '',
       'content-type': 'application/json',
+      'accept': 'application/json',
     };
 
     final res = await client.call(

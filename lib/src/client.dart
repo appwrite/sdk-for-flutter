@@ -79,11 +79,6 @@ abstract class Client {
   /// The user session to authenticate with.
   Client setSession(String value);
 
-  /// Set DevKey.
-  ///
-  /// Your secret dev API key.
-  Client setDevKey(String value);
-
   /// Set Cookie.
   ///
   /// The user cookie to authenticate with. Used by SDKs that forward an incoming Cookie header in server-side runtimes..

@@ -15,6 +15,8 @@ void main() {
         providerAccessToken: "MTQ0NjJkZmQ5OTM2NDE1ZTZjNGZmZjI3",
         providerAccessTokenExpiry: "2020-10-15T06:38:00.000+00:00",
         providerRefreshToken: "MTQ0NjJkZmQ5OTM2NDE1ZTZjNGZmZjI3",
+        providerIdToken:
+            "eyJhbGciOiJSUzI1NiIsImtpZCI6IjBhYzNmMWQwNWExYjhlN2YifQ.eyJzdWIiOiIxMTAxNjk0ODQ0NzQzODYyNzYzMzQifQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c",
       );
 
       final map = model.toMap();
@@ -30,6 +32,10 @@ void main() {
       expect(result.providerAccessToken, "MTQ0NjJkZmQ5OTM2NDE1ZTZjNGZmZjI3");
       expect(result.providerAccessTokenExpiry, "2020-10-15T06:38:00.000+00:00");
       expect(result.providerRefreshToken, "MTQ0NjJkZmQ5OTM2NDE1ZTZjNGZmZjI3");
+      expect(
+        result.providerIdToken,
+        "eyJhbGciOiJSUzI1NiIsImtpZCI6IjBhYzNmMWQwNWExYjhlN2YifQ.eyJzdWIiOiIxMTAxNjk0ODQ0NzQzODYyNzYzMzQifQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c",
+      );
     });
   });
 }

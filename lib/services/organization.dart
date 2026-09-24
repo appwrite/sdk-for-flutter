@@ -69,6 +69,12 @@ class Organization extends Service {
   Future<models.AppInstallation> getInstallation({
     required String installationId,
   }) async {
+    if (installationId.isEmpty) {
+      throw AppwriteException(
+        'Missing required parameter: "installationId"',
+      );
+    }
+
     final String apiPath =
         '/organization/installations/{installationId}'.replaceAll(
       '{installationId}',
@@ -100,6 +106,12 @@ class Organization extends Service {
     required String installationId,
     String? authorizationDetails,
   }) async {
+    if (installationId.isEmpty) {
+      throw AppwriteException(
+        'Missing required parameter: "installationId"',
+      );
+    }
+
     final String apiPath =
         '/organization/installations/{installationId}'.replaceAll(
       '{installationId}',
@@ -133,6 +145,12 @@ class Organization extends Service {
   Future deleteInstallation({
     required String installationId,
   }) async {
+    if (installationId.isEmpty) {
+      throw AppwriteException(
+        'Missing required parameter: "installationId"',
+      );
+    }
+
     final String apiPath =
         '/organization/installations/{installationId}'.replaceAll(
       '{installationId}',

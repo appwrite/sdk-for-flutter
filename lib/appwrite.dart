@@ -1,6 +1,6 @@
 /// Appwrite Flutter SDK
 ///
-/// This SDK targets Appwrite server version 2.0.x as shipped on Appwrite Cloud.
+/// This SDK targets Appwrite server version 2.3.x as shipped on Appwrite Cloud.
 /// Self-hosted releases can lag behind Cloud — if you run an older self-hosted
 /// build, use a matching older SDK from
 /// [previous releases](https://github.com/appwrite/sdk-for-flutter/releases)
@@ -13,6 +13,7 @@ import 'dart:typed_data';
 import 'dart:convert';
 
 import 'src/enums.dart';
+import 'src/exception.dart';
 import 'src/service.dart';
 import 'src/input_file.dart';
 import 'models.dart' as models;

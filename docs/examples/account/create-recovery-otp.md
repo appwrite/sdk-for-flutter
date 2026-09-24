@@ -7,8 +7,8 @@ Client client = Client()
 
 Account account = Account(client);
 
-LogList result = await account.listLogs(
-    queries: [], // optional
-    total: false, // optional
+Token result = await account.createRecoveryOTP(
+    email: 'email@example.com',
+    phrase: false, // optional
 );
 ```

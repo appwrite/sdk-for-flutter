@@ -12,6 +12,12 @@ class Messaging extends Service {
     required String subscriberId,
     required String targetId,
   }) async {
+    if (topicId.isEmpty) {
+      throw AppwriteException(
+        'Missing required parameter: "topicId"',
+      );
+    }
+
     final String apiPath = '/messaging/topics/{topicId}/subscribers'.replaceAll(
       '{topicId}',
       topicId,
@@ -43,6 +49,18 @@ class Messaging extends Service {
     required String topicId,
     required String subscriberId,
   }) async {
+    if (topicId.isEmpty) {
+      throw AppwriteException(
+        'Missing required parameter: "topicId"',
+      );
+    }
+
+    if (subscriberId.isEmpty) {
+      throw AppwriteException(
+        'Missing required parameter: "subscriberId"',
+      );
+    }
+
     final String apiPath =
         '/messaging/topics/{topicId}/subscribers/{subscriberId}'
             .replaceAll(
@@ -59,6 +77,7 @@ class Messaging extends Service {
     final Map<String, String> apiHeaders = {
       'X-Appwrite-Project': client.config['project'] ?? '',
       'content-type': 'application/json',
+      'accept': 'application/json',
     };
 
     final res = await client.call(
