@@ -1,6 +1,6 @@
 # Change Log
 
-## 27.1.0-rc.0
+## 27.1.0-rc.2
 
 * Added: `Apps` service to manage OAuth2 apps, keys, secrets, and installations
 * Added: `Oauth2` service for authorization, consent, device, PAR, and token flows
