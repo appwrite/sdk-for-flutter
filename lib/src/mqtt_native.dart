@@ -65,6 +65,12 @@ class PushNative {
         'subscriptions': subscriptionsJson,
       });
 
+  /// Ask for the notification permission background messages are posted with (Android 13+),
+  /// without waiting for the answer. False when no Activity was attached to ask from.
+  Future<bool> requestNotificationPermission() async =>
+      await _methods.invokeMethod<bool>('requestNotificationPermission') ??
+      false;
+
   /// Acknowledge a message once its callback has run.
   Future<void> ack(String token) =>
       _methods.invokeMethod<void>('ack', {'token': token});

@@ -1,5 +1,12 @@
 # Change Log
 
+## 27.1.0-rc.3
+
+* Added: background push notifications render the server `notification` title, body, and image
+* Added: `requestNotificationPermission()` on the `Push` service
+* Added: the SDK requests Android 13+ `POST_NOTIFICATIONS` itself on first background subscribe
+* Fixed: a server-sent title dedupes to one notification per topic instead of one per subscription
+
 ## 27.1.0-rc.2
 
 * Added: `Apps` service to manage OAuth2 apps, keys, secrets, and installations

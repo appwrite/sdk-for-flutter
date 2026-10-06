@@ -11,6 +11,7 @@ import 'package:path_provider/path_provider.dart';
 import 'client.dart';
 import 'exception.dart';
 import 'mqtt.dart';
+import 'mqtt_notification.dart';
 
 /// Android/iOS background delivery for the native (dart:io) push service.
 ///
@@ -249,10 +250,11 @@ Future<void> pushForegroundEntry(ServiceInstance service) async {
         // Notify only for filters that opted into background, each with its own title.
         final title = notify[filter];
         if (title != null) {
+          final content = PushNotificationContent.of(message);
           notifications.show(
             message.topic.hashCode,
-            title,
-            message.data,
+            content.titleOr(title),
+            content.bodyFor(message),
             const NotificationDetails(
               android: AndroidNotificationDetails(
                 _channelId,

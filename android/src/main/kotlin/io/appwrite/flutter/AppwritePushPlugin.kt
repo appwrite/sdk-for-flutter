@@ -1,10 +1,18 @@
 package io.appwrite.flutter
 
+import android.Manifest
+import android.app.Activity
+import android.content.pm.PackageManager
+import android.os.Build
 import android.os.Handler
 import android.os.Looper
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import io.appwrite.services.PushBridge
 import io.appwrite.services.PushMessage
 import io.flutter.embedding.engine.plugins.FlutterPlugin
+import io.flutter.embedding.engine.plugins.activity.ActivityAware
+import io.flutter.embedding.engine.plugins.activity.ActivityPluginBinding
 import io.flutter.plugin.common.EventChannel
 import io.flutter.plugin.common.MethodCall
 import io.flutter.plugin.common.MethodChannel
@@ -15,6 +23,7 @@ import io.flutter.plugin.common.MethodChannel
  */
 class AppwritePushPlugin :
     FlutterPlugin,
+    ActivityAware,
     MethodChannel.MethodCallHandler,
     EventChannel.StreamHandler {
     private val main = Handler(Looper.getMainLooper())
@@ -22,6 +31,7 @@ class AppwritePushPlugin :
     private var events: EventChannel? = null
     private var sink: EventChannel.EventSink? = null
     private var bridge: PushBridge? = null
+    private var activity: Activity? = null
 
     override fun onAttachedToEngine(binding: FlutterPlugin.FlutterPluginBinding) {
         bridge = PushBridge(
@@ -53,6 +63,22 @@ class AppwritePushPlugin :
         sink = null
     }
 
+    override fun onAttachedToActivity(binding: ActivityPluginBinding) {
+        activity = binding.activity
+    }
+
+    override fun onDetachedFromActivityForConfigChanges() {
+        activity = null
+    }
+
+    override fun onReattachedToActivityForConfigChanges(binding: ActivityPluginBinding) {
+        activity = binding.activity
+    }
+
+    override fun onDetachedFromActivity() {
+        activity = null
+    }
+
     override fun onMethodCall(call: MethodCall, result: MethodChannel.Result) {
         val bridge = bridge ?: return result.error(ERROR_CODE, "Push plugin is not attached", null)
         try {
@@ -71,6 +97,7 @@ class AppwritePushPlugin :
             }
             result.success(
                 when (call.method) {
+                    "requestNotificationPermission" -> requestNotificationPermission()
                     "ack" -> bridge.ack(call.argument<String>("token")!!).let { null }
                     "release" -> bridge.release().let { null }
                     "stop" -> bridge.stop().let { null }
@@ -95,6 +122,19 @@ class AppwritePushPlugin :
         sink = null
     }
 
+    // Android 13+: ask for POST_NOTIFICATIONS, which background notifications are posted with.
+    // Returns false when it could not ask because no Activity is attached, so the caller asks again.
+    private fun requestNotificationPermission(): Boolean {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.TIRAMISU) {
+            return true
+        }
+        val activity = activity ?: return false
+        if (ContextCompat.checkSelfPermission(activity, Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(activity, arrayOf(Manifest.permission.POST_NOTIFICATIONS), PERMISSION_REQUEST_CODE)
+        }
+        return true
+    }
+
     // The bridge calls back on background threads; event sinks must be used on the main thread.
     private fun send(event: Map<String, Any?>) {
         main.post { sink?.success(event) }
@@ -104,5 +144,6 @@ class AppwritePushPlugin :
         const val METHOD_CHANNEL = "appwrite.push"
         const val EVENT_CHANNEL = "appwrite.push/events"
         const val ERROR_CODE = "appwrite_push"
+        const val PERMISSION_REQUEST_CODE = 9412
     }
 }

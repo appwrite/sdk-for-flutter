@@ -12,6 +12,7 @@ import 'client.dart';
 import 'exception.dart';
 import 'mqtt.dart';
 import 'mqtt_message.dart';
+import 'mqtt_notification.dart';
 
 Push createPush(Client client) => PushWeb(client);
 
@@ -617,15 +618,21 @@ class PushWeb implements Push {
         payload: payload,
         qos: publish.header?.qos.index ?? 0,
       );
+      final content = PushNotificationContent.of(message);
+      final titles = <String>{};
       for (final subscription in _subscriptions.values) {
         if (_matches(subscription.filter, topic)) {
           subscription.callback(message);
-          // Notification is per-subscription: only subs that opted in show one, each
-          // with its own title.
-          if (subscription.background &&
-              html.Notification.permission == 'granted') {
-            html.Notification(subscription.title ?? topic, body: message.data);
+          // Notification is per-subscription: only subs that opted in show one, each with
+          // its own title. A title the server sent replaces theirs, so one is shown.
+          if (subscription.background) {
+            titles.add(content.titleOr(subscription.title ?? topic));
           }
+        }
+      }
+      if (html.Notification.permission == 'granted') {
+        for (final title in titles) {
+          html.Notification(title, body: content.bodyFor(message));
         }
       }
     }

@@ -99,6 +99,8 @@ class PushIO implements Push {
   // Every Push with live subscriptions, so the native host can take over their connections.
   static final Set<PushIO> _livePushes = {};
   static Future<void> _nativeQueue = Future<void>.value();
+  // Whether this run already asked for the notification permission background delivery posts with.
+  static bool _notificationPermissionRequested = false;
 
   static Future<T> _enqueueNative<T>(Future<T> Function() op) {
     final result = _nativeQueue.then((_) => op());
@@ -439,6 +441,17 @@ class PushIO implements Push {
     ];
     if (subscriptions.isEmpty) {
       return;
+    }
+    if (!_notificationPermissionRequested &&
+        _nativeHosts.any((push) => push._backgroundWanted)) {
+      // Counted as asked only once an Activity was there to ask from.
+      _notificationPermissionRequested = true;
+      unawaited(
+        native
+            .requestNotificationPermission()
+            .then((asked) => _notificationPermissionRequested = asked)
+            .catchError((_) => _notificationPermissionRequested = false),
+      );
     }
     final (authMethod, credential) = _credential();
     final config = {
