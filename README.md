@@ -19,7 +19,7 @@ Add this to your package's `pubspec.yaml` file:
 
 ```yml
 dependencies:
-  appwrite: ^27.1.0-rc.2
+  appwrite: ^27.1.0-rc.3
 ```
 
 You can install packages from the command line:
@@ -57,16 +57,12 @@ seconds to reconnect; the broker replays what was sent in between (`retry: true`
 in-app callback receives are posted as notifications that open the app. It reconnects with the
 credential saved at subscribe time, so use a session rather than a short-lived JWT.
 
-On Android 13 and later, notifications only appear once the user grants the
-`POST_NOTIFICATIONS` runtime permission. Without it, the subscription still delivers to your
-callback but posts no notification, so ask before subscribing, for example with
-`flutter_local_notifications`:
+On Android 13 and later, the first background subscription asks the user for the
+`POST_NOTIFICATIONS` runtime permission. If they decline, the subscription still delivers to your
+callback but posts no notification. Notifications show the title, body and image sent with
+`createPush`, and fall back to the subscription's `title` and the raw payload for other messages.
 
 ```dart
-await FlutterLocalNotificationsPlugin()
-    .resolvePlatformSpecificImplementation<AndroidFlutterLocalNotificationsPlugin>()
-    ?.requestNotificationsPermission();
-
 final sub = await push.subscribe('news', (message) => print(message.data),
     background: true, title: 'News');
 
