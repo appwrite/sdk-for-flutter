@@ -1,5 +1,16 @@
 # Change Log
 
+## 27.1.0-rc.0
+
+* Added: `Apps` service to manage OAuth2 apps, keys, secrets, and installations
+* Added: `Oauth2` service for authorization, consent, device, PAR, and token flows
+* Added: `Push` service for MQTT realtime push with iOS background delivery
+* Added: `Topic` builder and a native `android` module for push
+* Added: `Client.setPushEndpoint()` and `Client.setPushClientId()`
+* Added: `Avatars.updatePhoto()` and `Avatars.deletePhoto()` methods
+* Added: `App`, `Oauth2*`, and `Account` models
+* Added: `webflow` to the `OAuthProvider` enum
+
 ## 27.0.0
 
 * Breaking: removed `Account.listLogs` and the `Log`, `LogList` models

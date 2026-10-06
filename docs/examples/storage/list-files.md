@@ -1,5 +1,6 @@
 ```dart
 import 'package:appwrite/appwrite.dart';
+import 'package:appwrite/models.dart' as models;
 
 Client client = Client()
     .setEndpoint('https://<REGION>.cloud.appwrite.io/v1') // Your API Endpoint
@@ -7,7 +8,7 @@ Client client = Client()
 
 Storage storage = Storage(client);
 
-FileList result = await storage.listFiles(
+models.FileList result = await storage.listFiles(
     bucketId: '<BUCKET_ID>',
     queries: [], // optional
     search: '<SEARCH>', // optional

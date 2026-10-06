@@ -1,5 +1,6 @@
 ```dart
 import 'package:appwrite/appwrite.dart';
+import 'package:appwrite/models.dart' as models;
 
 Client client = Client()
     .setEndpoint('https://<REGION>.cloud.appwrite.io/v1') // Your API Endpoint
@@ -7,7 +8,7 @@ Client client = Client()
 
 Account account = Account(client);
 
-User result = await account.create(
+models.User result = await account.create(
     userId: '<USER_ID>',
     email: 'email@example.com',
     password: 'password',

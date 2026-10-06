@@ -1,5 +1,6 @@
 ```dart
 import 'package:appwrite/appwrite.dart';
+import 'package:appwrite/models.dart' as models;
 
 Client client = Client()
     .setEndpoint('https://<REGION>.cloud.appwrite.io/v1') // Your API Endpoint
@@ -7,7 +8,8 @@ Client client = Client()
 
 Databases databases = Databases(client);
 
-TransactionList result = await databases.listTransactions(
+models.TransactionList result = await databases.listTransactions(
     queries: [], // optional
+    total: false, // optional
 );
 ```

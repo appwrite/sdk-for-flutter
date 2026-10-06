@@ -1,5 +1,6 @@
 ```dart
 import 'package:appwrite/appwrite.dart';
+import 'package:appwrite/models.dart' as models;
 
 Client client = Client()
     .setEndpoint('https://<REGION>.cloud.appwrite.io/v1') // Your API Endpoint
@@ -7,7 +8,7 @@ Client client = Client()
 
 Functions functions = Functions(client);
 
-ExecutionList result = await functions.listExecutions(
+models.ExecutionList result = await functions.listExecutions(
     functionId: '<FUNCTION_ID>',
     queries: [], // optional
     total: false, // optional

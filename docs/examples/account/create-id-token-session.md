@@ -1,5 +1,6 @@
 ```dart
 import 'package:appwrite/appwrite.dart';
+import 'package:appwrite/models.dart' as models;
 import 'package:appwrite/enums.dart' as enums;
 
 Client client = Client()
@@ -8,7 +9,7 @@ Client client = Client()
 
 Account account = Account(client);
 
-Session result = await account.createIdTokenSession(
+models.Session result = await account.createIdTokenSession(
     provider: enums.IdTokenProvider.apple,
     idToken: '<ID_TOKEN>',
     nonce: '<NONCE>', // optional

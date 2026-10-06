@@ -242,9 +242,9 @@ class Avatars extends Service {
   }
 
   /// Returns the best available profile photo for a user. The endpoint tries
-  /// each source in priority order and returns the first successful result:
-  /// OAuth2 identity photo, Gravatar, Libravatar, Appwrite Initials, built-in
-  /// static fallback.
+  /// each source in priority order and returns the first successful result: a
+  /// custom uploaded photo (see avatars.updatePhoto), OAuth2 identity photo,
+  /// Gravatar, Libravatar, Appwrite Initials, built-in static fallback.
   ///
   /// Passing `userId` — `current()` for the authenticated user — resolves
   /// the photo from everything known about that user: identity photos, email,
@@ -291,6 +291,68 @@ class Avatars extends Service {
       headers: apiHeaders,
       responseType: ResponseType.bytes,
     );
+    return res.data;
+  }
+
+  /// Update the profile photo of the currently authenticated user. The uploaded
+  /// image takes priority over every other photo source, including OAuth2
+  /// identity photos, Gravatar, and Libravatar. Updating an already customized
+  /// photo replaces it. The image must be at most 5MB and is sent in a single
+  /// request.
+  Future<models.Account> updatePhoto({
+    required InputFile file,
+    Function(UploadProgress)? onProgress,
+  }) async {
+    final String apiPath = '/avatars/photo';
+
+    final Map<String, dynamic> apiParams = {
+      'file': file,
+    };
+
+    final Map<String, String> apiHeaders = {
+      'X-Appwrite-Project': client.config['project'] ?? '',
+      'content-type': 'multipart/form-data',
+      'accept': 'application/json',
+    };
+
+    String idParamName = '';
+    final paramName = 'file';
+    final res = await client.chunkedUpload(
+      path: apiPath,
+      params: apiParams,
+      paramName: paramName,
+      idParamName: idParamName,
+      headers: apiHeaders,
+      onProgress: onProgress,
+      method: HttpMethod.put,
+    );
+
+    return models.Account.fromMap(res.data);
+  }
+
+  /// Delete the profile photo of the currently authenticated user and store the
+  /// built-in static placeholder in its place. The placeholder is the user's
+  /// photo from then on, so it takes priority over every other photo source —
+  /// OAuth2 identity photos, Gravatar, Libravatar, and initials — until a new
+  /// photo is uploaded with avatars.updatePhoto.
+  Future deletePhoto() async {
+    final String apiPath = '/avatars/photo';
+
+    final Map<String, dynamic> apiParams = {};
+
+    final Map<String, String> apiHeaders = {
+      'X-Appwrite-Project': client.config['project'] ?? '',
+      'content-type': 'application/json',
+      'accept': 'application/json',
+    };
+
+    final res = await client.call(
+      HttpMethod.delete,
+      path: apiPath,
+      params: apiParams,
+      headers: apiHeaders,
+    );
+
     return res.data;
   }
 

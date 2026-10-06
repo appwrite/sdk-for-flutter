@@ -1246,10 +1246,14 @@ class Account extends Service {
 
   /// Get the list of active sessions across different devices for the currently
   /// logged in user.
-  Future<models.SessionList> listSessions() async {
+  Future<models.SessionList> listSessions({
+    bool? total,
+  }) async {
     final String apiPath = '/account/sessions';
 
-    final Map<String, dynamic> apiParams = {};
+    final Map<String, dynamic> apiParams = {
+      if (total != null) 'total': total,
+    };
 
     final Map<String, String> apiHeaders = {
       'X-Appwrite-Project': client.config['project'] ?? '',
@@ -1267,11 +1271,16 @@ class Account extends Service {
   }
 
   /// Delete all sessions from the user account and remove any sessions cookies
-  /// from the end client.
-  Future deleteSessions() async {
+  /// from the end client. Pass `current` as false to keep the session making the
+  /// request and sign out of every other session.
+  Future deleteSessions({
+    bool? current,
+  }) async {
     final String apiPath = '/account/sessions';
 
-    final Map<String, dynamic> apiParams = {};
+    final Map<String, dynamic> apiParams = {
+      if (current != null) 'current': current,
+    };
 
     final Map<String, String> apiHeaders = {
       'X-Appwrite-Project': client.config['project'] ?? '',
@@ -1319,6 +1328,9 @@ class Account extends Service {
 
   /// Allow the user to login into their account by providing a valid email and
   /// password combination. This route will create a new session for the user.
+  /// Use the optional `duration` parameter to create a shorter session, for
+  /// example when the user doesn't choose "remember me". It must be at least 60
+  /// seconds and cannot exceed the project maximum session length.
   ///
   /// A user is limited to 10 active sessions at a time by default. [Learn more
   /// about session
@@ -1326,12 +1338,14 @@ class Account extends Service {
   Future<models.Session> createEmailPasswordSession({
     required String email,
     required String password,
+    int? duration,
   }) async {
     final String apiPath = '/account/sessions/email';
 
     final Map<String, dynamic> apiParams = {
       'email': email,
       'password': password,
+      if (duration != null) 'duration': duration,
     };
 
     final Map<String, String> apiHeaders = {

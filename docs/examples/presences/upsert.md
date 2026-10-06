@@ -1,5 +1,6 @@
 ```dart
 import 'package:appwrite/appwrite.dart';
+import 'package:appwrite/models.dart' as models;
 import 'package:appwrite/permission.dart';
 import 'package:appwrite/role.dart';
 
@@ -9,7 +10,7 @@ Client client = Client()
 
 Presences presences = Presences(client);
 
-Presence result = await presences.upsert(
+models.Presence result = await presences.upsert(
     presenceId: '<PRESENCE_ID>',
     status: '<STATUS>',
     permissions: [Permission.read(Role.any())], // optional

@@ -8,15 +8,18 @@ void main() {
     final mockStream = StreamController<RealtimeMessage>.broadcast();
     final mockCloseFunction = () async {};
     final mockUnsubscribeFunction = () async {};
-    Future<void> mockUpdateFunction(
-        {List<Object>? channels, List<String>? queries}) async {}
+    Future<void> mockUpdateFunction({
+      List<Object>? channels,
+      List<String>? queries,
+    }) async {}
     final subscription = RealtimeSubscription(
-        controller: mockStream,
-        close: mockCloseFunction,
-        unsubscribe: mockUnsubscribeFunction,
-        update: mockUpdateFunction,
-        channels: ['documents'],
-        queries: const []);
+      controller: mockStream,
+      close: mockCloseFunction,
+      unsubscribe: mockUnsubscribeFunction,
+      update: mockUpdateFunction,
+      channels: ['documents'],
+      queries: const [],
+    );
 
     test('should have the correct stream and close function', () {
       expect(subscription.controller, equals(mockStream));
