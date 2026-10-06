@@ -1,5 +1,6 @@
 ```dart
 import 'package:appwrite/appwrite.dart';
+import 'package:appwrite/models.dart' as models;
 
 Client client = Client()
     .setEndpoint('https://<REGION>.cloud.appwrite.io/v1') // Your API Endpoint
@@ -7,9 +8,9 @@ Client client = Client()
 
 Teams teams = Teams(client);
 
-Membership result = await teams.createMembership(
+models.Membership result = await teams.createMembership(
     teamId: '<TEAM_ID>',
-    roles: [],
+    roles: ["editor"],
     email: 'email@example.com', // optional
     userId: '<USER_ID>', // optional
     phone: '+12065550100', // optional

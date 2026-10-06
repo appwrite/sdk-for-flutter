@@ -1,5 +1,6 @@
 ```dart
 import 'package:appwrite/appwrite.dart';
+import 'package:appwrite/models.dart' as models;
 import 'package:appwrite/enums.dart' as enums;
 
 Client client = Client()
@@ -8,7 +9,7 @@ Client client = Client()
 
 Account account = Account(client);
 
-MfaChallenge result = await account.createMFAChallenge(
+models.MfaChallenge result = await account.createMFAChallenge(
     factor: enums.AuthenticationFactor.email,
 );
 ```

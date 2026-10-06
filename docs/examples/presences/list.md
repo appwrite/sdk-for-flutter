@@ -1,5 +1,6 @@
 ```dart
 import 'package:appwrite/appwrite.dart';
+import 'package:appwrite/models.dart' as models;
 
 Client client = Client()
     .setEndpoint('https://<REGION>.cloud.appwrite.io/v1') // Your API Endpoint
@@ -7,7 +8,7 @@ Client client = Client()
 
 Presences presences = Presences(client);
 
-PresenceList result = await presences.list(
+models.PresenceList result = await presences.list(
     queries: [], // optional
     total: false, // optional
     ttl: 0, // optional

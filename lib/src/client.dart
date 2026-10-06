@@ -27,8 +27,7 @@ abstract class Client {
   factory Client({
     String endPoint = 'https://cloud.appwrite.io/v1',
     bool selfSigned = false,
-  }) =>
-      createClient(endPoint: endPoint, selfSigned: selfSigned);
+  }) => createClient(endPoint: endPoint, selfSigned: selfSigned);
 
   /// Handle OAuth2 session creation.
   Future webAuth(Uri url, {String? callbackUrlScheme});
@@ -41,6 +40,8 @@ abstract class Client {
     required String idParamName,
     required Map<String, String> headers,
     Function(UploadProgress)? onProgress,
+    ResponseType? responseType,
+    HttpMethod method = HttpMethod.post,
   });
 
   /// Set self signed to [status].
@@ -55,6 +56,14 @@ abstract class Client {
 
   /// Set the Appwrite realtime endpoint.
   Client setEndPointRealtime(String endPoint);
+
+  /// Set the Appwrite push (MQTT broker) endpoint, e.g.
+  /// `mqtt://host:1883` or `mqtts://host:8883`.
+  Client setPushEndpoint(String endPoint);
+
+  /// Set a stable push client id, so the broker resumes this client's offline-replay
+  /// cursor across restarts. Defaults to a per-connection id when unset.
+  Client setPushClientId(String pushClientId);
 
   /// Set Project.
   ///

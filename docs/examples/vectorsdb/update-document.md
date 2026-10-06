@@ -1,5 +1,6 @@
 ```dart
 import 'package:appwrite/appwrite.dart';
+import 'package:appwrite/models.dart' as models;
 import 'package:appwrite/permission.dart';
 import 'package:appwrite/role.dart';
 
@@ -9,7 +10,7 @@ Client client = Client()
 
 VectorsDB vectorsDB = VectorsDB(client);
 
-Document result = await vectorsDB.updateDocument(
+models.Document result = await vectorsDB.updateDocument(
     databaseId: '<DATABASE_ID>',
     collectionId: '<COLLECTION_ID>',
     documentId: '<DOCUMENT_ID>',

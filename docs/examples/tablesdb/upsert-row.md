@@ -1,5 +1,6 @@
 ```dart
 import 'package:appwrite/appwrite.dart';
+import 'package:appwrite/models.dart' as models;
 import 'package:appwrite/permission.dart';
 import 'package:appwrite/role.dart';
 
@@ -9,7 +10,7 @@ Client client = Client()
 
 TablesDB tablesDB = TablesDB(client);
 
-Row result = await tablesDB.upsertRow(
+models.Row result = await tablesDB.upsertRow(
     databaseId: '<DATABASE_ID>',
     tableId: '<TABLE_ID>',
     rowId: '<ROW_ID>',

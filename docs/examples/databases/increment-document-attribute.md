@@ -1,5 +1,6 @@
 ```dart
 import 'package:appwrite/appwrite.dart';
+import 'package:appwrite/models.dart' as models;
 
 Client client = Client()
     .setEndpoint('https://<REGION>.cloud.appwrite.io/v1') // Your API Endpoint
@@ -7,7 +8,7 @@ Client client = Client()
 
 Databases databases = Databases(client);
 
-Document result = await databases.incrementDocumentAttribute(
+models.Document result = await databases.incrementDocumentAttribute(
     databaseId: '<DATABASE_ID>',
     collectionId: '<COLLECTION_ID>',
     documentId: '<DOCUMENT_ID>',

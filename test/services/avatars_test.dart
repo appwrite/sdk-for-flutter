@@ -41,6 +41,8 @@ class MockClient extends Mock implements Client {
     String? idParamName,
     Map<String, String>? headers,
     Function(UploadProgress)? onProgress,
+    ResponseType? responseType,
+    HttpMethod method = HttpMethod.post,
   }) async {
     return super.noSuchMethod(
       Invocation.method(#chunkedUpload, [
@@ -150,6 +152,52 @@ void main() {
 
       final response = await avatars.getPhoto();
       expect(response, isA<Uint8List>());
+    });
+
+    test('test method updatePhoto()', () async {
+      final Map<String, dynamic> data = {
+        '\$id': "5e5ea5c16897e",
+        '\$createdAt': "2020-10-15T06:38:00.000+00:00",
+        '\$updatedAt': "2020-10-15T06:38:00.000+00:00",
+        'name': "John Doe",
+        'registration': "2020-10-15T06:38:00.000+00:00",
+        'status': true,
+        'labels': [],
+        'passwordUpdate': "2020-10-15T06:38:00.000+00:00",
+        'email': "john@appwrite.io",
+        'phone': "+4930901820",
+        'emailVerification': true,
+        'phoneVerification': true,
+        'mfa': true,
+        'prefs': <String, dynamic>{},
+        'targets': [],
+        'accessedAt': "2020-10-15T06:38:00.000+00:00",
+      };
+
+      when(
+        client.chunkedUpload(
+          path: argThat(isNotNull),
+          params: argThat(isNotNull),
+          paramName: argThat(isNotNull),
+          idParamName: argThat(isNotNull),
+          headers: argThat(isNotNull),
+        ),
+      ).thenAnswer((_) async => Response(data: data));
+
+      final response = await avatars.updatePhoto(
+        file: InputFile.fromPath(path: './image.png'),
+      );
+      expect(response, isA<models.Account>());
+    });
+
+    test('test method deletePhoto()', () async {
+      final data = '';
+
+      when(
+        client.call(HttpMethod.delete),
+      ).thenAnswer((_) async => Response(data: data));
+
+      final response = await avatars.deletePhoto();
     });
 
     test('test method getQR()', () async {

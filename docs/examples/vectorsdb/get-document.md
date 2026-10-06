@@ -1,5 +1,6 @@
 ```dart
 import 'package:appwrite/appwrite.dart';
+import 'package:appwrite/models.dart' as models;
 
 Client client = Client()
     .setEndpoint('https://<REGION>.cloud.appwrite.io/v1') // Your API Endpoint
@@ -7,7 +8,7 @@ Client client = Client()
 
 VectorsDB vectorsDB = VectorsDB(client);
 
-Document result = await vectorsDB.getDocument(
+models.Document result = await vectorsDB.getDocument(
     databaseId: '<DATABASE_ID>',
     collectionId: '<COLLECTION_ID>',
     documentId: '<DOCUMENT_ID>',
