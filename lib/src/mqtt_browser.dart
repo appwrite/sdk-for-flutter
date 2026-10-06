@@ -619,20 +619,22 @@ class PushWeb implements Push {
         qos: publish.header?.qos.index ?? 0,
       );
       final content = PushNotificationContent.of(message);
-      final titles = <String>{};
+      var shownServerTitle = false;
       for (final subscription in _subscriptions.values) {
         if (_matches(subscription.filter, topic)) {
           subscription.callback(message);
           // Notification is per-subscription: only subs that opted in show one, each with
-          // its own title. A title the server sent replaces theirs, so one is shown.
-          if (subscription.background) {
-            titles.add(content.titleOr(subscription.title ?? topic));
+          // its own title. A title the server sent replaces theirs, so it is shown once.
+          if (subscription.background &&
+              !shownServerTitle &&
+              html.Notification.supported &&
+              html.Notification.permission == 'granted') {
+            shownServerTitle = content.title != null;
+            html.Notification(
+              content.titleOr(subscription.title ?? topic),
+              body: content.bodyFor(message),
+            );
           }
-        }
-      }
-      if (html.Notification.permission == 'granted') {
-        for (final title in titles) {
-          html.Notification(title, body: content.bodyFor(message));
         }
       }
     }
