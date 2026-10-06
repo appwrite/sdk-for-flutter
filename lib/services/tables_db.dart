@@ -9,11 +9,13 @@ class TablesDB extends Service {
   /// List transactions across all databases.
   Future<models.TransactionList> listTransactions({
     List<String>? queries,
+    bool? total,
   }) async {
     final String apiPath = '/tablesdb/transactions';
 
     final Map<String, dynamic> apiParams = {
       if (queries != null) 'queries': queries,
+      if (total != null) 'total': total,
     };
 
     final Map<String, String> apiHeaders = {
@@ -171,11 +173,11 @@ class TablesDB extends Service {
       );
     }
 
-    final String apiPath =
-        '/tablesdb/transactions/{transactionId}/operations'.replaceAll(
-      '{transactionId}',
-      transactionId,
-    );
+    final String apiPath = '/tablesdb/transactions/{transactionId}/operations'
+        .replaceAll(
+          '{transactionId}',
+          transactionId,
+        );
 
     final Map<String, dynamic> apiParams = {
       if (operations != null) 'operations': operations,

@@ -7,5 +7,7 @@ Client client = Client()
 
 Account account = Account(client);
 
-SessionList result = await account.listSessions();
+SessionList result = await account.listSessions(
+    total: false, // optional
+);
 ```

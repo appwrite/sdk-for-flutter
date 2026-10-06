@@ -31,6 +31,10 @@ mixin ClientMixin {
                   });
                 }
               });
+            } else if (value is Map) {
+              (request as http.MultipartRequest).fields.addAll({
+                key: jsonEncode(value),
+              });
             } else {
               (request as http.MultipartRequest).fields.addAll({
                 key: value.toString(),
@@ -91,9 +95,10 @@ mixin ClientMixin {
       warnings.split(';').forEach((warning) => log('Warning: $warning'));
     }
 
+    final isJson = (res.headers['content-type'] ?? '').contains(
+      'application/json',
+    );
     if (res.statusCode >= 400) {
-      final isJson =
-          (res.headers['content-type'] ?? '').contains('application/json');
       // Empty bodies still arrive with application/json (e.g. truncated
       // proxy/edge errors). Avoid FormatException from json.decode('').
       if (isJson && res.body.isNotEmpty) {
@@ -116,20 +121,16 @@ mixin ClientMixin {
       }
     }
     dynamic data;
-    if ((res.headers['content-type'] ?? '').contains('application/json')) {
-      if (responseType == ResponseType.json) {
-        data = json.decode(res.body);
-      } else if (responseType == ResponseType.bytes) {
-        data = res.bodyBytes;
-      } else {
-        data = res.body;
-      }
+    if (responseType == ResponseType.bytes) {
+      data = res.bodyBytes;
+    } else if (responseType == ResponseType.plain) {
+      // Decode as UTF-8 whatever the charset, since package:http falls back
+      // to latin1 when the content-type does not name one.
+      data = utf8.decode(res.bodyBytes);
+    } else if (isJson) {
+      data = json.decode(res.body);
     } else {
-      if (responseType == ResponseType.bytes) {
-        data = res.bodyBytes;
-      } else {
-        data = res.body;
-      }
+      data = res.body;
     }
     return Response(data: data);
   }
@@ -141,10 +142,12 @@ mixin ClientMixin {
       return http.Response(
         '',
         streamedResponse.statusCode,
-        headers: streamedResponse.headers.map((k, v) =>
-            k.toLowerCase() == 'content-type'
-                ? MapEntry(k, 'text/plain')
-                : MapEntry(k, v)),
+        headers: streamedResponse.headers.map(
+          (k, v) =>
+              k.toLowerCase() == 'content-type'
+                  ? MapEntry(k, 'text/plain')
+                  : MapEntry(k, v),
+        ),
         request: streamedResponse.request,
         isRedirect: streamedResponse.isRedirect,
         persistentConnection: streamedResponse.persistentConnection,

@@ -104,6 +104,7 @@ class Storage extends Service {
       idParamName: idParamName,
       headers: apiHeaders,
       onProgress: onProgress,
+      method: HttpMethod.post,
     );
 
     return models.File.fromMap(res.data);

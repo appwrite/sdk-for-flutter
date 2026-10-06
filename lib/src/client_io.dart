@@ -47,9 +47,10 @@ class ClientIO extends ClientBase with ClientMixin {
     String endPoint = 'https://cloud.appwrite.io/v1',
     this.selfSigned = false,
   }) : _endPoint = endPoint {
-    _nativeClient = HttpClient()
-      ..badCertificateCallback =
-          ((X509Certificate cert, String host, int port) => selfSigned);
+    _nativeClient =
+        HttpClient()
+          ..badCertificateCallback =
+              ((X509Certificate cert, String host, int port) => selfSigned);
     _httpClient = IOClient(_nativeClient);
     _endPointRealtime = endPoint
         .replaceFirst('https://', 'wss://')
@@ -59,7 +60,7 @@ class ClientIO extends ClientBase with ClientMixin {
       'x-sdk-name': 'Flutter',
       'x-sdk-platform': 'client',
       'x-sdk-language': 'flutter',
-      'x-sdk-version': '27.0.0',
+      'x-sdk-version': '27.1.0-rc.0',
       'X-Appwrite-Response-Format': '2.3.0',
     };
 
@@ -186,6 +187,18 @@ class ClientIO extends ClientBase with ClientMixin {
   }
 
   @override
+  ClientIO setPushEndpoint(String endPoint) {
+    config['endpointPush'] = endPoint;
+    return this;
+  }
+
+  @override
+  ClientIO setPushClientId(String pushClientId) {
+    config['pushClientId'] = pushClientId;
+    return this;
+  }
+
+  @override
   ClientIO addHeader(String key, String value) {
     _headers![key] = value;
 
@@ -286,7 +299,19 @@ class ClientIO extends ClientBase with ClientMixin {
     required String idParamName,
     required Map<String, String> headers,
     Function(UploadProgress)? onProgress,
+    ResponseType? responseType,
+    HttpMethod method = HttpMethod.post,
   }) async {
+    if (params[paramName] == null) {
+      return call(
+        method,
+        path: path,
+        params: params,
+        headers: headers,
+        responseType: responseType,
+      );
+    }
+
     InputFile file = params[paramName];
     if (file.path == null && file.bytes == null) {
       throw AppwriteException("File path or bytes must be provided");
@@ -305,7 +330,7 @@ class ClientIO extends ClientBase with ClientMixin {
     }
 
     late Response res;
-    if (size <= chunkSize) {
+    if (size <= chunkSize || responseType == ResponseType.plain) {
       if (file.path != null) {
         params[paramName] = await http.MultipartFile.fromPath(
           paramName,
@@ -320,10 +345,11 @@ class ClientIO extends ClientBase with ClientMixin {
         );
       }
       return call(
-        HttpMethod.post,
+        method,
         path: path,
         params: params,
         headers: headers,
+        responseType: responseType,
       );
     }
 
@@ -349,8 +375,13 @@ class ClientIO extends ClientBase with ClientMixin {
 
     final totalChunks = (size / chunkSize).ceil();
 
-    Future<Response> uploadChunk(int index, int start, int end, String? id,
-        [RandomAccessFile? raf]) async {
+    Future<Response> uploadChunk(
+      int index,
+      int start,
+      int end,
+      String? id, [
+      RandomAccessFile? raf,
+    ]) async {
       List<int> chunk = [];
       if (file.bytes != null) {
         chunk = file.bytes!.getRange(start, end).toList();
@@ -382,7 +413,7 @@ class ClientIO extends ClientBase with ClientMixin {
       chunkHeaders['content-range'] = 'bytes $start-${end - 1}/$size';
 
       return call(
-        HttpMethod.post,
+        method,
         path: path,
         headers: chunkHeaders,
         params: chunkParams,
@@ -474,9 +505,10 @@ class ClientIO extends ClientBase with ClientMixin {
   Future webAuth(Uri url, {String? callbackUrlScheme}) {
     return FlutterWebAuth2.authenticate(
       url: url.toString(),
-      callbackUrlScheme: callbackUrlScheme != null && _customSchemeAllowed
-          ? callbackUrlScheme
-          : "appwrite-callback-${config['project']!}",
+      callbackUrlScheme:
+          callbackUrlScheme != null && _customSchemeAllowed
+              ? callbackUrlScheme
+              : "appwrite-callback-${config['project']!}",
       options: const FlutterWebAuth2Options(
         useWebview: false,
       ),
@@ -491,9 +523,10 @@ class ClientIO extends ClientBase with ClientMixin {
             final parsed = jsonDecode(error);
             if (parsed is Map) {
               final codeValue = parsed['code'];
-              final int? code = codeValue is int
-                  ? codeValue
-                  : int.tryParse('${codeValue ?? ''}');
+              final int? code =
+                  codeValue is int
+                      ? codeValue
+                      : int.tryParse('${codeValue ?? ''}');
               throw AppwriteException(
                 parsed['message']?.toString() ?? error,
                 code,
