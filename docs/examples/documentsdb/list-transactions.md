@@ -9,5 +9,6 @@ DocumentsDB documentsDB = DocumentsDB(client);
 
 TransactionList result = await documentsDB.listTransactions(
     queries: [], // optional
+    total: false, // optional
 );
 ```

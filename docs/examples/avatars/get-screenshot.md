@@ -15,8 +15,7 @@ Avatars avatars = Avatars(client);
 Uint8List bytes = await avatars.getScreenshot(
     url: 'https://example.com',
     headers: {
-        "Authorization": "Bearer token123",
-        "X-Custom-Header": "value"
+        "Accept-Language": "en-US,en;q=0.9"
     }, // optional
     viewportWidth: 1920, // optional
     viewportHeight: 1080, // optional
@@ -46,8 +45,7 @@ FutureBuilder<Uint8List>(
     future: avatars.getScreenshot(
         url: 'https://example.com',
         headers: {
-        "Authorization": "Bearer token123",
-        "X-Custom-Header": "value"
+        "Accept-Language": "en-US,en;q=0.9"
     }, // optional
         viewportWidth: 1920, // optional
         viewportHeight: 1080, // optional

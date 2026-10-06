@@ -75,11 +75,11 @@ class Organization extends Service {
       );
     }
 
-    final String apiPath =
-        '/organization/installations/{installationId}'.replaceAll(
-      '{installationId}',
-      installationId,
-    );
+    final String apiPath = '/organization/installations/{installationId}'
+        .replaceAll(
+          '{installationId}',
+          installationId,
+        );
 
     final Map<String, dynamic> apiParams = {};
 
@@ -112,11 +112,11 @@ class Organization extends Service {
       );
     }
 
-    final String apiPath =
-        '/organization/installations/{installationId}'.replaceAll(
-      '{installationId}',
-      installationId,
-    );
+    final String apiPath = '/organization/installations/{installationId}'
+        .replaceAll(
+          '{installationId}',
+          installationId,
+        );
 
     final Map<String, dynamic> apiParams = {
       if (authorizationDetails != null)
@@ -151,11 +151,11 @@ class Organization extends Service {
       );
     }
 
-    final String apiPath =
-        '/organization/installations/{installationId}'.replaceAll(
-      '{installationId}',
-      installationId,
-    );
+    final String apiPath = '/organization/installations/{installationId}'
+        .replaceAll(
+          '{installationId}',
+          installationId,
+        );
 
     final Map<String, dynamic> apiParams = {};
 

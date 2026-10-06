@@ -40,7 +40,7 @@ class ClientBrowser extends ClientBase with ClientMixin {
       'x-sdk-name': 'Flutter',
       'x-sdk-platform': 'client',
       'x-sdk-language': 'flutter',
-      'x-sdk-version': '27.0.0',
+      'x-sdk-version': '27.1.0-rc.1',
       'X-Appwrite-Response-Format': '2.3.0',
     };
 
@@ -156,6 +156,18 @@ class ClientBrowser extends ClientBase with ClientMixin {
   }
 
   @override
+  ClientBrowser setPushEndpoint(String endPoint) {
+    config['endpointPush'] = endPoint;
+    return this;
+  }
+
+  @override
+  ClientBrowser setPushClientId(String pushClientId) {
+    config['pushClientId'] = pushClientId;
+    return this;
+  }
+
+  @override
   ClientBrowser addHeader(String key, String value) {
     _headers![key] = value;
 
@@ -182,7 +194,19 @@ class ClientBrowser extends ClientBase with ClientMixin {
     required String idParamName,
     required Map<String, String> headers,
     Function(UploadProgress)? onProgress,
+    ResponseType? responseType,
+    HttpMethod method = HttpMethod.post,
   }) async {
+    if (params[paramName] == null) {
+      return call(
+        method,
+        path: path,
+        params: params,
+        headers: headers,
+        responseType: responseType,
+      );
+    }
+
     InputFile file = params[paramName];
     if (file.bytes == null) {
       throw AppwriteException("File bytes must be provided for Flutter web");
@@ -191,17 +215,18 @@ class ClientBrowser extends ClientBase with ClientMixin {
     int size = file.bytes!.length;
 
     late Response res;
-    if (size <= chunkSize) {
+    if (size <= chunkSize || responseType == ResponseType.plain) {
       params[paramName] = http.MultipartFile.fromBytes(
         paramName,
         file.bytes!,
         filename: file.filename,
       );
       return call(
-        HttpMethod.post,
+        method,
         path: path,
         params: params,
         headers: headers,
+        responseType: responseType,
       );
     }
 
@@ -249,7 +274,7 @@ class ClientBrowser extends ClientBase with ClientMixin {
       chunkHeaders['content-range'] = 'bytes $start-${end - 1}/$size';
 
       return call(
-        HttpMethod.post,
+        method,
         path: path,
         headers: chunkHeaders,
         params: chunkParams,

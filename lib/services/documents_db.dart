@@ -7,11 +7,13 @@ class DocumentsDB extends Service {
   /// List transactions across all databases.
   Future<models.TransactionList> listTransactions({
     List<String>? queries,
+    bool? total,
   }) async {
     final String apiPath = '/documentsdb/transactions';
 
     final Map<String, dynamic> apiParams = {
       if (queries != null) 'queries': queries,
+      if (total != null) 'total': total,
     };
 
     final Map<String, String> apiHeaders = {
@@ -65,11 +67,11 @@ class DocumentsDB extends Service {
       );
     }
 
-    final String apiPath =
-        '/documentsdb/transactions/{transactionId}'.replaceAll(
-      '{transactionId}',
-      transactionId,
-    );
+    final String apiPath = '/documentsdb/transactions/{transactionId}'
+        .replaceAll(
+          '{transactionId}',
+          transactionId,
+        );
 
     final Map<String, dynamic> apiParams = {};
 
@@ -100,11 +102,11 @@ class DocumentsDB extends Service {
       );
     }
 
-    final String apiPath =
-        '/documentsdb/transactions/{transactionId}'.replaceAll(
-      '{transactionId}',
-      transactionId,
-    );
+    final String apiPath = '/documentsdb/transactions/{transactionId}'
+        .replaceAll(
+          '{transactionId}',
+          transactionId,
+        );
 
     final Map<String, dynamic> apiParams = {
       if (commit != null) 'commit': commit,
@@ -137,11 +139,11 @@ class DocumentsDB extends Service {
       );
     }
 
-    final String apiPath =
-        '/documentsdb/transactions/{transactionId}'.replaceAll(
-      '{transactionId}',
-      transactionId,
-    );
+    final String apiPath = '/documentsdb/transactions/{transactionId}'
+        .replaceAll(
+          '{transactionId}',
+          transactionId,
+        );
 
     final Map<String, dynamic> apiParams = {};
 

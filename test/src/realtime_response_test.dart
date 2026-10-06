@@ -48,7 +48,9 @@ void main() {
       final responseString = response1.toString();
 
       expect(
-          responseString, equals('RealtimeResponse(type: $type, data: $data)'));
+        responseString,
+        equals('RealtimeResponse(type: $type, data: $data)'),
+      );
     });
 
     test('equality operator should compare two instances', () {

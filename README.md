@@ -19,7 +19,7 @@ Add this to your package's `pubspec.yaml` file:
 
 ```yml
 dependencies:
-  appwrite: ^27.0.0
+  appwrite: ^27.1.0-rc.1
 ```
 
 You can install packages from the command line:
@@ -27,6 +27,45 @@ You can install packages from the command line:
 ```bash
 flutter pub add appwrite
 ```
+
+### Push on Android
+
+`Push` includes a native Android plugin, and `flutter_local_notifications` needs core library
+desugaring, so add this to `android/app/build.gradle.kts` (desugaring is configured when the app
+is assembled, so a plugin cannot apply it for you):
+
+```kotlin
+android {
+    compileOptions {
+        isCoreLibraryDesugaringEnabled = true
+    }
+}
+
+dependencies {
+    coreLibraryDesugaring("com.android.tools:desugar_jdk_libs:2.1.4")
+}
+```
+
+A subscription with `background: true` keeps delivering after the app is backgrounded, killed or
+the device restarts, until it is unsubscribed or `push.close()` is called (do this on sign-out).
+The plugin saves the subscription, and a scheduled job and alarm wake the app every 15 to 60
+seconds to reconnect; the broker replays what was sent in between (`retry: true`). Messages no
+in-app callback receives are posted as notifications that open the app. It reconnects with the
+credential saved at subscribe time, so use a session rather than a short-lived JWT.
+
+```dart
+final sub = await push.subscribe('news', (message) => print(message.data),
+    background: true, title: 'News');
+
+// Optional: immediate delivery even after a kill and during Doze, with a quiet ongoing
+// notification (call while the app is in the foreground).
+await push.setForeground(true);
+```
+
+Foreground mode runs a `remoteMessaging` foreground service, which Google Play asks apps to
+declare in the Play Console. Apps that never enable it can remove the service from their merged
+manifest with `tools:node="remove"` on `io.appwrite.services.PushService` and
+`android.permission.FOREGROUND_SERVICE_REMOTE_MESSAGING`.
 
 
 ## Getting Started
@@ -37,6 +76,8 @@ To init your SDK and start interacting with Appwrite services, you need to add a
 From the options, choose to add a new **Flutter** platform and add your app credentials. Appwrite Flutter SDK currently supports building apps for Android, iOS, Linux, Mac OS, Web and Windows.
 
 If you are building your Flutter application for multiple devices, you have to follow this process for each different device.
+
+> On Android, iOS and macOS, call `createOAuth2Session` without the `success` and `failure` URLs. The SDK only returns to your app through the `appwrite-callback-[PROJECT_ID]` scheme, and only the default redirect carries the new session with it. A custom URL, such as an https App Link, makes the call fail (for example with `PlatformException(CANCELED)`) even when the login itself succeeded. Await the returned `Future` and navigate from your Dart code instead.
 
 ### Android
 For **Android** first add your app <u>name</u> and <u>package name</u>, Your package name is generally the **applicationId** in your app-level <a href="https://github.com/appwrite/playground-for-flutter/blob/0fdbdff98384fff940ed0b1e08cf14cfe3a2be3e/android/app/build.gradle#L41" target="_blank" rel="noopener">build.gradle</a> file. By registering your new app platform, you are allowing your app to communicate with the Appwrite API.

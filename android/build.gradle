@@ -1,0 +1,56 @@
+// The native half of Push on Android: background delivery that survives the process being
+// killed, a reboot and an app update, shared with the Appwrite Android SDK.
+group = "io.appwrite.flutter"
+version = "27.1.0-rc.1"
+
+buildscript {
+    ext.kotlin_version = "2.1.0"
+    repositories {
+        google()
+        mavenCentral()
+    }
+
+    dependencies {
+        classpath("com.android.tools.build:gradle:8.7.3")
+        classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version")
+    }
+}
+
+allprojects {
+    repositories {
+        google()
+        mavenCentral()
+    }
+}
+
+apply plugin: "com.android.library"
+apply plugin: "kotlin-android"
+
+android {
+    namespace = "io.appwrite.flutter"
+    compileSdk = 35
+
+    compileOptions {
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
+    }
+
+    kotlinOptions {
+        jvmTarget = "17"
+    }
+
+    sourceSets {
+        main.java.srcDirs += "src/main/kotlin"
+    }
+
+    defaultConfig {
+        minSdk = 24
+        // R8 rules for the bundled MQTT client, applied to the app.
+        consumerProguardFiles("consumer-rules.pro")
+    }
+}
+
+dependencies {
+    implementation("com.hivemq:hivemq-mqtt-client-shaded:1.3.6")
+    implementation("androidx.core:core-ktx:1.13.1")
+}

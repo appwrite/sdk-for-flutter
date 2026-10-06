@@ -1,5 +1,20 @@
 # Change Log
 
+## 27.1.0-rc.1
+
+* Added: `Push` service over MQTT with `subscribe`, `setForeground` and `onOpen`/`onClose`/`onError`, plus `PushSubscription.update` and `unsubscribe`
+* Added: `Client.setPushEndpoint` and `Client.setPushClientId` to configure the push broker, and the `Topic` helper for building topics
+* Added: `Analytics.createEvent` for sending tracking events
+* Added: `AnalyticsTracking` for app-lifecycle events and `screenView`, and `AnalyticsObserver` for automatic route tracking
+* Added: `Apps` service for apps, installations, keys, secrets and scopes, and `Oauth2` service for authorize, token, device flow, grants and revoke
+* Added: `Avatars.updatePhoto` and `Avatars.deletePhoto`, and the `Account` model
+* Added: optional `total` on `Account.listSessions`, the `Locale.list*` methods and `listTransactions` across the database services
+* Added: optional `current` on `Account.deleteSessions`, optional `duration` on `Account.createEmailPasswordSession`, and `OAuthProvider.webflow`
+* Updated: push adds the `mqtt5_client`, `flutter_background_service` and `flutter_local_notifications` dependencies and an Android plugin; Android builds need core library desugaring
+* Fixed: chunked uploads send the filename derived from `InputFile(path:)` instead of being rejected as empty
+* Fixed: plain-text responses are decoded as UTF-8 regardless of the declared charset
+* Fixed: multipart requests JSON-encode `Map` fields
+
 ## 27.0.0
 
 * Breaking: removed `Account.listLogs` and the `Log`, `LogList` models
