@@ -1,5 +1,18 @@
 # Change Log
 
+## 27.1.0-rc.6
+
+* Added: `getInitialNotification()`, `onNotificationOpened()`, and the `PushNotificationOpened` type (topic + data)
+* Fixed: Android `onOpen`/`onClose` now fire for `background` subscriptions
+* Fixed: `subscribe` falls back to the session the client signed in with
+* Fixed: Android notifications no longer suppressed when no live callback received the message
+* Fixed: `close()` during subscribe/resume no longer re-subscribes; `resume` leaves a live `Push` host untouched
+* Updated: notification taps routed through a translucent `PushOpenActivity`
+
+## 27.1.0-rc.5
+
+* Updated: regenerated with sdk-generator 5.5.0; no SDK code changes
+
 ## 27.1.0-rc.3
 
 * Added: background push notifications render the server `notification` title, body, and image

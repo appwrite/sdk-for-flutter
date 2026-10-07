@@ -42,6 +42,66 @@ const Duration _retryDelay = Duration(seconds: 2);
 /// The service event the app listens on to forward background messages to callbacks.
 String get pushForegroundMessageEvent => _messageEvent;
 
+// Notification taps in the app isolate (iOS): each notification the background isolate posts
+// carries its message's topic and payload, read back when it is tapped.
+final FlutterLocalNotificationsPlugin _appNotifications =
+    FlutterLocalNotificationsPlugin();
+final StreamController<PushNotificationOpened> _localTaps =
+    StreamController<PushNotificationOpened>.broadcast();
+Future<void>? _localTapsReady;
+bool _launchTapReported = false;
+
+PushNotificationOpened? _openedFrom(String? payload) {
+  try {
+    final tap = jsonDecode(payload ?? '') as Map<String, dynamic>;
+    return PushNotificationOpened.fromPayload(
+      tap['topic'] as String,
+      tap['payload'] as String,
+    );
+  } catch (_) {
+    return null;
+  }
+}
+
+Future<void> _ensureLocalTaps() =>
+    _localTapsReady ??= _appNotifications
+        .initialize(
+          const InitializationSettings(iOS: DarwinInitializationSettings()),
+          onDidReceiveNotificationResponse: (response) {
+            final opened = _openedFrom(response.payload);
+            if (opened != null) {
+              _localTaps.add(opened);
+            }
+          },
+        )
+        .then((_) {});
+
+/// iOS: the tap on a background notification that launched the app, once, or null.
+Future<PushNotificationOpened?> localNotificationLaunch() async {
+  if (!Platform.isIOS || _launchTapReported) {
+    return null;
+  }
+  _launchTapReported = true;
+  await _ensureLocalTaps();
+  final details = await _appNotifications.getNotificationAppLaunchDetails();
+  return details?.didNotificationLaunchApp == true
+      ? _openedFrom(details!.notificationResponse?.payload)
+      : null;
+}
+
+/// iOS: call [callback] for each tap on a background notification. Returns a function that
+/// stops listening.
+void Function() listenLocalNotificationTaps(
+  void Function(PushNotificationOpened opened) callback,
+) {
+  if (!Platform.isIOS) {
+    return () {};
+  }
+  unawaited(_ensureLocalTaps());
+  final subscription = _localTaps.stream.listen(callback);
+  return () => unawaited(subscription.cancel());
+}
+
 /// The service event the isolate relays its errors on, so the app's onError sees them.
 String get pushForegroundErrorEvent => _errorEvent;
 
@@ -263,6 +323,10 @@ Future<void> pushForegroundEntry(ServiceInstance service) async {
               ),
               iOS: DarwinNotificationDetails(),
             ),
+            payload: jsonEncode({
+              'topic': message.topic,
+              'payload': message.data,
+            }),
           );
         }
         // Forward to the app isolate (if alive) so in-app callbacks still fire.

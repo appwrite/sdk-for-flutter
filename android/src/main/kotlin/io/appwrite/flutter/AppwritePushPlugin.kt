@@ -10,6 +10,7 @@ import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import io.appwrite.services.PushBridge
 import io.appwrite.services.PushMessage
+import io.appwrite.services.PushTaps
 import io.flutter.embedding.engine.plugins.FlutterPlugin
 import io.flutter.embedding.engine.plugins.activity.ActivityAware
 import io.flutter.embedding.engine.plugins.activity.ActivityPluginBinding
@@ -30,6 +31,8 @@ class AppwritePushPlugin :
     private var methods: MethodChannel? = null
     private var events: EventChannel? = null
     private var sink: EventChannel.EventSink? = null
+    private var openedListeners = 0
+    private var stopOpened: (() -> Unit)? = null
     private var bridge: PushBridge? = null
     private var activity: Activity? = null
 
@@ -49,6 +52,8 @@ class AppwritePushPlugin :
                 )
 
                 override fun onError(message: String) = send(mapOf("type" to "error", "message" to message))
+
+                override fun onConnection(connected: Boolean) = send(mapOf("type" to "connection", "connected" to connected))
             },
         )
         methods = MethodChannel(binding.binaryMessenger, METHOD_CHANNEL).also { it.setMethodCallHandler(this) }
@@ -61,6 +66,9 @@ class AppwritePushPlugin :
         methods = null
         events = null
         sink = null
+        stopOpened?.invoke()
+        stopOpened = null
+        openedListeners = 0
     }
 
     override fun onAttachedToActivity(binding: ActivityPluginBinding) {
@@ -103,9 +111,14 @@ class AppwritePushPlugin :
                     "stop" -> bridge.stop().let { null }
                     "setForeground" -> bridge.setForeground(call.argument<Boolean>("enabled") == true).let { null }
                     "hasSaved" -> bridge.hasSaved()
-                    "resume" -> bridge.resume().let { null }
+                    "resume" -> bridge.resume(call.argument<String>("authMethod"), call.argument<String>("credential"), false).let { null }
+                    "backgroundStatus" -> bridge.backgroundStatus()
+                    "requestExactAlarms" -> bridge.requestExactAlarms()
+                    "requestIgnoreBatteryOptimizations" -> bridge.requestIgnoreBatteryOptimizations()
                     "setErrorCallback" -> bridge.setErrorCallback(call.argument<Boolean>("registered") == true)
                     "defaultClientId" -> bridge.defaultClientId(call.argument<String>("authMethod")!!, call.argument<String>("credential")!!)
+                    "getInitialNotification" -> PushTaps.take()?.let { mapOf("topic" to it.topic, "payload" to it.payload) }
+                    "listenOpened" -> listenOpened(call.argument<Boolean>("listening") == true).let { null }
                     else -> return result.notImplemented()
                 },
             )
@@ -138,6 +151,17 @@ class AppwritePushPlugin :
     // The bridge calls back on background threads; event sinks must be used on the main thread.
     private fun send(event: Map<String, Any?>) {
         main.post { sink?.success(event) }
+    }
+
+    // Sends each tap while Dart listens for them; until then a tap waits for getInitialNotification.
+    private fun listenOpened(listening: Boolean) {
+        openedListeners = (openedListeners + if (listening) 1 else -1).coerceAtLeast(0)
+        if (openedListeners > 0 && stopOpened == null) {
+            stopOpened = PushTaps.listen { tap -> send(mapOf("type" to "opened", "topic" to tap.topic, "payload" to tap.payload)) }
+        } else if (openedListeners == 0) {
+            stopOpened?.invoke()
+            stopOpened = null
+        }
     }
 
     private companion object {

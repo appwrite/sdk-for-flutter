@@ -22,6 +22,7 @@ class _Subscription {
   bool background;
   String? title;
   bool retry;
+  bool notifyInForeground;
 
   _Subscription(
     this.filter,
@@ -29,12 +30,19 @@ class _Subscription {
     this.background = false,
     this.title,
     this.retry = true,
+    this.notifyInForeground = false,
   });
 }
 
 class _SubscriptionHandle implements PushSubscription {
   final void Function() _unsubscribe;
-  final void Function({bool? background, String? title, bool? retry}) _update;
+  final void Function({
+    bool? background,
+    String? title,
+    bool? retry,
+    bool? notifyInForeground,
+  })
+  _update;
 
   _SubscriptionHandle(this._unsubscribe, this._update);
 
@@ -42,8 +50,17 @@ class _SubscriptionHandle implements PushSubscription {
   void unsubscribe() => _unsubscribe();
 
   @override
-  void update({bool? background, String? title, bool? retry}) =>
-      _update(background: background, title: title, retry: retry);
+  void update({
+    bool? background,
+    String? title,
+    bool? retry,
+    bool? notifyInForeground,
+  }) => _update(
+    background: background,
+    title: title,
+    retry: retry,
+    notifyInForeground: notifyInForeground,
+  );
 }
 
 // Fixed connection tuning — not exposed as an option.
@@ -251,6 +268,7 @@ class PushWeb implements Push {
     bool? background,
     String? title,
     bool retry = true,
+    bool notifyInForeground = false,
   }) async {
     final List<String> topicList;
     final MqttBrowserClient mqtt;
@@ -265,6 +283,7 @@ class PushWeb implements Push {
           background: background,
           title: title,
           retry: retry,
+          notifyInForeground: notifyInForeground,
         );
       }
       _notify(e);
@@ -337,6 +356,7 @@ class PushWeb implements Push {
           background: wantsBackground,
           title: title,
           retry: retry,
+          notifyInForeground: notifyInForeground,
         );
 
         final completer = Completer<void>();
@@ -361,6 +381,7 @@ class PushWeb implements Push {
           background: background,
           title: title,
           retry: retry,
+          notifyInForeground: notifyInForeground,
         );
       }
       unsubscribe();
@@ -368,7 +389,12 @@ class PushWeb implements Push {
       rethrow;
     }
 
-    void update({bool? background, String? title, bool? retry}) {
+    void update({
+      bool? background,
+      String? title,
+      bool? retry,
+      bool? notifyInForeground,
+    }) {
       final changedFilters = <String>{};
       for (final id in ids) {
         final entry = _subscriptions[id];
@@ -380,6 +406,9 @@ class PushWeb implements Push {
         }
         if (title != null) {
           entry.title = title;
+        }
+        if (notifyInForeground != null) {
+          entry.notifyInForeground = notifyInForeground;
         }
         if (retry != null && retry != entry.retry) {
           entry.retry = retry;
@@ -423,6 +452,30 @@ class PushWeb implements Push {
   // foreground service.
   @override
   Future<void> setForeground(bool enabled) async {}
+
+  @override
+  Future<PushBackgroundStatus?> backgroundStatus() async => null;
+
+  @override
+  Future<bool> requestExactAlarms() async => false;
+
+  @override
+  Future<bool> requestIgnoreBatteryOptimizations() async => false;
+
+  // Taps on the notifications this page shows, while it is open.
+  static final StreamController<PushNotificationOpened> _opened =
+      StreamController<PushNotificationOpened>.broadcast();
+
+  @override
+  Future<PushNotificationOpened?> getInitialNotification() async => null;
+
+  @override
+  void Function() onNotificationOpened(
+    void Function(PushNotificationOpened opened) callback,
+  ) {
+    final subscription = _opened.stream.listen(callback);
+    return () => unawaited(subscription.cancel());
+  }
 
   @override
   void close() {
@@ -474,10 +527,11 @@ class PushWeb implements Push {
     return connecting.then((_) => _mqtt!);
   }
 
-  // The credential set on the client (via Client.setJWT / setSession), as (method, credential).
+  // The credential set on the client (via Client.setJWT / setSession), else the session it
+  // signed in with, as (method, credential).
   (String, String) _credential() {
     final jwt = client.config['jwt'] ?? client.config['jWT'];
-    final session = client.config['session'];
+    final session = _clientSession(client);
     if (jwt != null && jwt.isNotEmpty) {
       return ('appwrite-jwt', jwt);
     }
@@ -485,7 +539,7 @@ class PushWeb implements Push {
       return ('appwrite-session', session);
     }
     throw AppwriteException(
-      'No credential set on the client; call Client.setJWT() or Client.setSession() first.',
+      'No credential: sign in with this client, or call Client.setJWT() or Client.setSession() first.',
     );
   }
 
@@ -619,20 +673,28 @@ class PushWeb implements Push {
         qos: publish.header?.qos.index ?? 0,
       );
       final content = PushNotificationContent.of(message);
-      final titles = <String>{};
+      final shownTitles = <String>{};
       for (final subscription in _subscriptions.values) {
         if (_matches(subscription.filter, topic)) {
           subscription.callback(message);
-          // Notification is per-subscription: only subs that opted in show one, each with
-          // its own title. A title the server sent replaces theirs, so one is shown.
-          if (subscription.background) {
-            titles.add(content.titleOr(subscription.title ?? topic));
+          // Notification is per-subscription: only subs that opted in show one, each
+          // title once. A title the server sent replaces theirs, so it is shown once.
+          final title = content.titleOr(subscription.title ?? topic);
+          if (subscription.background &&
+              (html.document.visibilityState != 'visible' ||
+                  subscription.notifyInForeground) &&
+              html.Notification.supported &&
+              html.Notification.permission == 'granted' &&
+              shownTitles.add(title)) {
+            html.Notification(
+              title,
+              body: content.bodyFor(message),
+            ).onClick.listen((_) {
+              _opened.add(
+                PushNotificationOpened.fromPayload(topic, message.data),
+              );
+            });
           }
-        }
-      }
-      if (html.Notification.permission == 'granted') {
-        for (final title in titles) {
-          html.Notification(title, body: content.bodyFor(message));
         }
       }
     }
@@ -856,11 +918,29 @@ List<String> _topicList(Client client, Object? topics) {
       : <String>[topics.toString()];
 }
 
+/// The session set on the client, else the one it signed in with when the browser keeps it in
+/// localStorage (`cookieFallback`).
+String? _clientSession(Client client) {
+  final session = client.config['session'];
+  if (session != null && session.isNotEmpty) {
+    return session;
+  }
+  try {
+    final fallback =
+        jsonDecode(html.window.localStorage['cookieFallback'] ?? '{}')
+            as Map<String, dynamic>;
+    final value = fallback['a_session_${client.config['project'] ?? ''}'];
+    return value is String && value.isNotEmpty ? value : null;
+  } catch (_) {
+    return null;
+  }
+}
+
 /// The signed-in user's own topic, `users/<userId>`, read off the client's
 /// credential (JWT first, then session) without a network call.
 String _userTopic(Client client) {
   final jwt = client.config['jwt'] ?? client.config['jWT'];
-  final session = client.config['session'];
+  final session = _clientSession(client);
   // The credential the connection authenticates with: the JWT when one is set (never the
   // session, which could belong to a different user), else the session.
   final userId =
@@ -869,7 +949,7 @@ String _userTopic(Client client) {
           : _userIdFromSession(session);
   if (userId == null) {
     throw AppwriteException(
-      'subscribe() without a topic needs a signed-in user: set a JWT or session on the client',
+      'subscribe() without a topic needs a signed-in user: sign in with this client, or set a JWT or session on it',
     );
   }
   return 'users/$userId';
