@@ -103,7 +103,10 @@ class AppwritePushPlugin :
                     "stop" -> bridge.stop().let { null }
                     "setForeground" -> bridge.setForeground(call.argument<Boolean>("enabled") == true).let { null }
                     "hasSaved" -> bridge.hasSaved()
-                    "resume" -> bridge.resume().let { null }
+                    "resume" -> bridge.resume(call.argument<String>("authMethod"), call.argument<String>("credential"), false).let { null }
+                    "backgroundStatus" -> bridge.backgroundStatus()
+                    "requestExactAlarms" -> bridge.requestExactAlarms()
+                    "requestIgnoreBatteryOptimizations" -> bridge.requestIgnoreBatteryOptimizations()
                     "setErrorCallback" -> bridge.setErrorCallback(call.argument<Boolean>("registered") == true)
                     "defaultClientId" -> bridge.defaultClientId(call.argument<String>("authMethod")!!, call.argument<String>("credential")!!)
                     else -> return result.notImplemented()

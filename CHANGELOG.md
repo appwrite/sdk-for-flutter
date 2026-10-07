@@ -1,5 +1,9 @@
 # Change Log
 
+## 27.1.0-rc.5
+
+* Updated: regenerated with sdk-generator 5.5.0; no SDK code changes
+
 ## 27.1.0-rc.3
 
 * Added: background push notifications render the server `notification` title, body, and image

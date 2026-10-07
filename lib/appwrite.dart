@@ -30,6 +30,8 @@ export 'src/upload_progress.dart';
 export 'src/realtime_subscription.dart';
 export 'src/realtime_message.dart';
 export 'src/input_file.dart';
+export 'src/analytics_observer.dart';
+export 'src/analytics_tracking.dart';
 
 part 'query.dart';
 part 'permission.dart';

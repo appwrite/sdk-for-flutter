@@ -16,11 +16,46 @@ abstract class PushSubscription {
   /// Drop this subscription. Closes the connection once the last one is gone.
   void unsubscribe();
 
-  /// Live-update this subscription's [background] delivery, notification [title] and/or
-  /// [retry] (QoS). Only the arguments you pass change; the rest stay as they
-  /// were. Changing [retry] re-subscribes this subscription's topics at the
-  /// new QoS.
-  void update({bool? background, String? title, bool? retry});
+  /// Live-update this subscription's [background] delivery, notification [title], [retry]
+  /// (QoS) and/or [notifyInForeground]. Only the arguments you pass change; the rest stay as
+  /// they were. Changing [retry] re-subscribes this subscription's topics at the new QoS.
+  void update({
+    bool? background,
+    String? title,
+    bool? retry,
+    bool? notifyInForeground,
+  });
+}
+
+/// What Android background delivery can rely on; see [Push.backgroundStatus].
+class PushBackgroundStatus {
+  /// The app may schedule exact alarms (`SCHEDULE_EXACT_ALARM`, granted).
+  final bool exactAlarms;
+
+  /// The app is exempt from battery optimisation.
+  final bool ignoringBatteryOptimizations;
+
+  /// Foreground mode ([Push.setForeground]) keeps the connection open in a service.
+  final bool foregroundService;
+
+  /// Wake-ups may be deferred by Doze, so messages can arrive late while the app is closed.
+  final bool bestEffort;
+
+  const PushBackgroundStatus({
+    required this.exactAlarms,
+    required this.ignoringBatteryOptimizations,
+    required this.foregroundService,
+    required this.bestEffort,
+  });
+
+  factory PushBackgroundStatus.fromMap(Map<String, dynamic> map) =>
+      PushBackgroundStatus(
+        exactAlarms: map['exactAlarms'] == true,
+        ignoringBatteryOptimizations:
+            map['ignoringBatteryOptimizations'] == true,
+        foregroundService: map['foregroundService'] == true,
+        bestEffort: map['bestEffort'] == true,
+      );
 }
 
 /// Appwrite native push service — the realtime analog delivered over an MQTT
@@ -97,8 +132,10 @@ abstract class Push extends Service {
   /// always keeps its session, so replay is a purely per-subscription choice.
   ///
   /// Set [background] to also keep receiving while the app is backgrounded or closed and post a
-  /// notification per message with [title] (defaulting to the message topic). Toggle these
-  /// later with [PushSubscription.update].
+  /// notification per message with [title] (defaulting to the message topic). On Android and the
+  /// web, notifications are posted only while the app is not on screen, since it shows the
+  /// message itself through the callback; set [notifyInForeground] to post them while it is too.
+  /// Toggle these later with [PushSubscription.update].
   ///
   /// On Android the SDK's native plugin saves the subscription and keeps delivering after the
   /// app is killed, the device restarts or the app updates, until it is unsubscribed or [close]
@@ -114,6 +151,7 @@ abstract class Push extends Service {
     bool? background,
     String? title,
     bool retry,
+    bool notifyInForeground,
   });
 
   /// Android: run background delivery in a foreground service (with a quiet ongoing
@@ -122,6 +160,23 @@ abstract class Push extends Service {
   /// while the app is in the foreground: Android 12+ refuses to start the service from the
   /// background. It only affects [background] subscriptions. A no-op elsewhere.
   Future<void> setForeground(bool enabled);
+
+  /// Android: what background delivery can rely on. When `bestEffort` is true the scheduled
+  /// wake-ups are inexact and Doze can defer them, so messages may arrive late while the app is
+  /// closed; explain why, then ask with [requestExactAlarms] or
+  /// [requestIgnoreBatteryOptimizations]. Null elsewhere.
+  Future<PushBackgroundStatus?> backgroundStatus();
+
+  /// Android 12+: open the system screen where the user allows exact alarms, for punctual
+  /// background wake-ups. Call it from a user action, never on its own. Resolves false when
+  /// there is nothing to ask: already allowed, older Android, the app does not declare
+  /// `SCHEDULE_EXACT_ALARM`, or not Android.
+  Future<bool> requestExactAlarms();
+
+  /// Android: ask the user to exempt the app from battery optimisation. Call it from a user
+  /// action. Resolves false when there is nothing to ask: already exempt, the app does not
+  /// declare `REQUEST_IGNORE_BATTERY_OPTIMIZATIONS`, or not Android.
+  Future<bool> requestIgnoreBatteryOptimizations();
 
   /// Tear down the connection and drop all subscriptions. On Android this also stops
   /// background delivery, including subscriptions saved by an earlier run: call it on sign-out.

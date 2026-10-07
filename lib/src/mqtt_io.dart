@@ -22,6 +22,7 @@ class _Subscription {
   bool background;
   String? title;
   bool retry;
+  bool notifyInForeground;
 
   _Subscription(
     this.filter,
@@ -29,12 +30,19 @@ class _Subscription {
     this.background = false,
     this.title,
     this.retry = true,
+    this.notifyInForeground = false,
   });
 }
 
 class _SubscriptionHandle implements PushSubscription {
   final void Function() _unsubscribe;
-  final void Function({bool? background, String? title, bool? retry}) _update;
+  final void Function({
+    bool? background,
+    String? title,
+    bool? retry,
+    bool? notifyInForeground,
+  })
+  _update;
 
   _SubscriptionHandle(this._unsubscribe, this._update);
 
@@ -42,8 +50,17 @@ class _SubscriptionHandle implements PushSubscription {
   void unsubscribe() => _unsubscribe();
 
   @override
-  void update({bool? background, String? title, bool? retry}) =>
-      _update(background: background, title: title, retry: retry);
+  void update({
+    bool? background,
+    String? title,
+    bool? retry,
+    bool? notifyInForeground,
+  }) => _update(
+    background: background,
+    title: title,
+    retry: retry,
+    notifyInForeground: notifyInForeground,
+  );
 }
 
 // Fixed connection tuning — not exposed as an option.
@@ -156,8 +173,13 @@ class PushIO implements Push {
        _tls = tls,
        _tlsInsecure = tlsInsecure {
     // Resume background delivery saved by an earlier run now, instead of at its next
-    // scheduled wake-up.
-    unawaited(_native?.resume().catchError(_report));
+    // scheduled wake-up, with the credential set on the client: a rotated session of the same
+    // user replaces the saved one, and another user drops the saved subscriptions.
+    final native = _native;
+    if (native != null) {
+      final (authMethod, credential) = _currentCredential();
+      unawaited(native.resume(authMethod, credential).catchError(_report));
+    }
   }
 
   // Empty when the app did not set one: the broker derives a stable id server-side (keyed on
@@ -251,6 +273,24 @@ class PushIO implements Push {
   }
 
   @override
+  Future<PushBackgroundStatus?> backgroundStatus() async {
+    final json = await _native?.backgroundStatus();
+    return json == null
+        ? null
+        : PushBackgroundStatus.fromMap(
+          jsonDecode(json) as Map<String, dynamic>,
+        );
+  }
+
+  @override
+  Future<bool> requestExactAlarms() async =>
+      await _native?.requestExactAlarms() ?? false;
+
+  @override
+  Future<bool> requestIgnoreBatteryOptimizations() async =>
+      await _native?.requestIgnoreBatteryOptimizations() ?? false;
+
+  @override
   Future<void> setForeground(bool enabled) async {
     await _native?.setForeground(enabled);
   }
@@ -308,6 +348,7 @@ class PushIO implements Push {
     bool? background,
     String? title,
     bool retry = true,
+    bool notifyInForeground = false,
   }) async {
     final List<String> topicList;
     try {
@@ -330,6 +371,7 @@ class PushIO implements Push {
         background: wantsBackground,
         title: title,
         retry: retry,
+        notifyInForeground: notifyInForeground,
       );
     }
 
@@ -373,8 +415,18 @@ class PushIO implements Push {
 
     return _SubscriptionHandle(
       () => _unsubscribeIds(ids),
-      ({bool? background, String? title, bool? retry}) =>
-          _updateIds(ids, background: background, title: title, retry: retry),
+      ({
+        bool? background,
+        String? title,
+        bool? retry,
+        bool? notifyInForeground,
+      }) => _updateIds(
+        ids,
+        background: background,
+        title: title,
+        retry: retry,
+        notifyInForeground: notifyInForeground,
+      ),
     );
   }
 
@@ -553,6 +605,7 @@ class PushIO implements Push {
         'background': entry.value.background,
         'title': entry.value.title,
         'retry': entry.value.retry,
+        'notifyInForeground': entry.value.notifyInForeground,
       },
   ];
 
@@ -834,6 +887,7 @@ class PushIO implements Push {
     bool? background,
     String? title,
     bool? retry,
+    bool? notifyInForeground,
   }) {
     for (final id in ids) {
       final sub = _subscriptions[id];
@@ -848,6 +902,9 @@ class PushIO implements Push {
       }
       if (retry != null) {
         sub.retry = retry;
+      }
+      if (notifyInForeground != null) {
+        sub.notifyInForeground = notifyInForeground;
       }
     }
     // reconcile re-subscribes (in-process) / re-syncs the isolate at the new effective QoS.
@@ -918,6 +975,15 @@ class PushIO implements Push {
       );
     }
     return connecting.then((_) => _mqtt!);
+  }
+
+  // The credential set on the client, or (null, null) when there is none.
+  (String?, String?) _currentCredential() {
+    try {
+      return _credential();
+    } catch (_) {
+      return (null, null);
+    }
   }
 
   // The credential set on the client (via Client.setJWT / setSession), as (method, credential).

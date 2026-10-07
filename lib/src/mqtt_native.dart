@@ -89,8 +89,27 @@ class PushNative {
   Future<bool> hasSaved() async =>
       await _methods.invokeMethod<bool>('hasSaved') ?? false;
 
-  /// Resume saved background delivery now instead of at the next scheduled run.
-  Future<void> resume() => _methods.invokeMethod<void>('resume');
+  /// Resume saved background delivery now instead of at the next scheduled run, with the
+  /// credential set on the client (null when none is): a rotated session of the same user
+  /// replaces the saved one, and another user drops the saved subscriptions.
+  Future<void> resume(String? authMethod, String? credential) =>
+      _methods.invokeMethod<void>('resume', {
+        'authMethod': authMethod,
+        'credential': credential,
+      });
+
+  /// What background delivery can rely on, as JSON.
+  Future<String?> backgroundStatus() =>
+      _methods.invokeMethod<String>('backgroundStatus');
+
+  /// Open the system screen that allows exact alarms; false when there is nothing to ask.
+  Future<bool> requestExactAlarms() async =>
+      await _methods.invokeMethod<bool>('requestExactAlarms') ?? false;
+
+  /// Ask to exempt the app from battery optimisation; false when there is nothing to ask.
+  Future<bool> requestIgnoreBatteryOptimizations() async =>
+      await _methods.invokeMethod<bool>('requestIgnoreBatteryOptimizations') ??
+      false;
 
   /// Record whether onError is registered; returns a refusal kept while it was not, once.
   Future<String?> setErrorCallback(bool registered) => _methods

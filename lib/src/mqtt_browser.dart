@@ -22,6 +22,7 @@ class _Subscription {
   bool background;
   String? title;
   bool retry;
+  bool notifyInForeground;
 
   _Subscription(
     this.filter,
@@ -29,12 +30,19 @@ class _Subscription {
     this.background = false,
     this.title,
     this.retry = true,
+    this.notifyInForeground = false,
   });
 }
 
 class _SubscriptionHandle implements PushSubscription {
   final void Function() _unsubscribe;
-  final void Function({bool? background, String? title, bool? retry}) _update;
+  final void Function({
+    bool? background,
+    String? title,
+    bool? retry,
+    bool? notifyInForeground,
+  })
+  _update;
 
   _SubscriptionHandle(this._unsubscribe, this._update);
 
@@ -42,8 +50,17 @@ class _SubscriptionHandle implements PushSubscription {
   void unsubscribe() => _unsubscribe();
 
   @override
-  void update({bool? background, String? title, bool? retry}) =>
-      _update(background: background, title: title, retry: retry);
+  void update({
+    bool? background,
+    String? title,
+    bool? retry,
+    bool? notifyInForeground,
+  }) => _update(
+    background: background,
+    title: title,
+    retry: retry,
+    notifyInForeground: notifyInForeground,
+  );
 }
 
 // Fixed connection tuning — not exposed as an option.
@@ -251,6 +268,7 @@ class PushWeb implements Push {
     bool? background,
     String? title,
     bool retry = true,
+    bool notifyInForeground = false,
   }) async {
     final List<String> topicList;
     final MqttBrowserClient mqtt;
@@ -265,6 +283,7 @@ class PushWeb implements Push {
           background: background,
           title: title,
           retry: retry,
+          notifyInForeground: notifyInForeground,
         );
       }
       _notify(e);
@@ -337,6 +356,7 @@ class PushWeb implements Push {
           background: wantsBackground,
           title: title,
           retry: retry,
+          notifyInForeground: notifyInForeground,
         );
 
         final completer = Completer<void>();
@@ -361,6 +381,7 @@ class PushWeb implements Push {
           background: background,
           title: title,
           retry: retry,
+          notifyInForeground: notifyInForeground,
         );
       }
       unsubscribe();
@@ -368,7 +389,12 @@ class PushWeb implements Push {
       rethrow;
     }
 
-    void update({bool? background, String? title, bool? retry}) {
+    void update({
+      bool? background,
+      String? title,
+      bool? retry,
+      bool? notifyInForeground,
+    }) {
       final changedFilters = <String>{};
       for (final id in ids) {
         final entry = _subscriptions[id];
@@ -380,6 +406,9 @@ class PushWeb implements Push {
         }
         if (title != null) {
           entry.title = title;
+        }
+        if (notifyInForeground != null) {
+          entry.notifyInForeground = notifyInForeground;
         }
         if (retry != null && retry != entry.retry) {
           entry.retry = retry;
@@ -423,6 +452,15 @@ class PushWeb implements Push {
   // foreground service.
   @override
   Future<void> setForeground(bool enabled) async {}
+
+  @override
+  Future<PushBackgroundStatus?> backgroundStatus() async => null;
+
+  @override
+  Future<bool> requestExactAlarms() async => false;
+
+  @override
+  Future<bool> requestIgnoreBatteryOptimizations() async => false;
 
   @override
   void close() {
@@ -619,20 +657,24 @@ class PushWeb implements Push {
         qos: publish.header?.qos.index ?? 0,
       );
       final content = PushNotificationContent.of(message);
-      final titles = <String>{};
+      var shownServerTitle = false;
       for (final subscription in _subscriptions.values) {
         if (_matches(subscription.filter, topic)) {
           subscription.callback(message);
           // Notification is per-subscription: only subs that opted in show one, each with
-          // its own title. A title the server sent replaces theirs, so one is shown.
-          if (subscription.background) {
-            titles.add(content.titleOr(subscription.title ?? topic));
+          // its own title. A title the server sent replaces theirs, so it is shown once.
+          if (subscription.background &&
+              (html.document.visibilityState != 'visible' ||
+                  subscription.notifyInForeground) &&
+              !shownServerTitle &&
+              html.Notification.supported &&
+              html.Notification.permission == 'granted') {
+            shownServerTitle = content.title != null;
+            html.Notification(
+              content.titleOr(subscription.title ?? topic),
+              body: content.bodyFor(message),
+            );
           }
-        }
-      }
-      if (html.Notification.permission == 'granted') {
-        for (final title in titles) {
-          html.Notification(title, body: content.bodyFor(message));
         }
       }
     }

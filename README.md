@@ -19,7 +19,7 @@ Add this to your package's `pubspec.yaml` file:
 
 ```yml
 dependencies:
-  appwrite: ^27.1.0-rc.3
+  appwrite: ^27.1.0-rc.5
 ```
 
 You can install packages from the command line:
@@ -53,14 +53,18 @@ dependencies {
 A subscription with `background: true` keeps delivering after the app is backgrounded, killed or
 the device restarts, until it is unsubscribed or `push.close()` is called (do this on sign-out).
 The plugin saves the subscription, and a scheduled job and alarm wake the app every 15 to 60
-seconds to reconnect; the broker replays what was sent in between (`retry: true`). Messages no
-in-app callback receives are posted as notifications that open the app. It reconnects with the
+seconds to reconnect; the broker replays what was sent in between (`retry: true`). While the app
+is not on screen, each message is posted as a notification that opens the app. It reconnects with the
 credential saved at subscribe time, so use a session rather than a short-lived JWT.
 
 On Android 13 and later, the first background subscription asks the user for the
 `POST_NOTIFICATIONS` runtime permission. If they decline, the subscription still delivers to your
 callback but posts no notification. Notifications show the title, body and image sent with
 `createPush`, and fall back to the subscription's `title` and the raw payload for other messages.
+
+Notifications are posted while the app is backgrounded or closed. While it is on screen your
+callback shows the message, so none is posted unless the subscription passes
+`notifyInForeground: true`.
 
 ```dart
 final sub = await push.subscribe('news', (message) => print(message.data),
@@ -75,6 +79,43 @@ Foreground mode runs a `remoteMessaging` foreground service, which Google Play a
 declare in the Play Console. Apps that never enable it can remove the service from their merged
 manifest with `tools:node="remove"` on `io.appwrite.services.PushService` and
 `android.permission.FOREGROUND_SERVICE_REMOTE_MESSAGING`.
+
+#### Delivery while the app is closed
+
+Messages sent while the app is closed arrive at the next scheduled wake-up. While the device is
+awake that is about every 15 seconds, or about every 60 seconds once exact alarms are allowed;
+without exact alarms the wake-ups are inexact, so battery saver can defer them further. In Doze
+(screen off and idle for a while) Android limits background alarms, exact ones included, to about
+one every nine minutes, so a closed app can take several minutes to receive a message: allowing
+exact alarms makes wake-ups punctual, it does not lift Doze. For immediate delivery, also in
+Doze, use `push.setForeground(true)` (see above).
+
+The SDK uses exact alarms on its own whenever the app may schedule them. To allow it:
+
+1. Declare the permissions in your app's `AndroidManifest.xml`. Both are optional and subject to
+   Google Play policy: `SCHEDULE_EXACT_ALARM` needs a declaration in the Play Console, and
+   `USE_EXACT_ALARM` is reserved for alarm, clock and calendar apps (the SDK does not use it).
+
+   ```xml
+   <uses-permission android:name="android.permission.SCHEDULE_EXACT_ALARM" />
+   <uses-permission android:name="android.permission.REQUEST_IGNORE_BATTERY_OPTIMIZATIONS" />
+   ```
+
+2. On Android 13 and later the user has to allow exact alarms, under Settings > Apps > Special app
+   access > Alarms & reminders. Android 12 grants a declared `SCHEDULE_EXACT_ALARM`
+   automatically, and older versions need nothing. Check with `await push.backgroundStatus()`: when `bestEffort` is
+   true, explain why to the user, then from a user action open that screen with `push.requestExactAlarms()`, or
+   ask for the battery-optimisation exemption with `push.requestIgnoreBatteryOptimizations()`. Both return false when there is
+   nothing to ask, including when the permission is not declared. The SDK never opens these
+   screens on its own.
+
+If the user force-stops the app (Settings > Force stop, and on some devices swiping it away from
+recents), Android cancels its alarms and jobs: nothing is delivered until the app is opened
+again, and the broker then replays what was sent meanwhile.
+
+Set the notification icon with
+`<meta-data android:name="io.appwrite.push.notification_icon" android:resource="@drawable/..." />` in your
+`<application>`; without it a generic icon is used.
 
 
 ## Getting Started
