@@ -1493,6 +1493,7 @@ class Account extends Service {
     String? success,
     String? failure,
     List<String>? scopes,
+    String? state,
   }) async {
     final String apiPath = '/account/sessions/oauth2/{provider}'.replaceAll(
       '{provider}',
@@ -1503,6 +1504,7 @@ class Account extends Service {
       if (success != null) 'success': success,
       if (failure != null) 'failure': failure,
       if (scopes != null) 'scopes': scopes,
+      if (state != null) 'state': state,
       'project': client.config['project'],
     };
 
@@ -1945,6 +1947,7 @@ class Account extends Service {
     String? success,
     String? failure,
     List<String>? scopes,
+    String? state,
   }) async {
     final String apiPath = '/account/tokens/oauth2/{provider}'.replaceAll(
       '{provider}',
@@ -1955,6 +1958,7 @@ class Account extends Service {
       if (success != null) 'success': success,
       if (failure != null) 'failure': failure,
       if (scopes != null) 'scopes': scopes,
+      if (state != null) 'state': state,
       'project': client.config['project'],
     };
 

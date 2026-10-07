@@ -1,5 +1,11 @@
 # Change Log
 
+
+## 27.1.0-rc.4
+
+* Added: `Analytics.createEvent` for sending tracking events
+* Added: `AnalyticsTracking` for app-lifecycle and `screenView` events, and `AnalyticsObserver` for automatic route tracking
+
 ## 27.1.0-rc.3
 
 * Added: background push notifications render the server `notification` title, body, and image
