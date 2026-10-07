@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'mqtt_browser.dart' if (dart.library.io) 'mqtt_io.dart';
 import 'service.dart';
 import 'client.dart';
@@ -16,11 +18,72 @@ abstract class PushSubscription {
   /// Drop this subscription. Closes the connection once the last one is gone.
   void unsubscribe();
 
-  /// Live-update this subscription's [background] delivery, notification [title] and/or
-  /// [retry] (QoS). Only the arguments you pass change; the rest stay as they
-  /// were. Changing [retry] re-subscribes this subscription's topics at the
-  /// new QoS.
-  void update({bool? background, String? title, bool? retry});
+  /// Live-update this subscription's [background] delivery, notification [title], [retry]
+  /// (QoS) and/or [notifyInForeground]. Only the arguments you pass change; the rest stay as
+  /// they were. Changing [retry] re-subscribes this subscription's topics at the new QoS.
+  void update({
+    bool? background,
+    String? title,
+    bool? retry,
+    bool? notifyInForeground,
+  });
+}
+
+/// What Android background delivery can rely on; see [Push.backgroundStatus].
+class PushBackgroundStatus {
+  /// The app may schedule exact alarms (`SCHEDULE_EXACT_ALARM`, granted).
+  final bool exactAlarms;
+
+  /// The app is exempt from battery optimisation.
+  final bool ignoringBatteryOptimizations;
+
+  /// Foreground mode ([Push.setForeground]) keeps the connection open in a service.
+  final bool foregroundService;
+
+  /// Wake-ups may be deferred by Doze, so messages can arrive late while the app is closed.
+  final bool bestEffort;
+
+  const PushBackgroundStatus({
+    required this.exactAlarms,
+    required this.ignoringBatteryOptimizations,
+    required this.foregroundService,
+    required this.bestEffort,
+  });
+
+  factory PushBackgroundStatus.fromMap(Map<String, dynamic> map) =>
+      PushBackgroundStatus(
+        exactAlarms: map['exactAlarms'] == true,
+        ignoringBatteryOptimizations:
+            map['ignoringBatteryOptimizations'] == true,
+        foregroundService: map['foregroundService'] == true,
+        bestEffort: map['bestEffort'] == true,
+      );
+}
+
+/// A background notification the user tapped; see [Push.getInitialNotification] and
+/// [Push.onNotificationOpened].
+class PushNotificationOpened {
+  /// The topic the message was published to.
+  final String topic;
+
+  /// The `data` sent with the message (e.g. `createPush`), parsed; empty when it had none.
+  final Map<String, dynamic> data;
+
+  const PushNotificationOpened({required this.topic, required this.data});
+
+  /// The tap on a notification for a message on [topic] with the raw [payload].
+  factory PushNotificationOpened.fromPayload(String topic, String payload) {
+    Object? data;
+    try {
+      data = (jsonDecode(payload) as Map<String, dynamic>?)?['data'];
+    } catch (_) {
+      data = null;
+    }
+    return PushNotificationOpened(
+      topic: topic,
+      data: data is Map<String, dynamic> ? data : <String, dynamic>{},
+    );
+  }
 }
 
 /// Appwrite native push service — the realtime analog delivered over an MQTT
@@ -34,9 +97,9 @@ abstract class PushSubscription {
 /// [subscribe]'s `retry`. TLS (and skipping cert verification via a
 /// `?tlsInsecure=true` query flag) is derived from the endpoint, so the whole connection
 /// is described in one place. `subscribe` opens the connection lazily and returns a
-/// [PushSubscription] handle. The credential is read off the client — set a JWT or session
-/// on it (`Client.setJWT` / `Client.setSession`), the same way every other service reads
-/// auth. The broker location comes from `Client.setPushEndpoint()` (or the client
+/// [PushSubscription] handle. The credential is read off the client: a JWT or session set on
+/// it (`Client.setJWT` / `Client.setSession`), else the session the app signed in with through
+/// it (e.g. `Account.createEmailPasswordSession`). The broker location comes from `Client.setPushEndpoint()` (or the client
 /// endpoint) and a stable id from `Client.setPushClientId()`.
 ///
 /// ```dart
@@ -86,8 +149,8 @@ abstract class Push extends Service {
   /// The future resolves only once every subscription has been acknowledged (SUBACK), so a
   /// subscribe-then-publish is reliable, and [onOpen]/[onClose]/[onError] observe the
   /// in-process connection. On Android a [background] subscription moves the connection to the
-  /// SDK's native plugin, which also resolves after SUBACK and forwards messages and errors (to
-  /// [onError]) but not its connection lifecycle, so [onOpen]/[onClose] do not fire for it. On
+  /// SDK's native plugin, which also resolves after SUBACK and forwards messages, errors (to
+  /// [onError]) and its connection opening and closing (to [onOpen]/[onClose]). On
   /// iOS it hands the connection to a background isolate, which subscribes asynchronously and
   /// retries failures internally, so it resolves once the isolate has the subscription.
   ///
@@ -97,8 +160,10 @@ abstract class Push extends Service {
   /// always keeps its session, so replay is a purely per-subscription choice.
   ///
   /// Set [background] to also keep receiving while the app is backgrounded or closed and post a
-  /// notification per message with [title] (defaulting to the message topic). Toggle these
-  /// later with [PushSubscription.update].
+  /// notification per message with [title] (defaulting to the message topic). On Android and the
+  /// web, notifications are posted only while the app is not on screen, since it shows the
+  /// message itself through the callback; set [notifyInForeground] to post them while it is too.
+  /// Toggle these later with [PushSubscription.update].
   ///
   /// On Android the SDK's native plugin saves the subscription and keeps delivering after the
   /// app is killed, the device restarts or the app updates, until it is unsubscribed or [close]
@@ -114,6 +179,7 @@ abstract class Push extends Service {
     bool? background,
     String? title,
     bool retry,
+    bool notifyInForeground,
   });
 
   /// Android: run background delivery in a foreground service (with a quiet ongoing
@@ -122,6 +188,43 @@ abstract class Push extends Service {
   /// while the app is in the foreground: Android 12+ refuses to start the service from the
   /// background. It only affects [background] subscriptions. A no-op elsewhere.
   Future<void> setForeground(bool enabled);
+
+  /// Android: what background delivery can rely on. When `bestEffort` is true the scheduled
+  /// wake-ups are inexact and Doze can defer them, so messages may arrive late while the app is
+  /// closed; explain why, then ask with [requestExactAlarms] or
+  /// [requestIgnoreBatteryOptimizations]. Null elsewhere.
+  Future<PushBackgroundStatus?> backgroundStatus();
+
+  /// Android 12+: open the system screen where the user allows exact alarms, for punctual
+  /// background wake-ups. Call it from a user action, never on its own. Resolves false when
+  /// there is nothing to ask: already allowed, older Android, the app does not declare
+  /// `SCHEDULE_EXACT_ALARM`, or not Android.
+  Future<bool> requestExactAlarms();
+
+  /// Android: ask the user to exempt the app from battery optimisation. Call it from a user
+  /// action. Resolves false when there is nothing to ask: already exempt, the app does not
+  /// declare `REQUEST_IGNORE_BATTERY_OPTIMIZATIONS`, or not Android.
+  Future<bool> requestIgnoreBatteryOptimizations();
+
+  /// The background notification whose tap launched the app, or null. Reported once; call it
+  /// when the app starts, e.g. to open the screen the message is about.
+  ///
+  /// ```dart
+  /// final opened = await push.getInitialNotification();
+  /// if (opened != null) openSale(opened.data['saleId']);
+  /// ```
+  Future<PushNotificationOpened?> getInitialNotification();
+
+  /// Call [callback] each time the user taps a background notification while the app is
+  /// running, including in the background. Returns a function that stops listening. The tap
+  /// that launched the app comes from [getInitialNotification] instead.
+  ///
+  /// ```dart
+  /// final stop = push.onNotificationOpened((opened) => openSale(opened.data['saleId']));
+  /// ```
+  void Function() onNotificationOpened(
+    void Function(PushNotificationOpened opened) callback,
+  );
 
   /// Tear down the connection and drop all subscriptions. On Android this also stops
   /// background delivery, including subscriptions saved by an earlier run: call it on sign-out.
