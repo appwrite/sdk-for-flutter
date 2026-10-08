@@ -30,6 +30,8 @@ export 'src/upload_progress.dart';
 export 'src/realtime_subscription.dart';
 export 'src/realtime_message.dart';
 export 'src/input_file.dart';
+export 'src/tracking.dart';
+export 'src/tracking_observer.dart';
 
 part 'query.dart';
 part 'permission.dart';
@@ -39,6 +41,7 @@ part 'topic.dart';
 part 'channel.dart';
 part 'operator.dart';
 part 'services/account.dart';
+part 'services/analytics.dart';
 part 'services/apps.dart';
 part 'services/avatars.dart';
 part 'services/databases.dart';
