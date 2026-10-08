@@ -1,5 +1,15 @@
 # Change Log
 
+
+## 27.1.0-rc.8
+
+* Added: `Analytics` service, the `Tracking` helper and `TrackingObserver`, which were missing from `27.1.0-rc.5` through `rc.7`
+* Changed: `Tracking` takes the `Analytics` service and a property id instead of an emitter callback
+* Changed: `enableAllAutoTracking()` is now `start()`
+* Fixed: engagement time is no longer discarded when the app returns from `inactive` without backgrounding
+* Fixed: a rejected tracking request no longer surfaces as an unhandled async error
+* Fixed: removing a buried route no longer records a screen view for a screen that was never visible
+
 ## 27.1.0-rc.7
 
 * Fixed: `host()` reports the live connection state instead of always resolving open

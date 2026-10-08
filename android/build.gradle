@@ -1,7 +1,7 @@
 // The native half of Push on Android: background delivery that survives the process being
 // killed, a reboot and an app update, shared with the Appwrite Android SDK.
 group = "io.appwrite.flutter"
-version = "27.1.0-rc.7"
+version = "27.1.0-rc.8"
 
 buildscript {
     ext.kotlin_version = "2.1.0"

@@ -13,5 +13,6 @@ await account.createOAuth2Session(
     success: 'https://example.com', // optional
     failure: 'https://example.com', // optional
     scopes: [], // optional
+    state: '<STATE>', // optional
 );
 ```
