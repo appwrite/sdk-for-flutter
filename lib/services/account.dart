@@ -984,6 +984,214 @@ class Account extends Service {
     return models.User.fromMap(res.data);
   }
 
+  /// Get the list of verified passkeys registered by the currently logged in
+  /// user.
+  Future<models.PasskeyList> listPasskeys({
+    List<String>? queries,
+    bool? total,
+  }) async {
+    final String apiPath = '/account/passkeys';
+
+    final Map<String, dynamic> apiParams = {
+      if (queries != null) 'queries': queries,
+      if (total != null) 'total': total,
+    };
+
+    final Map<String, String> apiHeaders = {
+      'X-Appwrite-Project': client.config['project'] ?? '',
+      'accept': 'application/json',
+    };
+
+    final res = await client.call(
+      HttpMethod.get,
+      path: apiPath,
+      params: apiParams,
+      headers: apiHeaders,
+    );
+
+    return models.PasskeyList.fromMap(res.data);
+  }
+
+  /// Start registering a passkey for the currently logged in user. The session
+  /// must have signed in or completed an MFA challenge within the last 10
+  /// minutes. Pass the returned `publicKey` options to
+  /// `navigator.credentials.create()`, then complete the registration with
+  /// [Update passkey
+  /// verification](/docs/references/cloud/client-web/account#updatePasskeyVerification).
+  /// The passkey stays pending until verified, and the challenge expires after 5
+  /// minutes.
+  Future<models.PasskeyChallenge> createPasskey({
+    String? passkeyId,
+    String? name,
+  }) async {
+    final String apiPath = '/account/passkeys';
+
+    final Map<String, dynamic> apiParams = {
+      if (passkeyId != null) 'passkeyId': passkeyId,
+      if (name != null) 'name': name,
+    };
+
+    final Map<String, String> apiHeaders = {
+      'X-Appwrite-Project': client.config['project'] ?? '',
+      'content-type': 'application/json',
+      'accept': 'application/json',
+    };
+
+    final res = await client.call(
+      HttpMethod.post,
+      path: apiPath,
+      params: apiParams,
+      headers: apiHeaders,
+    );
+
+    return models.PasskeyChallenge.fromMap(res.data);
+  }
+
+  /// Get a verified passkey of the currently logged in user by its unique ID.
+  Future<models.Passkey> getPasskey({
+    required String passkeyId,
+  }) async {
+    if (passkeyId.isEmpty) {
+      throw AppwriteException(
+        'Missing required parameter: "passkeyId"',
+      );
+    }
+
+    final String apiPath = '/account/passkeys/{passkeyId}'.replaceAll(
+      '{passkeyId}',
+      passkeyId,
+    );
+
+    final Map<String, dynamic> apiParams = {};
+
+    final Map<String, String> apiHeaders = {
+      'X-Appwrite-Project': client.config['project'] ?? '',
+      'accept': 'application/json',
+    };
+
+    final res = await client.call(
+      HttpMethod.get,
+      path: apiPath,
+      params: apiParams,
+      headers: apiHeaders,
+    );
+
+    return models.Passkey.fromMap(res.data);
+  }
+
+  /// Rename a passkey of the currently logged in user.
+  Future<models.Passkey> updatePasskey({
+    required String passkeyId,
+    required String name,
+  }) async {
+    if (passkeyId.isEmpty) {
+      throw AppwriteException(
+        'Missing required parameter: "passkeyId"',
+      );
+    }
+
+    final String apiPath = '/account/passkeys/{passkeyId}'.replaceAll(
+      '{passkeyId}',
+      passkeyId,
+    );
+
+    final Map<String, dynamic> apiParams = {
+      'name': name,
+    };
+
+    final Map<String, String> apiHeaders = {
+      'X-Appwrite-Project': client.config['project'] ?? '',
+      'content-type': 'application/json',
+      'accept': 'application/json',
+    };
+
+    final res = await client.call(
+      HttpMethod.patch,
+      path: apiPath,
+      params: apiParams,
+      headers: apiHeaders,
+    );
+
+    return models.Passkey.fromMap(res.data);
+  }
+
+  /// Delete a passkey from the currently logged in user. The passkey can no
+  /// longer be used to sign in, although it may remain stored on the user's
+  /// device. The session must have signed in or completed an MFA challenge
+  /// within the last 10 minutes.
+  Future deletePasskey({
+    required String passkeyId,
+  }) async {
+    if (passkeyId.isEmpty) {
+      throw AppwriteException(
+        'Missing required parameter: "passkeyId"',
+      );
+    }
+
+    final String apiPath = '/account/passkeys/{passkeyId}'.replaceAll(
+      '{passkeyId}',
+      passkeyId,
+    );
+
+    final Map<String, dynamic> apiParams = {};
+
+    final Map<String, String> apiHeaders = {
+      'X-Appwrite-Project': client.config['project'] ?? '',
+      'content-type': 'application/json',
+      'accept': 'application/json',
+    };
+
+    final res = await client.call(
+      HttpMethod.delete,
+      path: apiPath,
+      params: apiParams,
+      headers: apiHeaders,
+    );
+
+    return res.data;
+  }
+
+  /// Complete a passkey registration started with [Create
+  /// passkey](/docs/references/cloud/client-web/account#createPasskey). Pass the
+  /// JSON form of the credential returned by `navigator.credentials.create()`,
+  /// for example `credential.toJSON()`. Each registration can be verified once;
+  /// a failed attempt requires starting it again.
+  Future<models.Passkey> updatePasskeyVerification({
+    required String passkeyId,
+    required Map credential,
+  }) async {
+    if (passkeyId.isEmpty) {
+      throw AppwriteException(
+        'Missing required parameter: "passkeyId"',
+      );
+    }
+
+    final String apiPath = '/account/passkeys/{passkeyId}/verification'
+        .replaceAll(
+          '{passkeyId}',
+          passkeyId,
+        );
+
+    final Map<String, dynamic> apiParams = {
+      'credential': credential,
+    };
+
+    final Map<String, String> apiHeaders = {
+      'X-Appwrite-Project': client.config['project'] ?? '',
+      'content-type': 'application/json',
+      'accept': 'application/json',
+    };
+
+    final res = await client.call(
+      HttpMethod.put,
+      path: apiPath,
+      params: apiParams,
+      headers: apiHeaders,
+    );
+
+    return models.Passkey.fromMap(res.data);
+  }
+
   /// Update currently logged in user password. For validation, user is required
   /// to pass in the new password, and the old password. For users created with
   /// OAuth, Team Invites and Magic URL, oldPassword is optional.
@@ -1968,6 +2176,70 @@ class Account extends Service {
     );
 
     return client.webAuth(url, callbackUrlScheme: success);
+  }
+
+  /// Start signing in with a passkey. No email or user ID is needed: pass the
+  /// returned `publicKey` options to `navigator.credentials.get()` and the user
+  /// picks one of their passkeys. Then call [Update passkey
+  /// token](/docs/references/cloud/client-web/account#updatePasskeyToken) with
+  /// the credential to receive a token, and exchange it with [Create
+  /// session](/docs/references/cloud/client-web/account#createSession). The
+  /// challenge expires after 5 minutes.
+  Future<models.PasskeyChallenge> createPasskeyToken() async {
+    final String apiPath = '/account/tokens/passkey';
+
+    final Map<String, dynamic> apiParams = {};
+
+    final Map<String, String> apiHeaders = {
+      'X-Appwrite-Project': client.config['project'] ?? '',
+      'content-type': 'application/json',
+      'accept': 'application/json',
+    };
+
+    final res = await client.call(
+      HttpMethod.post,
+      path: apiPath,
+      params: apiParams,
+      headers: apiHeaders,
+    );
+
+    return models.PasskeyChallenge.fromMap(res.data);
+  }
+
+  /// Complete a passkey sign-in started with [Create passkey
+  /// token](/docs/references/cloud/client-web/account#createPasskeyToken). Pass
+  /// the challenge ID and the JSON form of the credential returned by
+  /// `navigator.credentials.get()`, for example `credential.toJSON()`. The
+  /// returned token includes its secret and expires after 1 minute: exchange it
+  /// for a session with [Create
+  /// session](/docs/references/cloud/client-web/account#createSession). Passkeys
+  /// require user verification, so the session also satisfies MFA. Each
+  /// challenge can only be used once.
+  Future<models.TokenSecret> updatePasskeyToken({
+    required String challengeId,
+    required Map credential,
+  }) async {
+    final String apiPath = '/account/tokens/passkey';
+
+    final Map<String, dynamic> apiParams = {
+      'challengeId': challengeId,
+      'credential': credential,
+    };
+
+    final Map<String, String> apiHeaders = {
+      'X-Appwrite-Project': client.config['project'] ?? '',
+      'content-type': 'application/json',
+      'accept': 'application/json',
+    };
+
+    final res = await client.call(
+      HttpMethod.put,
+      path: apiPath,
+      params: apiParams,
+      headers: apiHeaders,
+    );
+
+    return models.TokenSecret.fromMap(res.data);
   }
 
   /// Sends the user an SMS with a secret key for creating a session. If the
