@@ -15,6 +15,11 @@ class AppSecretList implements Model {
   factory AppSecretList.fromMap(
     Map<String, dynamic> map,
   ) {
+    map = {
+      'total': 0,
+      ...map,
+    };
+
     return AppSecretList(
       total: map['total'],
       secrets: List<AppSecret>.from(

@@ -15,6 +15,12 @@ class LocaleCode implements Model {
   factory LocaleCode.fromMap(
     Map<String, dynamic> map,
   ) {
+    map = {
+      'code': "",
+      'name': "",
+      ...map,
+    };
+
     return LocaleCode(
       code: map['code'].toString(),
       name: map['name'].toString(),

@@ -112,10 +112,9 @@ class PushWeb implements Push {
     final resolvedPort = _pushEndpointPort(client) ?? (resolvedTls ? 443 : 80);
     // When no explicit push endpoint is set, default to a `push.` host on the regular
     // endpoint (mirroring how realtime derives from the endpoint, on the push subdomain).
-    final resolvedHost =
-        client.config['endpointPush'] != null
-            ? _hostOf(pushEndpoint)
-            : 'push.${_hostOf(pushEndpoint)}';
+    final resolvedHost = client.config['endpointPush'] != null
+        ? _hostOf(pushEndpoint)
+        : 'push.${_hostOf(pushEndpoint)}';
     return PushWeb._(
       client,
       host: resolvedHost,
@@ -665,8 +664,9 @@ class PushWeb implements Push {
       }
       final topic = received.topic ?? '';
       final bytes = publish.payload.message;
-      final payload =
-          bytes == null ? Uint8List(0) : Uint8List.fromList(bytes.toList());
+      final payload = bytes == null
+          ? Uint8List(0)
+          : Uint8List.fromList(bytes.toList());
       final message = PushMessage(
         topic: topic,
         payload: payload,
@@ -943,10 +943,9 @@ String _userTopic(Client client) {
   final session = _clientSession(client);
   // The credential the connection authenticates with: the JWT when one is set (never the
   // session, which could belong to a different user), else the session.
-  final userId =
-      (jwt != null && jwt.isNotEmpty)
-          ? _userIdFromJwt(jwt)
-          : _userIdFromSession(session);
+  final userId = (jwt != null && jwt.isNotEmpty)
+      ? _userIdFromJwt(jwt)
+      : _userIdFromSession(session);
   if (userId == null) {
     throw AppwriteException(
       'subscribe() without a topic needs a signed-in user: sign in with this client, or set a JWT or session on it',

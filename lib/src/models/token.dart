@@ -31,6 +31,16 @@ class Token implements Model {
   factory Token.fromMap(
     Map<String, dynamic> map,
   ) {
+    map = {
+      '\$id': "",
+      '\$createdAt': "",
+      'userId': "",
+      'secret': "",
+      'expire': "",
+      'phrase': "",
+      ...map,
+    };
+
     return Token(
       $id: map['\$id'].toString(),
       $createdAt: map['\$createdAt'].toString(),

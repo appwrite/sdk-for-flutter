@@ -15,6 +15,11 @@ class Oauth2OrganizationList implements Model {
   factory Oauth2OrganizationList.fromMap(
     Map<String, dynamic> map,
   ) {
+    map = {
+      'total': 0,
+      ...map,
+    };
+
     return Oauth2OrganizationList(
       total: map['total'],
       organizations: List<Oauth2Organization>.from(

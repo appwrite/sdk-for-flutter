@@ -15,6 +15,11 @@ class CountryList implements Model {
   factory CountryList.fromMap(
     Map<String, dynamic> map,
   ) {
+    map = {
+      'total': 0,
+      ...map,
+    };
+
     return CountryList(
       total: map['total'],
       countries: List<Country>.from(

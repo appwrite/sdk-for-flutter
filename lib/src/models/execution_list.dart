@@ -15,6 +15,11 @@ class ExecutionList implements Model {
   factory ExecutionList.fromMap(
     Map<String, dynamic> map,
   ) {
+    map = {
+      'total': 0,
+      ...map,
+    };
+
     return ExecutionList(
       total: map['total'],
       executions: List<Execution>.from(

@@ -15,6 +15,11 @@ class AppScopeList implements Model {
   factory AppScopeList.fromMap(
     Map<String, dynamic> map,
   ) {
+    map = {
+      'total': 0,
+      ...map,
+    };
+
     return AppScopeList(
       total: map['total'],
       scopes: List<AppScope>.from(

@@ -15,6 +15,11 @@ class Oauth2ProjectList implements Model {
   factory Oauth2ProjectList.fromMap(
     Map<String, dynamic> map,
   ) {
+    map = {
+      'total': 0,
+      ...map,
+    };
+
     return Oauth2ProjectList(
       total: map['total'],
       projects: List<Oauth2Project>.from(

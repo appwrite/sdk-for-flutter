@@ -1,6 +1,6 @@
 /// Appwrite Flutter SDK
 ///
-/// This SDK targets Appwrite server version 2.3.x as shipped on Appwrite Cloud.
+/// This SDK targets Appwrite server version 2.4.x as shipped on Appwrite Cloud.
 /// Self-hosted releases can lag behind Cloud — if you run an older self-hosted
 /// build, use a matching older SDK from
 /// [previous releases](https://github.com/appwrite/sdk-for-flutter/releases)

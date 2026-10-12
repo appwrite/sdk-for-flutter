@@ -15,6 +15,11 @@ class DocumentList implements Model {
   factory DocumentList.fromMap(
     Map<String, dynamic> map,
   ) {
+    map = {
+      'total': 0,
+      ...map,
+    };
+
     return DocumentList(
       total: map['total'],
       documents: List<Document>.from(
