@@ -35,17 +35,6 @@ class Currency implements Model {
   factory Currency.fromMap(
     Map<String, dynamic> map,
   ) {
-    map = {
-      'symbol': "",
-      'name': "",
-      'symbolNative': "",
-      'decimalDigits': 0,
-      'rounding': 0,
-      'code': "",
-      'namePlural': "",
-      ...map,
-    };
-
     return Currency(
       symbol: map['symbol'].toString(),
       name: map['name'].toString(),

@@ -71,26 +71,6 @@ class File implements Model {
   factory File.fromMap(
     Map<String, dynamic> map,
   ) {
-    map = {
-      '\$id': "",
-      'bucketId': "",
-      '\$createdAt': "",
-      '\$updatedAt': "",
-      '\$permissions': [],
-      'name': "",
-      'folder': "",
-      'key': "",
-      'signature': "",
-      'mimeType': "",
-      'sizeOriginal': 0,
-      'sizeActual': 0,
-      'chunksTotal': 0,
-      'chunksUploaded': 0,
-      'encryption': false,
-      'compression': "none",
-      ...map,
-    };
-
     return File(
       $id: map['\$id'].toString(),
       bucketId: map['bucketId'].toString(),

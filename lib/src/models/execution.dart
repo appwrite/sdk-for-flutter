@@ -83,23 +83,6 @@ class Execution implements Model {
   factory Execution.fromMap(
     Map<String, dynamic> map,
   ) {
-    map = {
-      '\$id': "",
-      '\$createdAt': "",
-      '\$updatedAt': "",
-      'resourceId': "",
-      'resourceType': "functions",
-      'deploymentId': "",
-      'requestMethod': "",
-      'requestPath': "",
-      'responseStatusCode': 0,
-      'responseBody': "",
-      'logs': "",
-      'errors': "",
-      'duration': 0,
-      ...map,
-    };
-
     return Execution(
       $id: map['\$id'].toString(),
       $createdAt: map['\$createdAt'].toString(),

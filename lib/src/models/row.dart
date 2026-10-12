@@ -38,16 +38,6 @@ class Row implements Model {
   factory Row.fromMap(
     Map<String, dynamic> map,
   ) {
-    map = {
-      '\$id': "",
-      '\$sequence': "",
-      '\$tableId': "",
-      '\$databaseId': "",
-      '\$createdAt': "",
-      '\$updatedAt': "",
-      ...map,
-    };
-
     return Row(
       $id: map['\$id'].toString(),
       $sequence: map['\$sequence'].toString(),

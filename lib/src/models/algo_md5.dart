@@ -11,11 +11,6 @@ class AlgoMd5 implements Model {
   factory AlgoMd5.fromMap(
     Map<String, dynamic> map,
   ) {
-    map = {
-      'type': "md5",
-      ...map,
-    };
-
     return AlgoMd5(
       type: map['type'].toString(),
     );

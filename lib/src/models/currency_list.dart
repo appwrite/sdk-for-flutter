@@ -15,11 +15,6 @@ class CurrencyList implements Model {
   factory CurrencyList.fromMap(
     Map<String, dynamic> map,
   ) {
-    map = {
-      'total': 0,
-      ...map,
-    };
-
     return CurrencyList(
       total: map['total'],
       currencies: List<Currency>.from(

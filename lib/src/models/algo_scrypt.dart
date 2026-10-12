@@ -27,15 +27,6 @@ class AlgoScrypt implements Model {
   factory AlgoScrypt.fromMap(
     Map<String, dynamic> map,
   ) {
-    map = {
-      'type': "scrypt",
-      'costCpu': 8,
-      'costMemory': 14,
-      'costParallel': 1,
-      'length': 64,
-      ...map,
-    };
-
     return AlgoScrypt(
       type: map['type'].toString(),
       costCpu: map['costCpu'],

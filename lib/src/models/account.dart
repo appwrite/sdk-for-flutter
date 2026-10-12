@@ -103,24 +103,6 @@ class Account implements Model {
   factory Account.fromMap(
     Map<String, dynamic> map,
   ) {
-    map = {
-      '\$id': "",
-      '\$createdAt': "",
-      '\$updatedAt': "",
-      'name': "",
-      'registration': "",
-      'status': true,
-      'labels': [],
-      'passwordUpdate': "",
-      'email': "",
-      'phone': "",
-      'emailVerification': false,
-      'phoneVerification': false,
-      'mfa': false,
-      'accessedAt': "",
-      ...map,
-    };
-
     return Account(
       $id: map['\$id'].toString(),
       $createdAt: map['\$createdAt'].toString(),

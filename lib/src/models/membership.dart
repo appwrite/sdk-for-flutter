@@ -67,25 +67,6 @@ class Membership implements Model {
   factory Membership.fromMap(
     Map<String, dynamic> map,
   ) {
-    map = {
-      '\$id': "",
-      '\$createdAt': "",
-      '\$updatedAt': "",
-      'userId': "",
-      'userName': "",
-      'userEmail': "",
-      'userPhone': "",
-      'teamId': "",
-      'teamName': "",
-      'invited': "",
-      'joined': "",
-      'confirm': false,
-      'mfa': false,
-      'userAccessedAt': "",
-      'roles': [],
-      ...map,
-    };
-
     return Membership(
       $id: map['\$id'].toString(),
       $createdAt: map['\$createdAt'].toString(),

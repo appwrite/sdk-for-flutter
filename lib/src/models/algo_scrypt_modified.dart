@@ -23,14 +23,6 @@ class AlgoScryptModified implements Model {
   factory AlgoScryptModified.fromMap(
     Map<String, dynamic> map,
   ) {
-    map = {
-      'type': "scryptMod",
-      'salt': "",
-      'saltSeparator': "",
-      'signerKey': "",
-      ...map,
-    };
-
     return AlgoScryptModified(
       type: map['type'].toString(),
       salt: map['salt'].toString(),

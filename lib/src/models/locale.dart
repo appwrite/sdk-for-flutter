@@ -79,17 +79,6 @@ class Locale implements Model {
   factory Locale.fromMap(
     Map<String, dynamic> map,
   ) {
-    map = {
-      'ip': "",
-      'countryCode': "",
-      'country': "",
-      'continentCode': "",
-      'continent': "",
-      'eu': false,
-      'currency': "",
-      ...map,
-    };
-
     return Locale(
       ip: map['ip'].toString(),
       countryCode: map['countryCode'].toString(),

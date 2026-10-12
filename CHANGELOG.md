@@ -1,31 +1,52 @@
 # Change Log
 
-## 28.0.0
 
-* Breaking: minimum Dart SDK is now 3.10.0 and minimum Flutter 3.38.1
-* Added: `Account.listPasskeys`, `createPasskey`, `getPasskey`, `updatePasskey` and `deletePasskey`
-* Added: `Account.updatePasskeyVerification` to finish registering a passkey
-* Added: `Account.createPasskeyToken` and `Account.updatePasskeyToken` for passkey sign-in
-* Added: `Passkey`, `PasskeyList`, `PasskeyChallenge` and `TokenSecret` models
-* Added: `Push` service for MQTT realtime push with iOS and Android background delivery
-* Added: `Topic` builder, `Client.setPushEndpoint()` and `Client.setPushClientId()`
+## 27.1.0-rc.8
+
+* Added: `Analytics` service, the `Tracking` helper and `TrackingObserver`, which were missing from `27.1.0-rc.5` through `rc.7`
+* Changed: `Tracking` takes the `Analytics` service and a property id instead of an emitter callback
+* Changed: `enableAllAutoTracking()` is now `start()`
+* Fixed: engagement time is no longer discarded when the app returns from `inactive` without backgrounding
+* Fixed: a rejected tracking request no longer surfaces as an unhandled async error
+* Fixed: removing a buried route no longer records a screen view for a screen that was never visible
+
+## 27.1.0-rc.7
+
+* Fixed: `host()` reports the live connection state instead of always resolving open
+* Fixed: a disconnect event now fires when a retired or dropped background connection closes
+* Fixed: notification taps are recorded after launching the app, so tap-opened screens land on top
+* Fixed: subscribing on a `Push` closed mid-connect now throws instead of silently proceeding
+
+## 27.1.0-rc.6
+
+* Added: `getInitialNotification()`, `onNotificationOpened()`, and the `PushNotificationOpened` type (topic + data)
+* Fixed: Android `onOpen`/`onClose` now fire for `background` subscriptions
+* Fixed: `subscribe` falls back to the session the client signed in with
+* Fixed: Android notifications no longer suppressed when no live callback received the message
+* Fixed: `close()` during subscribe/resume no longer re-subscribes; `resume` leaves a live `Push` host untouched
+* Updated: notification taps routed through a translucent `PushOpenActivity`
+
+## 27.1.0-rc.5
+
+* Updated: regenerated with sdk-generator 5.5.0; no SDK code changes
+
+## 27.1.0-rc.3
+
 * Added: background push notifications render the server `notification` title, body, and image
-* Added: `getInitialNotification()`, `onNotificationOpened()` and the `PushNotificationOpened` type
-* Added: `requestNotificationPermission()` on `Push`; Android 13+ asks on first background subscribe
-* Added: `Analytics` service, `Tracking` helper and `TrackingObserver` for automatic screen tracking
+* Added: `requestNotificationPermission()` on the `Push` service
+* Added: the SDK requests Android 13+ `POST_NOTIFICATIONS` itself on first background subscribe
+* Fixed: a server-sent title dedupes to one notification per topic instead of one per subscription
+
+## 27.1.0-rc.2
+
 * Added: `Apps` service to manage OAuth2 apps, keys, secrets, and installations
 * Added: `Oauth2` service for authorization, consent, device, PAR, and token flows
+* Added: `Push` service for MQTT realtime push with iOS background delivery
+* Added: `Topic` builder and a native `android` module for push
+* Added: `Client.setPushEndpoint()` and `Client.setPushClientId()`
 * Added: `Avatars.updatePhoto()` and `Avatars.deletePhoto()` methods
 * Added: `App`, `Oauth2*`, and `Account` models
-* Added: `state` parameter to `Account.createOAuth2Session` and `Account.createOAuth2Token`
-* Added: `duration` on `createEmailPasswordSession` and `current` on `deleteSessions`
-* Added: `total` parameter to `Account.listSessions`, `Locale` list methods and `listTransactions`
-* Added: `membershipId` parameter to `Teams.createMembership`
 * Added: `webflow` to the `OAuthProvider` enum
-* Fixed: response models fill missing fields from spec defaults instead of throwing
-* Updated: push adds `mqtt5_client`, `flutter_background_service` and `flutter_local_notifications` ^22.3.1
-* Updated: raised minimums for `cookie_jar`, `flutter_web_auth_2`, `path_provider`, `web_socket_channel`, `web`
-* Updated: SDK now targets Appwrite 2.4 (`X-Appwrite-Response-Format: 2.4.0`)
 
 ## 27.0.0
 

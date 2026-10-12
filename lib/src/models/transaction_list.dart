@@ -15,11 +15,6 @@ class TransactionList implements Model {
   factory TransactionList.fromMap(
     Map<String, dynamic> map,
   ) {
-    map = {
-      'total': 0,
-      ...map,
-    };
-
     return TransactionList(
       total: map['total'],
       transactions: List<Transaction>.from(

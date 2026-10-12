@@ -11,11 +11,6 @@ class Oauth2Organization implements Model {
   factory Oauth2Organization.fromMap(
     Map<String, dynamic> map,
   ) {
-    map = {
-      '\$id': "",
-      ...map,
-    };
-
     return Oauth2Organization(
       $id: map['\$id'].toString(),
     );

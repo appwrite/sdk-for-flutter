@@ -15,11 +15,6 @@ class AppInstallationList implements Model {
   factory AppInstallationList.fromMap(
     Map<String, dynamic> map,
   ) {
-    map = {
-      'total': 0,
-      ...map,
-    };
-
     return AppInstallationList(
       total: map['total'],
       installations: List<AppInstallation>.from(

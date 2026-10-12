@@ -115,24 +115,6 @@ class User implements Model {
   factory User.fromMap(
     Map<String, dynamic> map,
   ) {
-    map = {
-      '\$id': "",
-      '\$createdAt': "",
-      '\$updatedAt': "",
-      'name': "",
-      'registration': "",
-      'status': true,
-      'labels': [],
-      'passwordUpdate': "",
-      'email': "",
-      'phone': "",
-      'emailVerification': false,
-      'phoneVerification': false,
-      'mfa': false,
-      'accessedAt': "",
-      ...map,
-    };
-
     return User(
       $id: map['\$id'].toString(),
       $createdAt: map['\$createdAt'].toString(),

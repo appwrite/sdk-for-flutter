@@ -15,11 +15,6 @@ class AppsList implements Model {
   factory AppsList.fromMap(
     Map<String, dynamic> map,
   ) {
-    map = {
-      'total': 0,
-      ...map,
-    };
-
     return AppsList(
       total: map['total'],
       apps: List<App>.from(

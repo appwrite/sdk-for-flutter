@@ -43,18 +43,6 @@ class Target implements Model {
   factory Target.fromMap(
     Map<String, dynamic> map,
   ) {
-    map = {
-      '\$id': "",
-      '\$createdAt': "",
-      '\$updatedAt': "",
-      'name': "",
-      'userId': "",
-      'providerType': "",
-      'identifier': "",
-      'expired': false,
-      ...map,
-    };
-
     return Target(
       $id: map['\$id'].toString(),
       $createdAt: map['\$createdAt'].toString(),

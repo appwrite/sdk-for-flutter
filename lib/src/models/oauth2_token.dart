@@ -35,15 +35,6 @@ class Oauth2Token implements Model {
   factory Oauth2Token.fromMap(
     Map<String, dynamic> map,
   ) {
-    map = {
-      'access_token': "",
-      'token_type': "Bearer",
-      'expires_in': 0,
-      'refresh_token': "",
-      'scope': "",
-      ...map,
-    };
-
     return Oauth2Token(
       access_token: map['access_token'].toString(),
       token_type: map['token_type'].toString(),

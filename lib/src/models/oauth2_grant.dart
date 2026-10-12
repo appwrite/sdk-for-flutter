@@ -55,22 +55,6 @@ class Oauth2Grant implements Model {
   factory Oauth2Grant.fromMap(
     Map<String, dynamic> map,
   ) {
-    map = {
-      '\$id': "",
-      '\$createdAt': "",
-      '\$updatedAt': "",
-      'userId': "",
-      'appId': "",
-      'scopes': [],
-      'resources': [],
-      'authorizationDetails': "[]",
-      'prompt': "",
-      'redirectUri': "",
-      'authTime': 0,
-      'expire': "",
-      ...map,
-    };
-
     return Oauth2Grant(
       $id: map['\$id'].toString(),
       $createdAt: map['\$createdAt'].toString(),

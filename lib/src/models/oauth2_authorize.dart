@@ -15,12 +15,6 @@ class Oauth2Authorize implements Model {
   factory Oauth2Authorize.fromMap(
     Map<String, dynamic> map,
   ) {
-    map = {
-      'grantId': "",
-      'redirectUrl': "",
-      ...map,
-    };
-
     return Oauth2Authorize(
       grantId: map['grantId'].toString(),
       redirectUrl: map['redirectUrl'].toString(),

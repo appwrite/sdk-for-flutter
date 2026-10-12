@@ -457,7 +457,6 @@ class Teams extends Service {
   Future<models.Membership> createMembership({
     required String teamId,
     required List<String> roles,
-    String? membershipId,
     String? email,
     String? userId,
     String? phone,
@@ -476,7 +475,6 @@ class Teams extends Service {
     );
 
     final Map<String, dynamic> apiParams = {
-      if (membershipId != null) 'membershipId': membershipId,
       if (email != null) 'email': email,
       if (userId != null) 'userId': userId,
       if (phone != null) 'phone': phone,

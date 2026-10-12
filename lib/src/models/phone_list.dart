@@ -15,11 +15,6 @@ class PhoneList implements Model {
   factory PhoneList.fromMap(
     Map<String, dynamic> map,
   ) {
-    map = {
-      'total': 0,
-      ...map,
-    };
-
     return PhoneList(
       total: map['total'],
       phones: List<Phone>.from(

@@ -17,7 +17,7 @@ models.Oauth2Token result = await oauth2.createToken(
     clientSecret: '<CLIENT_SECRET>', // optional
     codeVerifier: '<CODE_VERIFIER>', // optional
     redirectUri: 'https://example.com', // optional
-    resource: [], // optional
+    resource: '', // optional
     audience: '<AUDIENCE>', // optional
 );
 ```

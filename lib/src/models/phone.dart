@@ -19,13 +19,6 @@ class Phone implements Model {
   factory Phone.fromMap(
     Map<String, dynamic> map,
   ) {
-    map = {
-      'code': "",
-      'countryCode': "",
-      'countryName': "",
-      ...map,
-    };
-
     return Phone(
       code: map['code'].toString(),
       countryCode: map['countryCode'].toString(),

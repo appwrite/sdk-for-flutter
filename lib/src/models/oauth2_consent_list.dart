@@ -15,11 +15,6 @@ class Oauth2ConsentList implements Model {
   factory Oauth2ConsentList.fromMap(
     Map<String, dynamic> map,
   ) {
-    map = {
-      'total': 0,
-      ...map,
-    };
-
     return Oauth2ConsentList(
       total: map['total'],
       consents: List<Oauth2Consent>.from(

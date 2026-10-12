@@ -23,14 +23,6 @@ class AlgoArgon2 implements Model {
   factory AlgoArgon2.fromMap(
     Map<String, dynamic> map,
   ) {
-    map = {
-      'type': "argon2",
-      'memoryCost': 0,
-      'timeCost': 0,
-      'threads': 0,
-      ...map,
-    };
-
     return AlgoArgon2(
       type: map['type'].toString(),
       memoryCost: map['memoryCost'],

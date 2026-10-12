@@ -31,15 +31,6 @@ class Team implements Model {
   factory Team.fromMap(
     Map<String, dynamic> map,
   ) {
-    map = {
-      '\$id': "",
-      '\$createdAt': "",
-      '\$updatedAt': "",
-      'name': "",
-      'total': 0,
-      ...map,
-    };
-
     return Team(
       $id: map['\$id'].toString(),
       $createdAt: map['\$createdAt'].toString(),

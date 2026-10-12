@@ -154,9 +154,10 @@ class PushIO implements Push {
         _pushEndpointPort(client) ?? (resolvedTls ? 8883 : 1883);
     // When no explicit push endpoint is set, default to a `push.` host on the regular
     // endpoint (mirroring how realtime derives from the endpoint, on the push subdomain).
-    final resolvedHost = client.config['endpointPush'] != null
-        ? _hostOf(pushEndpoint)
-        : 'push.${_hostOf(pushEndpoint)}';
+    final resolvedHost =
+        client.config['endpointPush'] != null
+            ? _hostOf(pushEndpoint)
+            : 'push.${_hostOf(pushEndpoint)}';
     return PushIO._(
       client,
       host: resolvedHost,
@@ -217,10 +218,11 @@ class PushIO implements Push {
       final cookies = await client.cookieJar.loadForRequest(
         Uri.parse(client.endPoint),
       );
-      final session = cookies
-          .where((cookie) => cookie.name == name && cookie.value.isNotEmpty)
-          .map((cookie) => Uri.decodeComponent(cookie.value))
-          .firstOrNull;
+      final session =
+          cookies
+              .where((cookie) => cookie.name == name && cookie.value.isNotEmpty)
+              .map((cookie) => Uri.decodeComponent(cookie.value))
+              .firstOrNull;
       _cookieSession = session;
     } catch (_) {
       // No cookie store yet: the client has not signed in or made a request.
@@ -323,8 +325,8 @@ class PushIO implements Push {
     return json == null
         ? null
         : PushBackgroundStatus.fromMap(
-            jsonDecode(json) as Map<String, dynamic>,
-          );
+          jsonDecode(json) as Map<String, dynamic>,
+        );
   }
 
   @override
@@ -350,9 +352,9 @@ class PushIO implements Push {
     return tap == null
         ? null
         : PushNotificationOpened.fromPayload(
-            tap['topic'] as String,
-            tap['payload'] as String,
-          );
+          tap['topic'] as String,
+          tap['payload'] as String,
+        );
   }
 
   @override
@@ -1131,9 +1133,10 @@ class PushIO implements Push {
     // On Android the native plugin's per-user-and-install id is used when none was set, so this
     // connection and the background one share the broker session.
     final native = _native;
-    final clientId = _resolvedClientId.isEmpty && native != null
-        ? await native.defaultClientId(authMethod, credential)
-        : _resolvedClientId;
+    final clientId =
+        _resolvedClientId.isEmpty && native != null
+            ? await native.defaultClientId(authMethod, credential)
+            : _resolvedClientId;
     // The subscriptions moved to the native host while this was waiting: its connection would
     // share the host's client id and take over the broker session.
     if (epoch != _connectionEpoch) {
@@ -1232,9 +1235,8 @@ class PushIO implements Push {
       }
       final topic = received.topic ?? '';
       final bytes = publish.payload.message;
-      final payload = bytes == null
-          ? Uint8List(0)
-          : Uint8List.fromList(bytes.toList());
+      final payload =
+          bytes == null ? Uint8List(0) : Uint8List.fromList(bytes.toList());
       final message = PushMessage(
         topic: topic,
         payload: payload,
@@ -1472,14 +1474,14 @@ List<String> _topicList(Client client, Object? topics, String? cookieSession) {
 String _userTopic(Client client, String? cookieSession) {
   final jwt = client.config['jwt'] ?? client.config['jWT'];
   final configured = client.config['session'];
-  final session = configured != null && configured.isNotEmpty
-      ? configured
-      : cookieSession;
+  final session =
+      configured != null && configured.isNotEmpty ? configured : cookieSession;
   // The credential the connection authenticates with: the JWT when one is set (never the
   // session, which could belong to a different user), else the session.
-  final userId = (jwt != null && jwt.isNotEmpty)
-      ? _userIdFromJwt(jwt)
-      : _userIdFromSession(session);
+  final userId =
+      (jwt != null && jwt.isNotEmpty)
+          ? _userIdFromJwt(jwt)
+          : _userIdFromSession(session);
   if (userId == null) {
     throw AppwriteException(
       'subscribe() without a topic needs a signed-in user: sign in with this client, or set a JWT or session on it',

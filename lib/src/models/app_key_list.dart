@@ -15,11 +15,6 @@ class AppKeyList implements Model {
   factory AppKeyList.fromMap(
     Map<String, dynamic> map,
   ) {
-    map = {
-      'total': 0,
-      ...map,
-    };
-
     return AppKeyList(
       total: map['total'],
       keys: List<AppKey>.from(
