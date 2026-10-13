@@ -7,5 +7,7 @@ Client client = Client()
 
 Account account = Account(client);
 
-await account.deleteSessions();
+await account.deleteSessions(
+    current: false, // optional
+);
 ```

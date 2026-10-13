@@ -7,5 +7,7 @@ Client client = Client()
 
 Locale locale = Locale(client);
 
-CountryList result = await locale.listCountriesEU();
+CountryList result = await locale.listCountriesEU(
+    total: false, // optional
+);
 ```

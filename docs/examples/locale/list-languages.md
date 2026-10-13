@@ -7,5 +7,7 @@ Client client = Client()
 
 Locale locale = Locale(client);
 
-LanguageList result = await locale.listLanguages();
+LanguageList result = await locale.listLanguages(
+    total: false, // optional
+);
 ```

@@ -7,11 +7,13 @@ class VectorsDB extends Service {
   /// List transactions across all databases.
   Future<models.TransactionList> listTransactions({
     List<String>? queries,
+    bool? total,
   }) async {
     final String apiPath = '/vectorsdb/transactions';
 
     final Map<String, dynamic> apiParams = {
       if (queries != null) 'queries': queries,
+      if (total != null) 'total': total,
     };
 
     final Map<String, String> apiHeaders = {

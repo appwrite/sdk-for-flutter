@@ -43,6 +43,7 @@ enum OAuthProvider {
   tradeshift(value: "tradeshift"),
   tradeshiftBox(value: "tradeshiftBox"),
   twitch(value: "twitch"),
+  webflow(value: "webflow"),
   wordpress(value: "wordpress"),
   x(value: "x"),
   yahoo(value: "yahoo"),
