@@ -9,6 +9,7 @@ import 'package:appwrite/appwrite.dart';
 
 class MockClient extends Mock implements Client {
   Map<String, String> config = {'project': 'testproject'};
+  HttpMethod? uploadMethod;
   String endPoint = 'https://localhost/v1';
 
   @override
@@ -43,6 +44,7 @@ class MockClient extends Mock implements Client {
     Function(UploadProgress)? onProgress,
     HttpMethod method = HttpMethod.post,
   }) async {
+    uploadMethod = method;
     return super.noSuchMethod(
       Invocation.method(#chunkedUpload, [
         path,
@@ -187,6 +189,7 @@ void main() {
         file: InputFile.fromPath(path: './image.png'),
       );
       expect(response, isA<models.Account>());
+      expect(client.uploadMethod, HttpMethod.put);
     });
 
     test('test method deletePhoto()', () async {
