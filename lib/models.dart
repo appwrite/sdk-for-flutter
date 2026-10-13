@@ -31,6 +31,7 @@ part 'src/models/algo_bcrypt.dart';
 part 'src/models/algo_scrypt.dart';
 part 'src/models/algo_scrypt_modified.dart';
 part 'src/models/algo_argon2.dart';
+part 'src/models/account.dart';
 part 'src/models/preferences.dart';
 part 'src/models/session.dart';
 part 'src/models/identity.dart';

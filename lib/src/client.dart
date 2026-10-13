@@ -41,6 +41,7 @@ abstract class Client {
     required String idParamName,
     required Map<String, String> headers,
     Function(UploadProgress)? onProgress,
+    HttpMethod method = HttpMethod.post,
   });
 
   /// Set self signed to [status].

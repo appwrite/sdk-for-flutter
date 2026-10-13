@@ -40,7 +40,7 @@ class ClientBrowser extends ClientBase with ClientMixin {
       'x-sdk-name': 'Flutter',
       'x-sdk-platform': 'client',
       'x-sdk-language': 'flutter',
-      'x-sdk-version': '27.1.0',
+      'x-sdk-version': '27.2.0',
       'X-Appwrite-Response-Format': '2.3.0',
     };
 
@@ -182,6 +182,7 @@ class ClientBrowser extends ClientBase with ClientMixin {
     required String idParamName,
     required Map<String, String> headers,
     Function(UploadProgress)? onProgress,
+    HttpMethod method = HttpMethod.post,
   }) async {
     InputFile file = params[paramName];
     if (file.bytes == null) {
@@ -198,7 +199,7 @@ class ClientBrowser extends ClientBase with ClientMixin {
         filename: file.filename,
       );
       return call(
-        HttpMethod.post,
+        method,
         path: path,
         params: params,
         headers: headers,
@@ -249,7 +250,7 @@ class ClientBrowser extends ClientBase with ClientMixin {
       chunkHeaders['content-range'] = 'bytes $start-${end - 1}/$size';
 
       return call(
-        HttpMethod.post,
+        method,
         path: path,
         headers: chunkHeaders,
         params: chunkParams,

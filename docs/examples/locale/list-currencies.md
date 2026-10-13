@@ -7,5 +7,7 @@ Client client = Client()
 
 Locale locale = Locale(client);
 
-CurrencyList result = await locale.listCurrencies();
+CurrencyList result = await locale.listCurrencies(
+    total: false, // optional
+);
 ```
