@@ -15,6 +15,12 @@ class ContinentList implements Model {
   factory ContinentList.fromMap(
     Map<String, dynamic> map,
   ) {
+    map = {
+      'total': 0,
+      'continents': [],
+      ...map,
+    };
+
     return ContinentList(
       total: map['total'],
       continents: List<Continent>.from(

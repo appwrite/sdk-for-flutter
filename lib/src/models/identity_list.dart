@@ -15,6 +15,12 @@ class IdentityList implements Model {
   factory IdentityList.fromMap(
     Map<String, dynamic> map,
   ) {
+    map = {
+      'total': 0,
+      'identities': [],
+      ...map,
+    };
+
     return IdentityList(
       total: map['total'],
       identities: List<Identity>.from(

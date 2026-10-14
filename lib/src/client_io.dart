@@ -47,10 +47,9 @@ class ClientIO extends ClientBase with ClientMixin {
     String endPoint = 'https://cloud.appwrite.io/v1',
     this.selfSigned = false,
   }) : _endPoint = endPoint {
-    _nativeClient =
-        HttpClient()
-          ..badCertificateCallback =
-              ((X509Certificate cert, String host, int port) => selfSigned);
+    _nativeClient = HttpClient()
+      ..badCertificateCallback =
+          ((X509Certificate cert, String host, int port) => selfSigned);
     _httpClient = IOClient(_nativeClient);
     _endPointRealtime = endPoint
         .replaceFirst('https://', 'wss://')
@@ -60,8 +59,8 @@ class ClientIO extends ClientBase with ClientMixin {
       'x-sdk-name': 'Flutter',
       'x-sdk-platform': 'client',
       'x-sdk-language': 'flutter',
-      'x-sdk-version': '27.1.0-rc.8',
-      'X-Appwrite-Response-Format': '2.3.0',
+      'x-sdk-version': '28.0.0',
+      'X-Appwrite-Response-Format': '2.5.0',
     };
 
     config = {};
@@ -183,18 +182,6 @@ class ClientIO extends ClientBase with ClientMixin {
     }
 
     _endPointRealtime = endPoint;
-    return this;
-  }
-
-  @override
-  ClientIO setPushEndpoint(String endPoint) {
-    config['endpointPush'] = endPoint;
-    return this;
-  }
-
-  @override
-  ClientIO setPushClientId(String pushClientId) {
-    config['pushClientId'] = pushClientId;
     return this;
   }
 
@@ -460,8 +447,9 @@ class ClientIO extends ClientBase with ClientMixin {
 
     var nextChunk = 0;
     Future<void> uploadNext() async {
-      final raf =
-          file.bytes == null ? await iofile!.open(mode: FileMode.read) : null;
+      final raf = file.bytes == null
+          ? await iofile!.open(mode: FileMode.read)
+          : null;
       try {
         while (nextChunk < chunks.length) {
           final chunk = chunks[nextChunk++];
@@ -505,10 +493,9 @@ class ClientIO extends ClientBase with ClientMixin {
   Future webAuth(Uri url, {String? callbackUrlScheme}) {
     return FlutterWebAuth2.authenticate(
       url: url.toString(),
-      callbackUrlScheme:
-          callbackUrlScheme != null && _customSchemeAllowed
-              ? callbackUrlScheme
-              : "appwrite-callback-${config['project']!}",
+      callbackUrlScheme: callbackUrlScheme != null && _customSchemeAllowed
+          ? callbackUrlScheme
+          : "appwrite-callback-${config['project']!}",
       options: const FlutterWebAuth2Options(
         useWebview: false,
       ),
@@ -523,10 +510,9 @@ class ClientIO extends ClientBase with ClientMixin {
             final parsed = jsonDecode(error);
             if (parsed is Map) {
               final codeValue = parsed['code'];
-              final int? code =
-                  codeValue is int
-                      ? codeValue
-                      : int.tryParse('${codeValue ?? ''}');
+              final int? code = codeValue is int
+                  ? codeValue
+                  : int.tryParse('${codeValue ?? ''}');
               throw AppwriteException(
                 parsed['message']?.toString() ?? error,
                 code,

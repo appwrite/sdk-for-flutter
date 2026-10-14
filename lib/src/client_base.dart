@@ -48,12 +48,6 @@ abstract class ClientBase implements Client {
   Client setEndPointRealtime(String endPoint);
 
   @override
-  Client setPushEndpoint(String endPoint);
-
-  @override
-  Client setPushClientId(String pushClientId);
-
-  @override
   ClientBase addHeader(String key, String value);
 
   @override

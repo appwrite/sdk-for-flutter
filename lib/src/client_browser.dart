@@ -40,8 +40,8 @@ class ClientBrowser extends ClientBase with ClientMixin {
       'x-sdk-name': 'Flutter',
       'x-sdk-platform': 'client',
       'x-sdk-language': 'flutter',
-      'x-sdk-version': '27.1.0-rc.8',
-      'X-Appwrite-Response-Format': '2.3.0',
+      'x-sdk-version': '28.0.0',
+      'X-Appwrite-Response-Format': '2.5.0',
     };
 
     config = {};
@@ -152,18 +152,6 @@ class ClientBrowser extends ClientBase with ClientMixin {
     }
 
     _endPointRealtime = endPoint;
-    return this;
-  }
-
-  @override
-  ClientBrowser setPushEndpoint(String endPoint) {
-    config['endpointPush'] = endPoint;
-    return this;
-  }
-
-  @override
-  ClientBrowser setPushClientId(String pushClientId) {
-    config['pushClientId'] = pushClientId;
     return this;
   }
 

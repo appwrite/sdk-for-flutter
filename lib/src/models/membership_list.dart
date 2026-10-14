@@ -15,6 +15,12 @@ class MembershipList implements Model {
   factory MembershipList.fromMap(
     Map<String, dynamic> map,
   ) {
+    map = {
+      'total': 0,
+      'memberships': [],
+      ...map,
+    };
+
     return MembershipList(
       total: map['total'],
       memberships: List<Membership>.from(

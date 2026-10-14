@@ -1,6 +1,6 @@
 /// Appwrite Flutter SDK
 ///
-/// This SDK targets Appwrite server version 2.3.x as shipped on Appwrite Cloud.
+/// This SDK targets Appwrite server version 2.5.x as shipped on Appwrite Cloud.
 /// Self-hosted releases can lag behind Cloud — if you run an older self-hosted
 /// build, use a matching older SDK from
 /// [previous releases](https://github.com/appwrite/sdk-for-flutter/releases)
@@ -24,8 +24,6 @@ export 'src/response.dart';
 export 'src/client.dart';
 export 'src/exception.dart';
 export 'src/realtime.dart';
-export 'src/mqtt.dart';
-export 'src/mqtt_message.dart';
 export 'src/upload_progress.dart';
 export 'src/realtime_subscription.dart';
 export 'src/realtime_message.dart';
@@ -37,7 +35,6 @@ part 'query.dart';
 part 'permission.dart';
 part 'role.dart';
 part 'id.dart';
-part 'topic.dart';
 part 'channel.dart';
 part 'operator.dart';
 part 'services/account.dart';

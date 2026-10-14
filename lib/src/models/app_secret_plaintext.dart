@@ -43,6 +43,18 @@ class AppSecretPlaintext implements Model {
   factory AppSecretPlaintext.fromMap(
     Map<String, dynamic> map,
   ) {
+    map = {
+      '\$id': "",
+      '\$createdAt': "",
+      '\$updatedAt': "",
+      'appId': "",
+      'secret': "",
+      'hint': "",
+      'createdById': "",
+      'createdByName': "",
+      ...map,
+    };
+
     return AppSecretPlaintext(
       $id: map['\$id'].toString(),
       $createdAt: map['\$createdAt'].toString(),

@@ -57,14 +57,6 @@ abstract class Client {
   /// Set the Appwrite realtime endpoint.
   Client setEndPointRealtime(String endPoint);
 
-  /// Set the Appwrite push (MQTT broker) endpoint, e.g.
-  /// `mqtt://host:1883` or `mqtts://host:8883`.
-  Client setPushEndpoint(String endPoint);
-
-  /// Set a stable push client id, so the broker resumes this client's offline-replay
-  /// cursor across restarts. Defaults to a per-connection id when unset.
-  Client setPushClientId(String pushClientId);
-
   /// Set Project.
   ///
   /// Your project ID.

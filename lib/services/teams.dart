@@ -462,6 +462,7 @@ class Teams extends Service {
     String? phone,
     String? url,
     String? name,
+    String? membershipId,
   }) async {
     if (teamId.isEmpty) {
       throw AppwriteException(
@@ -481,6 +482,7 @@ class Teams extends Service {
       'roles': roles,
       if (url != null) 'url': url,
       if (name != null) 'name': name,
+      if (membershipId != null) 'membershipId': membershipId,
     };
 
     final Map<String, String> apiHeaders = {

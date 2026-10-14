@@ -143,10 +143,9 @@ mixin ClientMixin {
         '',
         streamedResponse.statusCode,
         headers: streamedResponse.headers.map(
-          (k, v) =>
-              k.toLowerCase() == 'content-type'
-                  ? MapEntry(k, 'text/plain')
-                  : MapEntry(k, v),
+          (k, v) => k.toLowerCase() == 'content-type'
+              ? MapEntry(k, 'text/plain')
+              : MapEntry(k, v),
         ),
         request: streamedResponse.request,
         isRedirect: streamedResponse.isRedirect,
