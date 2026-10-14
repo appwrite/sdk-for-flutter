@@ -43,6 +43,18 @@ class AppSecret implements Model {
   factory AppSecret.fromMap(
     Map<String, dynamic> map,
   ) {
+    map = {
+      '\$id': "",
+      '\$createdAt': "",
+      '\$updatedAt': "",
+      'appId': "",
+      'secret': "",
+      'hint': "",
+      'createdById': "",
+      'createdByName': "",
+      ...map,
+    };
+
     return AppSecret(
       $id: map['\$id'].toString(),
       $createdAt: map['\$createdAt'].toString(),

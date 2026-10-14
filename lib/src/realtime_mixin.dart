@@ -220,10 +220,9 @@ mixin RealtimeMixin {
     var queryParams =
         "project=${Uri.encodeComponent(client.config['project']!)}";
 
-    final portPart =
-        (uri.hasPort && uri.port != 80 && uri.port != 443)
-            ? ':${uri.port}'
-            : '';
+    final portPart = (uri.hasPort && uri.port != 80 && uri.port != 443)
+        ? ':${uri.port}'
+        : '';
     return Uri.parse(
       "${uri.scheme}://${uri.host}$portPart${uri.path}/realtime?$queryParams",
     );
@@ -330,8 +329,10 @@ mixin RealtimeMixin {
     List<String> queries = const [],
   ]) {
     StreamController<RealtimeMessage> controller = StreamController.broadcast();
-    final channelStrings =
-        channels.map((ch) => _channelToString(ch)).toList().cast<String>();
+    final channelStrings = channels
+        .map((ch) => _channelToString(ch))
+        .toList()
+        .cast<String>();
     final queryStrings = List<String>.from(queries);
 
     final subscriptionId = _generateUniqueSubscriptionId();
@@ -354,8 +355,10 @@ mixin RealtimeMixin {
         return;
       }
       if (channels != null) {
-        final nextChannels =
-            channels.map((ch) => _channelToString(ch)).toList().cast<String>();
+        final nextChannels = channels
+            .map((ch) => _channelToString(ch))
+            .toList()
+            .cast<String>();
         current.channels
           ..clear()
           ..addAll(nextChannels);

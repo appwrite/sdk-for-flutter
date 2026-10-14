@@ -15,6 +15,12 @@ class SessionList implements Model {
   factory SessionList.fromMap(
     Map<String, dynamic> map,
   ) {
+    map = {
+      'total': 0,
+      'sessions': [],
+      ...map,
+    };
+
     return SessionList(
       total: map['total'],
       sessions: List<Session>.from(

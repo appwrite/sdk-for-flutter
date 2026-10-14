@@ -11,6 +11,11 @@ class AlgoBcrypt implements Model {
   factory AlgoBcrypt.fromMap(
     Map<String, dynamic> map,
   ) {
+    map = {
+      'type': "bcrypt",
+      ...map,
+    };
+
     return AlgoBcrypt(
       type: map['type'].toString(),
     );

@@ -47,6 +47,20 @@ class Oauth2Consent implements Model {
   factory Oauth2Consent.fromMap(
     Map<String, dynamic> map,
   ) {
+    map = {
+      '\$id': "",
+      '\$createdAt': "",
+      '\$updatedAt': "",
+      'userId': "",
+      'appId': "",
+      'cimdUrl': "",
+      'scopes': [],
+      'resources': [],
+      'authorizationDetails': "[]",
+      'expire': "",
+      ...map,
+    };
+
     return Oauth2Consent(
       $id: map['\$id'].toString(),
       $createdAt: map['\$createdAt'].toString(),

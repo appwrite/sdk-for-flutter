@@ -40,14 +40,24 @@ class PushBackgroundStatus {
   /// Foreground mode ([Push.setForeground]) keeps the connection open in a service.
   final bool foregroundService;
 
-  /// Wake-ups may be deferred by Doze, so messages can arrive late while the app is closed.
+  /// Messages can arrive late, or not until the app is opened, while the app is closed: background
+  /// usage is restricted without a battery optimisation exemption, or wake-ups may be deferred by
+  /// Doze without exact alarms or foreground mode.
   final bool bestEffort;
+
+  /// The user restricted the app's background usage in the app's battery settings (Settings >
+  /// Apps > your app > Battery), Android 9+. Android may then hold its alarms, jobs and foreground
+  /// service while it is closed, so messages can wait until the app is opened. The battery
+  /// optimisation exemption lets the alarms and jobs run again, but foreground mode still stops
+  /// once the app leaves the screen. False below Android 9.
+  final bool backgroundRestricted;
 
   const PushBackgroundStatus({
     required this.exactAlarms,
     required this.ignoringBatteryOptimizations,
     required this.foregroundService,
     required this.bestEffort,
+    this.backgroundRestricted = false,
   });
 
   factory PushBackgroundStatus.fromMap(Map<String, dynamic> map) =>
@@ -57,6 +67,7 @@ class PushBackgroundStatus {
             map['ignoringBatteryOptimizations'] == true,
         foregroundService: map['foregroundService'] == true,
         bestEffort: map['bestEffort'] == true,
+        backgroundRestricted: map['backgroundRestricted'] == true,
       );
 }
 
@@ -189,9 +200,12 @@ abstract class Push extends Service {
   /// background. It only affects [background] subscriptions. A no-op elsewhere.
   Future<void> setForeground(bool enabled);
 
-  /// Android: what background delivery can rely on. When `bestEffort` is true the scheduled
-  /// wake-ups are inexact and Doze can defer them, so messages may arrive late while the app is
-  /// closed; explain why, then ask with [requestExactAlarms] or
+  /// Android: what background delivery can rely on. When `bestEffort` is true messages may arrive
+  /// late, or not until the app is opened, while the app is closed, so explain why, then ask. If
+  /// `backgroundRestricted` is true and the app is not `ignoringBatteryOptimizations`, ask the user
+  /// to choose Unrestricted in the app's battery settings (Settings > Apps > your app > Battery),
+  /// or ask with [requestIgnoreBatteryOptimizations]; otherwise the scheduled wake-ups are inexact
+  /// and Doze can defer them, so ask with [requestExactAlarms] or
   /// [requestIgnoreBatteryOptimizations]. Null elsewhere.
   Future<PushBackgroundStatus?> backgroundStatus();
 

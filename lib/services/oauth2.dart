@@ -60,7 +60,7 @@ class Oauth2 extends Service {
     String? prompt,
     int? maxAge,
     String? authorizationDetails,
-    String? resource,
+    List<String>? resource,
     String? audience,
     String? requestUri,
   }) async {
@@ -119,7 +119,7 @@ class Oauth2 extends Service {
     String? prompt,
     int? maxAge,
     String? authorizationDetails,
-    String? resource,
+    List<String>? resource,
     String? audience,
     String? requestUri,
   }) async {
@@ -168,7 +168,7 @@ class Oauth2 extends Service {
     String? clientId,
     String? scope,
     String? authorizationDetails,
-    String? resource,
+    List<String>? resource,
     String? audience,
   }) async {
     final String apiPath = '/oauth2/{project_id}/device_authorization'
@@ -400,7 +400,7 @@ class Oauth2 extends Service {
     String? prompt,
     int? maxAge,
     String? authorizationDetails,
-    String? resource,
+    List<String>? resource,
     String? audience,
   }) async {
     final String apiPath = '/oauth2/{project_id}/par'.replaceAll(
@@ -550,7 +550,7 @@ class Oauth2 extends Service {
     String? clientSecret,
     String? codeVerifier,
     String? redirectUri,
-    String? resource,
+    List<String>? resource,
     String? audience,
   }) async {
     final String apiPath = '/oauth2/{project_id}/token'.replaceAll(

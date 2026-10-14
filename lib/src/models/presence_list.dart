@@ -15,6 +15,12 @@ class PresenceList implements Model {
   factory PresenceList.fromMap(
     Map<String, dynamic> map,
   ) {
+    map = {
+      'total': 0,
+      'presences': [],
+      ...map,
+    };
+
     return PresenceList(
       total: map['total'],
       presences: List<Presence>.from(

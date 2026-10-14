@@ -721,6 +721,108 @@ void main() {
       expect(response, isA<models.User>());
     });
 
+    test('test method listPasskeys()', () async {
+      final Map<String, dynamic> data = {
+        'total': 5,
+        'passkeys': [],
+      };
+
+      when(
+        client.call(HttpMethod.get),
+      ).thenAnswer((_) async => Response(data: data));
+
+      final response = await account.listPasskeys();
+      expect(response, isA<models.PasskeyList>());
+    });
+
+    test('test method createPasskey()', () async {
+      final Map<String, dynamic> data = {
+        '\$id': "bb8ea5c16897e",
+        '\$createdAt': "2020-10-15T06:38:00.000+00:00",
+        'passkeyId': "5e5ea5c16897e",
+        'expire': "2020-10-15T06:38:00.000+00:00",
+        'publicKey': <String, dynamic>{},
+      };
+
+      when(
+        client.call(HttpMethod.post),
+      ).thenAnswer((_) async => Response(data: data));
+
+      final response = await account.createPasskey();
+      expect(response, isA<models.PasskeyChallenge>());
+    });
+
+    test('test method getPasskey()', () async {
+      final Map<String, dynamic> data = {
+        '\$id': "5e5ea5c16897e",
+        '\$createdAt': "2020-10-15T06:38:00.000+00:00",
+        '\$updatedAt': "2020-10-15T06:38:00.000+00:00",
+        'name': "My laptop",
+        'accessedAt': "2020-10-15T06:38:00.000+00:00",
+      };
+
+      when(
+        client.call(HttpMethod.get),
+      ).thenAnswer((_) async => Response(data: data));
+
+      final response = await account.getPasskey(
+        passkeyId: "<PASSKEY_ID>",
+      );
+      expect(response, isA<models.Passkey>());
+    });
+
+    test('test method updatePasskey()', () async {
+      final Map<String, dynamic> data = {
+        '\$id': "5e5ea5c16897e",
+        '\$createdAt': "2020-10-15T06:38:00.000+00:00",
+        '\$updatedAt': "2020-10-15T06:38:00.000+00:00",
+        'name': "My laptop",
+        'accessedAt': "2020-10-15T06:38:00.000+00:00",
+      };
+
+      when(
+        client.call(HttpMethod.patch),
+      ).thenAnswer((_) async => Response(data: data));
+
+      final response = await account.updatePasskey(
+        passkeyId: "<PASSKEY_ID>",
+        name: "<NAME>",
+      );
+      expect(response, isA<models.Passkey>());
+    });
+
+    test('test method deletePasskey()', () async {
+      final data = '';
+
+      when(
+        client.call(HttpMethod.delete),
+      ).thenAnswer((_) async => Response(data: data));
+
+      final response = await account.deletePasskey(
+        passkeyId: "<PASSKEY_ID>",
+      );
+    });
+
+    test('test method updatePasskeyVerification()', () async {
+      final Map<String, dynamic> data = {
+        '\$id': "5e5ea5c16897e",
+        '\$createdAt': "2020-10-15T06:38:00.000+00:00",
+        '\$updatedAt': "2020-10-15T06:38:00.000+00:00",
+        'name': "My laptop",
+        'accessedAt': "2020-10-15T06:38:00.000+00:00",
+      };
+
+      when(
+        client.call(HttpMethod.put),
+      ).thenAnswer((_) async => Response(data: data));
+
+      final response = await account.updatePasskeyVerification(
+        passkeyId: "<PASSKEY_ID>",
+        credential: {},
+      );
+      expect(response, isA<models.Passkey>());
+    });
+
     test('test method updatePassword()', () async {
       final Map<String, dynamic> data = {
         '\$id': "5e5ea5c16897e",
@@ -1439,6 +1541,44 @@ void main() {
         provider: enums.OAuthProvider.amazon,
       );
       expect(response, equals('done'));
+    });
+
+    test('test method createPasskeyToken()', () async {
+      final Map<String, dynamic> data = {
+        '\$id': "bb8ea5c16897e",
+        '\$createdAt': "2020-10-15T06:38:00.000+00:00",
+        'passkeyId': "5e5ea5c16897e",
+        'expire': "2020-10-15T06:38:00.000+00:00",
+        'publicKey': <String, dynamic>{},
+      };
+
+      when(
+        client.call(HttpMethod.post),
+      ).thenAnswer((_) async => Response(data: data));
+
+      final response = await account.createPasskeyToken();
+      expect(response, isA<models.PasskeyChallenge>());
+    });
+
+    test('test method updatePasskeyToken()', () async {
+      final Map<String, dynamic> data = {
+        '\$id': "bb8ea5c16897e",
+        '\$createdAt': "2020-10-15T06:38:00.000+00:00",
+        'userId': "5e5ea5c168bb8",
+        'secret': "",
+        'expire': "2020-10-15T06:38:00.000+00:00",
+        'phrase': "Golden Fox",
+      };
+
+      when(
+        client.call(HttpMethod.put),
+      ).thenAnswer((_) async => Response(data: data));
+
+      final response = await account.updatePasskeyToken(
+        challengeId: "<CHALLENGE_ID>",
+        credential: {},
+      );
+      expect(response, isA<models.TokenSecret>());
     });
 
     test('test method createPhoneToken()', () async {

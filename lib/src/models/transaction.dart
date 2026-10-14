@@ -31,6 +31,16 @@ class Transaction implements Model {
   factory Transaction.fromMap(
     Map<String, dynamic> map,
   ) {
+    map = {
+      '\$id': "",
+      '\$createdAt': "",
+      '\$updatedAt': "",
+      'status': "pending",
+      'operations': 0,
+      'expiresAt': "",
+      ...map,
+    };
+
     return Transaction(
       $id: map['\$id'].toString(),
       $createdAt: map['\$createdAt'].toString(),

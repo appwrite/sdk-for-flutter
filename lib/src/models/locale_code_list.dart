@@ -15,6 +15,12 @@ class LocaleCodeList implements Model {
   factory LocaleCodeList.fromMap(
     Map<String, dynamic> map,
   ) {
+    map = {
+      'total': 0,
+      'localeCodes': [],
+      ...map,
+    };
+
     return LocaleCodeList(
       total: map['total'],
       localeCodes: List<LocaleCode>.from(

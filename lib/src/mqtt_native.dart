@@ -134,12 +134,10 @@ class PushNative {
   void Function() listenOpened(
     void Function(String topic, String payload) onOpened,
   ) {
-    final stream =
-        _stream ??=
-            _events
-                .receiveBroadcastStream()
-                .map((event) => event as Map<Object?, Object?>)
-                .asBroadcastStream();
+    final stream = _stream ??= _events
+        .receiveBroadcastStream()
+        .map((event) => event as Map<Object?, Object?>)
+        .asBroadcastStream();
     final subscription = stream.listen((event) {
       if (event['type'] == 'opened') {
         onOpened(event['topic'] as String, event['payload'] as String);
@@ -167,12 +165,10 @@ class PushNative {
     required void Function(String message) onError,
     required void Function(bool connected) onConnection,
   }) {
-    final stream =
-        _stream ??=
-            _events
-                .receiveBroadcastStream()
-                .map((event) => event as Map<Object?, Object?>)
-                .asBroadcastStream();
+    final stream = _stream ??= _events
+        .receiveBroadcastStream()
+        .map((event) => event as Map<Object?, Object?>)
+        .asBroadcastStream();
     return stream.listen((event) {
       if (event['type'] == 'message') {
         onMessage(

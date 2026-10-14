@@ -51,6 +51,21 @@ class Identity implements Model {
   factory Identity.fromMap(
     Map<String, dynamic> map,
   ) {
+    map = {
+      '\$id': "",
+      '\$createdAt': "",
+      '\$updatedAt': "",
+      'userId': "",
+      'provider': "",
+      'providerUid': "",
+      'providerEmail': "",
+      'providerAccessToken': "",
+      'providerAccessTokenExpiry': "",
+      'providerRefreshToken': "",
+      'providerIdToken': "",
+      ...map,
+    };
+
     return Identity(
       $id: map['\$id'].toString(),
       $createdAt: map['\$createdAt'].toString(),
