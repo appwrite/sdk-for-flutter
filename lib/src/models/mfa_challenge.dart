@@ -23,6 +23,14 @@ class MfaChallenge implements Model {
   factory MfaChallenge.fromMap(
     Map<String, dynamic> map,
   ) {
+    map = {
+      '\$id': "",
+      '\$createdAt': "",
+      'userId': "",
+      'expire': "",
+      ...map,
+    };
+
     return MfaChallenge(
       $id: map['\$id'].toString(),
       $createdAt: map['\$createdAt'].toString(),

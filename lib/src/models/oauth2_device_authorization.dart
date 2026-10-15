@@ -31,6 +31,16 @@ class Oauth2DeviceAuthorization implements Model {
   factory Oauth2DeviceAuthorization.fromMap(
     Map<String, dynamic> map,
   ) {
+    map = {
+      'device_code': "",
+      'user_code': "",
+      'verification_uri': "",
+      'verification_uri_complete': "",
+      'expires_in': 0,
+      'interval': 0,
+      ...map,
+    };
+
     return Oauth2DeviceAuthorization(
       device_code: map['device_code'].toString(),
       user_code: map['user_code'].toString(),

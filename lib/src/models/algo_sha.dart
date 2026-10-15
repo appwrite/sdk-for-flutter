@@ -11,6 +11,11 @@ class AlgoSha implements Model {
   factory AlgoSha.fromMap(
     Map<String, dynamic> map,
   ) {
+    map = {
+      'type': "sha",
+      ...map,
+    };
+
     return AlgoSha(
       type: map['type'].toString(),
     );

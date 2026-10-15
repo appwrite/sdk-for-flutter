@@ -47,6 +47,19 @@ class AppInstallation implements Model {
   factory AppInstallation.fromMap(
     Map<String, dynamic> map,
   ) {
+    map = {
+      '\$id': "",
+      '\$createdAt': "",
+      '\$updatedAt': "",
+      'appId': "",
+      'teamId': "",
+      'scopes': [],
+      'authorizationDetails': [],
+      'createdById': "",
+      'createdByName': "",
+      ...map,
+    };
+
     return AppInstallation(
       $id: map['\$id'].toString(),
       $createdAt: map['\$createdAt'].toString(),

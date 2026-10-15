@@ -15,6 +15,12 @@ class TeamList implements Model {
   factory TeamList.fromMap(
     Map<String, dynamic> map,
   ) {
+    map = {
+      'total': 0,
+      'teams': [],
+      ...map,
+    };
+
     return TeamList(
       total: map['total'],
       teams: List<Team>.from(

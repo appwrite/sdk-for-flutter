@@ -2,12 +2,12 @@
 
 [![pub package](https://img.shields.io/pub/v/appwrite?style=flat-square)](https://pub.dartlang.org/packages/appwrite)
 ![License](https://img.shields.io/github/license/appwrite/sdk-for-flutter.svg?style=flat-square)
-![Version](https://img.shields.io/badge/api%20version-2.3.x-blue.svg?style=flat-square)
+![Version](https://img.shields.io/badge/api%20version-2.5.x-blue.svg?style=flat-square)
 [![Build Status](https://img.shields.io/travis/com/appwrite/sdk-generator?style=flat-square)](https://travis-ci.com/appwrite/sdk-generator)
 [![Twitter Account](https://img.shields.io/twitter/follow/appwrite?color=00acee&label=twitter&style=flat-square)](https://twitter.com/appwrite)
 [![Discord](https://img.shields.io/discord/564160730845151244?label=discord&style=flat-square)](https://appwrite.io/discord)
 
-**This SDK targets Appwrite server version 2.3.x as shipped on Appwrite Cloud.** Self-hosted releases can lag behind Cloud — if you run an older self-hosted build, use a matching older SDK from [previous releases](https://github.com/appwrite/sdk-for-flutter/releases) when APIs differ.
+**This SDK targets Appwrite server version 2.5.x as shipped on Appwrite Cloud.** Self-hosted releases can lag behind Cloud — if you run an older self-hosted build, use a matching older SDK from [previous releases](https://github.com/appwrite/sdk-for-flutter/releases) when APIs differ.
 
 Appwrite is an open-source backend as a service server that abstracts and simplifies complex and repetitive development tasks behind a very simple to use REST API. Appwrite aims to help you develop your apps faster and in a more secure way. Use the Flutter SDK to integrate your app with the Appwrite server to easily start interacting with all of Appwrite backend APIs and tools. For full API documentation and tutorials go to [https://appwrite.io/docs](https://appwrite.io/docs)
 
@@ -19,7 +19,7 @@ Add this to your package's `pubspec.yaml` file:
 
 ```yml
 dependencies:
-  appwrite: ^27.1.0-rc.8
+  appwrite: ^28.0.0
 ```
 
 You can install packages from the command line:
@@ -60,7 +60,9 @@ credential saved at subscribe time, so use a session rather than a short-lived J
 On Android 13 and later, the first background subscription asks the user for the
 `POST_NOTIFICATIONS` runtime permission. If they decline, the subscription still delivers to your
 callback but posts no notification. Notifications show the title, body and image sent with
-`createPush`, and fall back to the subscription's `title` and the raw payload for other messages.
+`createPush`, falling back to the subscription's `title` when only a body is sent. A push with no
+title or body, such as a data-only push, posts no notification and reaches your callback only.
+Messages that are not a JSON object show the subscription's `title` with the raw payload as body.
 
 Notifications are posted while the app is backgrounded or closed. While it is on screen your
 callback shows the message, so none is posted unless the subscription passes
@@ -77,7 +79,7 @@ await push.setForeground(true);
 
 Foreground mode runs a `remoteMessaging` foreground service, which Google Play asks apps to
 declare in the Play Console. Apps that never enable it can remove the service from their merged
-manifest with `tools:node="remove"` on `io.appwrite.services.PushService` and
+manifest with `tools:node="remove"` on `io.appwrite.flutter.services.PushService` and
 `android.permission.FOREGROUND_SERVICE_REMOTE_MESSAGING`.
 
 #### Delivery while the app is closed
@@ -109,12 +111,19 @@ The SDK uses exact alarms on its own whenever the app may schedule them. To allo
    nothing to ask, including when the permission is not declared. The SDK never opens these
    screens on its own.
 
+If `backgroundRestricted` is true, the user restricted the app's background usage and messages can
+wait until the app is opened. Exact alarms don't lift it, and neither does foreground mode: Android
+stops a restricted app's foreground service once it leaves the screen. Ask the user to choose
+Unrestricted in the app's battery settings (Settings > Apps > your app > Battery); granting the
+battery optimisation exemption also lets the SDK's alarms and jobs run, and `bestEffort` then
+reflects only the exact-alarm state. It is always false below Android 9.
+
 If the user force-stops the app (Settings > Force stop, and on some devices swiping it away from
 recents), Android cancels its alarms and jobs: nothing is delivered until the app is opened
 again, and the broker then replays what was sent meanwhile.
 
 Set the notification icon with
-`<meta-data android:name="io.appwrite.push.notification_icon" android:resource="@drawable/..." />` in your
+`<meta-data android:name="io.appwrite.flutter.push.notification_icon" android:resource="@drawable/..." />` in your
 `<application>`; without it a generic icon is used.
 
 ### Opening a tapped notification
@@ -246,14 +255,14 @@ User user = await account.create(
   userId: ID.unique(),
   email: 'email@example.com',
   password: 'password',
-  name: 'Walter O'Brien',
+  name: "Walter O'Brien",
 );
 ```
 
 ### Full Example
 
 ```dart
-Client client = Client().setProject('<YOUR_PROJECT_ID>>');
+Client client = Client().setProject('<YOUR_PROJECT_ID>');
 
 Account account = Account(client);
 
@@ -261,7 +270,7 @@ User user = await account.create(
   userId: ID.unique(),
   email: 'email@example.com',
   password: 'password',
-  name: 'Walter O'Brien'
+  name: "Walter O'Brien"
 );
 ```
 

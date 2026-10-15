@@ -312,6 +312,24 @@ void main() {
     expect(query['values'][1]['values'], [18]);
   });
 
+  test('returns relationship', () {
+    final inner1 = Query.equal('approved', true);
+    final inner2 = Query.limit(2);
+
+    final query = jsonDecode(Query.relationship('comments', [inner1, inner2]));
+
+    expect(query['attribute'], 'comments');
+    expect(query['method'], 'relationship');
+    expect(query['values'].length, 2);
+
+    expect(query['values'][0]['method'], 'equal');
+    expect(query['values'][0]['attribute'], 'approved');
+    expect(query['values'][0]['values'], [true]);
+
+    expect(query['values'][1]['method'], 'limit');
+    expect(query['values'][1]['values'], [2]);
+  });
+
   test('returns createdBefore', () {
     final query = jsonDecode(Query.createdBefore('2023-01-01'));
     expect(query['attribute'], '\$createdAt');
@@ -352,5 +370,221 @@ void main() {
     expect(query['attribute'], '\$updatedAt');
     expect(query['values'], ['2023-01-01', '2023-12-31']);
     expect(query['method'], 'between');
+  });
+
+  test('returns count with alias', () {
+    final query = jsonDecode(Query.count('*', 'total'));
+    expect(query['method'], 'count');
+    expect(query['attribute'], '*');
+    expect(query['values'], ['total']);
+  });
+
+  test('returns count without alias', () {
+    final query = jsonDecode(Query.count());
+    expect(query['method'], 'count');
+    expect(query['attribute'], '*');
+    expect(query.containsKey('values'), isFalse);
+  });
+
+  test('returns countDistinct', () {
+    final query = jsonDecode(Query.countDistinct('year', 'uniqueYears'));
+    expect(query['method'], 'countDistinct');
+    expect(query['attribute'], 'year');
+    expect(query['values'], ['uniqueYears']);
+  });
+
+  test('returns sum avg min max', () {
+    expect(jsonDecode(Query.sum('price', 'total'))['method'], 'sum');
+    expect(jsonDecode(Query.avg('price', 'avgPrice'))['method'], 'avg');
+    expect(jsonDecode(Query.min('price', 'lowest'))['method'], 'min');
+    expect(jsonDecode(Query.max('price', 'highest'))['method'], 'max');
+  });
+
+  test('returns stddev', () {
+    expect(jsonDecode(Query.stddev('price', 'sd'))['method'], 'stddev');
+  });
+
+  test('returns stddevPop', () {
+    expect(jsonDecode(Query.stddevPop('price', 'sdp'))['method'], 'stddevPop');
+  });
+
+  test('returns stddevSamp', () {
+    expect(jsonDecode(Query.stddevSamp('price', 'sds'))['method'], 'stddevSamp');
+  });
+
+  test('returns variance', () {
+    expect(jsonDecode(Query.variance('price', 'var'))['method'], 'variance');
+  });
+
+  test('returns varPop', () {
+    expect(jsonDecode(Query.varPop('price', 'vp'))['method'], 'varPop');
+  });
+
+  test('returns varSamp', () {
+    expect(jsonDecode(Query.varSamp('price', 'vs'))['method'], 'varSamp');
+  });
+
+  test('returns bitAnd', () {
+    expect(jsonDecode(Query.bitAnd('flags', 'band'))['method'], 'bitAnd');
+  });
+
+  test('returns bitOr', () {
+    expect(jsonDecode(Query.bitOr('flags', 'bor'))['method'], 'bitOr');
+  });
+
+  test('returns bitXor', () {
+    expect(jsonDecode(Query.bitXor('flags', 'bxor'))['method'], 'bitXor');
+  });
+
+  test('returns groupBy', () {
+    final query = jsonDecode(Query.groupBy(['status', 'year']));
+    expect(query['method'], 'groupBy');
+    expect(query['values'], ['status', 'year']);
+    expect(query.containsKey('attribute'), isFalse);
+  });
+
+  test('returns having', () {
+    final query = jsonDecode(Query.having([Query.greaterThan('total', 1)]));
+    expect(query['method'], 'having');
+    expect(query['values'][0]['method'], 'greaterThan');
+    expect(query['values'][0]['attribute'], 'total');
+    expect(query['values'][0]['values'], [1]);
+  });
+
+  test('returns distinct', () {
+    final query = jsonDecode(Query.distinct());
+    expect(query['method'], 'distinct');
+    expect(query.containsKey('attribute'), isFalse);
+    expect(query.containsKey('values'), isFalse);
+  });
+
+  test('returns join', () {
+    final query = jsonDecode(Query.join('orders', '\$id', 'customerId'));
+    expect(query['method'], 'join');
+    expect(query['attribute'], 'orders');
+    expect(query['values'], ['\$id', '=', 'customerId']);
+  });
+
+  test('returns leftJoin with alias', () {
+    final query = jsonDecode(
+      Query.leftJoin('orders', '\$id', 'customerId', '=', 'ord'),
+    );
+    expect(query['method'], 'leftJoin');
+    expect(query['attribute'], 'orders');
+    expect(query['values'], ['\$id', '=', 'customerId', 'ord']);
+  });
+
+  test('returns rightJoin', () {
+    final query = jsonDecode(Query.rightJoin('orders', '\$id', 'customerId'));
+    expect(query['method'], 'rightJoin');
+    expect(query['values'], ['\$id', '=', 'customerId']);
+  });
+
+  test('returns fullOuterJoin', () {
+    final query = jsonDecode(Query.fullOuterJoin('orders', '\$id', 'customerId'));
+    expect(query['method'], 'fullOuterJoin');
+    expect(query['values'], ['\$id', '=', 'customerId']);
+  });
+
+  test('returns on', () {
+    final query = jsonDecode(Query.on('\$id', 'customerId'));
+    expect(query['method'], 'on');
+    expect(query['values'], ['\$id', '=', 'customerId']);
+  });
+
+  test('returns nested leftJoin', () {
+    final query = jsonDecode(Query.leftJoin('orders', 'ord', [
+      Query.on('\$id', 'customerId'),
+      Query.equal('ord.status', 'paid'),
+    ]));
+    expect(query['method'], 'leftJoin');
+    expect(query['attribute'], 'orders');
+    expect(query['values'][0], 'ord');
+    expect(query['values'][1]['method'], 'on');
+    expect(query['values'][2]['method'], 'equal');
+  });
+
+  test('returns crossJoin', () {
+    final query = jsonDecode(Query.crossJoin('orders', 'ord'));
+    expect(query['method'], 'crossJoin');
+    expect(query['attribute'], 'orders');
+    expect(query['values'], ['ord']);
+  });
+
+  test('returns vectorDot', () {
+    final query = jsonDecode(Query.vectorDot('embedding', [0.1, 0.2]));
+    expect(query['method'], 'vectorDot');
+    expect(query['attribute'], 'embedding');
+    expect(query['values'], [
+      [0.1, 0.2]
+    ]);
+  });
+
+  test('returns covers', () {
+    final query = jsonDecode(Query.covers('location', [0, 0]));
+    expect(query['method'], 'covers');
+    expect(query['values'], [
+      [0, 0]
+    ]);
+  });
+
+  test('returns notCovers', () {
+    final query = jsonDecode(Query.notCovers('location', [1, 2]));
+    expect(query['method'], 'notCovers');
+    expect(query['values'], [
+      [1, 2]
+    ]);
+  });
+
+  test('returns spatialEquals', () {
+    final query = jsonDecode(Query.spatialEquals('location', [1, 2]));
+    expect(query['method'], 'spatialEquals');
+    expect(query['values'], [
+      [1, 2]
+    ]);
+  });
+
+  test('returns notSpatialEquals', () {
+    final query = jsonDecode(Query.notSpatialEquals('location', [1, 2]));
+    expect(query['method'], 'notSpatialEquals');
+    expect(query['values'], [
+      [1, 2]
+    ]);
+  });
+
+  test('returns page', () {
+    final queries = Query.page(2, 10);
+    expect(queries.length, 2);
+    final limit = jsonDecode(queries[0]);
+    final offset = jsonDecode(queries[1]);
+    expect(limit['method'], 'limit');
+    expect(limit['values'], [10]);
+    expect(offset['method'], 'offset');
+    expect(offset['values'], [10]);
+  });
+
+  test('page rejects invalid', () {
+    expect(() => Query.page(0, 10), throwsA(isA<ArgumentError>()));
+    expect(() => Query.page(1, 0), throwsA(isA<ArgumentError>()));
+  });
+
+  test('builder build', () {
+    final expected = [
+      Query.equal('status', 'published'),
+      Query.leftJoin('orders', '\$id', 'customerId', '=', 'ord'),
+      Query.count('*', 'total'),
+      Query.groupBy(['status']),
+      Query.limit(25),
+    ];
+
+    final built = Query.builder()
+        .equal('status', 'published')
+        .leftJoin('orders', '\$id', 'customerId', '=', 'ord')
+        .count('*', 'total')
+        .groupBy(['status'])
+        .limit(25)
+        .build();
+
+    expect(built, expected);
   });
 }

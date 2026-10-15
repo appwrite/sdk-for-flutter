@@ -15,6 +15,12 @@ class FileList implements Model {
   factory FileList.fromMap(
     Map<String, dynamic> map,
   ) {
+    map = {
+      'total': 0,
+      'files': [],
+      ...map,
+    };
+
     return FileList(
       total: map['total'],
       files: List<File>.from(

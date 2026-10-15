@@ -15,6 +15,12 @@ class Country implements Model {
   factory Country.fromMap(
     Map<String, dynamic> map,
   ) {
+    map = {
+      'name': "",
+      'code': "",
+      ...map,
+    };
+
     return Country(
       name: map['name'].toString(),
       code: map['code'].toString(),

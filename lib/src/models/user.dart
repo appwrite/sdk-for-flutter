@@ -115,6 +115,25 @@ class User implements Model {
   factory User.fromMap(
     Map<String, dynamic> map,
   ) {
+    map = {
+      '\$id': "",
+      '\$createdAt': "",
+      '\$updatedAt': "",
+      'name': "",
+      'registration': "",
+      'status': true,
+      'labels': [],
+      'passwordUpdate': "",
+      'email': "",
+      'phone': "",
+      'emailVerification': false,
+      'phoneVerification': false,
+      'mfa': false,
+      'targets': [],
+      'accessedAt': "",
+      ...map,
+    };
+
     return User(
       $id: map['\$id'].toString(),
       $createdAt: map['\$createdAt'].toString(),
@@ -139,7 +158,7 @@ class User implements Model {
       phoneVerification: map['phoneVerification'],
       mfa: map['mfa'],
       prefs: Preferences.fromMap(
-        map['prefs'],
+        map['prefs'] ?? <String, dynamic>{},
       ),
       targets: List<Target>.from(
         map['targets'].map((p) => Target.fromMap(p)),
