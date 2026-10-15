@@ -111,6 +111,36 @@ class App implements Model {
   factory App.fromMap(
     Map<String, dynamic> map,
   ) {
+    map = {
+      '\$id': "",
+      '\$createdAt': "",
+      '\$updatedAt': "",
+      'name': "",
+      'description': "",
+      'clientUri': "",
+      'logoUri': "",
+      'privacyPolicyUrl': "",
+      'termsUrl': "",
+      'contacts': [],
+      'tagline': "",
+      'tags': [],
+      'labels': [],
+      'images': [],
+      'supportUrl': "",
+      'dataDeletionUrl': "",
+      'redirectUris': [],
+      'postLogoutRedirectUris': [],
+      'enabled': true,
+      'type': "confidential",
+      'deviceFlow': false,
+      'teamId': "",
+      'userId': "",
+      'installationScopes': [],
+      'installationRedirectUrl': "",
+      'secrets': [],
+      ...map,
+    };
+
     return App(
       $id: map['\$id'].toString(),
       $createdAt: map['\$createdAt'].toString(),

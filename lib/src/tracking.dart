@@ -127,6 +127,7 @@ class Tracking with WidgetsBindingObserver {
                   url == null
                       ? this.url
                       : Uri.parse(this.url).resolve(url).toString(),
+              screenWidth: _viewportWidth(),
               engagementTime: engagementTime,
               // The endpoint takes props as a flat alternating key/value list.
               props:
@@ -139,6 +140,16 @@ class Tracking with WidgetsBindingObserver {
     } catch (_) {
       // A malformed [url] throws before the request starts.
     }
+  }
+
+  // The endpoint buckets this as viewport width in logical pixels, matching
+  // the Web helper's `innerWidth`, so physical width is divided by the ratio.
+  int? _viewportWidth() {
+    final view = PlatformDispatcher.instance.implicitView;
+    if (view == null || view.physicalSize.width == 0) {
+      return null;
+    }
+    return (view.physicalSize.width / view.devicePixelRatio).round();
   }
 
   /// Mobile-idiomatic screen-view shortcut. Renders as a `screen_view`

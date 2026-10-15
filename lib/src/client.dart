@@ -117,6 +117,9 @@ abstract class Client {
   /// Send a ping to project as part of onboarding.
   Future<String> ping();
 
+  /// Flatten builders and nested query-string lists for request params.
+  dynamic flatten(dynamic value);
+
   /// Send the API request.
   Future<Response> call(
     HttpMethod method, {

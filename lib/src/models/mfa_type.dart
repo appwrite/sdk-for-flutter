@@ -15,6 +15,12 @@ class MfaType implements Model {
   factory MfaType.fromMap(
     Map<String, dynamic> map,
   ) {
+    map = {
+      'secret': "",
+      'uri': "",
+      ...map,
+    };
+
     return MfaType(
       secret: map['secret'].toString(),
       uri: map['uri'].toString(),

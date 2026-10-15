@@ -1,4 +1,4 @@
-package io.appwrite.services
+package io.appwrite.flutter.services
 
 import android.content.BroadcastReceiver
 import android.content.Context
@@ -12,7 +12,7 @@ import android.content.Intent
  * ```xml
  * <receiver android:name=".MyPushReceiver" android:exported="false">
  *     <intent-filter>
- *         <action android:name="io.appwrite.push.MESSAGE" />
+ *         <action android:name="io.appwrite.flutter.push.MESSAGE" />
  *     </intent-filter>
  * </receiver>
  * ```

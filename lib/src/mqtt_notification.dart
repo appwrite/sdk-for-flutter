@@ -2,48 +2,47 @@ import 'dart:convert';
 
 import 'mqtt_message.dart';
 
-/// What a message's `notification` block asks a background notification to show: nulls when
-/// the payload has none or is not JSON.
+/// What a message asks a background notification to show. A payload that is not a JSON object
+/// is [raw] and shown as it was sent; an envelope without a title or body shows nothing.
 class PushNotificationContent {
-  /// Whether the message has a `notification` block at all.
-  final bool present;
+  /// Whether the payload is not a JSON object, so it carries no envelope to read.
+  final bool raw;
   final String? title;
   final String? body;
   final String? image;
 
-  const PushNotificationContent._(
-    this.present,
-    this.title,
-    this.body,
-    this.image,
-  );
+  const PushNotificationContent._(this.raw, this.title, this.body, this.image);
 
   factory PushNotificationContent.of(PushMessage message) {
-    Object? notification;
+    Object? json;
     try {
-      final json = jsonDecode(message.data);
-      notification = json is Map ? json['notification'] : null;
+      json = jsonDecode(message.data);
     } catch (_) {
-      notification = null;
+      json = null;
     }
+    if (json is! Map) {
+      return const PushNotificationContent._(true, null, null, null);
+    }
+    final notification = json['notification'];
     String? field(String name) {
       final value = notification is Map ? notification[name] : null;
       return value is String && value.isNotEmpty ? value : null;
     }
 
     return PushNotificationContent._(
-      notification is Map,
+      false,
       field('title'),
       field('body'),
       field('image'),
     );
   }
 
+  /// Whether to post a notification at all: data-only envelopes reach callbacks only.
+  bool get visible => raw || title != null || body != null;
+
   /// The title to show: the server's, else [fallback].
   String titleOr(String fallback) => title ?? fallback;
 
-  /// The body to show: the server's, else the raw payload when the message carries no
-  /// notification block at all.
-  String? bodyFor(PushMessage message) =>
-      body ?? (present ? null : message.data);
+  /// The body to show: the server's, else the payload itself when it is [raw].
+  String? bodyFor(PushMessage message) => body ?? (raw ? message.data : null);
 }

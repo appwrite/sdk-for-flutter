@@ -8,9 +8,9 @@ import android.os.Handler
 import android.os.Looper
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
-import io.appwrite.services.PushBridge
-import io.appwrite.services.PushMessage
-import io.appwrite.services.PushTaps
+import io.appwrite.flutter.services.PushBridge
+import io.appwrite.flutter.services.PushMessage
+import io.appwrite.flutter.services.PushTaps
 import io.flutter.embedding.engine.plugins.FlutterPlugin
 import io.flutter.embedding.engine.plugins.activity.ActivityAware
 import io.flutter.embedding.engine.plugins.activity.ActivityPluginBinding

@@ -1,52 +1,41 @@
 # Change Log
 
+## 28.0.0
 
-## 27.1.0-rc.8
+* Breaking: requests send `X-Appwrite-Response-Format: 2.5.0`; responses follow the 2.5 shapes
+* Breaking: missing response fields are filled with their documented defaults
+* Breaking: `Client.chunkedUpload` takes a `responseType` parameter; custom `Client` implementations must add it
+* Breaking: requires Dart `>=3.10.0` and Flutter `>=3.38.1`
+* Breaking: the package is now a Flutter plugin with native Android push code
+* Breaking: `Client` adds `setPushEndpoint`, `setPushClientId` and `flatten`; custom `Client` implementations must add them
+* Added: `Apps` service to manage apps, installations, keys and secrets
+* Added: `Oauth2` service for the OAuth2 authorize, token, device and grant flows
+* Added: `Push` service with background delivery on Android
+* Added: `Topic` helper and MQTT exports
+* Added: Android push code ships under `io.appwrite.flutter`, so apps can also depend on `sdk-for-android`; set the notification icon with the `io.appwrite.flutter.push.notification_icon` meta-data
+* Added: `Query` aggregates (`count`, `countDistinct`, `sum`, `avg`, `min`, `max` and more), `groupBy`, `having`, `distinct`, joins, `relationship`, `covers`, `spatialEquals` and `page`
+* Added: `Query.builder()` to chain queries; `build()` returns the query list
+* Added: `ExecutionTrigger.email`
+* Fixed: required map fields missing from a response, such as `prefs`, default to an empty map
+* Fixed: OAuth2 models wrap a single `prompt` value in a list
 
-* Added: `Analytics` service, the `Tracking` helper and `TrackingObserver`, which were missing from `27.1.0-rc.5` through `rc.7`
-* Changed: `Tracking` takes the `Analytics` service and a property id instead of an emitter callback
-* Changed: `enableAllAutoTracking()` is now `start()`
-* Fixed: engagement time is no longer discarded when the app returns from `inactive` without backgrounding
-* Fixed: a rejected tracking request no longer surfaces as an unhandled async error
-* Fixed: removing a buried route no longer records a screen view for a screen that was never visible
+## 27.2.0
 
-## 27.1.0-rc.7
+* Added: `analytics.createEvent` in a new `Analytics` service to send tracking events
+* Added: `Tracking` helper for app lifecycle events and screen views, and `TrackingObserver` for automatic route tracking
+* Added: `avatars.updatePhoto` and `avatars.deletePhoto` to manage the user's custom profile photo, and the `Account` model
+* Added: `Webflow` to the `OAuthProvider` enum
+* Added: optional `state` on `account.createOAuth2Session` and `account.createOAuth2Token`, returned unchanged on the success and failure URLs
+* Added: optional `duration` on `account.createEmailPasswordSession` to set the session length
+* Added: optional `current` on `account.deleteSessions` to keep the current session signed in
+* Added: optional `membershipId` on `teams.createMembership`
+* Added: optional `total` on `account.listSessions`, the `locale` list methods and `listTransactions`
 
-* Fixed: `host()` reports the live connection state instead of always resolving open
-* Fixed: a disconnect event now fires when a retired or dropped background connection closes
-* Fixed: notification taps are recorded after launching the app, so tap-opened screens land on top
-* Fixed: subscribing on a `Push` closed mid-connect now throws instead of silently proceeding
+## 27.1.0
 
-## 27.1.0-rc.6
-
-* Added: `getInitialNotification()`, `onNotificationOpened()`, and the `PushNotificationOpened` type (topic + data)
-* Fixed: Android `onOpen`/`onClose` now fire for `background` subscriptions
-* Fixed: `subscribe` falls back to the session the client signed in with
-* Fixed: Android notifications no longer suppressed when no live callback received the message
-* Fixed: `close()` during subscribe/resume no longer re-subscribes; `resume` leaves a live `Push` host untouched
-* Updated: notification taps routed through a translucent `PushOpenActivity`
-
-## 27.1.0-rc.5
-
-* Updated: regenerated with sdk-generator 5.5.0; no SDK code changes
-
-## 27.1.0-rc.3
-
-* Added: background push notifications render the server `notification` title, body, and image
-* Added: `requestNotificationPermission()` on the `Push` service
-* Added: the SDK requests Android 13+ `POST_NOTIFICATIONS` itself on first background subscribe
-* Fixed: a server-sent title dedupes to one notification per topic instead of one per subscription
-
-## 27.1.0-rc.2
-
-* Added: `Apps` service to manage OAuth2 apps, keys, secrets, and installations
-* Added: `Oauth2` service for authorization, consent, device, PAR, and token flows
-* Added: `Push` service for MQTT realtime push with iOS background delivery
-* Added: `Topic` builder and a native `android` module for push
-* Added: `Client.setPushEndpoint()` and `Client.setPushClientId()`
-* Added: `Avatars.updatePhoto()` and `Avatars.deletePhoto()` methods
-* Added: `App`, `Oauth2*`, and `Account` models
-* Added: `webflow` to the `OAuthProvider` enum
+* Added: `account` passkey methods `listPasskeys`, `createPasskey`, `getPasskey`, `updatePasskey`, `deletePasskey` and `updatePasskeyVerification`
+* Added: `account.createPasskeyToken` and `account.updatePasskeyToken` for passkey sign-in
+* Added: `Passkey`, `PasskeyList`, `PasskeyChallenge` and `TokenSecret` models
 
 ## 27.0.0
 

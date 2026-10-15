@@ -15,6 +15,12 @@ class Headers implements Model {
   factory Headers.fromMap(
     Map<String, dynamic> map,
   ) {
+    map = {
+      'name': "",
+      'value': "",
+      ...map,
+    };
+
     return Headers(
       name: map['name'].toString(),
       value: map['value'].toString(),

@@ -27,6 +27,15 @@ class AppScope implements Model {
   factory AppScope.fromMap(
     Map<String, dynamic> map,
   ) {
+    map = {
+      'value': "",
+      'description': "",
+      'type': "",
+      'category': "",
+      'deprecated': false,
+      ...map,
+    };
+
     return AppScope(
       value: map['value'].toString(),
       description: map['description'].toString(),

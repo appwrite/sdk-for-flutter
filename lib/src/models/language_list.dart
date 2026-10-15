@@ -15,6 +15,12 @@ class LanguageList implements Model {
   factory LanguageList.fromMap(
     Map<String, dynamic> map,
   ) {
+    map = {
+      'total': 0,
+      'languages': [],
+      ...map,
+    };
+
     return LanguageList(
       total: map['total'],
       languages: List<Language>.from(

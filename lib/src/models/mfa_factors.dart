@@ -27,6 +27,15 @@ class MfaFactors implements Model {
   factory MfaFactors.fromMap(
     Map<String, dynamic> map,
   ) {
+    map = {
+      'totp': false,
+      'phone': false,
+      'email': false,
+      'recoveryCode': false,
+      'custom': false,
+      ...map,
+    };
+
     return MfaFactors(
       totp: map['totp'],
       phone: map['phone'],

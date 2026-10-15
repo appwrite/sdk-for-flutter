@@ -1,4 +1,5 @@
 import 'package:http/http.dart' as http;
+import '../appwrite.dart' show QueryBuilder;
 import 'exception.dart';
 import 'response.dart';
 import 'dart:convert';
@@ -6,12 +7,18 @@ import 'dart:developer';
 import 'enums.dart';
 
 mixin ClientMixin {
+  dynamic flatten(dynamic value) => _flattenValue(value);
+
   http.BaseRequest prepareRequest(
     HttpMethod method, {
     required Uri uri,
     required Map<String, String> headers,
     required Map<String, dynamic> params,
   }) {
+    params = <String, dynamic>{
+      for (final entry in params.entries) entry.key: _flattenValue(entry.value),
+    };
+
     http.BaseRequest request = http.Request(method.name(), uri);
     if (headers['content-type'] == 'multipart/form-data') {
       request = http.MultipartRequest(method.name(), uri);
@@ -143,10 +150,9 @@ mixin ClientMixin {
         '',
         streamedResponse.statusCode,
         headers: streamedResponse.headers.map(
-          (k, v) =>
-              k.toLowerCase() == 'content-type'
-                  ? MapEntry(k, 'text/plain')
-                  : MapEntry(k, v),
+          (k, v) => k.toLowerCase() == 'content-type'
+              ? MapEntry(k, 'text/plain')
+              : MapEntry(k, v),
         ),
         request: streamedResponse.request,
         isRedirect: streamedResponse.isRedirect,
@@ -157,4 +163,17 @@ mixin ClientMixin {
       return await http.Response.fromStream(streamedResponse);
     }
   }
+}
+
+dynamic _flattenValue(dynamic value) {
+  if (value is QueryBuilder) {
+    return value.build();
+  }
+  if (value is! List || !value.any((item) => item is QueryBuilder)) {
+    return value;
+  }
+  return [
+    for (final item in value)
+      if (item is QueryBuilder) ...item.build() else item,
+  ];
 }

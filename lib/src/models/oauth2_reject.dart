@@ -11,6 +11,11 @@ class Oauth2Reject implements Model {
   factory Oauth2Reject.fromMap(
     Map<String, dynamic> map,
   ) {
+    map = {
+      'redirectUrl': "",
+      ...map,
+    };
+
     return Oauth2Reject(
       redirectUrl: map['redirectUrl'].toString(),
     );

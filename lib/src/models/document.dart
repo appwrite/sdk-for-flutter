@@ -38,6 +38,17 @@ class Document implements Model {
   factory Document.fromMap(
     Map<String, dynamic> map,
   ) {
+    map = {
+      '\$id': "",
+      '\$sequence': "",
+      '\$collectionId': "",
+      '\$databaseId': "",
+      '\$createdAt': "",
+      '\$updatedAt': "",
+      '\$permissions': [],
+      ...map,
+    };
+
     return Document(
       $id: map['\$id'].toString(),
       $sequence: map['\$sequence'].toString(),
