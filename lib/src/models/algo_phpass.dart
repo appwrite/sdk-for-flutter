@@ -11,6 +11,11 @@ class AlgoPhpass implements Model {
   factory AlgoPhpass.fromMap(
     Map<String, dynamic> map,
   ) {
+    map = {
+      'type': "phpass",
+      ...map,
+    };
+
     return AlgoPhpass(
       type: map['type'].toString(),
     );

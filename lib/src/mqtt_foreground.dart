@@ -63,18 +63,19 @@ PushNotificationOpened? _openedFrom(String? payload) {
   }
 }
 
-Future<void> _ensureLocalTaps() =>
-    _localTapsReady ??= _appNotifications
-        .initialize(
-          const InitializationSettings(iOS: DarwinInitializationSettings()),
-          onDidReceiveNotificationResponse: (response) {
-            final opened = _openedFrom(response.payload);
-            if (opened != null) {
-              _localTaps.add(opened);
-            }
-          },
-        )
-        .then((_) {});
+Future<void> _ensureLocalTaps() => _localTapsReady ??= _appNotifications
+    .initialize(
+      settings: const InitializationSettings(
+        iOS: DarwinInitializationSettings(),
+      ),
+      onDidReceiveNotificationResponse: (response) {
+        final opened = _openedFrom(response.payload);
+        if (opened != null) {
+          _localTaps.add(opened);
+        }
+      },
+    )
+    .then((_) {});
 
 /// iOS: the tap on a background notification that launched the app, once, or null.
 Future<PushNotificationOpened?> localNotificationLaunch() async {
@@ -108,10 +109,9 @@ String get pushForegroundErrorEvent => _errorEvent;
 // Relay an isolate error to the app (if alive) as its message.
 void _relayError(ServiceInstance service, Object error) {
   service.invoke(_errorEvent, {
-    'message':
-        error is AppwriteException
-            ? (error.message ?? error.toString())
-            : error.toString(),
+    'message': error is AppwriteException
+        ? (error.message ?? error.toString())
+        : error.toString(),
   });
 }
 
@@ -233,7 +233,7 @@ Future<void> pushForegroundEntry(ServiceInstance service) async {
   final Map<String, dynamic> config;
   try {
     await notifications.initialize(
-      const InitializationSettings(
+      settings: const InitializationSettings(
         android: AndroidInitializationSettings('@mipmap/ic_launcher'),
         iOS: DarwinInitializationSettings(),
       ),
@@ -311,23 +311,25 @@ Future<void> pushForegroundEntry(ServiceInstance service) async {
         final title = notify[filter];
         if (title != null) {
           final content = PushNotificationContent.of(message);
-          notifications.show(
-            message.topic.hashCode,
-            content.titleOr(title),
-            content.bodyFor(message),
-            const NotificationDetails(
-              android: AndroidNotificationDetails(
-                _channelId,
-                _channelName,
-                importance: Importance.high,
+          if (content.visible) {
+            notifications.show(
+              id: message.topic.hashCode,
+              title: content.titleOr(title),
+              body: content.bodyFor(message),
+              notificationDetails: const NotificationDetails(
+                android: AndroidNotificationDetails(
+                  _channelId,
+                  _channelName,
+                  importance: Importance.high,
+                ),
+                iOS: DarwinNotificationDetails(),
               ),
-              iOS: DarwinNotificationDetails(),
-            ),
-            payload: jsonEncode({
-              'topic': message.topic,
-              'payload': message.data,
-            }),
-          );
+              payload: jsonEncode({
+                'topic': message.topic,
+                'payload': message.data,
+              }),
+            );
+          }
         }
         // Forward to the app isolate (if alive) so in-app callbacks still fire.
         service.invoke(_messageEvent, {
@@ -370,8 +372,8 @@ Future<void> pushForegroundEntry(ServiceInstance service) async {
   service.on(_topicsEvent).listen((data) {
     notify = _notifyOf(data?['notify']);
     qos = _qosOf(data?['qos']);
-    final topics =
-        ((data?['topics'] as List?) ?? const <dynamic>[]).cast<String>();
+    final topics = ((data?['topics'] as List?) ?? const <dynamic>[])
+        .cast<String>();
     queueTopics(topics);
   });
 

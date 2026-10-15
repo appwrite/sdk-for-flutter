@@ -43,6 +43,16 @@ class Presence implements Model {
   factory Presence.fromMap(
     Map<String, dynamic> map,
   ) {
+    map = {
+      '\$id': "",
+      '\$createdAt': "",
+      '\$updatedAt': "",
+      '\$permissions': [],
+      'userId': "",
+      'source': "",
+      ...map,
+    };
+
     return Presence(
       $id: map['\$id'].toString(),
       $createdAt: map['\$createdAt'].toString(),

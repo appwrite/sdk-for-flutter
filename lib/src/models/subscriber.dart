@@ -43,13 +43,25 @@ class Subscriber implements Model {
   factory Subscriber.fromMap(
     Map<String, dynamic> map,
   ) {
+    map = {
+      '\$id': "",
+      '\$createdAt': "",
+      '\$updatedAt': "",
+      'targetId': "",
+      'userId': "",
+      'userName': "",
+      'topicId': "",
+      'providerType': "",
+      ...map,
+    };
+
     return Subscriber(
       $id: map['\$id'].toString(),
       $createdAt: map['\$createdAt'].toString(),
       $updatedAt: map['\$updatedAt'].toString(),
       targetId: map['targetId'].toString(),
       target: Target.fromMap(
-        map['target'],
+        map['target'] ?? <String, dynamic>{},
       ),
       userId: map['userId'].toString(),
       userName: map['userName'].toString(),

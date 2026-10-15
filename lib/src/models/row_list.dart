@@ -15,6 +15,12 @@ class RowList implements Model {
   factory RowList.fromMap(
     Map<String, dynamic> map,
   ) {
+    map = {
+      'total': 0,
+      'rows': [],
+      ...map,
+    };
+
     return RowList(
       total: map['total'],
       rows: List<Row>.from(

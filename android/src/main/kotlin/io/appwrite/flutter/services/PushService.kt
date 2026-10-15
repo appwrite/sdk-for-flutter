@@ -1,4 +1,4 @@
-package io.appwrite.services
+package io.appwrite.flutter.services
 
 import android.app.Service
 import android.content.Intent

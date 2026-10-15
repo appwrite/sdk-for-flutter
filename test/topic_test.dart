@@ -16,36 +16,10 @@ void main() {
         Topic.path(['user']).path(['notification']).toString(),
         'user/notification',
       );
-    });
-  });
-
-  group('any()', () {
-    test('appends a single-level wildcard', () {
       expect(
-        Topic.path(['user']).any().path(['notification']).toString(),
-        'user/+/notification',
+        Topic.path(['org', '42']).path(['logs']).toString(),
+        'org/42/logs',
       );
-      expect(
-        Topic.path(['chat']).any().any().path(['message']).toString(),
-        'chat/+/+/message',
-      );
-    });
-
-    test('starts a topic', () {
-      expect(Topic.any().path(['notification']).toString(), '+/notification');
-    });
-  });
-
-  group('all()', () {
-    test('ends a topic', () {
-      expect(
-        Topic.path(['org']).any().path(['logs']).all().toString(),
-        'org/+/logs/#',
-      );
-    });
-
-    test('matches every topic', () {
-      expect(Topic.all().toString(), '#');
     });
   });
 
@@ -63,7 +37,7 @@ void main() {
     invalid.forEach((name, levels) {
       test('rejects $name', () {
         expect(() => Topic.path(levels), throwsArgumentError);
-        expect(() => Topic.any().path(levels), throwsArgumentError);
+        expect(() => Topic.path(['user']).path(levels), throwsArgumentError);
       });
     });
   });
