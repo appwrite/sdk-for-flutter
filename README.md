@@ -220,9 +220,9 @@ final push = Push(client);
 final subscription = await push.subscribe('news', (message) {
   print('${message.topic}: ${message.data}');
 });
-
-subscription.unsubscribe();
 ```
+
+Keep `subscription` while you want messages, and call `subscription.unsubscribe()` when you stop listening, for example in your widget's `dispose()`.
 
 ### Background delivery on Android
 
