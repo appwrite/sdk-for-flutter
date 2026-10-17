@@ -1,10 +1,9 @@
 # Appwrite Flutter SDK
 
 [![pub package](https://img.shields.io/pub/v/appwrite?style=flat-square)](https://pub.dartlang.org/packages/appwrite)
-![License](https://img.shields.io/github/license/appwrite/sdk-for-flutter.svg?style=flat-square)
+![License](https://img.shields.io/badge/license-BSD--3--Clause-blue.svg?style=flat-square)
 ![Version](https://img.shields.io/badge/api%20version-2.5.x-blue.svg?style=flat-square)
-[![Build Status](https://img.shields.io/travis/com/appwrite/sdk-generator?style=flat-square)](https://travis-ci.com/appwrite/sdk-generator)
-[![Twitter Account](https://img.shields.io/twitter/follow/appwrite?color=00acee&label=twitter&style=flat-square)](https://twitter.com/appwrite)
+[![X Account](https://img.shields.io/badge/follow-%40appwrite-000000?logo=x&style=flat-square)](https://x.com/appwrite)
 [![Discord](https://img.shields.io/discord/564160730845151244?label=discord&style=flat-square)](https://appwrite.io/discord)
 
 **This SDK targets Appwrite server version 2.5.x as shipped on Appwrite Cloud.** Self-hosted releases can lag behind Cloud — if you run an older self-hosted build, use a matching older SDK from [previous releases](https://github.com/appwrite/sdk-for-flutter/releases) when APIs differ.
@@ -15,25 +14,22 @@ Appwrite is an open-source backend as a service server that abstracts and simpli
 
 ## Installation
 
-Add this to your package's `pubspec.yaml` file:
-
-```yml
-dependencies:
-  appwrite: ^28.0.0
-```
-
-You can install packages from the command line:
+Add the package from the command line:
 
 ```bash
 flutter pub add appwrite
 ```
 
-### Push on Android
+Or add it to your app's `pubspec.yaml` file and run `flutter pub get`:
 
-`Push` includes a native Android plugin, so the SDK needs Android 7.0 (API 24) or later: apps
-with a lower `minSdk` fail to build until they raise it. `flutter_local_notifications` also needs
-core library desugaring. Add both to `android/app/build.gradle.kts` (desugaring is configured when
-the app is assembled, so a plugin cannot apply it for you):
+```yaml
+dependencies:
+  appwrite: ^28.0.0
+```
+
+### Android requirements
+
+The SDK includes a native Android plugin, so it needs Android 7.0 (API 24) or later, and `flutter_local_notifications` needs core library desugaring. Apps with a lower `minSdk` or without desugaring fail to build. Desugaring is configured when the app is assembled, so a plugin cannot apply it for you. Add both to `android/app/build.gradle.kts`:
 
 ```kotlin
 android {
@@ -50,155 +46,63 @@ dependencies {
 }
 ```
 
-A subscription with `background: true` keeps delivering after the app is backgrounded, killed or
-the device restarts, until it is unsubscribed or `push.close()` is called (do this on sign-out).
-The plugin saves the subscription, and a scheduled job and alarm wake the app every 15 to 60
-seconds to reconnect; the broker replays what was sent in between (`retry: true`). While the app
-is not on screen, each message is posted as a notification that opens the app. It reconnects with the
-credential saved at subscribe time, so use a session rather than a short-lived JWT.
-
-On Android 13 and later, the first background subscription asks the user for the
-`POST_NOTIFICATIONS` runtime permission. If they decline, the subscription still delivers to your
-callback but posts no notification. Notifications show the title, body and image sent with
-`createPush`, falling back to the subscription's `title` when only a body is sent. A push with no
-title or body, such as a data-only push, posts no notification and reaches your callback only.
-Messages that are not a JSON object show the subscription's `title` with the raw payload as body.
-
-Notifications are posted while the app is backgrounded or closed. While it is on screen your
-callback shows the message, so none is posted unless the subscription passes
-`notifyInForeground: true`.
-
-```dart
-final sub = await push.subscribe('news', (message) => print(message.data),
-    background: true, title: 'News');
-
-// Optional: immediate delivery even after a kill and during Doze, with a quiet ongoing
-// notification (call while the app is in the foreground).
-await push.setForeground(true);
-```
-
-Foreground mode runs a `remoteMessaging` foreground service, which Google Play asks apps to
-declare in the Play Console. Apps that never enable it can remove the service from their merged
-manifest with `tools:node="remove"` on `io.appwrite.flutter.services.PushService` and
-`android.permission.FOREGROUND_SERVICE_REMOTE_MESSAGING`.
-
-#### Delivery while the app is closed
-
-Messages sent while the app is closed arrive at the next scheduled wake-up. While the device is
-awake that is about every 15 seconds, or about every 60 seconds once exact alarms are allowed;
-without exact alarms the wake-ups are inexact, so battery saver can defer them further. In Doze
-(screen off and idle for a while) Android limits background alarms, exact ones included, to about
-one every nine minutes, so a closed app can take several minutes to receive a message: allowing
-exact alarms makes wake-ups punctual, it does not lift Doze. For immediate delivery, also in
-Doze, use `push.setForeground(true)` (see above).
-
-The SDK uses exact alarms on its own whenever the app may schedule them. To allow it:
-
-1. Declare the permissions in your app's `AndroidManifest.xml`. Both are optional and subject to
-   Google Play policy: `SCHEDULE_EXACT_ALARM` needs a declaration in the Play Console, and
-   `USE_EXACT_ALARM` is reserved for alarm, clock and calendar apps (the SDK does not use it).
-
-   ```xml
-   <uses-permission android:name="android.permission.SCHEDULE_EXACT_ALARM" />
-   <uses-permission android:name="android.permission.REQUEST_IGNORE_BATTERY_OPTIMIZATIONS" />
-   ```
-
-2. On Android 13 and later the user has to allow exact alarms, under Settings > Apps > Special app
-   access > Alarms & reminders. Android 12 grants a declared `SCHEDULE_EXACT_ALARM`
-   automatically, and older versions need nothing. Check with `await push.backgroundStatus()`: when `bestEffort` is
-   true, explain why to the user, then from a user action open that screen with `push.requestExactAlarms()`, or
-   ask for the battery-optimisation exemption with `push.requestIgnoreBatteryOptimizations()`. Both return false when there is
-   nothing to ask, including when the permission is not declared. The SDK never opens these
-   screens on its own.
-
-If `backgroundRestricted` is true, the user restricted the app's background usage and messages can
-wait until the app is opened. Exact alarms don't lift it, and neither does foreground mode: Android
-stops a restricted app's foreground service once it leaves the screen. Ask the user to choose
-Unrestricted in the app's battery settings (Settings > Apps > your app > Battery); granting the
-battery optimisation exemption also lets the SDK's alarms and jobs run, and `bestEffort` then
-reflects only the exact-alarm state. It is always false below Android 9.
-
-If the user force-stops the app (Settings > Force stop, and on some devices swiping it away from
-recents), Android cancels its alarms and jobs: nothing is delivered until the app is opened
-again, and the broker then replays what was sent meanwhile.
-
-Set the notification icon with
-`<meta-data android:name="io.appwrite.flutter.push.notification_icon" android:resource="@drawable/..." />` in your
-`<application>`; without it a generic icon is used.
-
-### Opening a tapped notification
-
-Read the `data` sent with `createPush` when the user taps a background notification:
-
-```dart
-// The tap that launched the app (reported once, so call it at startup).
-final opened = await push.getInitialNotification();
-if (opened != null) openSale(opened.data['saleId']);
-
-// Taps while the app is running, including in the background.
-final stop = push.onNotificationOpened((opened) => openSale(opened.data['saleId']));
-```
-
-On Android the SDK's native plugin reports the taps, on iOS `flutter_local_notifications`, and
-on the web the notification's click while the page is open.
-
-
 ## Getting Started
 
-### Add your Flutter Platform
-To init your SDK and start interacting with Appwrite services, you need to add a new Flutter platform to your project. To add a new platform, go to your Appwrite console, choose the project you created in the step before, and click the 'Add Platform' button.
+### Add your Flutter platform
 
-From the options, choose to add a new **Flutter** platform and add your app credentials. Appwrite Flutter SDK currently supports building apps for Android, iOS, Linux, Mac OS, Web and Windows.
+Before the SDK can talk to your project, register each app you build in the Appwrite Console: open your project, choose **Add platform**, pick **Flutter**, then pick the target and enter its identifier. Register every target you ship separately.
 
-If you are building your Flutter application for multiple devices, you have to follow this process for each different device.
+| Target | Identifier |
+| --- | --- |
+| Android | Package name: the `applicationId` in `android/app/build.gradle.kts` |
+| iOS | Bundle ID: Xcode, **Runner** target, **General** tab |
+| macOS | Bundle ID: Xcode, **Runner** target, **General** tab |
+| Linux | Package name: the `name` in `pubspec.yaml` |
+| Windows | Package name: the `name` in `pubspec.yaml` |
+| Web | Hostname your app is served from, such as `localhost` during development |
 
-> On Android, iOS and macOS, call `createOAuth2Session` without the `success` and `failure` URLs. The SDK only returns to your app through the `appwrite-callback-[PROJECT_ID]` scheme, and only the default redirect carries the new session with it. A custom URL, such as an https App Link, makes the call fail (for example with `PlatformException(CANCELED)`) even when the login itself succeeded. Await the returned `Future` and navigate from your Dart code instead.
+If a request fails because the platform is not registered, the error message includes the identifier the SDK sent, so you can copy it into the Console.
 
-### Android
-For **Android** first add your app <u>name</u> and <u>package name</u>, Your package name is generally the **applicationId** in your app-level <a href="https://github.com/appwrite/playground-for-flutter/blob/0fdbdff98384fff940ed0b1e08cf14cfe3a2be3e/android/app/build.gradle#L41" target="_blank" rel="noopener">build.gradle</a> file. By registering your new app platform, you are allowing your app to communicate with the Appwrite API.
+### Platform setup
 
-In order to capture the Appwrite OAuth callback url, the following activity needs to be added inside the `<application>` tag, along side the existing `<activity>` tags in your [AndroidManifest.xml](https://github.com/appwrite/playground-for-flutter/blob/master/android/app/src/main/AndroidManifest.xml). Be sure to replace the **[PROJECT_ID]** string with your actual Appwrite project ID. You can find your Appwrite project ID in your project settings screen in the console.
+#### Android
+
+To return to your app after an OAuth2 login, add this activity inside the `<application>` tag of `android/app/src/main/AndroidManifest.xml`, alongside your existing activities. Replace `<PROJECT_ID>` with your Appwrite project ID.
 
 ```xml
 <manifest ...>
-    ....
     <application ...>
-        ....
-        <!-- Add this inside the <application> tag, alongside the existing <activity> tags -->
-        <activity android:exported="true" android:name="com.linusu.flutter_web_auth_2.CallbackActivity" >
+        <activity
+            android:name="com.linusu.flutter_web_auth_2.CallbackActivity"
+            android:exported="true"
+            android:taskAffinity="">
             <intent-filter android:label="flutter_web_auth_2">
                 <action android:name="android.intent.action.VIEW" />
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
-                <data android:scheme="appwrite-callback-[PROJECT_ID]" />
+                <data android:scheme="appwrite-callback-<PROJECT_ID>" />
             </intent-filter>
         </activity>
     </application>
 </manifest>
 ```
 
-### iOS
-For **iOS** first add your app name and Bundle ID, You can find your Bundle Identifier in the General tab for your app's primary target in Xcode.
+#### iOS
 
-The Appwrite SDK uses ASWebAuthenticationSession on iOS 12+ and SFAuthenticationSession on iOS 11 to allow OAuth authentication. You have to change your iOS Deployment Target in Xcode to be iOS >= 11 to be able to build your app on an emulator or a real device.
+Set the iOS deployment target to 13.0 or later: in Xcode, open `ios/Runner.xcworkspace`, select the **Runner** target, and set **Minimum Deployments** on the **General** tab. OAuth2 login uses `ASWebAuthenticationSession` and needs no further setup.
 
-1. In Xcode, open Runner.xcworkspace in your app's ios folder.
-2. To view your app's settings, select the Runner project in the Xcode project navigator. Then, in the main view sidebar, select the Runner target.
-3. Select the General tab.
-4. In Deployment Info, 'Target' select iOS 11.0
+#### macOS
 
-### Linux
-For **Linux** add your app <u>name</u> and <u>package name</u>, Your package name is generally the **name** in your <a href="https://github.com/appwrite/playground-for-flutter/blob/0fdbdff98384fff940ed0b1e08cf14cfe3a2be3e/pubspec.yaml#L1" target="_blank" rel="noopener">pubspec.yaml<a> file. If you cannot find the correct package name, run the application in linux, and make any request with proper exception handling, you should get the application ID needed to add in the received error message.
+Set the macOS deployment target to 10.15 or later in the **Runner** target's **General** tab. macOS apps run in the App Sandbox, which blocks network requests until you allow them. Add this key to both `macos/Runner/DebugProfile.entitlements` and `macos/Runner/Release.entitlements`:
 
-### macOS
-For **macOS** add your app name and Bundle ID, You can find your Bundle Identifier in the General tab for your app's primary target in Xcode.
+```xml
+<key>com.apple.security.network.client</key>
+<true/>
+```
 
-The Appwrite SDK uses ASWebAuthenticationSession on macOS 10.15+ to allow OAuth authentication. You have to change your macOS Deployment Target in Xcode to be macOS >= 10.15 to be able to build your app for macOS.
+#### Web
 
-### Web
-Appwrite 0.7, and the Appwrite Flutter SDK 0.3.0 have added support for Flutter Web. To build web apps that integrate with Appwrite successfully, all you have to do is add a web platform on your Appwrite project's dashboard and list the domain your website will use to allow communication to the Appwrite API.
-
-For web in order to capture the OAuth2 callback URL and send it to the application using JavaScript `postMessage()`, you need to create an html file inside `./web` folder of your Flutter project. For example `auth.html` with the following content.
+To complete an OAuth2 login on the web, create `web/auth.html` in your Flutter project. It sends the callback URL back to your app with `postMessage()`:
 
 ```html
 <!DOCTYPE html>
@@ -225,77 +129,163 @@ For web in order to capture the OAuth2 callback URL and send it to the applicati
 </script>
 ```
 
-Redirection URL passed to the authentication service must be the same as the URL on which the application is running (schema, host, port if necessary) and the path must point to created HTML file, /auth.html in this case. The callbackUrlScheme parameter of the authenticate() method does not take into account, so it is possible to use a schema for native platforms in the code.
-
-#### Flutter Web Cross-Domain Communication & Cookies
-While running Flutter Web, make sure your Appwrite server and your Flutter client are using the same top-level domain and the same protocol (HTTP or HTTPS) to communicate. When trying to communicate between different domains or protocols, you may receive HTTP status error 401 because some modern browsers block cross-site or insecure cookies for enhanced privacy. In production, Appwrite allows you set multiple [custom-domains](https://appwrite.io/docs/custom-domains) for each project.
-
-### Windows
-For **Windows** add your app <u>name</u> and <u>package name</u>, Your package name is generally the **name** in your <a href="https://github.com/appwrite/playground-for-flutter/blob/0fdbdff98384fff940ed0b1e08cf14cfe3a2be3e/pubspec.yaml#L1" target="_blank" rel="noopener">pubspec.yaml</a> file. If you cannot find the correct package name, run the application in windows, and make any request with proper exception handling, you should get the application id needed to add in the received error message.
-
-### Init your SDK
-
-<p>Initialize your SDK with your project ID, which can be found in your project settings page.
+Then pass that page as the `success` and `failure` URLs. It must be served from the same scheme, host and port as your app:
 
 ```dart
-Client client = Client().setProject('<YOUR_PROJECT_ID>');
+import 'package:appwrite/enums.dart' as enums;
+
+await account.createOAuth2Session(
+  provider: enums.OAuthProvider.github,
+  success: '${Uri.base.origin}/auth.html',
+  failure: '${Uri.base.origin}/auth.html',
+);
 ```
 
-> If using a self-hosted instance, you will also need to set your Appwrite endpoint using the `setEndpoint` method. Before starting to send any API calls to your new Appwrite instance, make sure your Android or iOS emulators has network access to the Appwrite server hostname or IP address.
-> When trying to connect to a local Appwrite instance from an emulator or a mobile device, localhost is the hostname for the device or emulator and not your machine. You should replace localhost with your machine's private IP as the Appwrite endpoint's hostname (e.g. 192.168.1.100). You can also use a service like [ngrok](https://ngrok.com/) to proxy the Appwrite API.
+Browsers block third-party cookies, so serve your app and Appwrite from the same registrable domain over HTTPS, for example with a [custom domain](https://appwrite.io/docs/products/network/custom-domains) for your Appwrite project. Otherwise requests after login can fail with a 401 error.
 
-### Make Your First Request
+#### OAuth2 on Android, iOS and macOS
 
-<p>Once your SDK object is set, access any of the Appwrite services and choose any request to send. Full documentation for any service method you would like to use can be found in your SDK documentation or in the [API References](https://appwrite.io/docs) section.
+Call `createOAuth2Session` without the `success` and `failure` URLs. The SDK returns to your app only through the `appwrite-callback-<PROJECT_ID>` scheme, and only the default redirect carries the new session with it. A custom URL, such as an https App Link, makes the call fail (for example with `PlatformException(CANCELED)`) even when the login itself succeeded. Await the returned `Future` and navigate from your Dart code instead.
 
 ```dart
+import 'package:appwrite/enums.dart' as enums;
+
+await account.createOAuth2Session(provider: enums.OAuthProvider.github);
+```
+
+### Initialize the client
+
+Initialize the client with your project's endpoint and ID, both found on your project's **Settings** page in the Console.
+
+```dart
+import 'package:appwrite/appwrite.dart';
+
+Client client = Client()
+    .setEndpoint('https://<REGION>.cloud.appwrite.io/v1')
+    .setProject('<YOUR_PROJECT_ID>');
+```
+
+> If you self-host Appwrite, use your instance's endpoint instead. On an emulator or a device, `localhost` is the device itself, not your computer: use your computer's private IP address (for example `http://192.168.1.100/v1`) or a tunnel such as [ngrok](https://ngrok.com/). Call `setSelfSigned()` only in development, when the instance uses a self-signed certificate.
+
+### Make a request
+
+Every service takes the client in its constructor, and every method takes named parameters and returns a typed model from `package:appwrite/models.dart`.
+
+```dart
+import 'package:appwrite/appwrite.dart';
+import 'package:appwrite/models.dart' as models;
+
 Account account = Account(client);
 
-User user = await account.create(
+models.User user = await account.create(
   userId: ID.unique(),
   email: 'email@example.com',
   password: 'password',
   name: "Walter O'Brien",
 );
-```
 
-### Full Example
-
-```dart
-Client client = Client().setProject('<YOUR_PROJECT_ID>');
-
-Account account = Account(client);
-
-User user = await account.create(
-  userId: ID.unique(),
+models.Session session = await account.createEmailPasswordSession(
   email: 'email@example.com',
   password: 'password',
-  name: "Walter O'Brien"
 );
 ```
 
-### Error Handling
-The Appwrite Flutter SDK raises `AppwriteException` object with `message`, `type`, `code` and `response` properties. You can handle any errors by catching `AppwriteException` and present the `message` to the user or handle it yourself based on the provided error information. Below is an example.
+### Error handling
+
+The SDK throws an `AppwriteException` with `message`, `code`, `type` and `response` properties. Catch it to present the `message` to the user or to handle the error based on its `type`.
 
 ```dart
 try {
-  User user = await account.create(...);
-} on AppwriteException catch(e) {
-  // Handle the exception
+  models.User user = await account.get();
+} on AppwriteException catch (e) {
+  print('${e.code} ${e.type}: ${e.message}');
 }
 ```
 
 ### Learn more
-You can use the following resources to learn more and get help
-- 🚀 [Getting Started Tutorial](https://appwrite.io/docs/getting-started-for-flutter)
-- 📜 [Appwrite Docs](https://appwrite.io/docs)
-- 💬 [Discord Community](https://appwrite.io/discord)
-- 🚂 [Appwrite Flutter Playground](https://github.com/appwrite/playground-for-flutter)
 
+- [Flutter quick start](https://appwrite.io/docs/quick-starts/flutter)
+- [Client Flutter API reference](https://appwrite.io/docs/references/cloud/client-flutter/account)
+- [Appwrite docs](https://appwrite.io/docs)
+- [Discord community](https://appwrite.io/discord)
+- [Appwrite Flutter playground](https://github.com/appwrite/playground-for-flutter)
+
+## Push
+
+`Push` delivers messages from Appwrite to your app over a persistent connection, without FCM or APNs. Subscribe to one or more topics and handle each message in a callback:
+
+```dart
+final push = Push(client);
+
+final subscription = await push.subscribe('news', (message) {
+  print('${message.topic}: ${message.data}');
+});
+
+subscription.unsubscribe();
+```
+
+### Background delivery on Android
+
+A subscription with `background: true` keeps delivering after the app is backgrounded, killed or the device restarts, until it is unsubscribed or `push.close()` is called (do this on sign-out). The plugin saves the subscription, and a scheduled job and alarm wake the app every 15 to 60 seconds to reconnect; the broker replays what was sent in between (`retry: true`). While the app is not on screen, each message is posted as a notification that opens the app. It reconnects with the credential saved at subscribe time, so use a session rather than a short-lived JWT.
+
+On Android 13 and later, the first background subscription asks the user for the `POST_NOTIFICATIONS` runtime permission. If they decline, the subscription still delivers to your callback but posts no notification. Notifications show the title, body and image sent with `createPush`, falling back to the subscription's `title` when only a body is sent. A push with no title or body, such as a data-only push, posts no notification and reaches your callback only. Messages that are not a JSON object show the subscription's `title` with the raw payload as body.
+
+Notifications are posted while the app is backgrounded or closed. While it is on screen your callback shows the message, so none is posted unless the subscription passes `notifyInForeground: true`.
+
+```dart
+final subscription = await push.subscribe(
+  'news',
+  (message) => print(message.data),
+  background: true,
+  title: 'News',
+);
+
+// Optional: immediate delivery even after a kill and during Doze, with a quiet ongoing
+// notification (call while the app is in the foreground).
+await push.setForeground(true);
+```
+
+Foreground mode runs a `remoteMessaging` foreground service, which Google Play asks apps to declare in the Play Console. Apps that never enable it can remove the service from their merged manifest with `tools:node="remove"` on `io.appwrite.flutter.services.PushService` and `android.permission.FOREGROUND_SERVICE_REMOTE_MESSAGING`.
+
+Set the notification icon with `<meta-data android:name="io.appwrite.flutter.push.notification_icon" android:resource="@drawable/..." />` in your `<application>`; without it a generic icon is used.
+
+#### Delivery while the app is closed
+
+Messages sent while the app is closed arrive at the next scheduled wake-up. While the device is awake that is about every 15 seconds, or about every 60 seconds once exact alarms are allowed; without exact alarms the wake-ups are inexact, so battery saver can defer them further. In Doze (screen off and idle for a while) Android limits background alarms, exact ones included, to about one every nine minutes, so a closed app can take several minutes to receive a message: allowing exact alarms makes wake-ups punctual, it does not lift Doze. For immediate delivery, also in Doze, use `push.setForeground(true)` (see above).
+
+The SDK uses exact alarms on its own whenever the app may schedule them. To allow it:
+
+1. Declare the permissions in your app's `AndroidManifest.xml`. Both are optional and subject to Google Play policy: `SCHEDULE_EXACT_ALARM` needs a declaration in the Play Console, and `USE_EXACT_ALARM` is reserved for alarm, clock and calendar apps (the SDK does not use it).
+
+   ```xml
+   <uses-permission android:name="android.permission.SCHEDULE_EXACT_ALARM" />
+   <uses-permission android:name="android.permission.REQUEST_IGNORE_BATTERY_OPTIMIZATIONS" />
+   ```
+
+2. On Android 13 and later the user has to allow exact alarms, under Settings > Apps > Special app access > Alarms & reminders. Android 12 grants a declared `SCHEDULE_EXACT_ALARM` automatically, and older versions need nothing. Check with `await push.backgroundStatus()`: when `bestEffort` is true, explain why to the user, then from a user action open that screen with `push.requestExactAlarms()`, or ask for the battery-optimisation exemption with `push.requestIgnoreBatteryOptimizations()`. Both return false when there is nothing to ask, including when the permission is not declared. The SDK never opens these screens on its own.
+
+If `backgroundRestricted` is true, the user restricted the app's background usage and messages can wait until the app is opened. Exact alarms don't lift it, and neither does foreground mode: Android stops a restricted app's foreground service once it leaves the screen. Ask the user to choose Unrestricted in the app's battery settings (Settings > Apps > your app > Battery); granting the battery optimisation exemption also lets the SDK's alarms and jobs run, and `bestEffort` then reflects only the exact-alarm state. It is always false below Android 9.
+
+If the user force-stops the app (Settings > Force stop, and on some devices swiping it away from recents), Android cancels its alarms and jobs: nothing is delivered until the app is opened again, and the broker then replays what was sent meanwhile.
+
+### Opening a tapped notification
+
+Read the `data` sent with `createPush` when the user taps a background notification:
+
+```dart
+// The tap that launched the app (reported once, so call it at startup).
+final opened = await push.getInitialNotification();
+if (opened != null) openSale(opened.data['saleId']);
+
+// Taps while the app is running, including in the background.
+final stop = push.onNotificationOpened((opened) => openSale(opened.data['saleId']));
+```
+
+On Android the SDK's native plugin reports the taps, on iOS `flutter_local_notifications`, and on the web the notification's click while the page is open.
 
 ## Contribution
 
-This library is auto-generated by Appwrite custom [SDK Generator](https://github.com/appwrite/sdk-generator). To learn more about how you can help us improve this SDK, please check the [contribution guide](https://github.com/appwrite/sdk-generator/blob/master/CONTRIBUTING.md) before sending a pull-request.
+This library is auto-generated by Appwrite custom [SDK Generator](https://github.com/appwrite/sdk-generator). To learn more about how you can help us improve this SDK, please check the [contribution guide](https://github.com/appwrite/sdk-generator/blob/main/CONTRIBUTING.md) before sending a pull-request.
 
 ## License
 
