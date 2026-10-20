@@ -7,7 +7,7 @@ Client client = Client()
 
 Oauth2 oauth2 = Oauth2(client);
 
-models. result = await oauth2.logout(
+await oauth2.logout(
     idTokenHint: '<ID_TOKEN_HINT>', // optional
     logoutHint: '<LOGOUT_HINT>', // optional
     clientId: '<CLIENT_ID>', // optional

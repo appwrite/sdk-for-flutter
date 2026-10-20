@@ -353,7 +353,7 @@ class Query {
   static String max(String attribute, [String alias = '']) =>
       Query._('max', attribute, alias.isNotEmpty ? alias : null).toString();
 
-  /// Standard deviation of [attribute], optionally aliased.
+  /// Population standard deviation of [attribute] (the same as stddevPop), optionally aliased.
   static String stddev(String attribute, [String alias = '']) =>
       Query._('stddev', attribute, alias.isNotEmpty ? alias : null).toString();
 
@@ -367,7 +367,7 @@ class Query {
       Query._('stddevSamp', attribute, alias.isNotEmpty ? alias : null)
           .toString();
 
-  /// Variance of [attribute], optionally aliased.
+  /// Population variance of [attribute] (the same as varPop), optionally aliased.
   static String variance(String attribute, [String alias = '']) =>
       Query._('variance', attribute, alias.isNotEmpty ? alias : null)
           .toString();
@@ -410,7 +410,7 @@ class Query {
   static String on(String left, String right, [String operator = '=']) =>
       Query._('on', null, [left, operator, right]).toString();
 
-  /// Inner join. [table] is the joined collection/table ID.
+  /// Inner join. [table] is the joined collection/table ID; without an alias the server names the join after it, if the ID is a valid alias, and otherwise rejects the query.
   static String join(
     String table,
     Object leftOrAliasOrOn, [
@@ -420,7 +420,7 @@ class Query {
   ]) =>
       Query._createJoin('join', table, leftOrAliasOrOn, rightOrOn, operator, alias);
 
-  /// Left join. [table] is the joined collection/table ID.
+  /// Left join. [table] is the joined collection/table ID; without an alias the server names the join after it, if the ID is a valid alias, and otherwise rejects the query.
   static String leftJoin(
     String table,
     Object leftOrAliasOrOn, [
@@ -430,7 +430,7 @@ class Query {
   ]) =>
       Query._createJoin('leftJoin', table, leftOrAliasOrOn, rightOrOn, operator, alias);
 
-  /// Right join. [table] is the joined collection/table ID.
+  /// Right join. [table] is the joined collection/table ID; without an alias the server names the join after it, if the ID is a valid alias, and otherwise rejects the query.
   static String rightJoin(
     String table,
     Object leftOrAliasOrOn, [
@@ -440,7 +440,7 @@ class Query {
   ]) =>
       Query._createJoin('rightJoin', table, leftOrAliasOrOn, rightOrOn, operator, alias);
 
-  /// Full outer join. [table] is the joined collection/table ID.
+  /// Full outer join. [table] is the joined collection/table ID; without an alias the server names the join after it, if the ID is a valid alias, and otherwise rejects the query.
   static String fullOuterJoin(
     String table,
     Object leftOrAliasOrOn, [
@@ -450,7 +450,7 @@ class Query {
   ]) =>
       Query._createJoin('fullOuterJoin', table, leftOrAliasOrOn, rightOrOn, operator, alias);
 
-  /// Cross join. [table] is the joined collection/table ID.
+  /// Cross join. [table] is the joined collection/table ID; without an alias the server names the join after it, if the ID is a valid alias, and otherwise rejects the query.
   static String crossJoin(String table, [String alias = '']) =>
       Query._('crossJoin', table, alias.isNotEmpty ? alias : null).toString();
 

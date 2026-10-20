@@ -1,5 +1,13 @@
 # Change Log
 
+## 28.1.0
+
+* Added: `createQuery` on `databases`, `documentsDB` and `tablesDB` to send list queries in the request body
+* Added: `account.listMemberships`
+* Added: `bundleId` and `environment` on `account.createPushTarget` and `account.updatePushTarget` for APNs routing
+* Fixed: OAuth2 sign-in on Windows and Linux returns through a loopback callback and creates the session
+* Fixed: saving the OAuth2 session waits for client initialisation already in progress
+
 ## 28.0.0
 
 * Breaking: requests send `X-Appwrite-Response-Format: 2.5.0`; responses follow the 2.5 shapes

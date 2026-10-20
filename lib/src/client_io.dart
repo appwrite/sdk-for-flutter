@@ -59,7 +59,7 @@ class ClientIO extends ClientBase with ClientMixin {
       'x-sdk-name': 'Flutter',
       'x-sdk-platform': 'client',
       'x-sdk-language': 'flutter',
-      'x-sdk-version': '28.0.0',
+      'x-sdk-version': '28.1.0',
       'X-Appwrite-Response-Format': '2.5.0',
     };
 
@@ -259,6 +259,15 @@ class ClientIO extends ClientBase with ClientMixin {
 
     _initialized = true;
     _initProgress = false;
+  }
+
+  Future<void> _ready() async {
+    while (!_initialized && _initProgress) {
+      await Future.delayed(Duration(milliseconds: 10));
+    }
+    if (!_initialized) {
+      await init();
+    }
   }
 
   Future<http.BaseRequest> _interceptRequest(http.BaseRequest request) async {
@@ -499,59 +508,116 @@ class ClientIO extends ClientBase with ClientMixin {
     return finalResponse ?? lastResponse;
   }
 
-  bool get _customSchemeAllowed => Platform.isWindows || Platform.isLinux;
+  bool get _loopbackCallback =>
+      defaultTargetPlatform == TargetPlatform.windows ||
+      defaultTargetPlatform == TargetPlatform.linux;
 
   @override
-  Future webAuth(Uri url, {String? callbackUrlScheme}) {
-    return FlutterWebAuth2.authenticate(
-      url: url.toString(),
-      callbackUrlScheme: callbackUrlScheme != null && _customSchemeAllowed
-          ? callbackUrlScheme
-          : "appwrite-callback-${config['project']!}",
-      options: const FlutterWebAuth2Options(
-        useWebview: false,
+  Future webAuth(Uri url, {String? callbackUrlScheme}) async {
+    if (!_loopbackCallback) {
+      return _saveSession(
+        await _authenticate(
+          url,
+          "appwrite-callback-${config['project']!}",
+        ),
+      );
+    }
+
+    final callback = callbackUrlScheme ?? await _loopbackUrl();
+    final exchange = url.path.contains(_sessionOAuth2Path);
+    final result = await _authenticate(
+      url.replace(
+        path: exchange
+            ? url.path.replaceFirst(_sessionOAuth2Path, _tokenOAuth2Path)
+            : url.path,
+        queryParameters: {
+          ...url.queryParametersAll,
+          'success': [callback],
+          'failure': url.queryParametersAll['failure'] ?? [callback],
+        },
       ),
-    ).then((value) async {
-      Uri url = Uri.parse(value);
-      final key = url.queryParameters['key'];
-      final secret = url.queryParameters['secret'];
-      if (key == null || secret == null) {
-        final error = url.queryParameters['error'];
-        if (error != null && error.isNotEmpty) {
-          try {
-            final parsed = jsonDecode(error);
-            if (parsed is Map) {
-              final codeValue = parsed['code'];
-              final int? code = codeValue is int
-                  ? codeValue
-                  : int.tryParse('${codeValue ?? ''}');
-              throw AppwriteException(
-                parsed['message']?.toString() ?? error,
-                code,
-                parsed['type']?.toString(),
-                error,
-              );
-            }
-          } on AppwriteException {
-            rethrow;
-          } catch (_) {
-            // Fall through to a plain-string error when JSON is malformed.
-          }
-          throw AppwriteException(error);
+      callback,
+    );
+    if (!exchange) {
+      return _saveSession(result);
+    }
+
+    final userId = result.queryParameters['userId'];
+    final secret = result.queryParameters['secret'];
+    if (userId == null || secret == null) {
+      _throwCallbackError(result);
+    }
+    await call(
+      HttpMethod.post,
+      path: _tokenSessionPath,
+      params: {'userId': userId, 'secret': secret},
+    );
+  }
+
+  static const String _sessionOAuth2Path = '/account/sessions/oauth2/';
+  static const String _tokenOAuth2Path = '/account/tokens/oauth2/';
+  static const String _tokenSessionPath = '/account/sessions/token';
+
+  Future<String> _loopbackUrl() async {
+    final socket = await ServerSocket.bind(InternetAddress.loopbackIPv4, 0);
+    final port = socket.port;
+    await socket.close();
+    return 'http://localhost:$port/';
+  }
+
+  Future<Uri> _authenticate(Uri url, String callbackUrlScheme) async {
+    return Uri.parse(
+      await FlutterWebAuth2.authenticate(
+        url: url.toString(),
+        callbackUrlScheme: callbackUrlScheme,
+        options: const FlutterWebAuth2Options(useWebview: false),
+      ),
+    );
+  }
+
+  Future<void> _saveSession(Uri url) async {
+    final key = url.queryParameters['key'];
+    final secret = url.queryParameters['secret'];
+    if (key == null || secret == null) {
+      _throwCallbackError(url);
+    }
+    Cookie cookie = Cookie(key, secret);
+    cookie.domain = Uri.parse(_endPoint).host;
+    cookie.httpOnly = true;
+    cookie.path = '/';
+    List<Cookie> cookies = [cookie];
+    await _ready();
+    await _cookieJar.saveFromResponse(Uri.parse(_endPoint), cookies);
+  }
+
+  Never _throwCallbackError(Uri url) {
+    final error = url.queryParameters['error'];
+    if (error != null && error.isNotEmpty) {
+      try {
+        final parsed = jsonDecode(error);
+        if (parsed is Map) {
+          final codeValue = parsed['code'];
+          final int? code = codeValue is int
+              ? codeValue
+              : int.tryParse('${codeValue ?? ''}');
+          throw AppwriteException(
+            parsed['message']?.toString() ?? error,
+            code,
+            parsed['type']?.toString(),
+            error,
+          );
         }
-        throw AppwriteException(
-          "Invalid OAuth2 Response. Key and Secret not available.",
-          500,
-        );
+      } on AppwriteException {
+        rethrow;
+      } catch (_) {
+        // Fall through to a plain-string error when JSON is malformed.
       }
-      Cookie cookie = Cookie(key, secret);
-      cookie.domain = Uri.parse(_endPoint).host;
-      cookie.httpOnly = true;
-      cookie.path = '/';
-      List<Cookie> cookies = [cookie];
-      await init();
-      _cookieJar.saveFromResponse(Uri.parse(_endPoint), cookies);
-    });
+      throw AppwriteException(error);
+    }
+    throw AppwriteException(
+      "Invalid OAuth2 Response. Key and Secret not available.",
+      500,
+    );
   }
 
   @override
@@ -562,12 +628,7 @@ class ClientIO extends ClientBase with ClientMixin {
     Map<String, dynamic> params = const {},
     ResponseType? responseType,
   }) async {
-    while (!_initialized && _initProgress) {
-      await Future.delayed(Duration(milliseconds: 10));
-    }
-    if (!_initialized) {
-      await init();
-    }
+    await _ready();
 
     late http.Response res;
     http.BaseRequest request = prepareRequest(

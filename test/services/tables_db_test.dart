@@ -212,6 +212,23 @@ void main() {
       expect(response, isA<models.Row>());
     });
 
+    test('test method createQuery()', () async {
+      final Map<String, dynamic> data = {
+        'total': 5,
+        'rows': [],
+      };
+
+      when(
+        client.call(HttpMethod.post),
+      ).thenAnswer((_) async => Response(data: data));
+
+      final response = await tablesDB.createQuery(
+        databaseId: "<DATABASE_ID>",
+        tableId: "<TABLE_ID>",
+      );
+      expect(response, isA<models.RowList>());
+    });
+
     test('test method getRow()', () async {
       final Map<String, dynamic> data = {
         '\$id': "5e5ea5c16897e",

@@ -201,6 +201,14 @@ class TablesDB extends Service {
 
   /// Get a list of all the user's rows in a given table. You can use the query
   /// params to filter your results.
+  ///
+  /// Rows returned by aggregate, groupBy or distinct queries hold only the
+  /// columns they select, group or aggregate, typed as a row types them, with a
+  /// joined column named by its join alias (`alias.column`). The response omits
+  /// their `$id`, `$sequence`, `$createdAt`, `$updatedAt`, `$permissions`,
+  /// `$databaseId` and `$tableId` unless they select or group it, and those of a
+  /// right or full join row that no row of this table matched. SDK row models
+  /// fill omitted system columns with empty values.
   Future<models.RowList> listRows({
     required String databaseId,
     required String tableId,
@@ -308,6 +316,63 @@ class TablesDB extends Service {
     );
 
     return models.Row.fromMap(res.data);
+  }
+
+  /// Get a list of all the user's rows in a given table using a POST request.
+  /// This behaves identically to the list rows endpoint but accepts the queries
+  /// in the request body, allowing much larger `queries` arrays than can fit in
+  /// a URL query string.
+  Future<models.RowList> createQuery({
+    required String databaseId,
+    required String tableId,
+    List<String>? queries,
+    String? transactionId,
+    bool? total,
+    int? ttl,
+  }) async {
+    if (databaseId.isEmpty) {
+      throw AppwriteException(
+        'Missing required parameter: "databaseId"',
+      );
+    }
+
+    if (tableId.isEmpty) {
+      throw AppwriteException(
+        'Missing required parameter: "tableId"',
+      );
+    }
+
+    final String apiPath = '/tablesdb/{databaseId}/tables/{tableId}/rows/query'
+        .replaceAll(
+          '{databaseId}',
+          databaseId,
+        )
+        .replaceAll(
+          '{tableId}',
+          tableId,
+        );
+
+    final Map<String, dynamic> apiParams = {
+      if (queries != null) 'queries': queries,
+      if (transactionId != null) 'transactionId': transactionId,
+      if (total != null) 'total': total,
+      if (ttl != null) 'ttl': ttl,
+    };
+
+    final Map<String, String> apiHeaders = {
+      'X-Appwrite-Project': client.config['project'] ?? '',
+      'content-type': 'application/json',
+      'accept': 'application/json',
+    };
+
+    final res = await client.call(
+      HttpMethod.post,
+      path: apiPath,
+      params: apiParams,
+      headers: apiHeaders,
+    );
+
+    return models.RowList.fromMap(res.data);
   }
 
   /// Get a row by its unique ID. This endpoint response returns a JSON object
