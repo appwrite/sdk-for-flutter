@@ -11,5 +11,7 @@ Account account = Account(client);
 models.Target result = await account.updatePushTarget(
     targetId: '<TARGET_ID>',
     identifier: '<IDENTIFIER>',
+    bundleId: '<BUNDLE_ID>', // optional
+    environment: 'sandbox', // optional
 );
 ```

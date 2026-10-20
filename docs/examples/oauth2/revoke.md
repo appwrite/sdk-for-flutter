@@ -7,7 +7,7 @@ Client client = Client()
 
 Oauth2 oauth2 = Oauth2(client);
 
-models. result = await oauth2.revoke(
+await oauth2.revoke(
     token: '<TOKEN>',
     tokenTypeHint: 'access_token', // optional
     clientId: '<CLIENT_ID>', // optional

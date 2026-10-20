@@ -7,7 +7,7 @@ Client client = Client()
 
 Analytics analytics = Analytics(client);
 
-models. result = await analytics.createEvent(
+await analytics.createEvent(
     propertyId: '<PROPERTY_ID>',
     name: '<NAME>',
     url: 'https://example.com',

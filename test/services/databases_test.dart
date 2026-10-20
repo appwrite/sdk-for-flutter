@@ -212,6 +212,23 @@ void main() {
       expect(response, isA<models.Document>());
     });
 
+    test('test method createQuery()', () async {
+      final Map<String, dynamic> data = {
+        'total': 5,
+        'documents': [],
+      };
+
+      when(
+        client.call(HttpMethod.post),
+      ).thenAnswer((_) async => Response(data: data));
+
+      final response = await databases.createQuery(
+        databaseId: "<DATABASE_ID>",
+        collectionId: "<COLLECTION_ID>",
+      );
+      expect(response, isA<models.DocumentList>());
+    });
+
     test('test method getDocument()', () async {
       final Map<String, dynamic> data = {
         '\$id': "5e5ea5c16897e",

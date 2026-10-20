@@ -219,6 +219,14 @@ class Databases extends Service {
 
   /// Get a list of all the user's documents in a given collection. You can use
   /// the query params to filter your results.
+  ///
+  /// Documents returned by aggregate, groupBy or distinct queries hold only the
+  /// attributes they select, group or aggregate, typed as a document types them,
+  /// with a joined attribute named by its join alias (`alias.attribute`). They
+  /// have no `$id`, `$sequence`, `$createdAt`, `$updatedAt`, `$permissions`,
+  /// `$databaseId` or `$collectionId` unless they select or group it, and
+  /// neither does a right or full join document that no document of this
+  /// collection matched.
   @Deprecated(
     'This API has been deprecated since 1.8.0. Please use `TablesDB.listRows` instead.',
   )
@@ -334,6 +342,67 @@ class Databases extends Service {
     );
 
     return models.Document.fromMap(res.data);
+  }
+
+  /// Get a list of all the user's documents in a given collection using a POST
+  /// request. This behaves identically to the list documents endpoint but
+  /// accepts the queries in the request body, allowing much larger `queries`
+  /// arrays than can fit in a URL query string.
+  @Deprecated(
+    'This API has been deprecated since 1.8.0. Please use `TablesDB.createQuery` instead.',
+  )
+  Future<models.DocumentList> createQuery({
+    required String databaseId,
+    required String collectionId,
+    List<String>? queries,
+    String? transactionId,
+    bool? total,
+    int? ttl,
+  }) async {
+    if (databaseId.isEmpty) {
+      throw AppwriteException(
+        'Missing required parameter: "databaseId"',
+      );
+    }
+
+    if (collectionId.isEmpty) {
+      throw AppwriteException(
+        'Missing required parameter: "collectionId"',
+      );
+    }
+
+    final String apiPath =
+        '/databases/{databaseId}/collections/{collectionId}/documents/query'
+            .replaceAll(
+              '{databaseId}',
+              databaseId,
+            )
+            .replaceAll(
+              '{collectionId}',
+              collectionId,
+            );
+
+    final Map<String, dynamic> apiParams = {
+      if (queries != null) 'queries': queries,
+      if (transactionId != null) 'transactionId': transactionId,
+      if (total != null) 'total': total,
+      if (ttl != null) 'ttl': ttl,
+    };
+
+    final Map<String, String> apiHeaders = {
+      'X-Appwrite-Project': client.config['project'] ?? '',
+      'content-type': 'application/json',
+      'accept': 'application/json',
+    };
+
+    final res = await client.call(
+      HttpMethod.post,
+      path: apiPath,
+      params: apiParams,
+      headers: apiHeaders,
+    );
+
+    return models.DocumentList.fromMap(res.data);
   }
 
   /// Get a document by its unique ID. This endpoint response returns a JSON
