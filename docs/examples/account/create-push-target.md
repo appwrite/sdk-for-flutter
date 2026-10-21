@@ -12,5 +12,7 @@ models.Target result = await account.createPushTarget(
     targetId: '<TARGET_ID>',
     identifier: '<IDENTIFIER>',
     providerId: '<PROVIDER_ID>', // optional
+    bundleId: '<BUNDLE_ID>', // optional
+    environment: 'sandbox', // optional
 );
 ```

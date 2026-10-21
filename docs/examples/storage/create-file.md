@@ -1,9 +1,6 @@
 ```dart
-import 'dart:io';
 import 'package:appwrite/appwrite.dart';
 import 'package:appwrite/models.dart' as models;
-import 'package:appwrite/permission.dart';
-import 'package:appwrite/role.dart';
 
 Client client = Client()
     .setEndpoint('https://<REGION>.cloud.appwrite.io/v1') // Your API Endpoint
