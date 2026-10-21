@@ -14,13 +14,18 @@ class MockClient extends Mock implements Client {
   @override
   Future<Response> call(
     HttpMethod? method, {
-    String path = '',
-    Map<String, String> headers = const {},
-    Map<String, dynamic> params = const {},
+    String? path = '',
+    Map<String, String>? headers = const {},
+    Map<String, dynamic>? params = const {},
     ResponseType? responseType,
   }) async {
     return super.noSuchMethod(
-      Invocation.method(#call, [method]),
+      Invocation.method(#call, [method], {
+        #path: path,
+        #headers: headers,
+        #params: params,
+        #responseType: responseType,
+      }),
       returnValue: Response(),
     );
   }
@@ -42,16 +47,17 @@ class MockClient extends Mock implements Client {
     Map<String, String>? headers,
     Function(UploadProgress)? onProgress,
     ResponseType? responseType,
-    HttpMethod method = HttpMethod.post,
+    HttpMethod? method = HttpMethod.post,
   }) async {
     return super.noSuchMethod(
-      Invocation.method(#chunkedUpload, [
-        path,
-        params,
-        paramName,
-        idParamName,
-        headers,
-      ]),
+      Invocation.method(#chunkedUpload, [], {
+        #path: path,
+        #params: params,
+        #paramName: paramName,
+        #idParamName: idParamName,
+        #headers: headers,
+        #method: method,
+      }),
       returnValue: Response(data: {}),
     );
   }
@@ -71,12 +77,28 @@ void main() {
       final Uint8List data = Uint8List.fromList([]);
 
       when(
-        client.call(HttpMethod.get),
+        client.call(
+          HttpMethod.get,
+          path: anyNamed('path'),
+          headers: anyNamed('headers'),
+          params: anyNamed('params'),
+          responseType: anyNamed('responseType'),
+        ),
       ).thenAnswer((_) async => Response(data: data));
 
       final response = await avatars.getBrowser(
         code: enums.Browser.avantBrowser,
       );
+      final Map<String, dynamic> params = verify(
+        client.call(
+          HttpMethod.get,
+          path: "/avatars/browsers/aa",
+          headers: anyNamed('headers'),
+          params: captureAnyNamed('params'),
+          responseType: anyNamed('responseType'),
+        ),
+      ).captured.single;
+      expect(params.keys, isEmpty);
       expect(response, isA<Uint8List>());
     });
 
@@ -84,12 +106,28 @@ void main() {
       final Uint8List data = Uint8List.fromList([]);
 
       when(
-        client.call(HttpMethod.get),
+        client.call(
+          HttpMethod.get,
+          path: anyNamed('path'),
+          headers: anyNamed('headers'),
+          params: anyNamed('params'),
+          responseType: anyNamed('responseType'),
+        ),
       ).thenAnswer((_) async => Response(data: data));
 
       final response = await avatars.getCreditCard(
         code: enums.CreditCard.americanExpress,
       );
+      final Map<String, dynamic> params = verify(
+        client.call(
+          HttpMethod.get,
+          path: "/avatars/credit-cards/amex",
+          headers: anyNamed('headers'),
+          params: captureAnyNamed('params'),
+          responseType: anyNamed('responseType'),
+        ),
+      ).captured.single;
+      expect(params.keys, isEmpty);
       expect(response, isA<Uint8List>());
     });
 
@@ -97,12 +135,28 @@ void main() {
       final Uint8List data = Uint8List.fromList([]);
 
       when(
-        client.call(HttpMethod.get),
+        client.call(
+          HttpMethod.get,
+          path: anyNamed('path'),
+          headers: anyNamed('headers'),
+          params: anyNamed('params'),
+          responseType: anyNamed('responseType'),
+        ),
       ).thenAnswer((_) async => Response(data: data));
 
       final response = await avatars.getFavicon(
         url: "https://example.com",
       );
+      final Map<String, dynamic> params = verify(
+        client.call(
+          HttpMethod.get,
+          path: "/avatars/favicon",
+          headers: anyNamed('headers'),
+          params: captureAnyNamed('params'),
+          responseType: anyNamed('responseType'),
+        ),
+      ).captured.single;
+      expect(params.keys, unorderedEquals(["url"]));
       expect(response, isA<Uint8List>());
     });
 
@@ -110,12 +164,28 @@ void main() {
       final Uint8List data = Uint8List.fromList([]);
 
       when(
-        client.call(HttpMethod.get),
+        client.call(
+          HttpMethod.get,
+          path: anyNamed('path'),
+          headers: anyNamed('headers'),
+          params: anyNamed('params'),
+          responseType: anyNamed('responseType'),
+        ),
       ).thenAnswer((_) async => Response(data: data));
 
       final response = await avatars.getFlag(
         code: enums.Flag.afghanistan,
       );
+      final Map<String, dynamic> params = verify(
+        client.call(
+          HttpMethod.get,
+          path: "/avatars/flags/af",
+          headers: anyNamed('headers'),
+          params: captureAnyNamed('params'),
+          responseType: anyNamed('responseType'),
+        ),
+      ).captured.single;
+      expect(params.keys, isEmpty);
       expect(response, isA<Uint8List>());
     });
 
@@ -123,12 +193,28 @@ void main() {
       final Uint8List data = Uint8List.fromList([]);
 
       when(
-        client.call(HttpMethod.get),
+        client.call(
+          HttpMethod.get,
+          path: anyNamed('path'),
+          headers: anyNamed('headers'),
+          params: anyNamed('params'),
+          responseType: anyNamed('responseType'),
+        ),
       ).thenAnswer((_) async => Response(data: data));
 
       final response = await avatars.getImage(
         url: "https://example.com",
       );
+      final Map<String, dynamic> params = verify(
+        client.call(
+          HttpMethod.get,
+          path: "/avatars/image",
+          headers: anyNamed('headers'),
+          params: captureAnyNamed('params'),
+          responseType: anyNamed('responseType'),
+        ),
+      ).captured.single;
+      expect(params.keys, unorderedEquals(["url"]));
       expect(response, isA<Uint8List>());
     });
 
@@ -136,10 +222,26 @@ void main() {
       final Uint8List data = Uint8List.fromList([]);
 
       when(
-        client.call(HttpMethod.get),
+        client.call(
+          HttpMethod.get,
+          path: anyNamed('path'),
+          headers: anyNamed('headers'),
+          params: anyNamed('params'),
+          responseType: anyNamed('responseType'),
+        ),
       ).thenAnswer((_) async => Response(data: data));
 
       final response = await avatars.getInitials();
+      final Map<String, dynamic> params = verify(
+        client.call(
+          HttpMethod.get,
+          path: "/avatars/initials",
+          headers: anyNamed('headers'),
+          params: captureAnyNamed('params'),
+          responseType: anyNamed('responseType'),
+        ),
+      ).captured.single;
+      expect(params.keys, isEmpty);
       expect(response, isA<Uint8List>());
     });
 
@@ -147,10 +249,26 @@ void main() {
       final Uint8List data = Uint8List.fromList([]);
 
       when(
-        client.call(HttpMethod.get),
+        client.call(
+          HttpMethod.get,
+          path: anyNamed('path'),
+          headers: anyNamed('headers'),
+          params: anyNamed('params'),
+          responseType: anyNamed('responseType'),
+        ),
       ).thenAnswer((_) async => Response(data: data));
 
       final response = await avatars.getPhoto();
+      final Map<String, dynamic> params = verify(
+        client.call(
+          HttpMethod.get,
+          path: "/avatars/photo",
+          headers: anyNamed('headers'),
+          params: captureAnyNamed('params'),
+          responseType: anyNamed('responseType'),
+        ),
+      ).captured.single;
+      expect(params.keys, isEmpty);
       expect(response, isA<Uint8List>());
     });
 
@@ -176,17 +294,29 @@ void main() {
 
       when(
         client.chunkedUpload(
-          path: argThat(isNotNull),
-          params: argThat(isNotNull),
-          paramName: argThat(isNotNull),
-          idParamName: argThat(isNotNull),
-          headers: argThat(isNotNull),
+          path: anyNamed('path'),
+          params: anyNamed('params'),
+          paramName: anyNamed('paramName'),
+          idParamName: anyNamed('idParamName'),
+          headers: anyNamed('headers'),
+          method: anyNamed('method'),
         ),
       ).thenAnswer((_) async => Response(data: data));
 
       final response = await avatars.updatePhoto(
         file: InputFile.fromPath(path: './image.png'),
       );
+      final Map<String, dynamic> params = verify(
+        client.chunkedUpload(
+          path: "/avatars/photo",
+          params: captureAnyNamed('params'),
+          paramName: anyNamed('paramName'),
+          idParamName: anyNamed('idParamName'),
+          headers: anyNamed('headers'),
+          method: HttpMethod.put,
+        ),
+      ).captured.single;
+      expect(params.keys, unorderedEquals(["file"]));
       expect(response, isA<models.Account>());
     });
 
@@ -194,22 +324,54 @@ void main() {
       final data = '';
 
       when(
-        client.call(HttpMethod.delete),
+        client.call(
+          HttpMethod.delete,
+          path: anyNamed('path'),
+          headers: anyNamed('headers'),
+          params: anyNamed('params'),
+          responseType: anyNamed('responseType'),
+        ),
       ).thenAnswer((_) async => Response(data: data));
 
       final response = await avatars.deletePhoto();
+      final Map<String, dynamic> params = verify(
+        client.call(
+          HttpMethod.delete,
+          path: "/avatars/photo",
+          headers: anyNamed('headers'),
+          params: captureAnyNamed('params'),
+          responseType: anyNamed('responseType'),
+        ),
+      ).captured.single;
+      expect(params.keys, isEmpty);
     });
 
     test('test method getQR()', () async {
       final Uint8List data = Uint8List.fromList([]);
 
       when(
-        client.call(HttpMethod.get),
+        client.call(
+          HttpMethod.get,
+          path: anyNamed('path'),
+          headers: anyNamed('headers'),
+          params: anyNamed('params'),
+          responseType: anyNamed('responseType'),
+        ),
       ).thenAnswer((_) async => Response(data: data));
 
       final response = await avatars.getQR(
         text: "<TEXT>",
       );
+      final Map<String, dynamic> params = verify(
+        client.call(
+          HttpMethod.get,
+          path: "/avatars/qr",
+          headers: anyNamed('headers'),
+          params: captureAnyNamed('params'),
+          responseType: anyNamed('responseType'),
+        ),
+      ).captured.single;
+      expect(params.keys, unorderedEquals(["text"]));
       expect(response, isA<Uint8List>());
     });
 
@@ -217,12 +379,28 @@ void main() {
       final Uint8List data = Uint8List.fromList([]);
 
       when(
-        client.call(HttpMethod.get),
+        client.call(
+          HttpMethod.get,
+          path: anyNamed('path'),
+          headers: anyNamed('headers'),
+          params: anyNamed('params'),
+          responseType: anyNamed('responseType'),
+        ),
       ).thenAnswer((_) async => Response(data: data));
 
       final response = await avatars.getScreenshot(
         url: "https://example.com",
       );
+      final Map<String, dynamic> params = verify(
+        client.call(
+          HttpMethod.get,
+          path: "/avatars/screenshots",
+          headers: anyNamed('headers'),
+          params: captureAnyNamed('params'),
+          responseType: anyNamed('responseType'),
+        ),
+      ).captured.single;
+      expect(params.keys, unorderedEquals(["url"]));
       expect(response, isA<Uint8List>());
     });
   });

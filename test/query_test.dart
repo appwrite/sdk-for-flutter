@@ -511,6 +511,23 @@ void main() {
     expect(query['values'], ['ord']);
   });
 
+  test('returns nested join without alias, leaving the alias to the server',
+      () {
+    final query =
+        jsonDecode(Query.join('orders', [Query.on('\$id', 'customerId')]));
+    expect(query['method'], 'join');
+    expect(query['attribute'], 'orders');
+    expect(query['values'].length, 1);
+    expect(query['values'][0]['method'], 'on');
+  });
+
+  test('returns crossJoin without alias, leaving the alias to the server', () {
+    final query = jsonDecode(Query.crossJoin('orders'));
+    expect(query['method'], 'crossJoin');
+    expect(query['attribute'], 'orders');
+    expect(query['values'] ?? [], isEmpty);
+  });
+
   test('returns vectorDot', () {
     final query = jsonDecode(Query.vectorDot('embedding', [0.1, 0.2]));
     expect(query['method'], 'vectorDot');

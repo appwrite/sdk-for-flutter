@@ -367,6 +367,64 @@ class DocumentsDB extends Service {
     return models.DocumentList.fromMap(res.data);
   }
 
+  /// Get a list of all the user's documents in a given collection using a POST
+  /// request. This behaves identically to the list documents endpoint but
+  /// accepts the queries in the request body, allowing much larger `queries`
+  /// arrays than can fit in a URL query string.
+  Future<models.DocumentList> createQuery({
+    required String databaseId,
+    required String collectionId,
+    List<String>? queries,
+    String? transactionId,
+    bool? total,
+    int? ttl,
+  }) async {
+    if (databaseId.isEmpty) {
+      throw AppwriteException(
+        'Missing required parameter: "databaseId"',
+      );
+    }
+
+    if (collectionId.isEmpty) {
+      throw AppwriteException(
+        'Missing required parameter: "collectionId"',
+      );
+    }
+
+    final String apiPath =
+        '/documentsdb/{databaseId}/collections/{collectionId}/documents/query'
+            .replaceAll(
+              '{databaseId}',
+              databaseId,
+            )
+            .replaceAll(
+              '{collectionId}',
+              collectionId,
+            );
+
+    final Map<String, dynamic> apiParams = {
+      if (queries != null) 'queries': queries,
+      if (transactionId != null) 'transactionId': transactionId,
+      if (total != null) 'total': total,
+      if (ttl != null) 'ttl': ttl,
+    };
+
+    final Map<String, String> apiHeaders = {
+      'X-Appwrite-Project': client.config['project'] ?? '',
+      'content-type': 'application/json',
+      'accept': 'application/json',
+    };
+
+    final res = await client.call(
+      HttpMethod.post,
+      path: apiPath,
+      params: apiParams,
+      headers: apiHeaders,
+    );
+
+    return models.DocumentList.fromMap(res.data);
+  }
+
   /// Get a document by its unique ID. This endpoint response returns a JSON
   /// object with the document data.
   Future<models.Document> getDocument({
