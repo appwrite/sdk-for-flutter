@@ -88,6 +88,9 @@ void main() {
 
       final response = await avatars.getBrowser(
         code: enums.Browser.avantBrowser,
+        width: 1,
+        height: 1,
+        quality: 1,
       );
       final Map<String, dynamic> params = verify(
         client.call(
@@ -98,7 +101,11 @@ void main() {
           responseType: anyNamed('responseType'),
         ),
       ).captured.single;
-      expect(params.keys, isEmpty);
+      expect(params, {
+        "width": 1,
+        "height": 1,
+        "quality": 1,
+      });
       expect(response, isA<Uint8List>());
     });
 
@@ -117,6 +124,9 @@ void main() {
 
       final response = await avatars.getCreditCard(
         code: enums.CreditCard.americanExpress,
+        width: 1,
+        height: 1,
+        quality: 1,
       );
       final Map<String, dynamic> params = verify(
         client.call(
@@ -127,7 +137,11 @@ void main() {
           responseType: anyNamed('responseType'),
         ),
       ).captured.single;
-      expect(params.keys, isEmpty);
+      expect(params, {
+        "width": 1,
+        "height": 1,
+        "quality": 1,
+      });
       expect(response, isA<Uint8List>());
     });
 
@@ -156,7 +170,9 @@ void main() {
           responseType: anyNamed('responseType'),
         ),
       ).captured.single;
-      expect(params.keys, unorderedEquals(["url"]));
+      expect(params, {
+        "url": "https://example.com",
+      });
       expect(response, isA<Uint8List>());
     });
 
@@ -175,6 +191,9 @@ void main() {
 
       final response = await avatars.getFlag(
         code: enums.Flag.afghanistan,
+        width: 1,
+        height: 1,
+        quality: 1,
       );
       final Map<String, dynamic> params = verify(
         client.call(
@@ -185,7 +204,11 @@ void main() {
           responseType: anyNamed('responseType'),
         ),
       ).captured.single;
-      expect(params.keys, isEmpty);
+      expect(params, {
+        "width": 1,
+        "height": 1,
+        "quality": 1,
+      });
       expect(response, isA<Uint8List>());
     });
 
@@ -204,6 +227,8 @@ void main() {
 
       final response = await avatars.getImage(
         url: "https://example.com",
+        width: 1,
+        height: 1,
       );
       final Map<String, dynamic> params = verify(
         client.call(
@@ -214,7 +239,11 @@ void main() {
           responseType: anyNamed('responseType'),
         ),
       ).captured.single;
-      expect(params.keys, unorderedEquals(["url"]));
+      expect(params, {
+        "url": "https://example.com",
+        "width": 1,
+        "height": 1,
+      });
       expect(response, isA<Uint8List>());
     });
 
@@ -231,7 +260,12 @@ void main() {
         ),
       ).thenAnswer((_) async => Response(data: data));
 
-      final response = await avatars.getInitials();
+      final response = await avatars.getInitials(
+        name: "<NAME>",
+        width: 1,
+        height: 1,
+        background: "FFFFFF",
+      );
       final Map<String, dynamic> params = verify(
         client.call(
           HttpMethod.get,
@@ -241,7 +275,12 @@ void main() {
           responseType: anyNamed('responseType'),
         ),
       ).captured.single;
-      expect(params.keys, isEmpty);
+      expect(params, {
+        "name": "<NAME>",
+        "width": 1,
+        "height": 1,
+        "background": "FFFFFF",
+      });
       expect(response, isA<Uint8List>());
     });
 
@@ -258,7 +297,16 @@ void main() {
         ),
       ).thenAnswer((_) async => Response(data: data));
 
-      final response = await avatars.getPhoto();
+      final response = await avatars.getPhoto(
+        width: 1,
+        height: 1,
+        quality: 1,
+        output: "png",
+        rating: "g",
+        userId: "current()",
+        emailHash: "<EMAIL_HASH>",
+        name: "<NAME>",
+      );
       final Map<String, dynamic> params = verify(
         client.call(
           HttpMethod.get,
@@ -268,7 +316,16 @@ void main() {
           responseType: anyNamed('responseType'),
         ),
       ).captured.single;
-      expect(params.keys, isEmpty);
+      expect(params, {
+        "width": 1,
+        "height": 1,
+        "quality": 1,
+        "output": "png",
+        "rating": "g",
+        "userId": "current()",
+        "emailHash": "<EMAIL_HASH>",
+        "name": "<NAME>",
+      });
       expect(response, isA<Uint8List>());
     });
 
@@ -316,7 +373,9 @@ void main() {
           method: HttpMethod.put,
         ),
       ).captured.single;
-      expect(params.keys, unorderedEquals(["file"]));
+      expect(params, {
+        "file": isA<InputFile>(),
+      });
       expect(response, isA<models.Account>());
     });
 
@@ -343,7 +402,7 @@ void main() {
           responseType: anyNamed('responseType'),
         ),
       ).captured.single;
-      expect(params.keys, isEmpty);
+      expect(params, isEmpty);
     });
 
     test('test method getQR()', () async {
@@ -361,6 +420,9 @@ void main() {
 
       final response = await avatars.getQR(
         text: "<TEXT>",
+        size: 1,
+        margin: 1,
+        download: false,
       );
       final Map<String, dynamic> params = verify(
         client.call(
@@ -371,7 +433,12 @@ void main() {
           responseType: anyNamed('responseType'),
         ),
       ).captured.single;
-      expect(params.keys, unorderedEquals(["text"]));
+      expect(params, {
+        "text": "<TEXT>",
+        "size": 1,
+        "margin": 1,
+        "download": false,
+      });
       expect(response, isA<Uint8List>());
     });
 
@@ -390,6 +457,25 @@ void main() {
 
       final response = await avatars.getScreenshot(
         url: "https://example.com",
+        headers: {},
+        viewportWidth: 1,
+        viewportHeight: 1,
+        scale: 1.0,
+        theme: enums.BrowserTheme.dark,
+        userAgent: "Mozilla/5.0 (iPhone; CPU iPhone OS 14_0 like Mac OS X) AppleWebKit/605.1.15",
+        fullpage: false,
+        locale: "en-US",
+        timezone: enums.Timezone.africaAbidjan,
+        latitude: 1.0,
+        longitude: 1.0,
+        accuracy: 1.0,
+        touch: false,
+        permissions: [enums.BrowserPermission.geolocation, enums.BrowserPermission.notifications],
+        sleep: 1,
+        width: 1,
+        height: 1,
+        quality: 1,
+        output: enums.ImageFormat.jpeg,
       );
       final Map<String, dynamic> params = verify(
         client.call(
@@ -400,7 +486,28 @@ void main() {
           responseType: anyNamed('responseType'),
         ),
       ).captured.single;
-      expect(params.keys, unorderedEquals(["url"]));
+      expect(params, {
+        "url": "https://example.com",
+        "headers": isA<Map>(),
+        "viewportWidth": 1,
+        "viewportHeight": 1,
+        "scale": 1.0,
+        "theme": enums.BrowserTheme.dark.value,
+        "userAgent": "Mozilla/5.0 (iPhone; CPU iPhone OS 14_0 like Mac OS X) AppleWebKit/605.1.15",
+        "fullpage": false,
+        "locale": "en-US",
+        "timezone": enums.Timezone.africaAbidjan.value,
+        "latitude": 1.0,
+        "longitude": 1.0,
+        "accuracy": 1.0,
+        "touch": false,
+        "permissions": isA<List>(),
+        "sleep": 1,
+        "width": 1,
+        "height": 1,
+        "quality": 1,
+        "output": enums.ImageFormat.jpeg.value,
+      });
       expect(response, isA<Uint8List>());
     });
   });

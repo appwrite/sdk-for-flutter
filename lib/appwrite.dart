@@ -1,6 +1,6 @@
 /// Appwrite Flutter SDK
 ///
-/// This SDK targets Appwrite server version 2.5.x as shipped on Appwrite Cloud.
+/// This SDK targets Appwrite server version 2.6.x as shipped on Appwrite Cloud.
 /// Self-hosted releases can lag behind Cloud — if you run an older self-hosted
 /// build, use a matching older SDK from
 /// [previous releases](https://github.com/appwrite/sdk-for-flutter/releases)
@@ -58,3 +58,10 @@ part 'services/storage.dart';
 part 'services/tables_db.dart';
 part 'services/teams.dart';
 part 'services/vectors_db.dart';
+
+String _encodePath(String value) {
+  if (value == '.' || value == '..') {
+    throw AppwriteException('Path parameter cannot be "." or ".."');
+  }
+  return Uri.encodeComponent(value);
+}

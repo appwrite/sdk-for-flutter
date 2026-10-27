@@ -91,17 +91,24 @@ void main() {
 
       final response = await storage.listFiles(
         bucketId: "<BUCKET_ID>",
+        queries: [],
+        search: "<SEARCH>",
+        total: false,
       );
       final Map<String, dynamic> params = verify(
         client.call(
           HttpMethod.get,
-          path: "/storage/buckets/<BUCKET_ID>/files",
+          path: "/storage/buckets/%3CBUCKET_ID%3E/files",
           headers: anyNamed('headers'),
           params: captureAnyNamed('params'),
           responseType: anyNamed('responseType'),
         ),
       ).captured.single;
-      expect(params.keys, isEmpty);
+      expect(params, {
+        "queries": isA<List>(),
+        "search": "<SEARCH>",
+        "total": false,
+      });
       expect(response, isA<models.FileList>());
     });
 
@@ -140,10 +147,12 @@ void main() {
         bucketId: "<BUCKET_ID>",
         fileId: "<FILE_ID>",
         file: InputFile.fromPath(path: './image.png'),
+        permissions: [],
+        folder: "photos/2026",
       );
       final Map<String, dynamic> params = verify(
         client.chunkedUpload(
-          path: "/storage/buckets/<BUCKET_ID>/files",
+          path: "/storage/buckets/%3CBUCKET_ID%3E/files",
           params: captureAnyNamed('params'),
           paramName: anyNamed('paramName'),
           idParamName: anyNamed('idParamName'),
@@ -151,7 +160,12 @@ void main() {
           method: HttpMethod.post,
         ),
       ).captured.single;
-      expect(params.keys, unorderedEquals(["fileId", "file"]));
+      expect(params, {
+        "fileId": "<FILE_ID>",
+        "file": isA<InputFile>(),
+        "permissions": isA<List>(),
+        "folder": "photos/2026",
+      });
       expect(response, isA<models.File>());
     });
 
@@ -192,13 +206,13 @@ void main() {
       final Map<String, dynamic> params = verify(
         client.call(
           HttpMethod.get,
-          path: "/storage/buckets/<BUCKET_ID>/files/<FILE_ID>",
+          path: "/storage/buckets/%3CBUCKET_ID%3E/files/%3CFILE_ID%3E",
           headers: anyNamed('headers'),
           params: captureAnyNamed('params'),
           responseType: anyNamed('responseType'),
         ),
       ).captured.single;
-      expect(params.keys, isEmpty);
+      expect(params, isEmpty);
       expect(response, isA<models.File>());
     });
 
@@ -235,17 +249,22 @@ void main() {
       final response = await storage.updateFile(
         bucketId: "<BUCKET_ID>",
         fileId: "<FILE_ID>",
+        name: "name",
+        permissions: [],
       );
       final Map<String, dynamic> params = verify(
         client.call(
           HttpMethod.put,
-          path: "/storage/buckets/<BUCKET_ID>/files/<FILE_ID>",
+          path: "/storage/buckets/%3CBUCKET_ID%3E/files/%3CFILE_ID%3E",
           headers: anyNamed('headers'),
           params: captureAnyNamed('params'),
           responseType: anyNamed('responseType'),
         ),
       ).captured.single;
-      expect(params.keys, isEmpty);
+      expect(params, {
+        "name": "name",
+        "permissions": isA<List>(),
+      });
       expect(response, isA<models.File>());
     });
 
@@ -269,13 +288,13 @@ void main() {
       final Map<String, dynamic> params = verify(
         client.call(
           HttpMethod.delete,
-          path: "/storage/buckets/<BUCKET_ID>/files/<FILE_ID>",
+          path: "/storage/buckets/%3CBUCKET_ID%3E/files/%3CFILE_ID%3E",
           headers: anyNamed('headers'),
           params: captureAnyNamed('params'),
           responseType: anyNamed('responseType'),
         ),
       ).captured.single;
-      expect(params.keys, isEmpty);
+      expect(params, isEmpty);
     });
 
     test('test method getFileDownload()', () async {
@@ -294,17 +313,20 @@ void main() {
       final response = await storage.getFileDownload(
         bucketId: "<BUCKET_ID>",
         fileId: "<FILE_ID>",
+        token: "<TOKEN>",
       );
       final Map<String, dynamic> params = verify(
         client.call(
           HttpMethod.get,
-          path: "/storage/buckets/<BUCKET_ID>/files/<FILE_ID>/download",
+          path: "/storage/buckets/%3CBUCKET_ID%3E/files/%3CFILE_ID%3E/download",
           headers: anyNamed('headers'),
           params: captureAnyNamed('params'),
           responseType: anyNamed('responseType'),
         ),
       ).captured.single;
-      expect(params.keys, isEmpty);
+      expect(params, {
+        "token": "<TOKEN>",
+      });
       expect(response, isA<Uint8List>());
     });
 
@@ -324,17 +346,42 @@ void main() {
       final response = await storage.getFilePreview(
         bucketId: "<BUCKET_ID>",
         fileId: "<FILE_ID>",
+        width: 1,
+        height: 1,
+        gravity: enums.ImageGravity.auto,
+        quality: 1,
+        borderWidth: 1,
+        borderColor: "FFFFFF",
+        borderRadius: 1,
+        opacity: 1.0,
+        rotation: 1,
+        background: "FFFFFF",
+        output: enums.ImageFormat.jpg,
+        token: "<TOKEN>",
       );
       final Map<String, dynamic> params = verify(
         client.call(
           HttpMethod.get,
-          path: "/storage/buckets/<BUCKET_ID>/files/<FILE_ID>/preview",
+          path: "/storage/buckets/%3CBUCKET_ID%3E/files/%3CFILE_ID%3E/preview",
           headers: anyNamed('headers'),
           params: captureAnyNamed('params'),
           responseType: anyNamed('responseType'),
         ),
       ).captured.single;
-      expect(params.keys, isEmpty);
+      expect(params, {
+        "width": 1,
+        "height": 1,
+        "gravity": enums.ImageGravity.auto.value,
+        "quality": 1,
+        "borderWidth": 1,
+        "borderColor": "FFFFFF",
+        "borderRadius": 1,
+        "opacity": 1.0,
+        "rotation": 1,
+        "background": "FFFFFF",
+        "output": enums.ImageFormat.jpg.value,
+        "token": "<TOKEN>",
+      });
       expect(response, isA<Uint8List>());
     });
 
@@ -354,17 +401,20 @@ void main() {
       final response = await storage.getFileView(
         bucketId: "<BUCKET_ID>",
         fileId: "<FILE_ID>",
+        token: "<TOKEN>",
       );
       final Map<String, dynamic> params = verify(
         client.call(
           HttpMethod.get,
-          path: "/storage/buckets/<BUCKET_ID>/files/<FILE_ID>/view",
+          path: "/storage/buckets/%3CBUCKET_ID%3E/files/%3CFILE_ID%3E/view",
           headers: anyNamed('headers'),
           params: captureAnyNamed('params'),
           responseType: anyNamed('responseType'),
         ),
       ).captured.single;
-      expect(params.keys, isEmpty);
+      expect(params, {
+        "token": "<TOKEN>",
+      });
       expect(response, isA<Uint8List>());
     });
   });

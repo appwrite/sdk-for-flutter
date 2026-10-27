@@ -89,7 +89,10 @@ void main() {
         ),
       ).thenAnswer((_) async => Response(data: data));
 
-      final response = await organization.listInstallations();
+      final response = await organization.listInstallations(
+        queries: [],
+        total: false,
+      );
       final Map<String, dynamic> params = verify(
         client.call(
           HttpMethod.get,
@@ -99,7 +102,10 @@ void main() {
           responseType: anyNamed('responseType'),
         ),
       ).captured.single;
-      expect(params.keys, isEmpty);
+      expect(params, {
+        "queries": isA<List>(),
+        "total": false,
+      });
       expect(response, isA<models.AppInstallationList>());
     });
 
@@ -128,6 +134,7 @@ void main() {
 
       final response = await organization.createInstallation(
         appId: "<APP_ID>",
+        authorizationDetails: "<AUTHORIZATION_DETAILS>",
       );
       final Map<String, dynamic> params = verify(
         client.call(
@@ -138,7 +145,10 @@ void main() {
           responseType: anyNamed('responseType'),
         ),
       ).captured.single;
-      expect(params.keys, unorderedEquals(["appId"]));
+      expect(params, {
+        "appId": "<APP_ID>",
+        "authorizationDetails": "<AUTHORIZATION_DETAILS>",
+      });
       expect(response, isA<models.AppInstallation>());
     });
 
@@ -171,13 +181,13 @@ void main() {
       final Map<String, dynamic> params = verify(
         client.call(
           HttpMethod.get,
-          path: "/organization/installations/<INSTALLATION_ID>",
+          path: "/organization/installations/%3CINSTALLATION_ID%3E",
           headers: anyNamed('headers'),
           params: captureAnyNamed('params'),
           responseType: anyNamed('responseType'),
         ),
       ).captured.single;
-      expect(params.keys, isEmpty);
+      expect(params, isEmpty);
       expect(response, isA<models.AppInstallation>());
     });
 
@@ -206,17 +216,20 @@ void main() {
 
       final response = await organization.updateInstallation(
         installationId: "<INSTALLATION_ID>",
+        authorizationDetails: "<AUTHORIZATION_DETAILS>",
       );
       final Map<String, dynamic> params = verify(
         client.call(
           HttpMethod.put,
-          path: "/organization/installations/<INSTALLATION_ID>",
+          path: "/organization/installations/%3CINSTALLATION_ID%3E",
           headers: anyNamed('headers'),
           params: captureAnyNamed('params'),
           responseType: anyNamed('responseType'),
         ),
       ).captured.single;
-      expect(params.keys, isEmpty);
+      expect(params, {
+        "authorizationDetails": "<AUTHORIZATION_DETAILS>",
+      });
       expect(response, isA<models.AppInstallation>());
     });
 
@@ -239,13 +252,13 @@ void main() {
       final Map<String, dynamic> params = verify(
         client.call(
           HttpMethod.delete,
-          path: "/organization/installations/<INSTALLATION_ID>",
+          path: "/organization/installations/%3CINSTALLATION_ID%3E",
           headers: anyNamed('headers'),
           params: captureAnyNamed('params'),
           responseType: anyNamed('responseType'),
         ),
       ).captured.single;
-      expect(params.keys, isEmpty);
+      expect(params, isEmpty);
     });
   });
 }

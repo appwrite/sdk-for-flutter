@@ -90,17 +90,40 @@ void main() {
         propertyId: "<PROPERTY_ID>",
         name: "<NAME>",
         url: "https://example.com",
+        domain: "<DOMAIN>",
+        referrer: "<REFERRER>",
+        screenWidth: 1,
+        sessionHash: "<SESSION_HASH>",
+        scrollDepth: 1,
+        engagementTime: 1,
+        props: [],
+        userId: "<USER_ID>",
+        ip: "<IP>",
+        userAgent: "<USER_AGENT>",
       );
       final Map<String, dynamic> params = verify(
         client.call(
           HttpMethod.post,
-          path: "/analytics/properties/<PROPERTY_ID>/events",
+          path: "/analytics/properties/%3CPROPERTY_ID%3E/events",
           headers: anyNamed('headers'),
           params: captureAnyNamed('params'),
           responseType: anyNamed('responseType'),
         ),
       ).captured.single;
-      expect(params.keys, unorderedEquals(["name", "url"]));
+      expect(params, {
+        "name": "<NAME>",
+        "url": "https://example.com",
+        "domain": "<DOMAIN>",
+        "referrer": "<REFERRER>",
+        "screenWidth": 1,
+        "sessionHash": "<SESSION_HASH>",
+        "scrollDepth": 1,
+        "engagementTime": 1,
+        "props": isA<List>(),
+        "userId": "<USER_ID>",
+        "ip": "<IP>",
+        "userAgent": "<USER_AGENT>",
+      });
     });
   });
 }

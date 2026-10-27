@@ -21,7 +21,7 @@ class Functions extends Service {
 
     final String apiPath = '/functions/{functionId}/executions'.replaceAll(
       '{functionId}',
-      functionId,
+      _encodePath(functionId),
     );
 
     final Map<String, dynamic> apiParams = {
@@ -65,7 +65,7 @@ class Functions extends Service {
 
     final String apiPath = '/functions/{functionId}/executions'.replaceAll(
       '{functionId}',
-      functionId,
+      _encodePath(functionId),
     );
 
     final Map<String, dynamic> apiParams = {
@@ -113,11 +113,11 @@ class Functions extends Service {
     final String apiPath = '/functions/{functionId}/executions/{executionId}'
         .replaceAll(
           '{functionId}',
-          functionId,
+          _encodePath(functionId),
         )
         .replaceAll(
           '{executionId}',
-          executionId,
+          _encodePath(executionId),
         );
 
     final Map<String, dynamic> apiParams = {};

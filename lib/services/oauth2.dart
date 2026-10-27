@@ -18,7 +18,7 @@ class Oauth2 extends Service {
   }) async {
     final String apiPath = '/oauth2/{project_id}/approve'.replaceAll(
       '{project_id}',
-      client.config['project'] ?? '',
+      _encodePath(client.config['project'] ?? ''),
     );
 
     final Map<String, dynamic> apiParams = {
@@ -66,7 +66,7 @@ class Oauth2 extends Service {
   }) async {
     final String apiPath = '/oauth2/{project_id}/authorize'.replaceAll(
       '{project_id}',
-      client.config['project'] ?? '',
+      _encodePath(client.config['project'] ?? ''),
     );
 
     final Map<String, dynamic> apiParams = {
@@ -125,7 +125,7 @@ class Oauth2 extends Service {
   }) async {
     final String apiPath = '/oauth2/{project_id}/authorize'.replaceAll(
       '{project_id}',
-      client.config['project'] ?? '',
+      _encodePath(client.config['project'] ?? ''),
     );
 
     final Map<String, dynamic> apiParams = {
@@ -174,7 +174,7 @@ class Oauth2 extends Service {
     final String apiPath = '/oauth2/{project_id}/device_authorization'
         .replaceAll(
           '{project_id}',
-          client.config['project'] ?? '',
+          _encodePath(client.config['project'] ?? ''),
         );
 
     final Map<String, dynamic> apiParams = {
@@ -210,7 +210,7 @@ class Oauth2 extends Service {
   }) async {
     final String apiPath = '/oauth2/{project_id}/grants'.replaceAll(
       '{project_id}',
-      client.config['project'] ?? '',
+      _encodePath(client.config['project'] ?? ''),
     );
 
     final Map<String, dynamic> apiParams = {
@@ -247,11 +247,11 @@ class Oauth2 extends Service {
     final String apiPath = '/oauth2/{project_id}/grants/{grant_id}'
         .replaceAll(
           '{project_id}',
-          client.config['project'] ?? '',
+          _encodePath(client.config['project'] ?? ''),
         )
         .replaceAll(
           '{grant_id}',
-          grantId,
+          _encodePath(grantId),
         );
 
     final Map<String, dynamic> apiParams = {};
@@ -284,7 +284,7 @@ class Oauth2 extends Service {
   }) async {
     final String apiPath = '/oauth2/{project_id}/logout'.replaceAll(
       '{project_id}',
-      client.config['project'] ?? '',
+      _encodePath(client.config['project'] ?? ''),
     );
 
     final Map<String, dynamic> apiParams = {
@@ -325,7 +325,7 @@ class Oauth2 extends Service {
   }) async {
     final String apiPath = '/oauth2/{project_id}/logout'.replaceAll(
       '{project_id}',
-      client.config['project'] ?? '',
+      _encodePath(client.config['project'] ?? ''),
     );
 
     final Map<String, dynamic> apiParams = {
@@ -363,7 +363,7 @@ class Oauth2 extends Service {
   }) async {
     final String apiPath = '/oauth2/{project_id}/organizations'.replaceAll(
       '{project_id}',
-      client.config['project'] ?? '',
+      _encodePath(client.config['project'] ?? ''),
     );
 
     final Map<String, dynamic> apiParams = {
@@ -405,7 +405,7 @@ class Oauth2 extends Service {
   }) async {
     final String apiPath = '/oauth2/{project_id}/par'.replaceAll(
       '{project_id}',
-      client.config['project'] ?? '',
+      _encodePath(client.config['project'] ?? ''),
     );
 
     final Map<String, dynamic> apiParams = {
@@ -451,7 +451,7 @@ class Oauth2 extends Service {
   }) async {
     final String apiPath = '/oauth2/{project_id}/projects'.replaceAll(
       '{project_id}',
-      client.config['project'] ?? '',
+      _encodePath(client.config['project'] ?? ''),
     );
 
     final Map<String, dynamic> apiParams = {
@@ -483,7 +483,7 @@ class Oauth2 extends Service {
   }) async {
     final String apiPath = '/oauth2/{project_id}/reject'.replaceAll(
       '{project_id}',
-      client.config['project'] ?? '',
+      _encodePath(client.config['project'] ?? ''),
     );
 
     final Map<String, dynamic> apiParams = {
@@ -514,7 +514,7 @@ class Oauth2 extends Service {
   }) async {
     final String apiPath = '/oauth2/{project_id}/revoke'.replaceAll(
       '{project_id}',
-      client.config['project'] ?? '',
+      _encodePath(client.config['project'] ?? ''),
     );
 
     final Map<String, dynamic> apiParams = {
@@ -555,7 +555,7 @@ class Oauth2 extends Service {
   }) async {
     final String apiPath = '/oauth2/{project_id}/token'.replaceAll(
       '{project_id}',
-      client.config['project'] ?? '',
+      _encodePath(client.config['project'] ?? ''),
     );
 
     final Map<String, dynamic> apiParams = {

@@ -90,6 +90,8 @@ void main() {
 
       final response = await oauth2.approve(
         grantId: "<GRANT_ID>",
+        authorizationDetails: "<AUTHORIZATION_DETAILS>",
+        scope: "<SCOPE>",
       );
       final Map<String, dynamic> params = verify(
         client.call(
@@ -100,7 +102,11 @@ void main() {
           responseType: anyNamed('responseType'),
         ),
       ).captured.single;
-      expect(params.keys, unorderedEquals(["grant_id"]));
+      expect(params, {
+        "grant_id": "<GRANT_ID>",
+        "authorization_details": "<AUTHORIZATION_DETAILS>",
+        "scope": "<SCOPE>",
+      });
       expect(response, isA<models.Oauth2Approve>());
     });
 
@@ -120,7 +126,22 @@ void main() {
         ),
       ).thenAnswer((_) async => Response(data: data));
 
-      final response = await oauth2.authorize();
+      final response = await oauth2.authorize(
+        clientId: "<CLIENT_ID>",
+        redirectUri: "https://example.com",
+        responseType: "response_type",
+        scope: "<SCOPE>",
+        state: "<STATE>",
+        nonce: "<NONCE>",
+        codeChallenge: "<CODE_CHALLENGE>",
+        codeChallengeMethod: "s256",
+        prompt: "<PROMPT>",
+        maxAge: 1,
+        authorizationDetails: "<AUTHORIZATION_DETAILS>",
+        resource: [],
+        audience: "<AUDIENCE>",
+        requestUri: "<REQUEST_URI>",
+      );
       final Map<String, dynamic> params = verify(
         client.call(
           HttpMethod.get,
@@ -130,7 +151,22 @@ void main() {
           responseType: anyNamed('responseType'),
         ),
       ).captured.single;
-      expect(params.keys, isEmpty);
+      expect(params, {
+        "client_id": "<CLIENT_ID>",
+        "redirect_uri": "https://example.com",
+        "response_type": "response_type",
+        "scope": "<SCOPE>",
+        "state": "<STATE>",
+        "nonce": "<NONCE>",
+        "code_challenge": "<CODE_CHALLENGE>",
+        "code_challenge_method": "s256",
+        "prompt": "<PROMPT>",
+        "max_age": 1,
+        "authorization_details": "<AUTHORIZATION_DETAILS>",
+        "resource": isA<List>(),
+        "audience": "<AUDIENCE>",
+        "request_uri": "<REQUEST_URI>",
+      });
       expect(response, isA<models.Oauth2Authorize>());
     });
 
@@ -150,7 +186,22 @@ void main() {
         ),
       ).thenAnswer((_) async => Response(data: data));
 
-      final response = await oauth2.authorizePost();
+      final response = await oauth2.authorizePost(
+        clientId: "<CLIENT_ID>",
+        redirectUri: "https://example.com",
+        responseType: "response_type",
+        scope: "<SCOPE>",
+        state: "<STATE>",
+        nonce: "<NONCE>",
+        codeChallenge: "<CODE_CHALLENGE>",
+        codeChallengeMethod: "s256",
+        prompt: "<PROMPT>",
+        maxAge: 1,
+        authorizationDetails: "<AUTHORIZATION_DETAILS>",
+        resource: [],
+        audience: "<AUDIENCE>",
+        requestUri: "<REQUEST_URI>",
+      );
       final Map<String, dynamic> params = verify(
         client.call(
           HttpMethod.post,
@@ -160,7 +211,22 @@ void main() {
           responseType: anyNamed('responseType'),
         ),
       ).captured.single;
-      expect(params.keys, isEmpty);
+      expect(params, {
+        "client_id": "<CLIENT_ID>",
+        "redirect_uri": "https://example.com",
+        "response_type": "response_type",
+        "scope": "<SCOPE>",
+        "state": "<STATE>",
+        "nonce": "<NONCE>",
+        "code_challenge": "<CODE_CHALLENGE>",
+        "code_challenge_method": "s256",
+        "prompt": "<PROMPT>",
+        "max_age": 1,
+        "authorization_details": "<AUTHORIZATION_DETAILS>",
+        "resource": isA<List>(),
+        "audience": "<AUDIENCE>",
+        "request_uri": "<REQUEST_URI>",
+      });
       expect(response, isA<models.Oauth2Authorize>());
     });
 
@@ -186,7 +252,13 @@ void main() {
         ),
       ).thenAnswer((_) async => Response(data: data));
 
-      final response = await oauth2.createDeviceAuthorization();
+      final response = await oauth2.createDeviceAuthorization(
+        clientId: "<CLIENT_ID>",
+        scope: "<SCOPE>",
+        authorizationDetails: "<AUTHORIZATION_DETAILS>",
+        resource: [],
+        audience: "<AUDIENCE>",
+      );
       final Map<String, dynamic> params = verify(
         client.call(
           HttpMethod.post,
@@ -196,7 +268,13 @@ void main() {
           responseType: anyNamed('responseType'),
         ),
       ).captured.single;
-      expect(params.keys, isEmpty);
+      expect(params, {
+        "client_id": "<CLIENT_ID>",
+        "scope": "<SCOPE>",
+        "authorization_details": "<AUTHORIZATION_DETAILS>",
+        "resource": isA<List>(),
+        "audience": "<AUDIENCE>",
+      });
       expect(response, isA<models.Oauth2DeviceAuthorization>());
     });
 
@@ -239,7 +317,9 @@ void main() {
           responseType: anyNamed('responseType'),
         ),
       ).captured.single;
-      expect(params.keys, unorderedEquals(["user_code"]));
+      expect(params, {
+        "user_code": "<USER_CODE>",
+      });
       expect(response, isA<models.Oauth2Grant>());
     });
 
@@ -276,13 +356,13 @@ void main() {
       final Map<String, dynamic> params = verify(
         client.call(
           HttpMethod.get,
-          path: "/oauth2/testproject/grants/<GRANT_ID>",
+          path: "/oauth2/testproject/grants/%3CGRANT_ID%3E",
           headers: anyNamed('headers'),
           params: captureAnyNamed('params'),
           responseType: anyNamed('responseType'),
         ),
       ).captured.single;
-      expect(params.keys, isEmpty);
+      expect(params, isEmpty);
       expect(response, isA<models.Oauth2Grant>());
     });
 
@@ -299,7 +379,14 @@ void main() {
         ),
       ).thenAnswer((_) async => Response(data: data));
 
-      final response = await oauth2.logout();
+      final response = await oauth2.logout(
+        idTokenHint: "<ID_TOKEN_HINT>",
+        logoutHint: "<LOGOUT_HINT>",
+        clientId: "<CLIENT_ID>",
+        postLogoutRedirectUri: "https://example.com",
+        state: "<STATE>",
+        uiLocales: "<UI_LOCALES>",
+      );
       final Map<String, dynamic> params = verify(
         client.call(
           HttpMethod.get,
@@ -309,7 +396,14 @@ void main() {
           responseType: anyNamed('responseType'),
         ),
       ).captured.single;
-      expect(params.keys, isEmpty);
+      expect(params, {
+        "id_token_hint": "<ID_TOKEN_HINT>",
+        "logout_hint": "<LOGOUT_HINT>",
+        "client_id": "<CLIENT_ID>",
+        "post_logout_redirect_uri": "https://example.com",
+        "state": "<STATE>",
+        "ui_locales": "<UI_LOCALES>",
+      });
     });
 
     test('test method logoutPost()', () async {
@@ -325,7 +419,14 @@ void main() {
         ),
       ).thenAnswer((_) async => Response(data: data));
 
-      final response = await oauth2.logoutPost();
+      final response = await oauth2.logoutPost(
+        idTokenHint: "<ID_TOKEN_HINT>",
+        logoutHint: "<LOGOUT_HINT>",
+        clientId: "<CLIENT_ID>",
+        postLogoutRedirectUri: "https://example.com",
+        state: "<STATE>",
+        uiLocales: "<UI_LOCALES>",
+      );
       final Map<String, dynamic> params = verify(
         client.call(
           HttpMethod.post,
@@ -335,7 +436,14 @@ void main() {
           responseType: anyNamed('responseType'),
         ),
       ).captured.single;
-      expect(params.keys, isEmpty);
+      expect(params, {
+        "id_token_hint": "<ID_TOKEN_HINT>",
+        "logout_hint": "<LOGOUT_HINT>",
+        "client_id": "<CLIENT_ID>",
+        "post_logout_redirect_uri": "https://example.com",
+        "state": "<STATE>",
+        "ui_locales": "<UI_LOCALES>",
+      });
     });
 
     test('test method listOrganizations()', () async {
@@ -354,7 +462,11 @@ void main() {
         ),
       ).thenAnswer((_) async => Response(data: data));
 
-      final response = await oauth2.listOrganizations();
+      final response = await oauth2.listOrganizations(
+        limit: 1,
+        offset: 1,
+        search: "<SEARCH>",
+      );
       final Map<String, dynamic> params = verify(
         client.call(
           HttpMethod.get,
@@ -364,7 +476,11 @@ void main() {
           responseType: anyNamed('responseType'),
         ),
       ).captured.single;
-      expect(params.keys, isEmpty);
+      expect(params, {
+        "limit": 1,
+        "offset": 1,
+        "search": "<SEARCH>",
+      });
       expect(response, isA<models.Oauth2OrganizationList>());
     });
 
@@ -388,6 +504,16 @@ void main() {
         clientId: "<CLIENT_ID>",
         redirectUri: "https://example.com",
         responseType: "code",
+        scope: "<SCOPE>",
+        state: "<STATE>",
+        nonce: "<NONCE>",
+        codeChallenge: "<CODE_CHALLENGE>",
+        codeChallengeMethod: "s256",
+        prompt: "<PROMPT>",
+        maxAge: 1,
+        authorizationDetails: "<AUTHORIZATION_DETAILS>",
+        resource: [],
+        audience: "<AUDIENCE>",
       );
       final Map<String, dynamic> params = verify(
         client.call(
@@ -398,7 +524,21 @@ void main() {
           responseType: anyNamed('responseType'),
         ),
       ).captured.single;
-      expect(params.keys, unorderedEquals(["client_id", "redirect_uri", "response_type"]));
+      expect(params, {
+        "client_id": "<CLIENT_ID>",
+        "redirect_uri": "https://example.com",
+        "response_type": "code",
+        "scope": "<SCOPE>",
+        "state": "<STATE>",
+        "nonce": "<NONCE>",
+        "code_challenge": "<CODE_CHALLENGE>",
+        "code_challenge_method": "s256",
+        "prompt": "<PROMPT>",
+        "max_age": 1,
+        "authorization_details": "<AUTHORIZATION_DETAILS>",
+        "resource": isA<List>(),
+        "audience": "<AUDIENCE>",
+      });
       expect(response, isA<models.Oauth2PAR>());
     });
 
@@ -418,7 +558,11 @@ void main() {
         ),
       ).thenAnswer((_) async => Response(data: data));
 
-      final response = await oauth2.listProjects();
+      final response = await oauth2.listProjects(
+        limit: 1,
+        offset: 1,
+        search: "<SEARCH>",
+      );
       final Map<String, dynamic> params = verify(
         client.call(
           HttpMethod.get,
@@ -428,7 +572,11 @@ void main() {
           responseType: anyNamed('responseType'),
         ),
       ).captured.single;
-      expect(params.keys, isEmpty);
+      expect(params, {
+        "limit": 1,
+        "offset": 1,
+        "search": "<SEARCH>",
+      });
       expect(response, isA<models.Oauth2ProjectList>());
     });
 
@@ -460,7 +608,9 @@ void main() {
           responseType: anyNamed('responseType'),
         ),
       ).captured.single;
-      expect(params.keys, unorderedEquals(["grant_id"]));
+      expect(params, {
+        "grant_id": "<GRANT_ID>",
+      });
       expect(response, isA<models.Oauth2Reject>());
     });
 
@@ -479,6 +629,9 @@ void main() {
 
       final response = await oauth2.revoke(
         token: "<TOKEN>",
+        tokenTypeHint: "access_token",
+        clientId: "<CLIENT_ID>",
+        clientSecret: "<CLIENT_SECRET>",
       );
       final Map<String, dynamic> params = verify(
         client.call(
@@ -489,7 +642,12 @@ void main() {
           responseType: anyNamed('responseType'),
         ),
       ).captured.single;
-      expect(params.keys, unorderedEquals(["token"]));
+      expect(params, {
+        "token": "<TOKEN>",
+        "token_type_hint": "access_token",
+        "client_id": "<CLIENT_ID>",
+        "client_secret": "<CLIENT_SECRET>",
+      });
     });
 
     test('test method createToken()', () async {
@@ -513,6 +671,15 @@ void main() {
 
       final response = await oauth2.createToken(
         grantType: "<GRANT_TYPE>",
+        code: "<CODE>",
+        refreshToken: "<REFRESH_TOKEN>",
+        deviceCode: "<DEVICE_CODE>",
+        clientId: "<CLIENT_ID>",
+        clientSecret: "<CLIENT_SECRET>",
+        codeVerifier: "<CODE_VERIFIER>",
+        redirectUri: "https://example.com",
+        resource: [],
+        audience: "<AUDIENCE>",
       );
       final Map<String, dynamic> params = verify(
         client.call(
@@ -523,7 +690,18 @@ void main() {
           responseType: anyNamed('responseType'),
         ),
       ).captured.single;
-      expect(params.keys, unorderedEquals(["grant_type"]));
+      expect(params, {
+        "grant_type": "<GRANT_TYPE>",
+        "code": "<CODE>",
+        "refresh_token": "<REFRESH_TOKEN>",
+        "device_code": "<DEVICE_CODE>",
+        "client_id": "<CLIENT_ID>",
+        "client_secret": "<CLIENT_SECRET>",
+        "code_verifier": "<CODE_VERIFIER>",
+        "redirect_uri": "https://example.com",
+        "resource": isA<List>(),
+        "audience": "<AUDIENCE>",
+      });
       expect(response, isA<models.Oauth2Token>());
     });
   });

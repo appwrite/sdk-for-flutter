@@ -29,7 +29,7 @@ class Analytics extends Service {
     final String apiPath = '/analytics/properties/{propertyId}/events'
         .replaceAll(
           '{propertyId}',
-          propertyId,
+          _encodePath(propertyId),
         );
 
     final Map<String, dynamic> apiParams = {

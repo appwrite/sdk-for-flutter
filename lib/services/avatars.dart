@@ -24,7 +24,7 @@ class Avatars extends Service {
   }) async {
     final String apiPath = '/avatars/browsers/{code}'.replaceAll(
       '{code}',
-      code.value,
+      _encodePath(code.value),
     );
 
     final Map<String, dynamic> apiParams = {
@@ -64,7 +64,7 @@ class Avatars extends Service {
   }) async {
     final String apiPath = '/avatars/credit-cards/{code}'.replaceAll(
       '{code}',
-      code.value,
+      _encodePath(code.value),
     );
 
     final Map<String, dynamic> apiParams = {
@@ -133,7 +133,7 @@ class Avatars extends Service {
   }) async {
     final String apiPath = '/avatars/flags/{code}'.replaceAll(
       '{code}',
-      code.value,
+      _encodePath(code.value),
     );
 
     final Map<String, dynamic> apiParams = {

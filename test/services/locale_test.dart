@@ -104,7 +104,7 @@ void main() {
           responseType: anyNamed('responseType'),
         ),
       ).captured.single;
-      expect(params.keys, isEmpty);
+      expect(params, isEmpty);
       expect(response, isA<models.Locale>());
     });
 
@@ -124,7 +124,9 @@ void main() {
         ),
       ).thenAnswer((_) async => Response(data: data));
 
-      final response = await locale.listCodes();
+      final response = await locale.listCodes(
+        total: false,
+      );
       final Map<String, dynamic> params = verify(
         client.call(
           HttpMethod.get,
@@ -134,7 +136,9 @@ void main() {
           responseType: anyNamed('responseType'),
         ),
       ).captured.single;
-      expect(params.keys, isEmpty);
+      expect(params, {
+        "total": false,
+      });
       expect(response, isA<models.LocaleCodeList>());
     });
 
@@ -154,7 +158,9 @@ void main() {
         ),
       ).thenAnswer((_) async => Response(data: data));
 
-      final response = await locale.listContinents();
+      final response = await locale.listContinents(
+        total: false,
+      );
       final Map<String, dynamic> params = verify(
         client.call(
           HttpMethod.get,
@@ -164,7 +170,9 @@ void main() {
           responseType: anyNamed('responseType'),
         ),
       ).captured.single;
-      expect(params.keys, isEmpty);
+      expect(params, {
+        "total": false,
+      });
       expect(response, isA<models.ContinentList>());
     });
 
@@ -184,7 +192,9 @@ void main() {
         ),
       ).thenAnswer((_) async => Response(data: data));
 
-      final response = await locale.listCountries();
+      final response = await locale.listCountries(
+        total: false,
+      );
       final Map<String, dynamic> params = verify(
         client.call(
           HttpMethod.get,
@@ -194,7 +204,9 @@ void main() {
           responseType: anyNamed('responseType'),
         ),
       ).captured.single;
-      expect(params.keys, isEmpty);
+      expect(params, {
+        "total": false,
+      });
       expect(response, isA<models.CountryList>());
     });
 
@@ -214,7 +226,9 @@ void main() {
         ),
       ).thenAnswer((_) async => Response(data: data));
 
-      final response = await locale.listCountriesEU();
+      final response = await locale.listCountriesEU(
+        total: false,
+      );
       final Map<String, dynamic> params = verify(
         client.call(
           HttpMethod.get,
@@ -224,7 +238,9 @@ void main() {
           responseType: anyNamed('responseType'),
         ),
       ).captured.single;
-      expect(params.keys, isEmpty);
+      expect(params, {
+        "total": false,
+      });
       expect(response, isA<models.CountryList>());
     });
 
@@ -244,7 +260,9 @@ void main() {
         ),
       ).thenAnswer((_) async => Response(data: data));
 
-      final response = await locale.listCountriesPhones();
+      final response = await locale.listCountriesPhones(
+        total: false,
+      );
       final Map<String, dynamic> params = verify(
         client.call(
           HttpMethod.get,
@@ -254,7 +272,9 @@ void main() {
           responseType: anyNamed('responseType'),
         ),
       ).captured.single;
-      expect(params.keys, isEmpty);
+      expect(params, {
+        "total": false,
+      });
       expect(response, isA<models.PhoneList>());
     });
 
@@ -274,7 +294,9 @@ void main() {
         ),
       ).thenAnswer((_) async => Response(data: data));
 
-      final response = await locale.listCurrencies();
+      final response = await locale.listCurrencies(
+        total: false,
+      );
       final Map<String, dynamic> params = verify(
         client.call(
           HttpMethod.get,
@@ -284,7 +306,9 @@ void main() {
           responseType: anyNamed('responseType'),
         ),
       ).captured.single;
-      expect(params.keys, isEmpty);
+      expect(params, {
+        "total": false,
+      });
       expect(response, isA<models.CurrencyList>());
     });
 
@@ -304,7 +328,9 @@ void main() {
         ),
       ).thenAnswer((_) async => Response(data: data));
 
-      final response = await locale.listLanguages();
+      final response = await locale.listLanguages(
+        total: false,
+      );
       final Map<String, dynamic> params = verify(
         client.call(
           HttpMethod.get,
@@ -314,7 +340,9 @@ void main() {
           responseType: anyNamed('responseType'),
         ),
       ).captured.single;
-      expect(params.keys, isEmpty);
+      expect(params, {
+        "total": false,
+      });
       expect(response, isA<models.LanguageList>());
     });
   });

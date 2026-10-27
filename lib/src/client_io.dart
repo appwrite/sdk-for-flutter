@@ -59,8 +59,8 @@ class ClientIO extends ClientBase with ClientMixin {
       'x-sdk-name': 'Flutter',
       'x-sdk-platform': 'client',
       'x-sdk-language': 'flutter',
-      'x-sdk-version': '28.1.0',
-      'X-Appwrite-Response-Format': '2.5.0',
+      'x-sdk-version': '28.2.0',
+      'X-Appwrite-Response-Format': '2.6.2',
     };
 
     config = {};
@@ -364,11 +364,15 @@ class ClientIO extends ClientBase with ClientMixin {
     var offset = 0;
     String? uploadId;
     if (idParamName.isNotEmpty && params[idParamName] != null) {
+      final idValue = params[idParamName].toString();
+      if (idValue == '.' || idValue == '..') {
+        throw AppwriteException('Path parameter cannot be "." or ".."');
+      }
       //make a request to check if a file already exists
       try {
         res = await call(
           HttpMethod.get,
-          path: '$path/${params[idParamName]}',
+          path: '$path/${Uri.encodeComponent(idValue)}',
           headers: headers,
         );
         final int chunksUploaded = res.data['chunksUploaded'] as int;

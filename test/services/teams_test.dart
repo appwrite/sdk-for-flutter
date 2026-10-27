@@ -89,7 +89,11 @@ void main() {
         ),
       ).thenAnswer((_) async => Response(data: data));
 
-      final response = await teams.list();
+      final response = await teams.list(
+        queries: [],
+        search: "<SEARCH>",
+        total: false,
+      );
       final Map<String, dynamic> params = verify(
         client.call(
           HttpMethod.get,
@@ -99,7 +103,11 @@ void main() {
           responseType: anyNamed('responseType'),
         ),
       ).captured.single;
-      expect(params.keys, isEmpty);
+      expect(params, {
+        "queries": isA<List>(),
+        "search": "<SEARCH>",
+        "total": false,
+      });
       expect(response, isA<models.TeamList>());
     });
 
@@ -126,6 +134,7 @@ void main() {
       final response = await teams.create(
         teamId: "<TEAM_ID>",
         name: "<NAME>",
+        roles: [],
       );
       final Map<String, dynamic> params = verify(
         client.call(
@@ -136,7 +145,11 @@ void main() {
           responseType: anyNamed('responseType'),
         ),
       ).captured.single;
-      expect(params.keys, unorderedEquals(["teamId", "name"]));
+      expect(params, {
+        "teamId": "<TEAM_ID>",
+        "name": "<NAME>",
+        "roles": isA<List>(),
+      });
       expect(response, isA<models.Team>());
     });
 
@@ -166,13 +179,13 @@ void main() {
       final Map<String, dynamic> params = verify(
         client.call(
           HttpMethod.get,
-          path: "/teams/<TEAM_ID>",
+          path: "/teams/%3CTEAM_ID%3E",
           headers: anyNamed('headers'),
           params: captureAnyNamed('params'),
           responseType: anyNamed('responseType'),
         ),
       ).captured.single;
-      expect(params.keys, isEmpty);
+      expect(params, isEmpty);
       expect(response, isA<models.Team>());
     });
 
@@ -203,13 +216,15 @@ void main() {
       final Map<String, dynamic> params = verify(
         client.call(
           HttpMethod.put,
-          path: "/teams/<TEAM_ID>",
+          path: "/teams/%3CTEAM_ID%3E",
           headers: anyNamed('headers'),
           params: captureAnyNamed('params'),
           responseType: anyNamed('responseType'),
         ),
       ).captured.single;
-      expect(params.keys, unorderedEquals(["name"]));
+      expect(params, {
+        "name": "<NAME>",
+      });
       expect(response, isA<models.Team>());
     });
 
@@ -232,13 +247,13 @@ void main() {
       final Map<String, dynamic> params = verify(
         client.call(
           HttpMethod.delete,
-          path: "/teams/<TEAM_ID>",
+          path: "/teams/%3CTEAM_ID%3E",
           headers: anyNamed('headers'),
           params: captureAnyNamed('params'),
           responseType: anyNamed('responseType'),
         ),
       ).captured.single;
-      expect(params.keys, isEmpty);
+      expect(params, isEmpty);
     });
 
     test('test method listInstallations()', () async {
@@ -259,17 +274,22 @@ void main() {
 
       final response = await teams.listInstallations(
         teamId: "<TEAM_ID>",
+        queries: [],
+        total: false,
       );
       final Map<String, dynamic> params = verify(
         client.call(
           HttpMethod.get,
-          path: "/teams/<TEAM_ID>/installations",
+          path: "/teams/%3CTEAM_ID%3E/installations",
           headers: anyNamed('headers'),
           params: captureAnyNamed('params'),
           responseType: anyNamed('responseType'),
         ),
       ).captured.single;
-      expect(params.keys, isEmpty);
+      expect(params, {
+        "queries": isA<List>(),
+        "total": false,
+      });
       expect(response, isA<models.AppInstallationList>());
     });
 
@@ -299,17 +319,21 @@ void main() {
       final response = await teams.createInstallation(
         teamId: "<TEAM_ID>",
         appId: "<APP_ID>",
+        authorizationDetails: "<AUTHORIZATION_DETAILS>",
       );
       final Map<String, dynamic> params = verify(
         client.call(
           HttpMethod.post,
-          path: "/teams/<TEAM_ID>/installations",
+          path: "/teams/%3CTEAM_ID%3E/installations",
           headers: anyNamed('headers'),
           params: captureAnyNamed('params'),
           responseType: anyNamed('responseType'),
         ),
       ).captured.single;
-      expect(params.keys, unorderedEquals(["appId"]));
+      expect(params, {
+        "appId": "<APP_ID>",
+        "authorizationDetails": "<AUTHORIZATION_DETAILS>",
+      });
       expect(response, isA<models.AppInstallation>());
     });
 
@@ -343,13 +367,13 @@ void main() {
       final Map<String, dynamic> params = verify(
         client.call(
           HttpMethod.get,
-          path: "/teams/<TEAM_ID>/installations/<INSTALLATION_ID>",
+          path: "/teams/%3CTEAM_ID%3E/installations/%3CINSTALLATION_ID%3E",
           headers: anyNamed('headers'),
           params: captureAnyNamed('params'),
           responseType: anyNamed('responseType'),
         ),
       ).captured.single;
-      expect(params.keys, isEmpty);
+      expect(params, isEmpty);
       expect(response, isA<models.AppInstallation>());
     });
 
@@ -379,17 +403,20 @@ void main() {
       final response = await teams.updateInstallation(
         teamId: "<TEAM_ID>",
         installationId: "<INSTALLATION_ID>",
+        authorizationDetails: "<AUTHORIZATION_DETAILS>",
       );
       final Map<String, dynamic> params = verify(
         client.call(
           HttpMethod.put,
-          path: "/teams/<TEAM_ID>/installations/<INSTALLATION_ID>",
+          path: "/teams/%3CTEAM_ID%3E/installations/%3CINSTALLATION_ID%3E",
           headers: anyNamed('headers'),
           params: captureAnyNamed('params'),
           responseType: anyNamed('responseType'),
         ),
       ).captured.single;
-      expect(params.keys, isEmpty);
+      expect(params, {
+        "authorizationDetails": "<AUTHORIZATION_DETAILS>",
+      });
       expect(response, isA<models.AppInstallation>());
     });
 
@@ -413,13 +440,13 @@ void main() {
       final Map<String, dynamic> params = verify(
         client.call(
           HttpMethod.delete,
-          path: "/teams/<TEAM_ID>/installations/<INSTALLATION_ID>",
+          path: "/teams/%3CTEAM_ID%3E/installations/%3CINSTALLATION_ID%3E",
           headers: anyNamed('headers'),
           params: captureAnyNamed('params'),
           responseType: anyNamed('responseType'),
         ),
       ).captured.single;
-      expect(params.keys, isEmpty);
+      expect(params, isEmpty);
     });
 
     test('test method listMemberships()', () async {
@@ -440,17 +467,24 @@ void main() {
 
       final response = await teams.listMemberships(
         teamId: "<TEAM_ID>",
+        queries: [],
+        search: "<SEARCH>",
+        total: false,
       );
       final Map<String, dynamic> params = verify(
         client.call(
           HttpMethod.get,
-          path: "/teams/<TEAM_ID>/memberships",
+          path: "/teams/%3CTEAM_ID%3E/memberships",
           headers: anyNamed('headers'),
           params: captureAnyNamed('params'),
           responseType: anyNamed('responseType'),
         ),
       ).captured.single;
-      expect(params.keys, isEmpty);
+      expect(params, {
+        "queries": isA<List>(),
+        "search": "<SEARCH>",
+        "total": false,
+      });
       expect(response, isA<models.MembershipList>());
     });
 
@@ -486,17 +520,31 @@ void main() {
       final response = await teams.createMembership(
         teamId: "<TEAM_ID>",
         roles: [],
+        email: "email@example.com",
+        userId: "<USER_ID>",
+        phone: "+12065550100",
+        url: "https://example.com",
+        name: "<NAME>",
+        membershipId: "<MEMBERSHIP_ID>",
       );
       final Map<String, dynamic> params = verify(
         client.call(
           HttpMethod.post,
-          path: "/teams/<TEAM_ID>/memberships",
+          path: "/teams/%3CTEAM_ID%3E/memberships",
           headers: anyNamed('headers'),
           params: captureAnyNamed('params'),
           responseType: anyNamed('responseType'),
         ),
       ).captured.single;
-      expect(params.keys, unorderedEquals(["roles"]));
+      expect(params, {
+        "email": "email@example.com",
+        "userId": "<USER_ID>",
+        "phone": "+12065550100",
+        "roles": isA<List>(),
+        "url": "https://example.com",
+        "name": "<NAME>",
+        "membershipId": "<MEMBERSHIP_ID>",
+      });
       expect(response, isA<models.Membership>());
     });
 
@@ -536,13 +584,13 @@ void main() {
       final Map<String, dynamic> params = verify(
         client.call(
           HttpMethod.get,
-          path: "/teams/<TEAM_ID>/memberships/<MEMBERSHIP_ID>",
+          path: "/teams/%3CTEAM_ID%3E/memberships/%3CMEMBERSHIP_ID%3E",
           headers: anyNamed('headers'),
           params: captureAnyNamed('params'),
           responseType: anyNamed('responseType'),
         ),
       ).captured.single;
-      expect(params.keys, isEmpty);
+      expect(params, isEmpty);
       expect(response, isA<models.Membership>());
     });
 
@@ -583,13 +631,15 @@ void main() {
       final Map<String, dynamic> params = verify(
         client.call(
           HttpMethod.patch,
-          path: "/teams/<TEAM_ID>/memberships/<MEMBERSHIP_ID>",
+          path: "/teams/%3CTEAM_ID%3E/memberships/%3CMEMBERSHIP_ID%3E",
           headers: anyNamed('headers'),
           params: captureAnyNamed('params'),
           responseType: anyNamed('responseType'),
         ),
       ).captured.single;
-      expect(params.keys, unorderedEquals(["roles"]));
+      expect(params, {
+        "roles": isA<List>(),
+      });
       expect(response, isA<models.Membership>());
     });
 
@@ -613,13 +663,13 @@ void main() {
       final Map<String, dynamic> params = verify(
         client.call(
           HttpMethod.delete,
-          path: "/teams/<TEAM_ID>/memberships/<MEMBERSHIP_ID>",
+          path: "/teams/%3CTEAM_ID%3E/memberships/%3CMEMBERSHIP_ID%3E",
           headers: anyNamed('headers'),
           params: captureAnyNamed('params'),
           responseType: anyNamed('responseType'),
         ),
       ).captured.single;
-      expect(params.keys, isEmpty);
+      expect(params, isEmpty);
     });
 
     test('test method updateMembershipStatus()', () async {
@@ -660,13 +710,16 @@ void main() {
       final Map<String, dynamic> params = verify(
         client.call(
           HttpMethod.patch,
-          path: "/teams/<TEAM_ID>/memberships/<MEMBERSHIP_ID>/status",
+          path: "/teams/%3CTEAM_ID%3E/memberships/%3CMEMBERSHIP_ID%3E/status",
           headers: anyNamed('headers'),
           params: captureAnyNamed('params'),
           responseType: anyNamed('responseType'),
         ),
       ).captured.single;
-      expect(params.keys, unorderedEquals(["userId", "secret"]));
+      expect(params, {
+        "userId": "<USER_ID>",
+        "secret": "<SECRET>",
+      });
       expect(response, isA<models.Membership>());
     });
 
@@ -689,13 +742,13 @@ void main() {
       final Map<String, dynamic> params = verify(
         client.call(
           HttpMethod.get,
-          path: "/teams/<TEAM_ID>/prefs",
+          path: "/teams/%3CTEAM_ID%3E/prefs",
           headers: anyNamed('headers'),
           params: captureAnyNamed('params'),
           responseType: anyNamed('responseType'),
         ),
       ).captured.single;
-      expect(params.keys, isEmpty);
+      expect(params, isEmpty);
       expect(response, isA<models.Preferences>());
     });
 
@@ -719,13 +772,15 @@ void main() {
       final Map<String, dynamic> params = verify(
         client.call(
           HttpMethod.put,
-          path: "/teams/<TEAM_ID>/prefs",
+          path: "/teams/%3CTEAM_ID%3E/prefs",
           headers: anyNamed('headers'),
           params: captureAnyNamed('params'),
           responseType: anyNamed('responseType'),
         ),
       ).captured.single;
-      expect(params.keys, unorderedEquals(["prefs"]));
+      expect(params, {
+        "prefs": isA<Map>(),
+      });
       expect(response, isA<models.Preferences>());
     });
   });
