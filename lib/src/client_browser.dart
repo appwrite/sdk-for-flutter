@@ -40,8 +40,8 @@ class ClientBrowser extends ClientBase with ClientMixin {
       'x-sdk-name': 'Flutter',
       'x-sdk-platform': 'client',
       'x-sdk-language': 'flutter',
-      'x-sdk-version': '28.1.0',
-      'X-Appwrite-Response-Format': '2.5.0',
+      'x-sdk-version': '28.2.0',
+      'X-Appwrite-Response-Format': '2.6.2',
     };
 
     config = {};
@@ -237,7 +237,7 @@ class ClientBrowser extends ClientBase with ClientMixin {
       try {
         res = await call(
           HttpMethod.get,
-          path: '$path/${params[idParamName]}',
+          path: '$path/${Uri.encodeComponent(params[idParamName].toString())}',
           headers: headers,
         );
         final int chunksUploaded = res.data['chunksUploaded'] as int;

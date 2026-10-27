@@ -78,7 +78,7 @@ class Organization extends Service {
     final String apiPath = '/organization/installations/{installationId}'
         .replaceAll(
           '{installationId}',
-          installationId,
+          _encodePath(installationId),
         );
 
     final Map<String, dynamic> apiParams = {};
@@ -115,7 +115,7 @@ class Organization extends Service {
     final String apiPath = '/organization/installations/{installationId}'
         .replaceAll(
           '{installationId}',
-          installationId,
+          _encodePath(installationId),
         );
 
     final Map<String, dynamic> apiParams = {
@@ -154,7 +154,7 @@ class Organization extends Service {
     final String apiPath = '/organization/installations/{installationId}'
         .replaceAll(
           '{installationId}',
-          installationId,
+          _encodePath(installationId),
         );
 
     final Map<String, dynamic> apiParams = {};

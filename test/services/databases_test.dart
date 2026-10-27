@@ -89,7 +89,10 @@ void main() {
         ),
       ).thenAnswer((_) async => Response(data: data));
 
-      final response = await databases.listTransactions();
+      final response = await databases.listTransactions(
+        queries: [],
+        total: false,
+      );
       final Map<String, dynamic> params = verify(
         client.call(
           HttpMethod.get,
@@ -99,7 +102,10 @@ void main() {
           responseType: anyNamed('responseType'),
         ),
       ).captured.single;
-      expect(params.keys, isEmpty);
+      expect(params, {
+        "queries": isA<List>(),
+        "total": false,
+      });
       expect(response, isA<models.TransactionList>());
     });
 
@@ -123,7 +129,9 @@ void main() {
         ),
       ).thenAnswer((_) async => Response(data: data));
 
-      final response = await databases.createTransaction();
+      final response = await databases.createTransaction(
+        ttl: 1,
+      );
       final Map<String, dynamic> params = verify(
         client.call(
           HttpMethod.post,
@@ -133,7 +141,9 @@ void main() {
           responseType: anyNamed('responseType'),
         ),
       ).captured.single;
-      expect(params.keys, isEmpty);
+      expect(params, {
+        "ttl": 1,
+      });
       expect(response, isA<models.Transaction>());
     });
 
@@ -163,13 +173,13 @@ void main() {
       final Map<String, dynamic> params = verify(
         client.call(
           HttpMethod.get,
-          path: "/databases/transactions/<TRANSACTION_ID>",
+          path: "/databases/transactions/%3CTRANSACTION_ID%3E",
           headers: anyNamed('headers'),
           params: captureAnyNamed('params'),
           responseType: anyNamed('responseType'),
         ),
       ).captured.single;
-      expect(params.keys, isEmpty);
+      expect(params, isEmpty);
       expect(response, isA<models.Transaction>());
     });
 
@@ -195,17 +205,22 @@ void main() {
 
       final response = await databases.updateTransaction(
         transactionId: "<TRANSACTION_ID>",
+        commit: false,
+        rollback: false,
       );
       final Map<String, dynamic> params = verify(
         client.call(
           HttpMethod.patch,
-          path: "/databases/transactions/<TRANSACTION_ID>",
+          path: "/databases/transactions/%3CTRANSACTION_ID%3E",
           headers: anyNamed('headers'),
           params: captureAnyNamed('params'),
           responseType: anyNamed('responseType'),
         ),
       ).captured.single;
-      expect(params.keys, isEmpty);
+      expect(params, {
+        "commit": false,
+        "rollback": false,
+      });
       expect(response, isA<models.Transaction>());
     });
 
@@ -228,13 +243,13 @@ void main() {
       final Map<String, dynamic> params = verify(
         client.call(
           HttpMethod.delete,
-          path: "/databases/transactions/<TRANSACTION_ID>",
+          path: "/databases/transactions/%3CTRANSACTION_ID%3E",
           headers: anyNamed('headers'),
           params: captureAnyNamed('params'),
           responseType: anyNamed('responseType'),
         ),
       ).captured.single;
-      expect(params.keys, isEmpty);
+      expect(params, isEmpty);
     });
 
     test('test method createOperations()', () async {
@@ -259,17 +274,20 @@ void main() {
 
       final response = await databases.createOperations(
         transactionId: "<TRANSACTION_ID>",
+        operations: [],
       );
       final Map<String, dynamic> params = verify(
         client.call(
           HttpMethod.post,
-          path: "/databases/transactions/<TRANSACTION_ID>/operations",
+          path: "/databases/transactions/%3CTRANSACTION_ID%3E/operations",
           headers: anyNamed('headers'),
           params: captureAnyNamed('params'),
           responseType: anyNamed('responseType'),
         ),
       ).captured.single;
-      expect(params.keys, isEmpty);
+      expect(params, {
+        "operations": isA<List>(),
+      });
       expect(response, isA<models.Transaction>());
     });
 
@@ -292,17 +310,26 @@ void main() {
       final response = await databases.listDocuments(
         databaseId: "<DATABASE_ID>",
         collectionId: "<COLLECTION_ID>",
+        queries: [],
+        transactionId: "<TRANSACTION_ID>",
+        total: false,
+        ttl: 1,
       );
       final Map<String, dynamic> params = verify(
         client.call(
           HttpMethod.get,
-          path: "/databases/<DATABASE_ID>/collections/<COLLECTION_ID>/documents",
+          path: "/databases/%3CDATABASE_ID%3E/collections/%3CCOLLECTION_ID%3E/documents",
           headers: anyNamed('headers'),
           params: captureAnyNamed('params'),
           responseType: anyNamed('responseType'),
         ),
       ).captured.single;
-      expect(params.keys, isEmpty);
+      expect(params, {
+        "queries": isA<List>(),
+        "transactionId": "<TRANSACTION_ID>",
+        "total": false,
+        "ttl": 1,
+      });
       expect(response, isA<models.DocumentList>());
     });
 
@@ -332,17 +359,24 @@ void main() {
         collectionId: "<COLLECTION_ID>",
         documentId: "<DOCUMENT_ID>",
         data: {},
+        permissions: [],
+        transactionId: "<TRANSACTION_ID>",
       );
       final Map<String, dynamic> params = verify(
         client.call(
           HttpMethod.post,
-          path: "/databases/<DATABASE_ID>/collections/<COLLECTION_ID>/documents",
+          path: "/databases/%3CDATABASE_ID%3E/collections/%3CCOLLECTION_ID%3E/documents",
           headers: anyNamed('headers'),
           params: captureAnyNamed('params'),
           responseType: anyNamed('responseType'),
         ),
       ).captured.single;
-      expect(params.keys, unorderedEquals(["documentId", "data"]));
+      expect(params, {
+        "documentId": "<DOCUMENT_ID>",
+        "data": isA<Map>(),
+        "permissions": isA<List>(),
+        "transactionId": "<TRANSACTION_ID>",
+      });
       expect(response, isA<models.Document>());
     });
 
@@ -365,17 +399,26 @@ void main() {
       final response = await databases.createQuery(
         databaseId: "<DATABASE_ID>",
         collectionId: "<COLLECTION_ID>",
+        queries: [],
+        transactionId: "<TRANSACTION_ID>",
+        total: false,
+        ttl: 1,
       );
       final Map<String, dynamic> params = verify(
         client.call(
           HttpMethod.post,
-          path: "/databases/<DATABASE_ID>/collections/<COLLECTION_ID>/documents/query",
+          path: "/databases/%3CDATABASE_ID%3E/collections/%3CCOLLECTION_ID%3E/documents/query",
           headers: anyNamed('headers'),
           params: captureAnyNamed('params'),
           responseType: anyNamed('responseType'),
         ),
       ).captured.single;
-      expect(params.keys, isEmpty);
+      expect(params, {
+        "queries": isA<List>(),
+        "transactionId": "<TRANSACTION_ID>",
+        "total": false,
+        "ttl": 1,
+      });
       expect(response, isA<models.DocumentList>());
     });
 
@@ -404,17 +447,22 @@ void main() {
         databaseId: "<DATABASE_ID>",
         collectionId: "<COLLECTION_ID>",
         documentId: "<DOCUMENT_ID>",
+        queries: [],
+        transactionId: "<TRANSACTION_ID>",
       );
       final Map<String, dynamic> params = verify(
         client.call(
           HttpMethod.get,
-          path: "/databases/<DATABASE_ID>/collections/<COLLECTION_ID>/documents/<DOCUMENT_ID>",
+          path: "/databases/%3CDATABASE_ID%3E/collections/%3CCOLLECTION_ID%3E/documents/%3CDOCUMENT_ID%3E",
           headers: anyNamed('headers'),
           params: captureAnyNamed('params'),
           responseType: anyNamed('responseType'),
         ),
       ).captured.single;
-      expect(params.keys, isEmpty);
+      expect(params, {
+        "queries": isA<List>(),
+        "transactionId": "<TRANSACTION_ID>",
+      });
       expect(response, isA<models.Document>());
     });
 
@@ -443,17 +491,24 @@ void main() {
         databaseId: "<DATABASE_ID>",
         collectionId: "<COLLECTION_ID>",
         documentId: "<DOCUMENT_ID>",
+        data: {},
+        permissions: [],
+        transactionId: "<TRANSACTION_ID>",
       );
       final Map<String, dynamic> params = verify(
         client.call(
           HttpMethod.put,
-          path: "/databases/<DATABASE_ID>/collections/<COLLECTION_ID>/documents/<DOCUMENT_ID>",
+          path: "/databases/%3CDATABASE_ID%3E/collections/%3CCOLLECTION_ID%3E/documents/%3CDOCUMENT_ID%3E",
           headers: anyNamed('headers'),
           params: captureAnyNamed('params'),
           responseType: anyNamed('responseType'),
         ),
       ).captured.single;
-      expect(params.keys, isEmpty);
+      expect(params, {
+        "data": isA<Map>(),
+        "permissions": isA<List>(),
+        "transactionId": "<TRANSACTION_ID>",
+      });
       expect(response, isA<models.Document>());
     });
 
@@ -482,17 +537,24 @@ void main() {
         databaseId: "<DATABASE_ID>",
         collectionId: "<COLLECTION_ID>",
         documentId: "<DOCUMENT_ID>",
+        data: {},
+        permissions: [],
+        transactionId: "<TRANSACTION_ID>",
       );
       final Map<String, dynamic> params = verify(
         client.call(
           HttpMethod.patch,
-          path: "/databases/<DATABASE_ID>/collections/<COLLECTION_ID>/documents/<DOCUMENT_ID>",
+          path: "/databases/%3CDATABASE_ID%3E/collections/%3CCOLLECTION_ID%3E/documents/%3CDOCUMENT_ID%3E",
           headers: anyNamed('headers'),
           params: captureAnyNamed('params'),
           responseType: anyNamed('responseType'),
         ),
       ).captured.single;
-      expect(params.keys, isEmpty);
+      expect(params, {
+        "data": isA<Map>(),
+        "permissions": isA<List>(),
+        "transactionId": "<TRANSACTION_ID>",
+      });
       expect(response, isA<models.Document>());
     });
 
@@ -513,17 +575,20 @@ void main() {
         databaseId: "<DATABASE_ID>",
         collectionId: "<COLLECTION_ID>",
         documentId: "<DOCUMENT_ID>",
+        transactionId: "<TRANSACTION_ID>",
       );
       final Map<String, dynamic> params = verify(
         client.call(
           HttpMethod.delete,
-          path: "/databases/<DATABASE_ID>/collections/<COLLECTION_ID>/documents/<DOCUMENT_ID>",
+          path: "/databases/%3CDATABASE_ID%3E/collections/%3CCOLLECTION_ID%3E/documents/%3CDOCUMENT_ID%3E",
           headers: anyNamed('headers'),
           params: captureAnyNamed('params'),
           responseType: anyNamed('responseType'),
         ),
       ).captured.single;
-      expect(params.keys, isEmpty);
+      expect(params, {
+        "transactionId": "<TRANSACTION_ID>",
+      });
     });
 
     test('test method decrementDocumentAttribute()', () async {
@@ -552,17 +617,24 @@ void main() {
         collectionId: "<COLLECTION_ID>",
         documentId: "<DOCUMENT_ID>",
         attribute: "<ATTRIBUTE>",
+        value: 1.0,
+        min: 1.0,
+        transactionId: "<TRANSACTION_ID>",
       );
       final Map<String, dynamic> params = verify(
         client.call(
           HttpMethod.patch,
-          path: "/databases/<DATABASE_ID>/collections/<COLLECTION_ID>/documents/<DOCUMENT_ID>/<ATTRIBUTE>/decrement",
+          path: "/databases/%3CDATABASE_ID%3E/collections/%3CCOLLECTION_ID%3E/documents/%3CDOCUMENT_ID%3E/%3CATTRIBUTE%3E/decrement",
           headers: anyNamed('headers'),
           params: captureAnyNamed('params'),
           responseType: anyNamed('responseType'),
         ),
       ).captured.single;
-      expect(params.keys, isEmpty);
+      expect(params, {
+        "value": 1.0,
+        "min": 1.0,
+        "transactionId": "<TRANSACTION_ID>",
+      });
       expect(response, isA<models.Document>());
     });
 
@@ -592,17 +664,24 @@ void main() {
         collectionId: "<COLLECTION_ID>",
         documentId: "<DOCUMENT_ID>",
         attribute: "<ATTRIBUTE>",
+        value: 1.0,
+        max: 1.0,
+        transactionId: "<TRANSACTION_ID>",
       );
       final Map<String, dynamic> params = verify(
         client.call(
           HttpMethod.patch,
-          path: "/databases/<DATABASE_ID>/collections/<COLLECTION_ID>/documents/<DOCUMENT_ID>/<ATTRIBUTE>/increment",
+          path: "/databases/%3CDATABASE_ID%3E/collections/%3CCOLLECTION_ID%3E/documents/%3CDOCUMENT_ID%3E/%3CATTRIBUTE%3E/increment",
           headers: anyNamed('headers'),
           params: captureAnyNamed('params'),
           responseType: anyNamed('responseType'),
         ),
       ).captured.single;
-      expect(params.keys, isEmpty);
+      expect(params, {
+        "value": 1.0,
+        "max": 1.0,
+        "transactionId": "<TRANSACTION_ID>",
+      });
       expect(response, isA<models.Document>());
     });
   });

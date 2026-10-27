@@ -1,5 +1,12 @@
 # Change Log
 
+## 28.2.0
+
+* Updated: requests send `X-Appwrite-Response-Format: 2.6.2`; the SDK targets Appwrite 2.6.x
+* Fixed: path parameters are percent-encoded as one segment; `.` and `..` throw `AppwriteException`
+* Fixed: chunked upload resume lookups percent-encode the file ID
+* Fixed: examples pass `null` for unset optional params instead of empty strings
+
 ## 28.1.0
 
 * Added: `createQuery` on `databases`, `documentsDB` and `tablesDB` to send list queries in the request body

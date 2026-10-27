@@ -113,13 +113,16 @@ void main() {
       final Map<String, dynamic> params = verify(
         client.call(
           HttpMethod.post,
-          path: "/messaging/topics/<TOPIC_ID>/subscribers",
+          path: "/messaging/topics/%3CTOPIC_ID%3E/subscribers",
           headers: anyNamed('headers'),
           params: captureAnyNamed('params'),
           responseType: anyNamed('responseType'),
         ),
       ).captured.single;
-      expect(params.keys, unorderedEquals(["subscriberId", "targetId"]));
+      expect(params, {
+        "subscriberId": "<SUBSCRIBER_ID>",
+        "targetId": "<TARGET_ID>",
+      });
       expect(response, isA<models.Subscriber>());
     });
 
@@ -143,13 +146,13 @@ void main() {
       final Map<String, dynamic> params = verify(
         client.call(
           HttpMethod.delete,
-          path: "/messaging/topics/<TOPIC_ID>/subscribers/<SUBSCRIBER_ID>",
+          path: "/messaging/topics/%3CTOPIC_ID%3E/subscribers/%3CSUBSCRIBER_ID%3E",
           headers: anyNamed('headers'),
           params: captureAnyNamed('params'),
           responseType: anyNamed('responseType'),
         ),
       ).captured.single;
-      expect(params.keys, isEmpty);
+      expect(params, isEmpty);
     });
   });
 }

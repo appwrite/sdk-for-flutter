@@ -89,7 +89,11 @@ void main() {
         ),
       ).thenAnswer((_) async => Response(data: data));
 
-      final response = await presences.list();
+      final response = await presences.list(
+        queries: [],
+        total: false,
+        ttl: 1,
+      );
       final Map<String, dynamic> params = verify(
         client.call(
           HttpMethod.get,
@@ -99,7 +103,11 @@ void main() {
           responseType: anyNamed('responseType'),
         ),
       ).captured.single;
-      expect(params.keys, isEmpty);
+      expect(params, {
+        "queries": isA<List>(),
+        "total": false,
+        "ttl": 1,
+      });
       expect(response, isA<models.PresenceList>());
     });
 
@@ -129,13 +137,13 @@ void main() {
       final Map<String, dynamic> params = verify(
         client.call(
           HttpMethod.get,
-          path: "/presences/<PRESENCE_ID>",
+          path: "/presences/%3CPRESENCE_ID%3E",
           headers: anyNamed('headers'),
           params: captureAnyNamed('params'),
           responseType: anyNamed('responseType'),
         ),
       ).captured.single;
-      expect(params.keys, isEmpty);
+      expect(params, isEmpty);
       expect(response, isA<models.Presence>());
     });
 
@@ -162,17 +170,25 @@ void main() {
       final response = await presences.upsert(
         presenceId: "<PRESENCE_ID>",
         status: "<STATUS>",
+        permissions: [],
+        expiresAt: "2020-10-15T06:38:00.000+00:00",
+        metadata: {},
       );
       final Map<String, dynamic> params = verify(
         client.call(
           HttpMethod.put,
-          path: "/presences/<PRESENCE_ID>",
+          path: "/presences/%3CPRESENCE_ID%3E",
           headers: anyNamed('headers'),
           params: captureAnyNamed('params'),
           responseType: anyNamed('responseType'),
         ),
       ).captured.single;
-      expect(params.keys, unorderedEquals(["status"]));
+      expect(params, {
+        "status": "<STATUS>",
+        "permissions": isA<List>(),
+        "expiresAt": "2020-10-15T06:38:00.000+00:00",
+        "metadata": isA<Map>(),
+      });
       expect(response, isA<models.Presence>());
     });
 
@@ -198,17 +214,28 @@ void main() {
 
       final response = await presences.update(
         presenceId: "<PRESENCE_ID>",
+        status: "<STATUS>",
+        expiresAt: "2020-10-15T06:38:00.000+00:00",
+        metadata: {},
+        permissions: [],
+        purge: false,
       );
       final Map<String, dynamic> params = verify(
         client.call(
           HttpMethod.patch,
-          path: "/presences/<PRESENCE_ID>",
+          path: "/presences/%3CPRESENCE_ID%3E",
           headers: anyNamed('headers'),
           params: captureAnyNamed('params'),
           responseType: anyNamed('responseType'),
         ),
       ).captured.single;
-      expect(params.keys, isEmpty);
+      expect(params, {
+        "status": "<STATUS>",
+        "expiresAt": "2020-10-15T06:38:00.000+00:00",
+        "metadata": isA<Map>(),
+        "permissions": isA<List>(),
+        "purge": false,
+      });
       expect(response, isA<models.Presence>());
     });
 
@@ -231,13 +258,13 @@ void main() {
       final Map<String, dynamic> params = verify(
         client.call(
           HttpMethod.delete,
-          path: "/presences/<PRESENCE_ID>",
+          path: "/presences/%3CPRESENCE_ID%3E",
           headers: anyNamed('headers'),
           params: captureAnyNamed('params'),
           responseType: anyNamed('responseType'),
         ),
       ).captured.single;
-      expect(params.keys, isEmpty);
+      expect(params, isEmpty);
     });
   });
 }
