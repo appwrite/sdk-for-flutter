@@ -91,17 +91,22 @@ void main() {
 
       final response = await functions.listExecutions(
         functionId: "<FUNCTION_ID>",
+        queries: [],
+        total: false,
       );
       final Map<String, dynamic> params = verify(
         client.call(
           HttpMethod.get,
-          path: "/functions/<FUNCTION_ID>/executions",
+          path: "/functions/%3CFUNCTION_ID%3E/executions",
           headers: anyNamed('headers'),
           params: captureAnyNamed('params'),
           responseType: anyNamed('responseType'),
         ),
       ).captured.single;
-      expect(params.keys, isEmpty);
+      expect(params, {
+        "queries": isA<List>(),
+        "total": false,
+      });
       expect(response, isA<models.ExecutionList>());
     });
 
@@ -139,17 +144,30 @@ void main() {
 
       final response = await functions.createExecution(
         functionId: "<FUNCTION_ID>",
+        body: "<BODY>",
+        xasync: false,
+        path: "<PATH>",
+        method: enums.ExecutionMethod.gET,
+        headers: {},
+        scheduledAt: "<SCHEDULED_AT>",
       );
       final Map<String, dynamic> params = verify(
         client.call(
           HttpMethod.post,
-          path: "/functions/<FUNCTION_ID>/executions",
+          path: "/functions/%3CFUNCTION_ID%3E/executions",
           headers: anyNamed('headers'),
           params: captureAnyNamed('params'),
           responseType: anyNamed('responseType'),
         ),
       ).captured.single;
-      expect(params.keys, isEmpty);
+      expect(params, {
+        "body": "<BODY>",
+        "async": false,
+        "path": "<PATH>",
+        "method": enums.ExecutionMethod.gET.value,
+        "headers": isA<Map>(),
+        "scheduledAt": "<SCHEDULED_AT>",
+      });
       expect(response, isA<models.Execution>());
     });
 
@@ -192,13 +210,13 @@ void main() {
       final Map<String, dynamic> params = verify(
         client.call(
           HttpMethod.get,
-          path: "/functions/<FUNCTION_ID>/executions/<EXECUTION_ID>",
+          path: "/functions/%3CFUNCTION_ID%3E/executions/%3CEXECUTION_ID%3E",
           headers: anyNamed('headers'),
           params: captureAnyNamed('params'),
           responseType: anyNamed('responseType'),
         ),
       ).captured.single;
-      expect(params.keys, isEmpty);
+      expect(params, isEmpty);
       expect(response, isA<models.Execution>());
     });
   });

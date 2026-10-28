@@ -89,7 +89,10 @@ void main() {
         ),
       ).thenAnswer((_) async => Response(data: data));
 
-      final response = await vectorsDB.listTransactions();
+      final response = await vectorsDB.listTransactions(
+        queries: [],
+        total: false,
+      );
       final Map<String, dynamic> params = verify(
         client.call(
           HttpMethod.get,
@@ -99,7 +102,10 @@ void main() {
           responseType: anyNamed('responseType'),
         ),
       ).captured.single;
-      expect(params.keys, isEmpty);
+      expect(params, {
+        "queries": isA<List>(),
+        "total": false,
+      });
       expect(response, isA<models.TransactionList>());
     });
 
@@ -123,7 +129,9 @@ void main() {
         ),
       ).thenAnswer((_) async => Response(data: data));
 
-      final response = await vectorsDB.createTransaction();
+      final response = await vectorsDB.createTransaction(
+        ttl: 1,
+      );
       final Map<String, dynamic> params = verify(
         client.call(
           HttpMethod.post,
@@ -133,7 +141,9 @@ void main() {
           responseType: anyNamed('responseType'),
         ),
       ).captured.single;
-      expect(params.keys, isEmpty);
+      expect(params, {
+        "ttl": 1,
+      });
       expect(response, isA<models.Transaction>());
     });
 
@@ -163,13 +173,13 @@ void main() {
       final Map<String, dynamic> params = verify(
         client.call(
           HttpMethod.get,
-          path: "/vectorsdb/transactions/<TRANSACTION_ID>",
+          path: "/vectorsdb/transactions/%3CTRANSACTION_ID%3E",
           headers: anyNamed('headers'),
           params: captureAnyNamed('params'),
           responseType: anyNamed('responseType'),
         ),
       ).captured.single;
-      expect(params.keys, isEmpty);
+      expect(params, isEmpty);
       expect(response, isA<models.Transaction>());
     });
 
@@ -195,17 +205,22 @@ void main() {
 
       final response = await vectorsDB.updateTransaction(
         transactionId: "<TRANSACTION_ID>",
+        commit: false,
+        rollback: false,
       );
       final Map<String, dynamic> params = verify(
         client.call(
           HttpMethod.patch,
-          path: "/vectorsdb/transactions/<TRANSACTION_ID>",
+          path: "/vectorsdb/transactions/%3CTRANSACTION_ID%3E",
           headers: anyNamed('headers'),
           params: captureAnyNamed('params'),
           responseType: anyNamed('responseType'),
         ),
       ).captured.single;
-      expect(params.keys, isEmpty);
+      expect(params, {
+        "commit": false,
+        "rollback": false,
+      });
       expect(response, isA<models.Transaction>());
     });
 
@@ -228,13 +243,13 @@ void main() {
       final Map<String, dynamic> params = verify(
         client.call(
           HttpMethod.delete,
-          path: "/vectorsdb/transactions/<TRANSACTION_ID>",
+          path: "/vectorsdb/transactions/%3CTRANSACTION_ID%3E",
           headers: anyNamed('headers'),
           params: captureAnyNamed('params'),
           responseType: anyNamed('responseType'),
         ),
       ).captured.single;
-      expect(params.keys, isEmpty);
+      expect(params, isEmpty);
     });
 
     test('test method createOperations()', () async {
@@ -259,17 +274,20 @@ void main() {
 
       final response = await vectorsDB.createOperations(
         transactionId: "<TRANSACTION_ID>",
+        operations: [],
       );
       final Map<String, dynamic> params = verify(
         client.call(
           HttpMethod.post,
-          path: "/vectorsdb/transactions/<TRANSACTION_ID>/operations",
+          path: "/vectorsdb/transactions/%3CTRANSACTION_ID%3E/operations",
           headers: anyNamed('headers'),
           params: captureAnyNamed('params'),
           responseType: anyNamed('responseType'),
         ),
       ).captured.single;
-      expect(params.keys, isEmpty);
+      expect(params, {
+        "operations": isA<List>(),
+      });
       expect(response, isA<models.Transaction>());
     });
 
@@ -292,17 +310,26 @@ void main() {
       final response = await vectorsDB.listDocuments(
         databaseId: "<DATABASE_ID>",
         collectionId: "<COLLECTION_ID>",
+        queries: [],
+        transactionId: "<TRANSACTION_ID>",
+        total: false,
+        ttl: 1,
       );
       final Map<String, dynamic> params = verify(
         client.call(
           HttpMethod.get,
-          path: "/vectorsdb/<DATABASE_ID>/collections/<COLLECTION_ID>/documents",
+          path: "/vectorsdb/%3CDATABASE_ID%3E/collections/%3CCOLLECTION_ID%3E/documents",
           headers: anyNamed('headers'),
           params: captureAnyNamed('params'),
           responseType: anyNamed('responseType'),
         ),
       ).captured.single;
-      expect(params.keys, isEmpty);
+      expect(params, {
+        "queries": isA<List>(),
+        "transactionId": "<TRANSACTION_ID>",
+        "total": false,
+        "ttl": 1,
+      });
       expect(response, isA<models.DocumentList>());
     });
 
@@ -332,17 +359,24 @@ void main() {
         collectionId: "<COLLECTION_ID>",
         documentId: "<DOCUMENT_ID>",
         data: {},
+        permissions: [],
+        transactionId: "<TRANSACTION_ID>",
       );
       final Map<String, dynamic> params = verify(
         client.call(
           HttpMethod.post,
-          path: "/vectorsdb/<DATABASE_ID>/collections/<COLLECTION_ID>/documents",
+          path: "/vectorsdb/%3CDATABASE_ID%3E/collections/%3CCOLLECTION_ID%3E/documents",
           headers: anyNamed('headers'),
           params: captureAnyNamed('params'),
           responseType: anyNamed('responseType'),
         ),
       ).captured.single;
-      expect(params.keys, unorderedEquals(["documentId", "data"]));
+      expect(params, {
+        "documentId": "<DOCUMENT_ID>",
+        "data": isA<Map>(),
+        "permissions": isA<List>(),
+        "transactionId": "<TRANSACTION_ID>",
+      });
       expect(response, isA<models.Document>());
     });
 
@@ -365,17 +399,26 @@ void main() {
       final response = await vectorsDB.createQuery(
         databaseId: "<DATABASE_ID>",
         collectionId: "<COLLECTION_ID>",
+        queries: [],
+        transactionId: "<TRANSACTION_ID>",
+        total: false,
+        ttl: 1,
       );
       final Map<String, dynamic> params = verify(
         client.call(
           HttpMethod.post,
-          path: "/vectorsdb/<DATABASE_ID>/collections/<COLLECTION_ID>/documents/query",
+          path: "/vectorsdb/%3CDATABASE_ID%3E/collections/%3CCOLLECTION_ID%3E/documents/query",
           headers: anyNamed('headers'),
           params: captureAnyNamed('params'),
           responseType: anyNamed('responseType'),
         ),
       ).captured.single;
-      expect(params.keys, isEmpty);
+      expect(params, {
+        "queries": isA<List>(),
+        "transactionId": "<TRANSACTION_ID>",
+        "total": false,
+        "ttl": 1,
+      });
       expect(response, isA<models.DocumentList>());
     });
 
@@ -404,17 +447,22 @@ void main() {
         databaseId: "<DATABASE_ID>",
         collectionId: "<COLLECTION_ID>",
         documentId: "<DOCUMENT_ID>",
+        queries: [],
+        transactionId: "<TRANSACTION_ID>",
       );
       final Map<String, dynamic> params = verify(
         client.call(
           HttpMethod.get,
-          path: "/vectorsdb/<DATABASE_ID>/collections/<COLLECTION_ID>/documents/<DOCUMENT_ID>",
+          path: "/vectorsdb/%3CDATABASE_ID%3E/collections/%3CCOLLECTION_ID%3E/documents/%3CDOCUMENT_ID%3E",
           headers: anyNamed('headers'),
           params: captureAnyNamed('params'),
           responseType: anyNamed('responseType'),
         ),
       ).captured.single;
-      expect(params.keys, isEmpty);
+      expect(params, {
+        "queries": isA<List>(),
+        "transactionId": "<TRANSACTION_ID>",
+      });
       expect(response, isA<models.Document>());
     });
 
@@ -443,17 +491,24 @@ void main() {
         databaseId: "<DATABASE_ID>",
         collectionId: "<COLLECTION_ID>",
         documentId: "<DOCUMENT_ID>",
+        data: {},
+        permissions: [],
+        transactionId: "<TRANSACTION_ID>",
       );
       final Map<String, dynamic> params = verify(
         client.call(
           HttpMethod.put,
-          path: "/vectorsdb/<DATABASE_ID>/collections/<COLLECTION_ID>/documents/<DOCUMENT_ID>",
+          path: "/vectorsdb/%3CDATABASE_ID%3E/collections/%3CCOLLECTION_ID%3E/documents/%3CDOCUMENT_ID%3E",
           headers: anyNamed('headers'),
           params: captureAnyNamed('params'),
           responseType: anyNamed('responseType'),
         ),
       ).captured.single;
-      expect(params.keys, isEmpty);
+      expect(params, {
+        "data": isA<Map>(),
+        "permissions": isA<List>(),
+        "transactionId": "<TRANSACTION_ID>",
+      });
       expect(response, isA<models.Document>());
     });
 
@@ -482,17 +537,24 @@ void main() {
         databaseId: "<DATABASE_ID>",
         collectionId: "<COLLECTION_ID>",
         documentId: "<DOCUMENT_ID>",
+        data: {},
+        permissions: [],
+        transactionId: "<TRANSACTION_ID>",
       );
       final Map<String, dynamic> params = verify(
         client.call(
           HttpMethod.patch,
-          path: "/vectorsdb/<DATABASE_ID>/collections/<COLLECTION_ID>/documents/<DOCUMENT_ID>",
+          path: "/vectorsdb/%3CDATABASE_ID%3E/collections/%3CCOLLECTION_ID%3E/documents/%3CDOCUMENT_ID%3E",
           headers: anyNamed('headers'),
           params: captureAnyNamed('params'),
           responseType: anyNamed('responseType'),
         ),
       ).captured.single;
-      expect(params.keys, isEmpty);
+      expect(params, {
+        "data": isA<Map>(),
+        "permissions": isA<List>(),
+        "transactionId": "<TRANSACTION_ID>",
+      });
       expect(response, isA<models.Document>());
     });
 
@@ -513,17 +575,20 @@ void main() {
         databaseId: "<DATABASE_ID>",
         collectionId: "<COLLECTION_ID>",
         documentId: "<DOCUMENT_ID>",
+        transactionId: "<TRANSACTION_ID>",
       );
       final Map<String, dynamic> params = verify(
         client.call(
           HttpMethod.delete,
-          path: "/vectorsdb/<DATABASE_ID>/collections/<COLLECTION_ID>/documents/<DOCUMENT_ID>",
+          path: "/vectorsdb/%3CDATABASE_ID%3E/collections/%3CCOLLECTION_ID%3E/documents/%3CDOCUMENT_ID%3E",
           headers: anyNamed('headers'),
           params: captureAnyNamed('params'),
           responseType: anyNamed('responseType'),
         ),
       ).captured.single;
-      expect(params.keys, isEmpty);
+      expect(params, {
+        "transactionId": "<TRANSACTION_ID>",
+      });
     });
   });
 }

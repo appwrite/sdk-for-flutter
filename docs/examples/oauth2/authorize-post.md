@@ -11,7 +11,7 @@ Oauth2 oauth2 = Oauth2(client);
 models.Oauth2Authorize result = await oauth2.authorizePost(
     clientId: '<CLIENT_ID>', // optional
     redirectUri: 'https://example.com', // optional
-    responseType: '', // optional
+    responseType: null, // optional
     scope: '<SCOPE>', // optional
     state: '<STATE>', // optional
     nonce: '<NONCE>', // optional

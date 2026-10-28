@@ -89,7 +89,10 @@ void main() {
         ),
       ).thenAnswer((_) async => Response(data: data));
 
-      final response = await apps.list();
+      final response = await apps.list(
+        queries: [],
+        total: false,
+      );
       final Map<String, dynamic> params = verify(
         client.call(
           HttpMethod.get,
@@ -99,7 +102,10 @@ void main() {
           responseType: anyNamed('responseType'),
         ),
       ).captured.single;
-      expect(params.keys, isEmpty);
+      expect(params, {
+        "queries": isA<List>(),
+        "total": false,
+      });
       expect(response, isA<models.AppsList>());
     });
 
@@ -147,6 +153,22 @@ void main() {
         appId: "<APP_ID>",
         name: "<NAME>",
         redirectUris: [],
+        description: "<DESCRIPTION>",
+        clientUri: "https://example.com",
+        logoUri: "https://example.com",
+        privacyPolicyUrl: "https://example.com",
+        termsUrl: "https://example.com",
+        contacts: [],
+        tagline: "<TAGLINE>",
+        tags: [],
+        images: [],
+        supportUrl: "https://example.com",
+        dataDeletionUrl: "https://example.com",
+        postLogoutRedirectUris: [],
+        enabled: false,
+        type: "public",
+        deviceFlow: false,
+        teamId: "<TEAM_ID>",
       );
       final Map<String, dynamic> params = verify(
         client.call(
@@ -157,7 +179,27 @@ void main() {
           responseType: anyNamed('responseType'),
         ),
       ).captured.single;
-      expect(params.keys, unorderedEquals(["appId", "name", "redirectUris"]));
+      expect(params, {
+        "appId": "<APP_ID>",
+        "name": "<NAME>",
+        "description": "<DESCRIPTION>",
+        "clientUri": "https://example.com",
+        "logoUri": "https://example.com",
+        "privacyPolicyUrl": "https://example.com",
+        "termsUrl": "https://example.com",
+        "contacts": isA<List>(),
+        "tagline": "<TAGLINE>",
+        "tags": isA<List>(),
+        "images": isA<List>(),
+        "supportUrl": "https://example.com",
+        "dataDeletionUrl": "https://example.com",
+        "redirectUris": isA<List>(),
+        "postLogoutRedirectUris": isA<List>(),
+        "enabled": false,
+        "type": "public",
+        "deviceFlow": false,
+        "teamId": "<TEAM_ID>",
+      });
       expect(response, isA<models.App>());
     });
 
@@ -187,7 +229,7 @@ void main() {
           responseType: anyNamed('responseType'),
         ),
       ).captured.single;
-      expect(params.keys, isEmpty);
+      expect(params, isEmpty);
       expect(response, isA<models.AppScopeList>());
     });
 
@@ -217,7 +259,7 @@ void main() {
           responseType: anyNamed('responseType'),
         ),
       ).captured.single;
-      expect(params.keys, isEmpty);
+      expect(params, isEmpty);
       expect(response, isA<models.AppScopeList>());
     });
 
@@ -267,13 +309,13 @@ void main() {
       final Map<String, dynamic> params = verify(
         client.call(
           HttpMethod.get,
-          path: "/apps/<APP_ID>",
+          path: "/apps/%3CAPP_ID%3E",
           headers: anyNamed('headers'),
           params: captureAnyNamed('params'),
           responseType: anyNamed('responseType'),
         ),
       ).captured.single;
-      expect(params.keys, isEmpty);
+      expect(params, isEmpty);
       expect(response, isA<models.App>());
     });
 
@@ -320,17 +362,55 @@ void main() {
       final response = await apps.update(
         appId: "<APP_ID>",
         name: "<NAME>",
+        description: "<DESCRIPTION>",
+        clientUri: "https://example.com",
+        logoUri: "https://example.com",
+        privacyPolicyUrl: "https://example.com",
+        termsUrl: "https://example.com",
+        contacts: [],
+        tagline: "<TAGLINE>",
+        tags: [],
+        images: [],
+        supportUrl: "https://example.com",
+        dataDeletionUrl: "https://example.com",
+        enabled: false,
+        redirectUris: [],
+        postLogoutRedirectUris: [],
+        type: "public",
+        deviceFlow: false,
+        installationScopes: [],
+        installationRedirectUrl: "https://example.com",
       );
       final Map<String, dynamic> params = verify(
         client.call(
           HttpMethod.put,
-          path: "/apps/<APP_ID>",
+          path: "/apps/%3CAPP_ID%3E",
           headers: anyNamed('headers'),
           params: captureAnyNamed('params'),
           responseType: anyNamed('responseType'),
         ),
       ).captured.single;
-      expect(params.keys, unorderedEquals(["name"]));
+      expect(params, {
+        "name": "<NAME>",
+        "description": "<DESCRIPTION>",
+        "clientUri": "https://example.com",
+        "logoUri": "https://example.com",
+        "privacyPolicyUrl": "https://example.com",
+        "termsUrl": "https://example.com",
+        "contacts": isA<List>(),
+        "tagline": "<TAGLINE>",
+        "tags": isA<List>(),
+        "images": isA<List>(),
+        "supportUrl": "https://example.com",
+        "dataDeletionUrl": "https://example.com",
+        "enabled": false,
+        "redirectUris": isA<List>(),
+        "postLogoutRedirectUris": isA<List>(),
+        "type": "public",
+        "deviceFlow": false,
+        "installationScopes": isA<List>(),
+        "installationRedirectUrl": "https://example.com",
+      });
       expect(response, isA<models.App>());
     });
 
@@ -353,13 +433,13 @@ void main() {
       final Map<String, dynamic> params = verify(
         client.call(
           HttpMethod.delete,
-          path: "/apps/<APP_ID>",
+          path: "/apps/%3CAPP_ID%3E",
           headers: anyNamed('headers'),
           params: captureAnyNamed('params'),
           responseType: anyNamed('responseType'),
         ),
       ).captured.single;
-      expect(params.keys, isEmpty);
+      expect(params, isEmpty);
     });
 
     test('test method listInstallations()', () async {
@@ -380,17 +460,22 @@ void main() {
 
       final response = await apps.listInstallations(
         appId: "<APP_ID>",
+        queries: [],
+        total: false,
       );
       final Map<String, dynamic> params = verify(
         client.call(
           HttpMethod.get,
-          path: "/apps/<APP_ID>/installations",
+          path: "/apps/%3CAPP_ID%3E/installations",
           headers: anyNamed('headers'),
           params: captureAnyNamed('params'),
           responseType: anyNamed('responseType'),
         ),
       ).captured.single;
-      expect(params.keys, isEmpty);
+      expect(params, {
+        "queries": isA<List>(),
+        "total": false,
+      });
       expect(response, isA<models.AppInstallationList>());
     });
 
@@ -424,13 +509,13 @@ void main() {
       final Map<String, dynamic> params = verify(
         client.call(
           HttpMethod.get,
-          path: "/apps/<APP_ID>/installations/<INSTALLATION_ID>",
+          path: "/apps/%3CAPP_ID%3E/installations/%3CINSTALLATION_ID%3E",
           headers: anyNamed('headers'),
           params: captureAnyNamed('params'),
           responseType: anyNamed('responseType'),
         ),
       ).captured.single;
-      expect(params.keys, isEmpty);
+      expect(params, isEmpty);
       expect(response, isA<models.AppInstallation>());
     });
 
@@ -454,13 +539,13 @@ void main() {
       final Map<String, dynamic> params = verify(
         client.call(
           HttpMethod.delete,
-          path: "/apps/<APP_ID>/installations/<INSTALLATION_ID>",
+          path: "/apps/%3CAPP_ID%3E/installations/%3CINSTALLATION_ID%3E",
           headers: anyNamed('headers'),
           params: captureAnyNamed('params'),
           responseType: anyNamed('responseType'),
         ),
       ).captured.single;
-      expect(params.keys, isEmpty);
+      expect(params, isEmpty);
     });
 
     test('test method createInstallationToken()', () async {
@@ -489,13 +574,13 @@ void main() {
       final Map<String, dynamic> params = verify(
         client.call(
           HttpMethod.post,
-          path: "/apps/<APP_ID>/installations/<INSTALLATION_ID>/tokens",
+          path: "/apps/%3CAPP_ID%3E/installations/%3CINSTALLATION_ID%3E/tokens",
           headers: anyNamed('headers'),
           params: captureAnyNamed('params'),
           responseType: anyNamed('responseType'),
         ),
       ).captured.single;
-      expect(params.keys, isEmpty);
+      expect(params, isEmpty);
       expect(response, isA<models.Oauth2Token>());
     });
 
@@ -517,17 +602,22 @@ void main() {
 
       final response = await apps.listKeys(
         appId: "<APP_ID>",
+        queries: [],
+        total: false,
       );
       final Map<String, dynamic> params = verify(
         client.call(
           HttpMethod.get,
-          path: "/apps/<APP_ID>/keys",
+          path: "/apps/%3CAPP_ID%3E/keys",
           headers: anyNamed('headers'),
           params: captureAnyNamed('params'),
           responseType: anyNamed('responseType'),
         ),
       ).captured.single;
-      expect(params.keys, isEmpty);
+      expect(params, {
+        "queries": isA<List>(),
+        "total": false,
+      });
       expect(response, isA<models.AppKeyList>());
     });
 
@@ -560,13 +650,13 @@ void main() {
       final Map<String, dynamic> params = verify(
         client.call(
           HttpMethod.post,
-          path: "/apps/<APP_ID>/keys",
+          path: "/apps/%3CAPP_ID%3E/keys",
           headers: anyNamed('headers'),
           params: captureAnyNamed('params'),
           responseType: anyNamed('responseType'),
         ),
       ).captured.single;
-      expect(params.keys, isEmpty);
+      expect(params, isEmpty);
       expect(response, isA<models.AppKey>());
     });
 
@@ -600,13 +690,13 @@ void main() {
       final Map<String, dynamic> params = verify(
         client.call(
           HttpMethod.get,
-          path: "/apps/<APP_ID>/keys/<KEY_ID>",
+          path: "/apps/%3CAPP_ID%3E/keys/%3CKEY_ID%3E",
           headers: anyNamed('headers'),
           params: captureAnyNamed('params'),
           responseType: anyNamed('responseType'),
         ),
       ).captured.single;
-      expect(params.keys, isEmpty);
+      expect(params, isEmpty);
       expect(response, isA<models.AppKey>());
     });
 
@@ -630,13 +720,13 @@ void main() {
       final Map<String, dynamic> params = verify(
         client.call(
           HttpMethod.delete,
-          path: "/apps/<APP_ID>/keys/<KEY_ID>",
+          path: "/apps/%3CAPP_ID%3E/keys/%3CKEY_ID%3E",
           headers: anyNamed('headers'),
           params: captureAnyNamed('params'),
           responseType: anyNamed('responseType'),
         ),
       ).captured.single;
-      expect(params.keys, isEmpty);
+      expect(params, isEmpty);
     });
 
     test('test method listSecrets()', () async {
@@ -657,17 +747,22 @@ void main() {
 
       final response = await apps.listSecrets(
         appId: "<APP_ID>",
+        queries: [],
+        total: false,
       );
       final Map<String, dynamic> params = verify(
         client.call(
           HttpMethod.get,
-          path: "/apps/<APP_ID>/secrets",
+          path: "/apps/%3CAPP_ID%3E/secrets",
           headers: anyNamed('headers'),
           params: captureAnyNamed('params'),
           responseType: anyNamed('responseType'),
         ),
       ).captured.single;
-      expect(params.keys, isEmpty);
+      expect(params, {
+        "queries": isA<List>(),
+        "total": false,
+      });
       expect(response, isA<models.AppSecretList>());
     });
 
@@ -700,13 +795,13 @@ void main() {
       final Map<String, dynamic> params = verify(
         client.call(
           HttpMethod.post,
-          path: "/apps/<APP_ID>/secrets",
+          path: "/apps/%3CAPP_ID%3E/secrets",
           headers: anyNamed('headers'),
           params: captureAnyNamed('params'),
           responseType: anyNamed('responseType'),
         ),
       ).captured.single;
-      expect(params.keys, isEmpty);
+      expect(params, isEmpty);
       expect(response, isA<models.AppSecretPlaintext>());
     });
 
@@ -739,13 +834,13 @@ void main() {
       final Map<String, dynamic> params = verify(
         client.call(
           HttpMethod.get,
-          path: "/apps/<APP_ID>/secrets/<SECRET_ID>",
+          path: "/apps/%3CAPP_ID%3E/secrets/%3CSECRET_ID%3E",
           headers: anyNamed('headers'),
           params: captureAnyNamed('params'),
           responseType: anyNamed('responseType'),
         ),
       ).captured.single;
-      expect(params.keys, isEmpty);
+      expect(params, isEmpty);
       expect(response, isA<models.AppSecret>());
     });
 
@@ -769,13 +864,13 @@ void main() {
       final Map<String, dynamic> params = verify(
         client.call(
           HttpMethod.delete,
-          path: "/apps/<APP_ID>/secrets/<SECRET_ID>",
+          path: "/apps/%3CAPP_ID%3E/secrets/%3CSECRET_ID%3E",
           headers: anyNamed('headers'),
           params: captureAnyNamed('params'),
           responseType: anyNamed('responseType'),
         ),
       ).captured.single;
-      expect(params.keys, isEmpty);
+      expect(params, isEmpty);
     });
 
     test('test method updateTeam()', () async {
@@ -825,13 +920,15 @@ void main() {
       final Map<String, dynamic> params = verify(
         client.call(
           HttpMethod.patch,
-          path: "/apps/<APP_ID>/team",
+          path: "/apps/%3CAPP_ID%3E/team",
           headers: anyNamed('headers'),
           params: captureAnyNamed('params'),
           responseType: anyNamed('responseType'),
         ),
       ).captured.single;
-      expect(params.keys, unorderedEquals(["teamId"]));
+      expect(params, {
+        "teamId": "<TEAM_ID>",
+      });
       expect(response, isA<models.App>());
     });
 
@@ -854,13 +951,13 @@ void main() {
       final Map<String, dynamic> params = verify(
         client.call(
           HttpMethod.delete,
-          path: "/apps/<APP_ID>/tokens",
+          path: "/apps/%3CAPP_ID%3E/tokens",
           headers: anyNamed('headers'),
           params: captureAnyNamed('params'),
           responseType: anyNamed('responseType'),
         ),
       ).captured.single;
-      expect(params.keys, isEmpty);
+      expect(params, isEmpty);
     });
   });
 }

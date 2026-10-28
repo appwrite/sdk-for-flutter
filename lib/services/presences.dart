@@ -48,7 +48,7 @@ class Presences extends Service {
 
     final String apiPath = '/presences/{presenceId}'.replaceAll(
       '{presenceId}',
-      presenceId,
+      _encodePath(presenceId),
     );
 
     final Map<String, dynamic> apiParams = {};
@@ -84,7 +84,7 @@ class Presences extends Service {
 
     final String apiPath = '/presences/{presenceId}'.replaceAll(
       '{presenceId}',
-      presenceId,
+      _encodePath(presenceId),
     );
 
     final Map<String, dynamic> apiParams = {
@@ -128,7 +128,7 @@ class Presences extends Service {
 
     final String apiPath = '/presences/{presenceId}'.replaceAll(
       '{presenceId}',
-      presenceId,
+      _encodePath(presenceId),
     );
 
     final Map<String, dynamic> apiParams = {
@@ -167,7 +167,7 @@ class Presences extends Service {
 
     final String apiPath = '/presences/{presenceId}'.replaceAll(
       '{presenceId}',
-      presenceId,
+      _encodePath(presenceId),
     );
 
     final Map<String, dynamic> apiParams = {};

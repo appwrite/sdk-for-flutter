@@ -11,7 +11,7 @@ Storage storage = Storage(client);
 models.File result = await storage.updateFile(
     bucketId: '<BUCKET_ID>',
     fileId: '<FILE_ID>',
-    name: '<NAME>', // optional
+    name: null, // optional
     permissions: [Permission.read(Role.any())], // optional
 );
 ```

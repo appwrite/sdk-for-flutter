@@ -89,7 +89,10 @@ void main() {
         ),
       ).thenAnswer((_) async => Response(data: data));
 
-      final response = await tablesDB.listTransactions();
+      final response = await tablesDB.listTransactions(
+        queries: [],
+        total: false,
+      );
       final Map<String, dynamic> params = verify(
         client.call(
           HttpMethod.get,
@@ -99,7 +102,10 @@ void main() {
           responseType: anyNamed('responseType'),
         ),
       ).captured.single;
-      expect(params.keys, isEmpty);
+      expect(params, {
+        "queries": isA<List>(),
+        "total": false,
+      });
       expect(response, isA<models.TransactionList>());
     });
 
@@ -123,7 +129,9 @@ void main() {
         ),
       ).thenAnswer((_) async => Response(data: data));
 
-      final response = await tablesDB.createTransaction();
+      final response = await tablesDB.createTransaction(
+        ttl: 1,
+      );
       final Map<String, dynamic> params = verify(
         client.call(
           HttpMethod.post,
@@ -133,7 +141,9 @@ void main() {
           responseType: anyNamed('responseType'),
         ),
       ).captured.single;
-      expect(params.keys, isEmpty);
+      expect(params, {
+        "ttl": 1,
+      });
       expect(response, isA<models.Transaction>());
     });
 
@@ -163,13 +173,13 @@ void main() {
       final Map<String, dynamic> params = verify(
         client.call(
           HttpMethod.get,
-          path: "/tablesdb/transactions/<TRANSACTION_ID>",
+          path: "/tablesdb/transactions/%3CTRANSACTION_ID%3E",
           headers: anyNamed('headers'),
           params: captureAnyNamed('params'),
           responseType: anyNamed('responseType'),
         ),
       ).captured.single;
-      expect(params.keys, isEmpty);
+      expect(params, isEmpty);
       expect(response, isA<models.Transaction>());
     });
 
@@ -195,17 +205,22 @@ void main() {
 
       final response = await tablesDB.updateTransaction(
         transactionId: "<TRANSACTION_ID>",
+        commit: false,
+        rollback: false,
       );
       final Map<String, dynamic> params = verify(
         client.call(
           HttpMethod.patch,
-          path: "/tablesdb/transactions/<TRANSACTION_ID>",
+          path: "/tablesdb/transactions/%3CTRANSACTION_ID%3E",
           headers: anyNamed('headers'),
           params: captureAnyNamed('params'),
           responseType: anyNamed('responseType'),
         ),
       ).captured.single;
-      expect(params.keys, isEmpty);
+      expect(params, {
+        "commit": false,
+        "rollback": false,
+      });
       expect(response, isA<models.Transaction>());
     });
 
@@ -228,13 +243,13 @@ void main() {
       final Map<String, dynamic> params = verify(
         client.call(
           HttpMethod.delete,
-          path: "/tablesdb/transactions/<TRANSACTION_ID>",
+          path: "/tablesdb/transactions/%3CTRANSACTION_ID%3E",
           headers: anyNamed('headers'),
           params: captureAnyNamed('params'),
           responseType: anyNamed('responseType'),
         ),
       ).captured.single;
-      expect(params.keys, isEmpty);
+      expect(params, isEmpty);
     });
 
     test('test method createOperations()', () async {
@@ -259,17 +274,20 @@ void main() {
 
       final response = await tablesDB.createOperations(
         transactionId: "<TRANSACTION_ID>",
+        operations: [],
       );
       final Map<String, dynamic> params = verify(
         client.call(
           HttpMethod.post,
-          path: "/tablesdb/transactions/<TRANSACTION_ID>/operations",
+          path: "/tablesdb/transactions/%3CTRANSACTION_ID%3E/operations",
           headers: anyNamed('headers'),
           params: captureAnyNamed('params'),
           responseType: anyNamed('responseType'),
         ),
       ).captured.single;
-      expect(params.keys, isEmpty);
+      expect(params, {
+        "operations": isA<List>(),
+      });
       expect(response, isA<models.Transaction>());
     });
 
@@ -292,17 +310,26 @@ void main() {
       final response = await tablesDB.listRows(
         databaseId: "<DATABASE_ID>",
         tableId: "<TABLE_ID>",
+        queries: [],
+        transactionId: "<TRANSACTION_ID>",
+        total: false,
+        ttl: 1,
       );
       final Map<String, dynamic> params = verify(
         client.call(
           HttpMethod.get,
-          path: "/tablesdb/<DATABASE_ID>/tables/<TABLE_ID>/rows",
+          path: "/tablesdb/%3CDATABASE_ID%3E/tables/%3CTABLE_ID%3E/rows",
           headers: anyNamed('headers'),
           params: captureAnyNamed('params'),
           responseType: anyNamed('responseType'),
         ),
       ).captured.single;
-      expect(params.keys, isEmpty);
+      expect(params, {
+        "queries": isA<List>(),
+        "transactionId": "<TRANSACTION_ID>",
+        "total": false,
+        "ttl": 1,
+      });
       expect(response, isA<models.RowList>());
     });
 
@@ -332,17 +359,24 @@ void main() {
         tableId: "<TABLE_ID>",
         rowId: "<ROW_ID>",
         data: {},
+        permissions: [],
+        transactionId: "<TRANSACTION_ID>",
       );
       final Map<String, dynamic> params = verify(
         client.call(
           HttpMethod.post,
-          path: "/tablesdb/<DATABASE_ID>/tables/<TABLE_ID>/rows",
+          path: "/tablesdb/%3CDATABASE_ID%3E/tables/%3CTABLE_ID%3E/rows",
           headers: anyNamed('headers'),
           params: captureAnyNamed('params'),
           responseType: anyNamed('responseType'),
         ),
       ).captured.single;
-      expect(params.keys, unorderedEquals(["rowId", "data"]));
+      expect(params, {
+        "rowId": "<ROW_ID>",
+        "data": isA<Map>(),
+        "permissions": isA<List>(),
+        "transactionId": "<TRANSACTION_ID>",
+      });
       expect(response, isA<models.Row>());
     });
 
@@ -365,17 +399,26 @@ void main() {
       final response = await tablesDB.createQuery(
         databaseId: "<DATABASE_ID>",
         tableId: "<TABLE_ID>",
+        queries: [],
+        transactionId: "<TRANSACTION_ID>",
+        total: false,
+        ttl: 1,
       );
       final Map<String, dynamic> params = verify(
         client.call(
           HttpMethod.post,
-          path: "/tablesdb/<DATABASE_ID>/tables/<TABLE_ID>/rows/query",
+          path: "/tablesdb/%3CDATABASE_ID%3E/tables/%3CTABLE_ID%3E/rows/query",
           headers: anyNamed('headers'),
           params: captureAnyNamed('params'),
           responseType: anyNamed('responseType'),
         ),
       ).captured.single;
-      expect(params.keys, isEmpty);
+      expect(params, {
+        "queries": isA<List>(),
+        "transactionId": "<TRANSACTION_ID>",
+        "total": false,
+        "ttl": 1,
+      });
       expect(response, isA<models.RowList>());
     });
 
@@ -404,17 +447,22 @@ void main() {
         databaseId: "<DATABASE_ID>",
         tableId: "<TABLE_ID>",
         rowId: "<ROW_ID>",
+        queries: [],
+        transactionId: "<TRANSACTION_ID>",
       );
       final Map<String, dynamic> params = verify(
         client.call(
           HttpMethod.get,
-          path: "/tablesdb/<DATABASE_ID>/tables/<TABLE_ID>/rows/<ROW_ID>",
+          path: "/tablesdb/%3CDATABASE_ID%3E/tables/%3CTABLE_ID%3E/rows/%3CROW_ID%3E",
           headers: anyNamed('headers'),
           params: captureAnyNamed('params'),
           responseType: anyNamed('responseType'),
         ),
       ).captured.single;
-      expect(params.keys, isEmpty);
+      expect(params, {
+        "queries": isA<List>(),
+        "transactionId": "<TRANSACTION_ID>",
+      });
       expect(response, isA<models.Row>());
     });
 
@@ -443,17 +491,24 @@ void main() {
         databaseId: "<DATABASE_ID>",
         tableId: "<TABLE_ID>",
         rowId: "<ROW_ID>",
+        data: {},
+        permissions: [],
+        transactionId: "<TRANSACTION_ID>",
       );
       final Map<String, dynamic> params = verify(
         client.call(
           HttpMethod.put,
-          path: "/tablesdb/<DATABASE_ID>/tables/<TABLE_ID>/rows/<ROW_ID>",
+          path: "/tablesdb/%3CDATABASE_ID%3E/tables/%3CTABLE_ID%3E/rows/%3CROW_ID%3E",
           headers: anyNamed('headers'),
           params: captureAnyNamed('params'),
           responseType: anyNamed('responseType'),
         ),
       ).captured.single;
-      expect(params.keys, isEmpty);
+      expect(params, {
+        "data": isA<Map>(),
+        "permissions": isA<List>(),
+        "transactionId": "<TRANSACTION_ID>",
+      });
       expect(response, isA<models.Row>());
     });
 
@@ -482,17 +537,24 @@ void main() {
         databaseId: "<DATABASE_ID>",
         tableId: "<TABLE_ID>",
         rowId: "<ROW_ID>",
+        data: {},
+        permissions: [],
+        transactionId: "<TRANSACTION_ID>",
       );
       final Map<String, dynamic> params = verify(
         client.call(
           HttpMethod.patch,
-          path: "/tablesdb/<DATABASE_ID>/tables/<TABLE_ID>/rows/<ROW_ID>",
+          path: "/tablesdb/%3CDATABASE_ID%3E/tables/%3CTABLE_ID%3E/rows/%3CROW_ID%3E",
           headers: anyNamed('headers'),
           params: captureAnyNamed('params'),
           responseType: anyNamed('responseType'),
         ),
       ).captured.single;
-      expect(params.keys, isEmpty);
+      expect(params, {
+        "data": isA<Map>(),
+        "permissions": isA<List>(),
+        "transactionId": "<TRANSACTION_ID>",
+      });
       expect(response, isA<models.Row>());
     });
 
@@ -513,17 +575,20 @@ void main() {
         databaseId: "<DATABASE_ID>",
         tableId: "<TABLE_ID>",
         rowId: "<ROW_ID>",
+        transactionId: "<TRANSACTION_ID>",
       );
       final Map<String, dynamic> params = verify(
         client.call(
           HttpMethod.delete,
-          path: "/tablesdb/<DATABASE_ID>/tables/<TABLE_ID>/rows/<ROW_ID>",
+          path: "/tablesdb/%3CDATABASE_ID%3E/tables/%3CTABLE_ID%3E/rows/%3CROW_ID%3E",
           headers: anyNamed('headers'),
           params: captureAnyNamed('params'),
           responseType: anyNamed('responseType'),
         ),
       ).captured.single;
-      expect(params.keys, isEmpty);
+      expect(params, {
+        "transactionId": "<TRANSACTION_ID>",
+      });
     });
 
     test('test method decrementRowColumn()', () async {
@@ -552,17 +617,24 @@ void main() {
         tableId: "<TABLE_ID>",
         rowId: "<ROW_ID>",
         column: "<COLUMN>",
+        value: 1.0,
+        min: 1.0,
+        transactionId: "<TRANSACTION_ID>",
       );
       final Map<String, dynamic> params = verify(
         client.call(
           HttpMethod.patch,
-          path: "/tablesdb/<DATABASE_ID>/tables/<TABLE_ID>/rows/<ROW_ID>/<COLUMN>/decrement",
+          path: "/tablesdb/%3CDATABASE_ID%3E/tables/%3CTABLE_ID%3E/rows/%3CROW_ID%3E/%3CCOLUMN%3E/decrement",
           headers: anyNamed('headers'),
           params: captureAnyNamed('params'),
           responseType: anyNamed('responseType'),
         ),
       ).captured.single;
-      expect(params.keys, isEmpty);
+      expect(params, {
+        "value": 1.0,
+        "min": 1.0,
+        "transactionId": "<TRANSACTION_ID>",
+      });
       expect(response, isA<models.Row>());
     });
 
@@ -592,17 +664,24 @@ void main() {
         tableId: "<TABLE_ID>",
         rowId: "<ROW_ID>",
         column: "<COLUMN>",
+        value: 1.0,
+        max: 1.0,
+        transactionId: "<TRANSACTION_ID>",
       );
       final Map<String, dynamic> params = verify(
         client.call(
           HttpMethod.patch,
-          path: "/tablesdb/<DATABASE_ID>/tables/<TABLE_ID>/rows/<ROW_ID>/<COLUMN>/increment",
+          path: "/tablesdb/%3CDATABASE_ID%3E/tables/%3CTABLE_ID%3E/rows/%3CROW_ID%3E/%3CCOLUMN%3E/increment",
           headers: anyNamed('headers'),
           params: captureAnyNamed('params'),
           responseType: anyNamed('responseType'),
         ),
       ).captured.single;
-      expect(params.keys, isEmpty);
+      expect(params, {
+        "value": 1.0,
+        "max": 1.0,
+        "transactionId": "<TRANSACTION_ID>",
+      });
       expect(response, isA<models.Row>());
     });
   });

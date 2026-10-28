@@ -98,7 +98,9 @@ void main() {
           responseType: anyNamed('responseType'),
         ),
       ).captured.single;
-      expect(params.keys, unorderedEquals(["query"]));
+      expect(params, {
+        "query": isA<Map>(),
+      });
     });
 
     test('test method mutation()', () async {
@@ -126,7 +128,9 @@ void main() {
           responseType: anyNamed('responseType'),
         ),
       ).captured.single;
-      expect(params.keys, unorderedEquals(["query"]));
+      expect(params, {
+        "query": isA<Map>(),
+      });
     });
   });
 }

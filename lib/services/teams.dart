@@ -80,7 +80,7 @@ class Teams extends Service {
 
     final String apiPath = '/teams/{teamId}'.replaceAll(
       '{teamId}',
-      teamId,
+      _encodePath(teamId),
     );
 
     final Map<String, dynamic> apiParams = {};
@@ -113,7 +113,7 @@ class Teams extends Service {
 
     final String apiPath = '/teams/{teamId}'.replaceAll(
       '{teamId}',
-      teamId,
+      _encodePath(teamId),
     );
 
     final Map<String, dynamic> apiParams = {
@@ -149,7 +149,7 @@ class Teams extends Service {
 
     final String apiPath = '/teams/{teamId}'.replaceAll(
       '{teamId}',
-      teamId,
+      _encodePath(teamId),
     );
 
     final Map<String, dynamic> apiParams = {};
@@ -184,7 +184,7 @@ class Teams extends Service {
 
     final String apiPath = '/teams/{teamId}/installations'.replaceAll(
       '{teamId}',
-      teamId,
+      _encodePath(teamId),
     );
 
     final Map<String, dynamic> apiParams = {
@@ -224,7 +224,7 @@ class Teams extends Service {
 
     final String apiPath = '/teams/{teamId}/installations'.replaceAll(
       '{teamId}',
-      teamId,
+      _encodePath(teamId),
     );
 
     final Map<String, dynamic> apiParams = {
@@ -270,11 +270,11 @@ class Teams extends Service {
     final String apiPath = '/teams/{teamId}/installations/{installationId}'
         .replaceAll(
           '{teamId}',
-          teamId,
+          _encodePath(teamId),
         )
         .replaceAll(
           '{installationId}',
-          installationId,
+          _encodePath(installationId),
         );
 
     final Map<String, dynamic> apiParams = {};
@@ -318,11 +318,11 @@ class Teams extends Service {
     final String apiPath = '/teams/{teamId}/installations/{installationId}'
         .replaceAll(
           '{teamId}',
-          teamId,
+          _encodePath(teamId),
         )
         .replaceAll(
           '{installationId}',
-          installationId,
+          _encodePath(installationId),
         );
 
     final Map<String, dynamic> apiParams = {
@@ -368,11 +368,11 @@ class Teams extends Service {
     final String apiPath = '/teams/{teamId}/installations/{installationId}'
         .replaceAll(
           '{teamId}',
-          teamId,
+          _encodePath(teamId),
         )
         .replaceAll(
           '{installationId}',
-          installationId,
+          _encodePath(installationId),
         );
 
     final Map<String, dynamic> apiParams = {};
@@ -410,7 +410,7 @@ class Teams extends Service {
 
     final String apiPath = '/teams/{teamId}/memberships'.replaceAll(
       '{teamId}',
-      teamId,
+      _encodePath(teamId),
     );
 
     final Map<String, dynamic> apiParams = {
@@ -472,7 +472,7 @@ class Teams extends Service {
 
     final String apiPath = '/teams/{teamId}/memberships'.replaceAll(
       '{teamId}',
-      teamId,
+      _encodePath(teamId),
     );
 
     final Map<String, dynamic> apiParams = {
@@ -523,11 +523,11 @@ class Teams extends Service {
     final String apiPath = '/teams/{teamId}/memberships/{membershipId}'
         .replaceAll(
           '{teamId}',
-          teamId,
+          _encodePath(teamId),
         )
         .replaceAll(
           '{membershipId}',
-          membershipId,
+          _encodePath(membershipId),
         );
 
     final Map<String, dynamic> apiParams = {};
@@ -570,11 +570,11 @@ class Teams extends Service {
     final String apiPath = '/teams/{teamId}/memberships/{membershipId}'
         .replaceAll(
           '{teamId}',
-          teamId,
+          _encodePath(teamId),
         )
         .replaceAll(
           '{membershipId}',
-          membershipId,
+          _encodePath(membershipId),
         );
 
     final Map<String, dynamic> apiParams = {
@@ -619,11 +619,11 @@ class Teams extends Service {
     final String apiPath = '/teams/{teamId}/memberships/{membershipId}'
         .replaceAll(
           '{teamId}',
-          teamId,
+          _encodePath(teamId),
         )
         .replaceAll(
           '{membershipId}',
-          membershipId,
+          _encodePath(membershipId),
         );
 
     final Map<String, dynamic> apiParams = {};
@@ -671,11 +671,11 @@ class Teams extends Service {
     final String apiPath = '/teams/{teamId}/memberships/{membershipId}/status'
         .replaceAll(
           '{teamId}',
-          teamId,
+          _encodePath(teamId),
         )
         .replaceAll(
           '{membershipId}',
-          membershipId,
+          _encodePath(membershipId),
         );
 
     final Map<String, dynamic> apiParams = {
@@ -713,7 +713,7 @@ class Teams extends Service {
 
     final String apiPath = '/teams/{teamId}/prefs'.replaceAll(
       '{teamId}',
-      teamId,
+      _encodePath(teamId),
     );
 
     final Map<String, dynamic> apiParams = {};
@@ -748,7 +748,7 @@ class Teams extends Service {
 
     final String apiPath = '/teams/{teamId}/prefs'.replaceAll(
       '{teamId}',
-      teamId,
+      _encodePath(teamId),
     );
 
     final Map<String, dynamic> apiParams = {
