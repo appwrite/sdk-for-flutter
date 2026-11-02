@@ -1,5 +1,10 @@
 # Change Log
 
+## 28.2.1
+
+* Fixed: web `Push` uses `package:web` instead of the deprecated `dart:html`
+* Updated: minimum `http` version raised to `1.1.1`
+
 ## 28.2.0
 
 * Updated: requests send `X-Appwrite-Response-Format: 2.6.2`; the SDK targets Appwrite 2.6.x
