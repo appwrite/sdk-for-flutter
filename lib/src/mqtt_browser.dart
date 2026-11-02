@@ -1,13 +1,14 @@
 import 'dart:async';
 import 'dart:convert';
 import 'dart:developer' as developer;
-// ignore: avoid_web_libraries_in_flutter, deprecated_member_use
-import 'dart:html' as html;
+import 'dart:js_interop';
+import 'dart:js_interop_unsafe';
 import 'dart:math';
 import 'dart:typed_data';
 import 'package:mqtt5_client/mqtt5_client.dart';
 import 'package:mqtt5_client/mqtt5_browser_client.dart';
 import 'package:typed_data/typed_data.dart' as typed;
+import 'package:web/web.dart' as web;
 import 'client.dart';
 import 'exception.dart';
 import 'mqtt.dart';
@@ -437,9 +438,9 @@ class PushWeb implements Push {
   }
 
   void _requestNotificationPermission() {
-    if (html.Notification.permission != 'granted') {
+    if (web.Notification.permission != 'granted') {
       unawaited(
-        html.Notification.requestPermission().then<void>(
+        web.Notification.requestPermission().toDart.then<void>(
           (_) {},
           onError: _report,
         ),
@@ -682,19 +683,19 @@ class PushWeb implements Push {
           final title = content.titleOr(subscription.title ?? topic);
           if (subscription.background &&
               content.visible &&
-              (html.document.visibilityState != 'visible' ||
+              (web.document.visibilityState != 'visible' ||
                   subscription.notifyInForeground) &&
-              html.Notification.supported &&
-              html.Notification.permission == 'granted' &&
+              globalContext.has('Notification') &&
+              web.Notification.permission == 'granted' &&
               shownTitles.add(title)) {
-            html.Notification(
+            web.Notification(
               title,
-              body: content.bodyFor(message),
-            ).onClick.listen((_) {
+              web.NotificationOptions(body: content.bodyFor(message) ?? ''),
+            ).onclick = ((web.Event _) {
               _opened.add(
                 PushNotificationOpened.fromPayload(topic, message.data),
               );
-            });
+            }).toJS;
           }
         }
       }
@@ -928,7 +929,7 @@ String? _clientSession(Client client) {
   }
   try {
     final fallback =
-        jsonDecode(html.window.localStorage['cookieFallback'] ?? '{}')
+        jsonDecode(web.window.localStorage.getItem('cookieFallback') ?? '{}')
             as Map<String, dynamic>;
     final value = fallback['a_session_${client.config['project'] ?? ''}'];
     return value is String && value.isNotEmpty ? value : null;

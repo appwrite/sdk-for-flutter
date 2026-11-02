@@ -24,7 +24,7 @@ Or add it to your app's `pubspec.yaml` file and run `flutter pub get`:
 
 ```yaml
 dependencies:
-  appwrite: ^28.2.0
+  appwrite: ^28.2.1
 ```
 
 ### Android requirements
