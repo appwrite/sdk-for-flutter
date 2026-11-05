@@ -97,10 +97,10 @@ void main() {
         scrollDepth: 1,
         engagementTime: 1,
         props: [],
-        interactive: false,
         userId: "<USER_ID>",
         ip: "<IP>",
         userAgent: "<USER_AGENT>",
+        interactive: false,
       );
       final Map<String, dynamic> params = verify(
         client.call(
@@ -121,10 +121,10 @@ void main() {
         "scrollDepth": 1,
         "engagementTime": 1,
         "props": isA<List>(),
-        "interactive": false,
         "userId": "<USER_ID>",
         "ip": "<IP>",
         "userAgent": "<USER_AGENT>",
+        "interactive": false,
       });
     });
   });

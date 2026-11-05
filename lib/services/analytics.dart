@@ -16,10 +16,10 @@ class Analytics extends Service {
     int? scrollDepth,
     int? engagementTime,
     List<String>? props,
-    bool? interactive,
     String? userId,
     String? ip,
     String? userAgent,
+    bool? interactive,
   }) async {
     if (propertyId.isEmpty) {
       throw AppwriteException(
@@ -43,10 +43,10 @@ class Analytics extends Service {
       if (scrollDepth != null) 'scrollDepth': scrollDepth,
       if (engagementTime != null) 'engagementTime': engagementTime,
       if (props != null) 'props': props,
-      if (interactive != null) 'interactive': interactive,
       if (userId != null) 'userId': userId,
       if (ip != null) 'ip': ip,
       if (userAgent != null) 'userAgent': userAgent,
+      if (interactive != null) 'interactive': interactive,
     };
 
     final Map<String, String> apiHeaders = {
