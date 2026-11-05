@@ -219,6 +219,10 @@ mixin RealtimeMixin {
 
     var queryParams =
         "project=${Uri.encodeComponent(client.config['project']!)}";
+    final environment = client.config['environment'];
+    if (environment != null && environment.isNotEmpty) {
+      queryParams += "&environment=${Uri.encodeComponent(environment)}";
+    }
 
     final portPart = (uri.hasPort && uri.port != 80 && uri.port != 443)
         ? ':${uri.port}'

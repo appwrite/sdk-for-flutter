@@ -83,6 +83,11 @@ abstract class Client {
   /// Set Locale.
   Client setLocale(String value);
 
+  /// Set Environment.
+  ///
+  /// The ID of the project environment to act in, alongside the project ID. Used with Appwrite Cloud projects that have environments..
+  Client setEnvironment(String value);
+
   /// Set Session.
   ///
   /// The user session to authenticate with.
