@@ -18,6 +18,10 @@ abstract class ClientBase implements Client {
   @override
   ClientBase setLocale(value);
 
+  /// The ID of the project environment to act in, alongside the project ID. Used with Appwrite Cloud projects that have environments.
+  @override
+  ClientBase setEnvironment(value);
+
   /// The user session to authenticate with
   @override
   ClientBase setSession(value);

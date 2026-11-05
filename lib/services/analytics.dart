@@ -19,6 +19,7 @@ class Analytics extends Service {
     String? userId,
     String? ip,
     String? userAgent,
+    bool? interactive,
   }) async {
     if (propertyId.isEmpty) {
       throw AppwriteException(
@@ -45,6 +46,7 @@ class Analytics extends Service {
       if (userId != null) 'userId': userId,
       if (ip != null) 'ip': ip,
       if (userAgent != null) 'userAgent': userAgent,
+      if (interactive != null) 'interactive': interactive,
     };
 
     final Map<String, String> apiHeaders = {

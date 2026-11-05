@@ -116,6 +116,7 @@ class Tracking with WidgetsBindingObserver {
     String? url,
     Map<String, dynamic>? props,
     int? engagementTime,
+    bool? interactive,
   }) {
     try {
       unawaited(
@@ -129,6 +130,7 @@ class Tracking with WidgetsBindingObserver {
                       : Uri.parse(this.url).resolve(url).toString(),
               screenWidth: _viewportWidth(),
               engagementTime: engagementTime,
+              interactive: interactive,
               // The endpoint takes props as a flat alternating key/value list.
               props:
                   props?.entries
@@ -192,6 +194,7 @@ class Tracking with WidgetsBindingObserver {
         event(
           'app_backgrounded',
           engagementTime: seconds > 0 ? seconds : null,
+          interactive: false,
         );
         break;
       case AppLifecycleState.resumed:
@@ -203,7 +206,7 @@ class Tracking with WidgetsBindingObserver {
           break;
         }
         _foregroundSince = DateTime.now();
-        event('app_foregrounded');
+        event('app_foregrounded', interactive: false);
         break;
       case AppLifecycleState.inactive:
       case AppLifecycleState.detached:

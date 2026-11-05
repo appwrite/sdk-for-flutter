@@ -100,6 +100,7 @@ void main() {
         userId: "<USER_ID>",
         ip: "<IP>",
         userAgent: "<USER_AGENT>",
+        interactive: false,
       );
       final Map<String, dynamic> params = verify(
         client.call(
@@ -123,6 +124,7 @@ void main() {
         "userId": "<USER_ID>",
         "ip": "<IP>",
         "userAgent": "<USER_AGENT>",
+        "interactive": false,
       });
     });
   });

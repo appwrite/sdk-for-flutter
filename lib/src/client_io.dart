@@ -59,8 +59,8 @@ class ClientIO extends ClientBase with ClientMixin {
       'x-sdk-name': 'Flutter',
       'x-sdk-platform': 'client',
       'x-sdk-language': 'flutter',
-      'x-sdk-version': '28.2.1',
-      'X-Appwrite-Response-Format': '2.6.2',
+      'x-sdk-version': '28.3.0-rc.1',
+      'X-Appwrite-Response-Format': '2.7.0',
     };
 
     config = {};
@@ -110,6 +110,14 @@ class ClientIO extends ClientBase with ClientMixin {
   ClientIO setLocale(value) {
     config['locale'] = value;
     addHeader('X-Appwrite-Locale', value);
+    return this;
+  }
+
+  /// The ID of the project environment to act in, alongside the project ID. Used with Appwrite Cloud projects that have environments.
+  @override
+  ClientIO setEnvironment(value) {
+    config['environment'] = value;
+    addHeader('X-Appwrite-Environment', value);
     return this;
   }
 
