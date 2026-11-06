@@ -1,5 +1,14 @@
 # Change Log
 
+## 28.3.0
+
+* Added: optional `interactive` param on `Analytics.createEvent` to mark an event as telemetry that does not end a bounce
+* Updated: the tracker sends `app_backgrounded` and `app_foregrounded` with `interactive: false`
+* Added: `Client.setEnvironment` to act in a project environment; realtime connections carry it
+* Added: `OAuthProvider.vipps`
+* Fixed: Android background push reconnects inside the system's network windows instead of minutes later
+* Updated: requests send `X-Appwrite-Response-Format: 2.7.0`; the SDK targets Appwrite 2.7.x
+
 ## 28.3.0-rc.1
 
 * Added: optional `interactive` param on `Analytics.createEvent` to mark an event as telemetry that does not end a bounce
