@@ -2301,6 +2301,72 @@ void main() {
       expect(response, isA<models.Session>());
     });
 
+    test('test method createLDAPSession()', () async {
+      final Map<String, dynamic> data = {
+        '\$id': "5e5ea5c16897e",
+        '\$createdAt': "2020-10-15T06:38:00.000+00:00",
+        '\$updatedAt': "2020-10-15T06:38:00.000+00:00",
+        'userId': "5e5bb8c16897e",
+        'userName': "John Doe",
+        'expire': "2020-10-15T06:38:00.000+00:00",
+        'provider': "email",
+        'providerUid': "user@example.com",
+        'providerAccessToken': "MTQ0NjJkZmQ5OTM2NDE1ZTZjNGZmZjI3",
+        'providerAccessTokenExpiry': "2020-10-15T06:38:00.000+00:00",
+        'providerRefreshToken': "MTQ0NjJkZmQ5OTM2NDE1ZTZjNGZmZjI3",
+        'ip': "127.0.0.1",
+        'osCode': "Mac",
+        'osName': "Mac",
+        'osVersion': "Mac",
+        'clientType': "browser",
+        'clientCode': "CM",
+        'clientName': "Chrome Mobile iOS",
+        'clientVersion': "84.0",
+        'clientEngine': "WebKit",
+        'clientEngineVersion': "605.1.15",
+        'deviceName': "smartphone",
+        'deviceBrand': "Google",
+        'deviceModel': "Nexus 5",
+        'countryCode': "US",
+        'countryName': "United States",
+        'current': true,
+        'factors': [],
+        'secret': "5e5bb8c16897e",
+        'mfaUpdatedAt': "2020-10-15T06:38:00.000+00:00",
+      };
+
+      when(
+        client.call(
+          HttpMethod.post,
+          path: anyNamed('path'),
+          headers: anyNamed('headers'),
+          params: anyNamed('params'),
+          responseType: anyNamed('responseType'),
+        ),
+      ).thenAnswer((_) async => Response(data: data));
+
+      final response = await account.createLDAPSession(
+        username: "<USERNAME>",
+        password: "password",
+        duration: 1,
+      );
+      final Map<String, dynamic> params = verify(
+        client.call(
+          HttpMethod.post,
+          path: "/account/sessions/ldap",
+          headers: anyNamed('headers'),
+          params: captureAnyNamed('params'),
+          responseType: anyNamed('responseType'),
+        ),
+      ).captured.single;
+      expect(params, {
+        "username": "<USERNAME>",
+        "password": "password",
+        "duration": 1,
+      });
+      expect(response, isA<models.Session>());
+    });
+
     test('test method updateMagicURLSession()', () async {
       final Map<String, dynamic> data = {
         '\$id': "5e5ea5c16897e",

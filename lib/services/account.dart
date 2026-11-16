@@ -1843,6 +1843,43 @@ class Account extends Service {
     return models.Session.fromMap(res.data);
   }
 
+  /// Allow the user to login into their account by providing the username and
+  /// password they use in the project's LDAP directory. The directory verifies
+  /// the password; on the first sign-in an account is created from the directory
+  /// entry, and on later sign-ins the name, email and phone follow the
+  /// directory. This endpoint requires LDAP to be configured and enabled for the
+  /// project. A user is limited to 10 active sessions at a time by default.
+  /// [Learn more about session
+  /// limits](https://appwrite.io/docs/authentication-security#limits).
+  Future<models.Session> createLDAPSession({
+    required String username,
+    required String password,
+    int? duration,
+  }) async {
+    final String apiPath = '/account/sessions/ldap';
+
+    final Map<String, dynamic> apiParams = {
+      'username': username,
+      'password': password,
+      if (duration != null) 'duration': duration,
+    };
+
+    final Map<String, String> apiHeaders = {
+      'X-Appwrite-Project': client.config['project'] ?? '',
+      'content-type': 'application/json',
+      'accept': 'application/json',
+    };
+
+    final res = await client.call(
+      HttpMethod.post,
+      path: apiPath,
+      params: apiParams,
+      headers: apiHeaders,
+    );
+
+    return models.Session.fromMap(res.data);
+  }
+
   /// Use this endpoint to create a session from token. Provide the **userId**
   /// and **secret** parameters from the successful response of authentication
   /// flows initiated by token creation. For example, magic URL and phone login.
