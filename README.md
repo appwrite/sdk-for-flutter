@@ -24,7 +24,7 @@ Or add it to your app's `pubspec.yaml` file and run `flutter pub get`:
 
 ```yaml
 dependencies:
-  appwrite: ^28.4.0-rc.1
+  appwrite: ^28.4.0
 ```
 
 ### Android requirements
@@ -245,7 +245,26 @@ final subscription = await push.subscribe(
 await push.setForeground(true);
 ```
 
-Foreground mode runs a `remoteMessaging` foreground service, which Google Play asks apps to declare in the Play Console. Apps that never enable it can remove the service from their merged manifest with `tools:node="remove"` on `io.appwrite.flutter.services.PushService` and `android.permission.FOREGROUND_SERVICE_REMOTE_MESSAGING`.
+Foreground mode is opt-in, because Google Play asks apps that declare a `remoteMessaging` foreground service to justify it in the Play Console. To use it:
+
+1. Add both permissions to `android/app/src/main/AndroidManifest.xml`, inside `<manifest>` and outside `<application>`:
+
+   ```xml
+   <manifest xmlns:android="http://schemas.android.com/apk/res/android">
+       <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+       <uses-permission android:name="android.permission.FOREGROUND_SERVICE_REMOTE_MESSAGING" />
+
+       <application>
+           ...
+       </application>
+   </manifest>
+   ```
+
+2. In the Play Console, complete the foreground service declaration for remote messaging, under App content > Foreground service permissions.
+
+3. Call `await push.setForeground(true)` while the app is on screen. Without the permissions it reports an error to `onError` and delivery stays on the scheduled wake-ups.
+
+The SDK already declares its `PushService`, so you don't add a `<service>`. To turn foreground mode off again, call `await push.setForeground(false)`.
 
 Set the notification icon with `<meta-data android:name="io.appwrite.flutter.push.notification_icon" android:resource="@drawable/..." />` in your `<application>`; without it a generic icon is used.
 

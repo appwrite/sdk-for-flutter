@@ -208,7 +208,9 @@ abstract class Push extends Service {
   /// notification), for immediate delivery even after the app is killed and during Doze,
   /// instead of only the scheduled wake-ups. Saved, so it applies after restarts too. Call it
   /// while the app is in the foreground: Android 12+ refuses to start the service from the
-  /// background. It only affects [background] subscriptions. A no-op elsewhere.
+  /// background. It needs the `FOREGROUND_SERVICE` and `FOREGROUND_SERVICE_REMOTE_MESSAGING`
+  /// permissions declared in the app's manifest, and reports to `onError` without them. It only
+  /// affects [background] subscriptions. A no-op elsewhere.
   Future<void> setForeground(bool enabled);
 
   /// Android: what background delivery can rely on. When `bestEffort` is true messages may arrive

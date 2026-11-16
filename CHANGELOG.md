@@ -1,5 +1,20 @@
 # Change Log
 
+## 28.4.0
+
+* Added: `Tracking.start()` sends `first_open` once per install and `app_updated` (`previousVersion`, `version`) on the first start after the app's version changes
+* Added: `Push.setTracking` sends `push_received` and `push_opened` with the message's `messageId`; `Tracking.pushReceived` and `Tracking.pushOpened` for other push providers
+* Added: `PushNotificationOpened.messageId`
+* Added: `Account.createDevice`, `getDevice`, `deleteDevice` and `updateDeviceSession`, and the `Device` model
+* Added: `Account.createLDAPSession`
+* Added: `Session.userName`
+* Added: `auto` output on `Storage.getFilePreview` and the avatar endpoints, serving avif or webp when the `Accept` header supports it
+* Added: `OAuthProvider.naver` and `OAuthProvider.vippsSandbox`
+* Updated: the Android plugin no longer declares `FOREGROUND_SERVICE` and `FOREGROUND_SERVICE_REMOTE_MESSAGING`; apps that call `push.setForeground(true)` declare them
+* Fixed: Android background push keeps waking up on phones that hold back expedited jobs
+* Updated: Android plugin builds with Kotlin 2.4.20
+* Updated: requests send `X-Appwrite-Response-Format: 2.7.2`
+
 ## 28.4.0-rc.1
 
 * Added: `Tracking.start()` sends `first_open` once per install and `app_updated` (`previousVersion`, `version`) on the first start after the app's version changes
