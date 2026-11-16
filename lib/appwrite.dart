@@ -31,7 +31,6 @@ export 'src/realtime_subscription.dart';
 export 'src/realtime_message.dart';
 export 'src/input_file.dart';
 export 'src/tracking.dart';
-export 'src/tracking_observer.dart';
 
 part 'query.dart';
 part 'query/builder.dart';

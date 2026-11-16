@@ -14,6 +14,9 @@ class Session implements Model {
   /// User ID.
   final String userId;
 
+  /// Name of the user the session belongs to. Lets a client label the account, for example in an account switcher.
+  final String userName;
+
   /// Session expiration date in ISO 8601 format.
   final String expire;
 
@@ -94,6 +97,7 @@ class Session implements Model {
     required this.$createdAt,
     required this.$updatedAt,
     required this.userId,
+    required this.userName,
     required this.expire,
     required this.provider,
     required this.providerUid,
@@ -128,6 +132,7 @@ class Session implements Model {
       '\$createdAt': "",
       '\$updatedAt': "",
       'userId': "",
+      'userName': "",
       'expire': "",
       'provider': "",
       'providerUid': "",
@@ -161,6 +166,7 @@ class Session implements Model {
       $createdAt: map['\$createdAt'].toString(),
       $updatedAt: map['\$updatedAt'].toString(),
       userId: map['userId'].toString(),
+      userName: map['userName'].toString(),
       expire: map['expire'].toString(),
       provider: map['provider'].toString(),
       providerUid: map['providerUid'].toString(),
@@ -196,6 +202,7 @@ class Session implements Model {
       "\$createdAt": $createdAt,
       "\$updatedAt": $updatedAt,
       "userId": userId,
+      "userName": userName,
       "expire": expire,
       "provider": provider,
       "providerUid": providerUid,

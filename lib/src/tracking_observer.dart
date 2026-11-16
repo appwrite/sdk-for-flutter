@@ -1,6 +1,4 @@
-import 'package:flutter/widgets.dart';
-
-import 'tracking.dart';
+part of 'tracking.dart';
 
 /// Signature used to derive a screen name from a [Route].
 ///
@@ -44,6 +42,10 @@ class TrackingObserver extends NavigatorObserver {
     ScreenNameExtractor? nameExtractor,
     this.eventName = 'screen_view',
   }) : nameExtractor = nameExtractor ?? defaultScreenNameExtractor;
+
+  /// The screen name last reported, so a route change that keeps the same
+  /// name (a replace, or a pop back to it) is not counted again.
+  String? _lastScreen;
 
   /// The route the user is actually looking at. `didRemove` fires for buried
   /// routes too, and its `previousRoute` is the route below the removed one
@@ -95,18 +97,21 @@ class TrackingObserver extends NavigatorObserver {
     required String trigger,
   }) {
     final name = nameExtractor(route);
-    if (name == null || name.isEmpty) {
+    if (name == null || name.isEmpty || name == _lastScreen) {
       return;
     }
-    final props = <String, dynamic>{
-      'screen': name,
-      'trigger': trigger,
-    };
-    final previousName =
-        previousRoute == null ? null : nameExtractor(previousRoute);
-    if (previousName != null && previousName.isNotEmpty) {
-      props['previous'] = previousName;
-    }
-    tracking.event(eventName, url: name, props: props);
+    _lastScreen = name;
+    final previousName = previousRoute == null
+        ? null
+        : nameExtractor(previousRoute);
+    tracking._screenEvent(
+      eventName,
+      name,
+      props: {
+        'trigger': trigger,
+        if (previousName != null && previousName.isNotEmpty)
+          'previous': previousName,
+      },
+    );
   }
 }

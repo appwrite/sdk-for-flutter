@@ -24,7 +24,7 @@ Or add it to your app's `pubspec.yaml` file and run `flutter pub get`:
 
 ```yaml
 dependencies:
-  appwrite: ^28.3.0
+  appwrite: ^28.4.0-rc.1
 ```
 
 ### Android requirements
@@ -282,6 +282,17 @@ final stop = push.onNotificationOpened((opened) => openSale(opened.data['saleId'
 ```
 
 On Android the SDK's native plugin reports the taps, on iOS `flutter_local_notifications`, and on the web the notification's click while the page is open.
+
+### Push analytics
+
+Attach a `Tracking` to send `push_received` for each message a background subscription gets with a notification to show while the app is running, and `push_opened` for each tap reported by `getInitialNotification` or `onNotificationOpened`. Both carry the message's `messageId`, also exposed as `opened.messageId`.
+
+```dart
+final tracking = Tracking(Analytics(client), '<PROPERTY_ID>')..start();
+final push = Push(client).setTracking(tracking);
+```
+
+`tracking.start()` also sends `first_open` once per install and `app_updated` on the first start after the app's version changes. A reinstall or "clear data" counts as a new install. With another push provider, call `tracking.pushReceived(messageId: ..., campaign: ...)` and `tracking.pushOpened(...)` from its handlers. `push_received` is best effort: on iOS, and on Android while the app is killed, the app's code often does not run when a notification arrives.
 
 ## Contribution
 

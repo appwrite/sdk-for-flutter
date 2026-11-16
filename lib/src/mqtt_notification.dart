@@ -11,7 +11,16 @@ class PushNotificationContent {
   final String? body;
   final String? image;
 
-  const PushNotificationContent._(this.raw, this.title, this.body, this.image);
+  /// The Appwrite Messaging message id the envelope carries.
+  final String? messageId;
+
+  const PushNotificationContent._(
+    this.raw,
+    this.title,
+    this.body,
+    this.image,
+    this.messageId,
+  );
 
   factory PushNotificationContent.of(PushMessage message) {
     Object? json;
@@ -21,7 +30,7 @@ class PushNotificationContent {
       json = null;
     }
     if (json is! Map) {
-      return const PushNotificationContent._(true, null, null, null);
+      return const PushNotificationContent._(true, null, null, null, null);
     }
     final notification = json['notification'];
     String? field(String name) {
@@ -29,11 +38,13 @@ class PushNotificationContent {
       return value is String && value.isNotEmpty ? value : null;
     }
 
+    final messageId = json['messageId'];
     return PushNotificationContent._(
       false,
       field('title'),
       field('body'),
       field('image'),
+      messageId is String && messageId.isNotEmpty ? messageId : null,
     );
   }
 

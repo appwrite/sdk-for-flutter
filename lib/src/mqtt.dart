@@ -4,6 +4,7 @@ import 'mqtt_browser.dart' if (dart.library.io) 'mqtt_io.dart';
 import 'service.dart';
 import 'client.dart';
 import 'mqtt_message.dart';
+import 'tracking.dart';
 
 /// A callback invoked for every message delivered on a subscribed topic.
 typedef PushCallback = void Function(PushMessage message);
@@ -80,19 +81,29 @@ class PushNotificationOpened {
   /// The `data` sent with the message (e.g. `createPush`), parsed; empty when it had none.
   final Map<String, dynamic> data;
 
-  const PushNotificationOpened({required this.topic, required this.data});
+  /// The Appwrite Messaging message id, when the message was sent through Messaging.
+  final String? messageId;
+
+  const PushNotificationOpened({
+    required this.topic,
+    required this.data,
+    this.messageId,
+  });
 
   /// The tap on a notification for a message on [topic] with the raw [payload].
   factory PushNotificationOpened.fromPayload(String topic, String payload) {
-    Object? data;
+    Object? json;
     try {
-      data = (jsonDecode(payload) as Map<String, dynamic>?)?['data'];
+      json = jsonDecode(payload);
     } catch (_) {
-      data = null;
+      json = null;
     }
+    final data = json is Map ? json['data'] : null;
+    final messageId = json is Map ? json['messageId'] : null;
     return PushNotificationOpened(
       topic: topic,
       data: data is Map<String, dynamic> ? data : <String, dynamic>{},
+      messageId: messageId is String && messageId.isNotEmpty ? messageId : null,
     );
   }
 }
@@ -239,6 +250,12 @@ abstract class Push extends Service {
   void Function() onNotificationOpened(
     void Function(PushNotificationOpened opened) callback,
   );
+
+  /// Send push analytics through [tracking]: `push_received` for each message a background
+  /// subscription gets with a notification to show while the app is running, and
+  /// `push_opened` for each tap reported by [getInitialNotification] or [onNotificationOpened],
+  /// both with the message's `messageId`.
+  Push setTracking(Tracking tracking);
 
   /// Tear down the connection and drop all subscriptions. On Android this also stops
   /// background delivery, including subscriptions saved by an earlier run: call it on sign-out.
