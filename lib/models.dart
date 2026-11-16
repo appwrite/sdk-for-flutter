@@ -34,6 +34,7 @@ part 'src/models/algo_argon2.dart';
 part 'src/models/account.dart';
 part 'src/models/preferences.dart';
 part 'src/models/session.dart';
+part 'src/models/device.dart';
 part 'src/models/identity.dart';
 part 'src/models/token.dart';
 part 'src/models/jwt.dart';

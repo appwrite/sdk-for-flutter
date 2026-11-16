@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:appwrite/src/mqtt.dart';
 import 'package:appwrite/src/mqtt_message.dart';
 import 'package:appwrite/src/mqtt_notification.dart';
 
@@ -75,6 +76,46 @@ void main() {
 
       expect(content.visible, isTrue);
       expect(content.bodyFor(push), '[1, 2]');
+    });
+  });
+
+  group('messageId', () {
+    final payload = jsonEncode({
+      'messageId': 'message',
+      'notification': {'title': 'Sale'},
+      'data': {'saleId': '42'},
+    });
+
+    test('is read from the envelope', () {
+      expect(
+        PushNotificationContent.of(pushMessage(payload)).messageId,
+        'message',
+      );
+      expect(PushNotificationContent.of(pushMessage('raw')).messageId, isNull);
+    });
+
+    test('is null when empty', () {
+      final empty = jsonEncode({
+        'messageId': '',
+        'notification': {'title': 'Sale'},
+      });
+
+      expect(PushNotificationContent.of(pushMessage(empty)).messageId, isNull);
+      expect(
+        PushNotificationOpened.fromPayload('users/user', empty).messageId,
+        isNull,
+      );
+    });
+
+    test('is exposed on the opened notification', () {
+      final opened = PushNotificationOpened.fromPayload('users/user', payload);
+
+      expect(opened.messageId, 'message');
+      expect(opened.data, {'saleId': '42'});
+      expect(
+        PushNotificationOpened.fromPayload('users/user', 'raw').messageId,
+        isNull,
+      );
     });
   });
 }

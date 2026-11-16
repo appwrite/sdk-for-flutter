@@ -14,6 +14,8 @@ import 'mqtt.dart';
 import 'mqtt_foreground.dart';
 import 'mqtt_message.dart';
 import 'mqtt_native.dart';
+import 'mqtt_notification.dart';
+import 'tracking.dart';
 
 Push createPush(Client client) => PushIO(client);
 
@@ -344,14 +346,17 @@ class PushIO implements Push {
   Future<PushNotificationOpened?> getInitialNotification() async {
     final native = _native;
     if (native == null) {
-      return localNotificationLaunch();
+      final opened = await localNotificationLaunch();
+      return opened == null ? null : _opened(opened);
     }
     final tap = await native.getInitialNotification();
     return tap == null
         ? null
-        : PushNotificationOpened.fromPayload(
-            tap['topic'] as String,
-            tap['payload'] as String,
+        : _opened(
+            PushNotificationOpened.fromPayload(
+              tap['topic'] as String,
+              tap['payload'] as String,
+            ),
           );
   }
 
@@ -361,12 +366,65 @@ class PushIO implements Push {
   ) {
     final native = _native;
     if (native == null) {
-      return listenLocalNotificationTaps(callback);
+      return listenLocalNotificationTaps(
+        (opened) => callback(_opened(opened)),
+      );
     }
     return native.listenOpened(
       (topic, payload) =>
-          callback(PushNotificationOpened.fromPayload(topic, payload)),
+          callback(_opened(PushNotificationOpened.fromPayload(topic, payload))),
     );
+  }
+
+  Tracking? _tracking;
+
+  @override
+  Push setTracking(Tracking tracking) {
+    _tracking = tracking;
+    return this;
+  }
+
+  // Recently tracked push events. A tap reaches every onNotificationOpened listener, and the
+  // native host forwards a message once per matching subscription, so each counts once.
+  static final Map<String, DateTime> _tracked = {};
+
+  static bool _firstTracked(String key) {
+    final now = DateTime.now();
+    _tracked.removeWhere(
+      (_, at) => now.difference(at) > const Duration(seconds: 10),
+    );
+    if (_tracked.containsKey(key)) {
+      return false;
+    }
+    _tracked[key] = now;
+    return true;
+  }
+
+  PushNotificationOpened _opened(PushNotificationOpened opened) {
+    final tracking = _tracking;
+    if (tracking != null &&
+        _firstTracked(
+          'opened\n${opened.topic}\n${opened.messageId ?? jsonEncode(opened.data)}',
+        )) {
+      tracking.pushOpened(messageId: opened.messageId);
+    }
+    return opened;
+  }
+
+  // Called for messages of background subscriptions, the ones the native host or the isolate
+  // posts a notification for.
+  void _received(PushMessage message) {
+    final tracking = _tracking;
+    if (tracking == null) {
+      return;
+    }
+    final content = PushNotificationContent.of(message);
+    if (content.visible &&
+        _firstTracked(
+          'received\n${message.topic}\n${content.messageId ?? message.data}',
+        )) {
+      tracking.pushReceived(messageId: content.messageId);
+    }
   }
 
   // Errors already handed to onError, so one failure reaching it through two paths (a
@@ -636,14 +694,16 @@ class PushIO implements Push {
         if (sub == null) {
           return;
         }
+        final pushMessage = PushMessage(
+          topic: message.topic,
+          payload: message.payload,
+          qos: message.qos,
+        );
+        if (sub.background) {
+          _received(pushMessage);
+        }
         try {
-          sub.callback(
-            PushMessage(
-              topic: message.topic,
-              payload: message.payload,
-              qos: message.qos,
-            ),
-          );
+          sub.callback(pushMessage);
         } catch (e) {
           _report(e);
         }
@@ -790,6 +850,11 @@ class PushIO implements Push {
             payload: payload,
             qos: data['qos'] as int? ?? 0,
           );
+          if (_subscriptions.values.any(
+            (sub) => sub.background && _matches(sub.filter, topic),
+          )) {
+            _received(message);
+          }
           for (final sub in _subscriptions.values) {
             if (_matches(sub.filter, topic)) {
               sub.callback(message);

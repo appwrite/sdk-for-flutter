@@ -14,6 +14,7 @@ import 'exception.dart';
 import 'mqtt.dart';
 import 'mqtt_message.dart';
 import 'mqtt_notification.dart';
+import 'tracking.dart';
 
 Push createPush(Client client) => PushWeb(client);
 
@@ -477,6 +478,14 @@ class PushWeb implements Push {
     return () => unawaited(subscription.cancel());
   }
 
+  Tracking? _tracking;
+
+  @override
+  Push setTracking(Tracking tracking) {
+    _tracking = tracking;
+    return this;
+  }
+
   @override
   void close() {
     _mqtt?.disconnect();
@@ -675,9 +684,11 @@ class PushWeb implements Push {
       );
       final content = PushNotificationContent.of(message);
       final shownTitles = <String>{};
+      var notified = false;
       for (final subscription in _subscriptions.values) {
         if (_matches(subscription.filter, topic)) {
           subscription.callback(message);
+          notified |= subscription.background && content.visible;
           // Notification is per-subscription: only subs that opted in show one, each
           // title once. A title the server sent replaces theirs, so it is shown once.
           final title = content.titleOr(subscription.title ?? topic);
@@ -692,12 +703,18 @@ class PushWeb implements Push {
               title,
               web.NotificationOptions(body: content.bodyFor(message) ?? ''),
             ).onclick = ((web.Event _) {
-              _opened.add(
-                PushNotificationOpened.fromPayload(topic, message.data),
+              final opened = PushNotificationOpened.fromPayload(
+                topic,
+                message.data,
               );
+              _tracking?.pushOpened(messageId: opened.messageId);
+              _opened.add(opened);
             }).toJS;
           }
         }
+      }
+      if (notified) {
+        _tracking?.pushReceived(messageId: content.messageId);
       }
     }
   }

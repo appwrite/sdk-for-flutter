@@ -9,6 +9,7 @@ void main() {
         $createdAt: "2020-10-15T06:38:00.000+00:00",
         $updatedAt: "2020-10-15T06:38:00.000+00:00",
         userId: "5e5bb8c16897e",
+        userName: "John Doe",
         expire: "2020-10-15T06:38:00.000+00:00",
         provider: "email",
         providerUid: "user@example.com",
@@ -43,6 +44,7 @@ void main() {
       expect(result.$createdAt, "2020-10-15T06:38:00.000+00:00");
       expect(result.$updatedAt, "2020-10-15T06:38:00.000+00:00");
       expect(result.userId, "5e5bb8c16897e");
+      expect(result.userName, "John Doe");
       expect(result.expire, "2020-10-15T06:38:00.000+00:00");
       expect(result.provider, "email");
       expect(result.providerUid, "user@example.com");

@@ -385,6 +385,169 @@ void main() {
       expect(params, isEmpty);
     });
 
+    test('test method createDevice()', () async {
+      final Map<String, dynamic> data = {
+        '\$id': "5e5ea5c16897e",
+        '\$createdAt': "2020-10-15T06:38:00.000+00:00",
+        '\$updatedAt': "2020-10-15T06:38:00.000+00:00",
+        'expire': "2020-10-15T06:38:00.000+00:00",
+        'activeSessionId': "5e5bb8c16897e",
+        'sessions': [],
+        'secret': "5e5bb8c16897e",
+      };
+
+      when(
+        client.call(
+          HttpMethod.post,
+          path: anyNamed('path'),
+          headers: anyNamed('headers'),
+          params: anyNamed('params'),
+          responseType: anyNamed('responseType'),
+        ),
+      ).thenAnswer((_) async => Response(data: data));
+
+      final response = await account.createDevice();
+      final Map<String, dynamic> params = verify(
+        client.call(
+          HttpMethod.post,
+          path: "/account/devices",
+          headers: anyNamed('headers'),
+          params: captureAnyNamed('params'),
+          responseType: anyNamed('responseType'),
+        ),
+      ).captured.single;
+      expect(params, isEmpty);
+      expect(response, isA<models.Device>());
+    });
+
+    test('test method getDevice()', () async {
+      final Map<String, dynamic> data = {
+        '\$id': "5e5ea5c16897e",
+        '\$createdAt': "2020-10-15T06:38:00.000+00:00",
+        '\$updatedAt': "2020-10-15T06:38:00.000+00:00",
+        'expire': "2020-10-15T06:38:00.000+00:00",
+        'activeSessionId': "5e5bb8c16897e",
+        'sessions': [],
+        'secret': "5e5bb8c16897e",
+      };
+
+      when(
+        client.call(
+          HttpMethod.get,
+          path: anyNamed('path'),
+          headers: anyNamed('headers'),
+          params: anyNamed('params'),
+          responseType: anyNamed('responseType'),
+        ),
+      ).thenAnswer((_) async => Response(data: data));
+
+      final response = await account.getDevice(
+        deviceId: "<DEVICE_ID>",
+      );
+      final Map<String, dynamic> params = verify(
+        client.call(
+          HttpMethod.get,
+          path: "/account/devices/%3CDEVICE_ID%3E",
+          headers: anyNamed('headers'),
+          params: captureAnyNamed('params'),
+          responseType: anyNamed('responseType'),
+        ),
+      ).captured.single;
+      expect(params, isEmpty);
+      expect(response, isA<models.Device>());
+    });
+
+    test('test method deleteDevice()', () async {
+      final data = '';
+
+      when(
+        client.call(
+          HttpMethod.delete,
+          path: anyNamed('path'),
+          headers: anyNamed('headers'),
+          params: anyNamed('params'),
+          responseType: anyNamed('responseType'),
+        ),
+      ).thenAnswer((_) async => Response(data: data));
+
+      final response = await account.deleteDevice(
+        deviceId: "<DEVICE_ID>",
+      );
+      final Map<String, dynamic> params = verify(
+        client.call(
+          HttpMethod.delete,
+          path: "/account/devices/%3CDEVICE_ID%3E",
+          headers: anyNamed('headers'),
+          params: captureAnyNamed('params'),
+          responseType: anyNamed('responseType'),
+        ),
+      ).captured.single;
+      expect(params, isEmpty);
+    });
+
+    test('test method updateDeviceSession()', () async {
+      final Map<String, dynamic> data = {
+        '\$id': "5e5ea5c16897e",
+        '\$createdAt': "2020-10-15T06:38:00.000+00:00",
+        '\$updatedAt': "2020-10-15T06:38:00.000+00:00",
+        'userId': "5e5bb8c16897e",
+        'userName': "John Doe",
+        'expire': "2020-10-15T06:38:00.000+00:00",
+        'provider': "email",
+        'providerUid': "user@example.com",
+        'providerAccessToken': "MTQ0NjJkZmQ5OTM2NDE1ZTZjNGZmZjI3",
+        'providerAccessTokenExpiry': "2020-10-15T06:38:00.000+00:00",
+        'providerRefreshToken': "MTQ0NjJkZmQ5OTM2NDE1ZTZjNGZmZjI3",
+        'ip': "127.0.0.1",
+        'osCode': "Mac",
+        'osName': "Mac",
+        'osVersion': "Mac",
+        'clientType': "browser",
+        'clientCode': "CM",
+        'clientName': "Chrome Mobile iOS",
+        'clientVersion': "84.0",
+        'clientEngine': "WebKit",
+        'clientEngineVersion': "605.1.15",
+        'deviceName': "smartphone",
+        'deviceBrand': "Google",
+        'deviceModel': "Nexus 5",
+        'countryCode': "US",
+        'countryName': "United States",
+        'current': true,
+        'factors': [],
+        'secret': "5e5bb8c16897e",
+        'mfaUpdatedAt': "2020-10-15T06:38:00.000+00:00",
+      };
+
+      when(
+        client.call(
+          HttpMethod.patch,
+          path: anyNamed('path'),
+          headers: anyNamed('headers'),
+          params: anyNamed('params'),
+          responseType: anyNamed('responseType'),
+        ),
+      ).thenAnswer((_) async => Response(data: data));
+
+      final response = await account.updateDeviceSession(
+        deviceId: "<DEVICE_ID>",
+        sessionId: "<SESSION_ID>",
+      );
+      final Map<String, dynamic> params = verify(
+        client.call(
+          HttpMethod.patch,
+          path: "/account/devices/%3CDEVICE_ID%3E/session",
+          headers: anyNamed('headers'),
+          params: captureAnyNamed('params'),
+          responseType: anyNamed('responseType'),
+        ),
+      ).captured.single;
+      expect(params, {
+        "sessionId": "<SESSION_ID>",
+      });
+      expect(response, isA<models.Session>());
+    });
+
     test('test method updateEmail()', () async {
       final Map<String, dynamic> data = {
         '\$id': "5e5ea5c16897e",
@@ -915,6 +1078,7 @@ void main() {
         '\$createdAt': "2020-10-15T06:38:00.000+00:00",
         '\$updatedAt': "2020-10-15T06:38:00.000+00:00",
         'userId': "5e5bb8c16897e",
+        'userName': "John Doe",
         'expire': "2020-10-15T06:38:00.000+00:00",
         'provider': "email",
         'providerUid': "user@example.com",
@@ -978,6 +1142,7 @@ void main() {
         '\$createdAt': "2020-10-15T06:38:00.000+00:00",
         '\$updatedAt': "2020-10-15T06:38:00.000+00:00",
         'userId': "5e5bb8c16897e",
+        'userName': "John Doe",
         'expire': "2020-10-15T06:38:00.000+00:00",
         'provider': "email",
         'providerUid': "user@example.com",
@@ -1946,6 +2111,7 @@ void main() {
         '\$createdAt': "2020-10-15T06:38:00.000+00:00",
         '\$updatedAt': "2020-10-15T06:38:00.000+00:00",
         'userId': "5e5bb8c16897e",
+        'userName': "John Doe",
         'expire': "2020-10-15T06:38:00.000+00:00",
         'provider': "email",
         'providerUid': "user@example.com",
@@ -2003,6 +2169,7 @@ void main() {
         '\$createdAt': "2020-10-15T06:38:00.000+00:00",
         '\$updatedAt': "2020-10-15T06:38:00.000+00:00",
         'userId': "5e5bb8c16897e",
+        'userName': "John Doe",
         'expire': "2020-10-15T06:38:00.000+00:00",
         'provider': "email",
         'providerUid': "user@example.com",
@@ -2068,6 +2235,7 @@ void main() {
         '\$createdAt': "2020-10-15T06:38:00.000+00:00",
         '\$updatedAt': "2020-10-15T06:38:00.000+00:00",
         'userId': "5e5bb8c16897e",
+        'userName': "John Doe",
         'expire': "2020-10-15T06:38:00.000+00:00",
         'provider': "email",
         'providerUid': "user@example.com",
@@ -2139,6 +2307,7 @@ void main() {
         '\$createdAt': "2020-10-15T06:38:00.000+00:00",
         '\$updatedAt': "2020-10-15T06:38:00.000+00:00",
         'userId': "5e5bb8c16897e",
+        'userName': "John Doe",
         'expire': "2020-10-15T06:38:00.000+00:00",
         'provider': "email",
         'providerUid': "user@example.com",
@@ -2222,6 +2391,7 @@ void main() {
         '\$createdAt': "2020-10-15T06:38:00.000+00:00",
         '\$updatedAt': "2020-10-15T06:38:00.000+00:00",
         'userId': "5e5bb8c16897e",
+        'userName': "John Doe",
         'expire': "2020-10-15T06:38:00.000+00:00",
         'provider': "email",
         'providerUid': "user@example.com",
@@ -2285,6 +2455,7 @@ void main() {
         '\$createdAt': "2020-10-15T06:38:00.000+00:00",
         '\$updatedAt': "2020-10-15T06:38:00.000+00:00",
         'userId': "5e5bb8c16897e",
+        'userName': "John Doe",
         'expire': "2020-10-15T06:38:00.000+00:00",
         'provider': "email",
         'providerUid': "user@example.com",
@@ -2348,6 +2519,7 @@ void main() {
         '\$createdAt': "2020-10-15T06:38:00.000+00:00",
         '\$updatedAt': "2020-10-15T06:38:00.000+00:00",
         'userId': "5e5bb8c16897e",
+        'userName': "John Doe",
         'expire': "2020-10-15T06:38:00.000+00:00",
         'provider': "email",
         'providerUid': "user@example.com",
@@ -2407,6 +2579,7 @@ void main() {
         '\$createdAt': "2020-10-15T06:38:00.000+00:00",
         '\$updatedAt': "2020-10-15T06:38:00.000+00:00",
         'userId': "5e5bb8c16897e",
+        'userName': "John Doe",
         'expire': "2020-10-15T06:38:00.000+00:00",
         'provider': "email",
         'providerUid': "user@example.com",

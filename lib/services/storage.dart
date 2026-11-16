@@ -304,7 +304,9 @@ class Storage extends Service {
   /// Get a file preview image. Currently, this method supports preview for image
   /// files (jpg, png, and gif), other supported formats, like pdf, docs, slides,
   /// and spreadsheets, will return the file icon image. You can also pass query
-  /// string arguments for cutting and resizing your preview image. Preview is
+  /// string arguments for cutting and resizing your preview image. Set `output`
+  /// to `auto` to receive avif or webp when the client's `Accept` header
+  /// supports it, falling back to the original image format. Preview is
   /// supported only for image files smaller than 10MB.
   Future<Uint8List> getFilePreview({
     required String bucketId,
