@@ -4,7 +4,6 @@ group = "io.appwrite.flutter"
 version = "28.4.0"
 
 buildscript {
-    ext.kotlin_version = "2.4.20"
     repositories {
         google()
         mavenCentral()
@@ -12,7 +11,6 @@ buildscript {
 
     dependencies {
         classpath("com.android.tools.build:gradle:8.7.3")
-        classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version")
     }
 }
 
@@ -24,7 +22,6 @@ allprojects {
 }
 
 apply plugin: "com.android.library"
-apply plugin: "kotlin-android"
 
 android {
     namespace = "io.appwrite.flutter"
@@ -35,10 +32,6 @@ android {
         targetCompatibility = JavaVersion.VERSION_17
     }
 
-    kotlinOptions {
-        jvmTarget = "17"
-    }
-
     sourceSets {
         main.java.srcDirs += "src/main/kotlin"
     }
@@ -47,6 +40,12 @@ android {
         minSdk = 24
         // R8 rules for the bundled MQTT client, applied to the app.
         consumerProguardFiles("consumer-rules.pro")
+    }
+}
+
+kotlin {
+    compilerOptions {
+        jvmTarget = org.jetbrains.kotlin.gradle.dsl.JvmTarget.JVM_17
     }
 }
 
