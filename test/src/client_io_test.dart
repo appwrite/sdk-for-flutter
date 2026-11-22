@@ -5,6 +5,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:appwrite/src/client_io.dart';
+import 'package:appwrite/src/enums.dart';
 import 'package:appwrite/src/exception.dart';
 
 void main() {
@@ -89,6 +90,16 @@ void main() {
       (await client.cookieJar.loadForRequest(
         Uri.parse('http://127.0.0.1:${server.port}/v1'),
       )).map((cookie) => '${cookie.name}=${cookie.value}').toList();
+
+  test('defers platform setup to the first request', () async {
+    expect(client.initProgress, isFalse);
+    expect(client.initialized, isFalse);
+
+    await client.call(HttpMethod.get, path: '/ping');
+
+    expect(client.initialized, isTrue);
+    expect(requests, ['GET /v1/ping ']);
+  });
 
   for (final platform in [TargetPlatform.linux, TargetPlatform.windows]) {
     group('webAuth on ${platform.name}', () {

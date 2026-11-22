@@ -48,6 +48,7 @@ enum OAuthProvider {
   vippsSandbox(value: "vippsSandbox"),
   webflow(value: "webflow"),
   wordpress(value: "wordpress"),
+  workos(value: "workos"),
   x(value: "x"),
   yahoo(value: "yahoo"),
   yammer(value: "yammer"),
