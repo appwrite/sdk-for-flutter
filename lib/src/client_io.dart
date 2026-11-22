@@ -59,7 +59,7 @@ class ClientIO extends ClientBase with ClientMixin {
       'x-sdk-name': 'Flutter',
       'x-sdk-platform': 'client',
       'x-sdk-language': 'flutter',
-      'x-sdk-version': '28.4.0',
+      'x-sdk-version': '28.4.1',
       'X-Appwrite-Response-Format': '2.7.2',
     };
 
@@ -69,7 +69,8 @@ class ClientIO extends ClientBase with ClientMixin {
       _endPoint.startsWith(RegExp("http://|https://")),
       "endPoint $_endPoint must start with 'http'",
     );
-    init();
+    // No init() here: its platform channels crash Android release builds when
+    // the client is created before the engine is ready. It runs on first use.
   }
 
   @override
