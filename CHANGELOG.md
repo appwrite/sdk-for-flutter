@@ -1,5 +1,9 @@
 # Change Log
 
+## 28.5.0
+
+* Added: Atlassian, Instagram, LINE, Linear, Netlify, Patreon, Railway, Reddit, Roblox, Strava, Vercel and VK to `OAuthProvider`
+
 ## 28.4.1
 
 * Added: `OAuthProvider.workos`

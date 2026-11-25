@@ -40,7 +40,7 @@ class ClientBrowser extends ClientBase with ClientMixin {
       'x-sdk-name': 'Flutter',
       'x-sdk-platform': 'client',
       'x-sdk-language': 'flutter',
-      'x-sdk-version': '28.4.1',
+      'x-sdk-version': '28.5.0',
       'X-Appwrite-Response-Format': '2.7.2',
     };
 
