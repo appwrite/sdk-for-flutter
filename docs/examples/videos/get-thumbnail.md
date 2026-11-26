@@ -1,0 +1,41 @@
+```dart
+import 'dart:io';
+import 'dart:typed_data';
+import 'package:flutter/material.dart';
+import 'package:appwrite/appwrite.dart';
+import 'package:appwrite/enums.dart' as enums;
+
+Client client = Client()
+    .setEndpoint('https://<REGION>.cloud.appwrite.io/v1') // Your API Endpoint
+    .setProject('<YOUR_PROJECT_ID>'); // Your project ID
+
+Videos videos = Videos(client);
+
+// Downloading file
+Uint8List bytes = await videos.getThumbnail(
+    videoId: '<VIDEO_ID>',
+    thumbnailId: '<THUMBNAIL_ID>',
+    width: 0, // optional
+    height: 0, // optional
+    output: enums.ImageFormat.jpg, // optional
+);
+
+final file = File('path_to_file/filename.ext');
+file.writeAsBytesSync(bytes);
+
+// Displaying image preview
+FutureBuilder<Uint8List>(
+    future: videos.getThumbnail(
+        videoId: '<VIDEO_ID>',
+        thumbnailId: '<THUMBNAIL_ID>',
+        width: 0, // optional
+        height: 0, // optional
+        output: enums.ImageFormat.jpg, // optional
+    ), // Works for both public file and private file, for private files you need to be logged in
+    builder: (context, snapshot) {
+        return snapshot.hasData && snapshot.data != null
+            ? Image.memory(snapshot.data!)
+            : const CircularProgressIndicator();
+    },
+);
+```
