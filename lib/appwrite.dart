@@ -57,6 +57,7 @@ part 'services/storage.dart';
 part 'services/tables_db.dart';
 part 'services/teams.dart';
 part 'services/vectors_db.dart';
+part 'services/videos.dart';
 
 String _encodePath(String value) {
   if (value == '.' || value == '..') {
