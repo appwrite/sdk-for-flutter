@@ -1,7 +1,6 @@
 ```dart
 import 'dart:io';
 import 'dart:typed_data';
-import 'package:flutter/material.dart';
 import 'package:appwrite/appwrite.dart';
 import 'package:appwrite/enums.dart' as enums;
 
@@ -20,18 +19,4 @@ Uint8List bytes = await videos.getCaptionManifest(
 
 final file = File('path_to_file/filename.ext');
 file.writeAsBytesSync(bytes);
-
-// Displaying image preview
-FutureBuilder<Uint8List>(
-    future: videos.getCaptionManifest(
-        videoId: '<VIDEO_ID>',
-        output: enums.VideoOutput.hls,
-        captionId: '<CAPTION_ID>',
-    ), // Works for both public file and private file, for private files you need to be logged in
-    builder: (context, snapshot) {
-        return snapshot.hasData && snapshot.data != null
-            ? Image.memory(snapshot.data!)
-            : const CircularProgressIndicator();
-    },
-);
 ```
